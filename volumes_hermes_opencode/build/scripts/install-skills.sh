@@ -175,8 +175,10 @@ if command -v uv >/dev/null 2>&1; then
   if command -v graphify >/dev/null 2>&1; then
     eprintf "  Registering graphify for opencode..."
     graphify install --platform opencode 2>/dev/null || true
-    eprintf "  Registering graphify for hermes..."
-    graphify install --platform hermes 2>/dev/null || true
+    if [ "${SKIP_HERMES_REGISTRATION:-0}" != "1" ]; then
+      eprintf "  Registering graphify for hermes..."
+      graphify install --platform hermes 2>/dev/null || true
+    fi
     eprintf "  graphify installed and registered."
   else
     eprintf "  WARNING: graphify CLI not found after uv tool install"
@@ -231,6 +233,7 @@ if [ "$hermes_errors" -gt 0 ]; then
 fi
 
 chown -R hermeswebui:hermeswebui "$OPENCODE_SKILLS_DIR" 2>/dev/null || true
+chown -R hermeswebui:hermeswebui "$HERMES_SKILLS_DIR" 2>/dev/null || true
 
 eprintf ""
 eprintf "All skills installed successfully."
