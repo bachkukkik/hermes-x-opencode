@@ -60,3 +60,9 @@ gateway_base() {
 opencode_base() {
     echo "http://localhost:${OPENCODE_SERVE_PORT:-4096}"
 }
+
+skip_if_no_secrets() {
+    if [ -z "${OPENAI_BASE_URL:-}" ] || [ -z "${OPENAI_API_KEY:-}" ]; then
+        skip "OPENAI_BASE_URL or OPENAI_API_KEY not set"
+    fi
+}

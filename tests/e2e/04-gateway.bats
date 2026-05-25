@@ -5,11 +5,13 @@ setup() {
 }
 
 @test "AC14: gateway health endpoint returns OK" {
+    skip_if_no_secrets
     run curl -sf "$(gateway_base)/health"
     [ "$status" -eq 0 ]
 }
 
 @test "AC15: gateway /v1/models returns model list" {
+    skip_if_no_secrets
     local api_key
     api_key=$(get_api_key)
     [ -n "$api_key" ]
@@ -19,6 +21,7 @@ setup() {
 }
 
 @test "AC16: gateway chat completion returns response" {
+    skip_if_no_secrets
     local api_key
     api_key=$(get_api_key)
     [ -n "$api_key" ]

@@ -440,6 +440,8 @@ wait_for_port 8642 60
 
 start_opencode_serve
 
+wait_for_port 4096 30
+
 echo "== All services running. Waiting..."
 wait -n
 echo "!! A background process exited. Container shutting down."

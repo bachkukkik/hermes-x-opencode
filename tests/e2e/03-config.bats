@@ -21,6 +21,7 @@ setup() {
 }
 
 @test "AC7: config.yaml has literal key_env string" {
+    skip_if_no_secrets
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
@@ -29,6 +30,7 @@ setup() {
 }
 
 @test "AC17: config.yaml includes api_server platform" {
+    skip_if_no_secrets
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
@@ -57,9 +59,16 @@ setup() {
 }
 
 @test "AC20: opencode.jsonc is valid JSON" {
+    skip_if_no_secrets
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    run docker exec "$cid" python3 -m json.tool /home/hermeswebui/.config/opencode/opencode.jsonc
+    run docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+json.loads(text)
+" /home/hermeswebui/.config/opencode/opencode.jsonc
     [ "$status" -eq 0 ]
 }

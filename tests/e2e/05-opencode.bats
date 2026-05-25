@@ -22,6 +22,7 @@ setup() {
 }
 
 @test "AC23: opencode serve health endpoint returns healthy" {
+    skip_if_no_secrets
     run curl -sf "$(opencode_base)/global/health"
     [ "$status" -eq 0 ]
     echo "$output" | grep -q '"healthy": *true'
@@ -37,6 +38,7 @@ setup() {
 }
 
 @test "AC22: security mode permission rules applied" {
+    skip_if_no_secrets
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
@@ -51,16 +53,22 @@ setup() {
     if [ "$expected" -eq 0 ]; then
         local has_permission
         has_permission=$(docker exec "$cid" python3 -c "
-import json
-c = json.load(open('/home/hermeswebui/.config/opencode/opencode.jsonc'))
+import json, re, sys
+text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
+text = re.sub(r'//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
 print(c.get('permission', ''))
 " 2>/dev/null)
         [ "$has_permission" = "allow" ]
     else
         local count
         count=$(docker exec "$cid" python3 -c "
-import json
-c = json.load(open('/home/hermeswebui/.config/opencode/opencode.jsonc'))
+import json, re, sys
+text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
+text = re.sub(r'//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
 print(len(c.get('permission', {}).get('bash', {})))
 " 2>/dev/null)
         [ "$count" -ge "$expected" ]
