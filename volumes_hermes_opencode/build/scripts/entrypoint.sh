@@ -179,20 +179,58 @@ generate_opencode_config() {
     mkdir -p "$(dirname "$OPENCODE_CONFIG")"
 
     local default_model="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
+    local small_model="${OPENAI_SMALL_MODEL:-$default_model}"
     local base_url="${OPENAI_BASE_URL%/}"
 
-    local models_json=""
-    local first=true
-    while IFS= read -r model_id; do
-        [ -z "$model_id" ] && continue
-        if [ "$first" = true ]; then
-            first=false
-        else
-            models_json="${models_json},"
-        fi
-        models_json="${models_json}
-        \"${model_id}\": {}"
-    done <<< "$DISCOVERED_MODELS"
+    local models_json
+    models_json=$(echo "$DISCOVERED_MODELS" | python3 -c "
+import sys, re, json
+
+def get_limits(model_id):
+    name = model_id.lower()
+    bare = name.split('/', 1)[-1] if '/' in name else name
+
+    if any(p in name for p in ['openrouter/', 'vertex_ai/', 'cli-proxy-api/']):
+        name = bare
+
+    if 'gpt-4.1' in name:
+        return 1048576, 32768
+    if 'gpt-4o' in name:
+        return 128000, 16384
+    if 'gpt-4-turbo' in name:
+        return 128000, 4096
+    if re.search(r'gpt-4[\.-]', name) or name.endswith('gpt-4'):
+        return 8192, 4096
+    if 'gpt-3.5' in name:
+        return 16384, 4096
+    if 'gpt-5' in name:
+        return 128000, 16384
+    if re.search(r'/o[134]', name) or re.search(r'-o[134]', name):
+        return 200000, 100000
+    if re.search(r'claude-[34]', name):
+        if re.search(r'claude-3\.7|claude-[45]', name):
+            return 200000, 16384
+        return 200000, 4096
+    if 'deepseek' in name:
+        return 128000, 8192
+    if 'glm' in name:
+        return 128000, 8192
+    if 'llama_cpp' in model_id:
+        return 32768, 4096
+    if 'gemini' in name:
+        return 1048576, 65536
+    return 128000, 8192
+
+entries = []
+for line in sys.stdin:
+    mid = line.strip()
+    if not mid:
+        continue
+    ctx, out = get_limits(mid)
+    entries.append(f'        \"{mid}\": {{\"limit\": {{\"context\": {ctx}, \"output\": {out}}}}}')
+
+print(','.join(entries))
+" 2>/dev/null)
 
     local security_mode="${OPENCODE_SECURITY_MODE:-strict}"
     local permission_block
@@ -362,7 +400,8 @@ ${permission_block}
       }
     }
   },
-  "model": "litellm/${default_model}"
+  "model": "litellm/${default_model}",
+  "small_model": "litellm/${small_model}"
 }
 JSONEOF
 
