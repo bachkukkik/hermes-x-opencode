@@ -55,7 +55,7 @@ setup() {
         has_permission=$(docker exec "$cid" python3 -c "
 import json, re, sys
 text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
-text = re.sub(r'//.*?\n', '\n', text)
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
 text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
 c = json.loads(text)
 print(c.get('permission', ''))
@@ -66,7 +66,7 @@ print(c.get('permission', ''))
         count=$(docker exec "$cid" python3 -c "
 import json, re, sys
 text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
-text = re.sub(r'//.*?\n', '\n', text)
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
 text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
 c = json.loads(text)
 print(len(c.get('permission', {}).get('bash', {})))
