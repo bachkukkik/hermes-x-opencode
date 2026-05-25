@@ -2,27 +2,66 @@
 
 ## What
 
-The `install-skills.sh` script installs curated skills from six upstream sources into both the OpenCode and Hermes skill directories during container startup, before model discovery and service launch.
+The `install-skills.sh` script installs curated skills from six upstream sources into both the OpenCode and Hermes skill directories. It runs at Docker **build time** (via the Dockerfile), with a fast runtime staging copy for Hermes skills at container startup.
 
 ## Why
 
-- Eliminates manual skill management — both agent platforms receive relevant skills automatically on every boot
+- Eliminates network fetches at container startup — all git clones and pip installs happen once during `docker compose build`
+- Both agent platforms receive relevant skills automatically without manual management
 - Draws from multiple ecosystems (Anthropic, OpenAI, community repos, PyPI) to cover coding, product management, documentation, and codebase analysis
 - Cross-platform SKILL.md format is compatible with both OpenCode (flat discovery) and Hermes (recursive discovery) without modification
-- Opt-out via `SKIP_SKILL_INSTALL=1` allows faster boot when skills are not needed
 
 ## How
 
-The script is located at `volumes_hermes_opencode/build/scripts/install-skills.sh`, copied to `/usr/local/bin/install-skills.sh` during the Docker build (`04 — Build Pipeline`), and called by the entrypoint (`05 — Entrypoint Sequence`) before model discovery.
+The script is located at `volumes_hermes_opencode/build/scripts/install-skills.sh`, copied to `/usr/local/bin/install-skills.sh` during the Docker build (`04 — Build Pipeline`).
 
-### Execution context
+### Two-phase architecture
 
-| Parameter | Value | Notes |
-|-----------|-------|-------|
-| `OPENCODE_SKILLS_DIR` | `/home/hermeswebui/.config/opencode/skills` | Ephemeral — no volume mount, recreated each boot. Owned by hermeswebui. |
-| `HERMES_SKILLS_DIR` | `/home/hermeswebui/.hermes/skills` | Persisted via bind mount (`07 — Volume Layout`) |
-| `SKIP_SKILL_INSTALL` | `0` (default) | Set `1` in `.env` to skip the entire script |
-| `TMPDIR` | `mktemp -d` | Cleaned up on exit via trap |
+Skills are installed in two phases:
+
+| Phase | When | What | Duration |
+|-------|------|------|----------|
+| Build | `docker compose build` | Full `install-skills.sh` execution: git clones, pip installs, graphify registration for OpenCode | ~60s |
+| Runtime | `docker compose up` | `cp -a /opt/hermes-skills-staging/ → ~/.hermes/skills/` + graphify hermes registration | <1s |
+
+### Build phase
+
+The Dockerfile runs `install-skills.sh` with environment overrides:
+
+```dockerfile
+RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging \
+    SKIP_HERMES_REGISTRATION=1 \
+    OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills \
+    install-skills.sh
+```
+
+| Override | Purpose |
+|----------|---------|
+| `HERMES_SKILLS_DIR=/opt/hermes-skills-staging` | Stage to a non-volume-mounted path (the runtime `~/.hermes` is overwritten by bind mount) |
+| `SKIP_HERMES_REGISTRATION=1` | Skip `graphify install --platform hermes` (hermes home dir is not available during build) |
+| `OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills` | Install to final location (no volume mount, persists in image) |
+
+### Runtime phase
+
+The entrypoint (`05 — Entrypoint Sequence`) copies staged Hermes skills and registers graphify:
+
+```bash
+if [ "${SKIP_SKILL_INSTALL:-0}" != "1" ]; then
+    mkdir -p "$HERMES_SKILLS_DIR"
+    cp -a /opt/hermes-skills-staging/. "$HERMES_SKILLS_DIR/" 2>/dev/null || true
+    graphify install --platform hermes 2>/dev/null || true
+fi
+```
+
+This copy is near-instant because the data is already in the image layer.
+
+### Skill directories
+
+| Directory | Contents | Persisted via | Installed at |
+|-----------|----------|---------------|-------------|
+| `/home/hermeswebui/.config/opencode/skills` | 12 OpenCode skills | Image layer (no volume mount) | Build time |
+| `/opt/hermes-skills-staging` | ~66 Hermes skills | Image layer (staging) | Build time |
+| `/home/hermeswebui/.hermes/skills` | ~66 Hermes skills (runtime copy) | Bind mount (`07 — Volume Layout`) | Runtime `cp -a` |
 
 ### Skill sources
 
@@ -51,7 +90,7 @@ ANTHROPIC_SKILLS=(
 clone_sparse "$ANTHROPIC_REPO" "$ANTHROPIC_TMP" "${ANTHROPIC_SKILLS[@]}"
 ```
 
-Each skill directory is copied to `$OPENCODE_SKILLS_DIR/<name>/` with its `.git` directory removed. SKILL.md frontmatter contains `name`, `description`, and `license` fields.
+Each skill directory is copied to `$OPENCODE_SKILLS_DIR/<name>/` with its `.git` directory removed.
 
 ### Source 2: openai/skills
 
@@ -78,29 +117,29 @@ Installs to both platforms:
 
 | Platform | Path |
 |----------|------|
-| OpenCode | `/home/hermeswebui/.config/opencode/skills/opencode-plan-build-orchestrator/` |
-| Hermes | `/home/hermeswebui/.hermes/skills/autonomous-ai-agents/opencode-plan-build-orchestrator/` |
+| OpenCode | `$OPENCODE_SKILLS_DIR/opencode-plan-build-orchestrator/` |
+| Hermes | `$HERMES_SKILLS_DIR/autonomous-ai-agents/opencode-plan-build-orchestrator/` |
 
-The `references/` directory (containing `plan-build-patterns.md` and `opencode-cli-reference.md`) is copied alongside `SKILL.md` because the skill references these files with relative links.
+The `references/` directory is copied alongside `SKILL.md` because the skill references these files with relative links.
 
 ### Source 5: phuryn/pm-skills
 
 Iterates all `pm-*/skills/*/` directories from the cloned repo and copies each into `$HERMES_SKILLS_DIR/product-management/<name>/`. After copy:
 
-1. **DESCRIPTION.md creation** — Writes a category description file at `product-management/DESCRIPTION.md` with YAML frontmatter, matching the Hermes bundled skill format.
-2. **Description shortening** — Iterates all installed `product-management/*/SKILL.md` files. If the `description:` value exceeds 60 characters, truncates to 57 characters + `...` using sed. This satisfies the Hermes style guideline.
+1. **DESCRIPTION.md creation** — Writes a category description file at `product-management/DESCRIPTION.md` with YAML frontmatter
+2. **Description shortening** — Truncates `description:` values exceeding 60 chars to 57 chars + `...` via sed
 
 ### Source 6: graphify
 
-Installs the `graphifyy` Python package via `uv tool install`, then registers the skill for each platform:
+Installs the `graphifyy` Python package via `uv tool install`, then registers for each platform:
 
 ```bash
 timeout 120 uv tool install graphifyy || timeout 120 uv tool upgrade graphifyy || true
-graphify install --platform opencode
-graphify install --platform hermes
+graphify install --platform opencode   # build time
+graphify install --platform hermes     # runtime only (SKIP_HERMES_REGISTRATION guards build)
 ```
 
-The `uv tool install/upgrade` commands are wrapped with `timeout 120` to prevent the entrypoint from hanging on network issues. Both commands pipe stderr to stdout (not `/dev/null`) so download progress and errors are visible in container logs. If `uv` is not available or `graphify` fails, the script continues with a warning.
+The `uv tool install/upgrade` commands are wrapped with `timeout 120` to prevent the build from hanging on network issues.
 
 ### Sparse clone helper
 
@@ -115,72 +154,41 @@ git checkout HEAD
 
 ### Platform skill discovery
 
-The two agent platforms discover skills differently:
-
 | Platform | Discovery mechanism | Depth | Key file |
 |----------|---------------------|-------|----------|
 | OpenCode | `skills/*/SKILL.md` | 1 level (flat) | Configured in OpenCode binary |
 | Hermes | `os.walk` recursive scan | Unlimited | `hermes-agent/agent/skill_utils.py` (`iter_skill_index_files`) |
 
-Hermes also scans for `DESCRIPTION.md` files at category level to generate the skill category banner in the system prompt. The install script creates `product-management/DESCRIPTION.md` to provide this description.
+### Skip mechanisms
 
-### SKILL.md frontmatter compatibility
-
-Both platforms parse YAML frontmatter leniently — unknown fields are silently ignored.
-
-| Frontmatter field | OpenCode | Hermes | Notes |
-|-------------------|----------|--------|-------|
-| `name` | Required | Falls back to directory name | 1–64 chars, `^[a-z0-9]+(-[a-z0-9]+)*$` |
-| `description` | Required | Falls back to first body line | Max 1024 chars |
-| `license` | Recognized | Recognized | Optional |
-| `compatibility` | Recognized | Ignored | Optional |
-| `metadata` | Recognized (string map) | Checks `metadata.hermes.*` | Optional |
-| `platforms` | Ignored | OS gate (`[linux, macos, windows]`) | Optional |
-| `version`, `author` | Ignored | Recognized | Optional |
-
-### Skip mechanism
-
-The entrypoint gates the script call with `SKIP_SKILL_INSTALL`:
-
-```bash
-if [ "${SKIP_SKILL_INSTALL:-0}" != "1" ]; then
-    export OPENCODE_SKILLS_DIR
-    mkdir -p "$OPENCODE_SKILLS_DIR"
-    install-skills.sh
-fi
-```
-
-Set `SKIP_SKILL_INSTALL=1` in `.env` to skip. This is documented in `.env.example` and passed through `docker-compose.yml` (`06 — Config and Env`).
+| Variable | Scope | Default | Effect |
+|----------|-------|---------|--------|
+| `SKIP_SKILL_INSTALL=1` | Runtime only | `0` | Skips the `cp -a` staging copy and graphify hermes registration |
+| `SKIP_HERMES_REGISTRATION=1` | Build time | `0` | Skips `graphify install --platform hermes` during build |
 
 ### Verification section
 
-The script ends with a verification pass that checks for `SKILL.md` in every installed directory. It counts total skills for both platforms and exits with code 1 if any OpenCode skill is missing its `SKILL.md`.
-
-```bash
-for dir in "$OPENCODE_SKILLS_DIR"/*/; do
-    [ -f "$dir/SKILL.md" ] || errors=$((errors + 1))
-done
-find "$HERMES_SKILLS_DIR" -name "SKILL.md" -print0
-```
+The script ends with a verification pass that checks for `SKILL.md` in every installed directory and exits with code 1 if any OpenCode skill is missing its `SKILL.md`.
 
 ### Timing impact
 
-| Boot type | Skill install adds | Primary cost |
-|-----------|-------------------|--------------|
-| First boot | 15–45s | Six git clones (sparse/shallow) + graphify pip install |
-| Subsequent | 15–45s | Hermes skills are cached in bind mount, but OpenCode skills are ephemeral (always reinstalled) |
+| Phase | Duration | Primary cost |
+|-------|----------|-------------|
+| Build (one-time) | ~60s | Six git clones + graphify pip install |
+| Runtime (every boot) | <1s | `cp -a` from staging + graphify hermes registration |
 
 ## Verification
 
 ```bash
-docker logs <container> 2>&1 | grep -E "(=== |  Copied|  Total:|graphify|SKILL\.MD)"
+docker compose build 2>&1 | grep -E "(=== |  Copied|  Total:|All skills)"
 docker exec <container> find /home/hermeswebui/.config/opencode/skills -name "SKILL.md" | wc -l
 docker exec <container> find /home/hermeswebui/.hermes/skills -name "SKILL.md" | wc -l
 docker exec <container> ls /home/hermeswebui/.hermes/skills/product-management/DESCRIPTION.md
-docker exec <container> stat -c "%U:%G" /home/hermeswebui/.config/opencode/skills
+docker run --rm --entrypoint bash hermes_x_opencode-hermes-opencode:latest -c \
+  'find /opt/hermes-skills-staging -name "SKILL.md" | wc -l'
 ```
 
-Expected output in container logs:
+Expected build output:
 ```
 === anthropics/skills (6 opencode skills) ===
 === openai/skills (4 opencode skills) ===
@@ -188,43 +196,40 @@ Expected output in container logs:
 === opencode-plan-build-orchestrator (opencode + hermes) ===
 === phuryn/pm-skills (hermes product-management skills) ===
   Copied 55 skills into product-management/
-  Shortened 42 descriptions to <=60 chars
 === graphify ===
   graphify installed and registered.
 === Verification ===
   Total: 12 skills
-  Total: 56 skills
+  Total: 66 skills
 All skills installed successfully.
 ```
 
 ## What Works
 
-- All six upstream sources install correctly from their respective clone or pip methods
+- All six upstream sources install correctly from their respective clone or pip methods at build time
 - Sparse checkout avoids downloading entire repositories for `anthropics/skills` and `openai/skills`
 - Both platforms discover their installed skills using their native discovery mechanisms
-- Cross-platform SKILL.md frontmatter (from `opencode-plan-build-orchestrator`) is parsed without errors by both platforms
-- `DESCRIPTION.md` generation enables the Hermes category banner for `product-management/`
-- Description shortening keeps the Hermes system prompt skill listing within the 60-char style guideline
-- graphify graceful degradation — install timeout or missing `uv` produces a warning, not an error; all other services start normally
-- `SKIP_SKILL_INSTALL=1` provides a clean opt-out for faster boot
-- Verification section catches missing `SKILL.md` files and exits with code 1
+- Runtime startup is fast — only a `cp -a` from staging (<1s) instead of git clones (15–45s)
+- OpenCode skills persist in the image layer across container restarts (no volume mount)
+- Hermes skills are staged at build time and copied to the bind mount at runtime
+- `SKIP_SKILL_INSTALL=1` provides a clean opt-out for the runtime staging copy
+- Build-time verification catches missing `SKILL.md` files and fails the build (exit 1)
+- Cross-platform SKILL.md frontmatter is parsed without errors by both platforms
 
 ## What Fails
 
-- **OpenCode skills are ephemeral:** The `/home/hermeswebui/.config/opencode/skills/` directory has no volume mount. Skills are reinstalled from scratch on every boot, adding 15–45 seconds to startup.
-- **graphify install can be slow:** The `uv tool install graphifyy` step downloads ~50MB of Python packages (numpy, scipy, networkx). On slow or contested networks, the 120-second timeout may fire, leaving graphify unregistered. The script continues and all other services start normally.
-- **pm-skills descriptions lose fidelity:** The 60-char truncation shortens descriptive skill names to approximate summaries. The full description is discarded.
-- **Git clone failures are fatal:** If any upstream repository is unreachable, the script exits due to `set -e`. The container does not start.
-- **No offline mode:** All skill sources require network access. There is no cache or fallback for previously downloaded skills.
+- **Build requires network access:** All skill sources (6 git repos + 1 PyPI package) must be reachable during `docker compose build`. If any is unavailable, the build fails.
+- **graphify install can be slow:** The `uv tool install graphifyy` step downloads ~50MB of Python packages. On slow networks, the 120-second timeout may fire, leaving graphify unregistered. The build continues and the warning is visible in build output.
+- **pm-skills descriptions lose fidelity:** The 60-char truncation shortens descriptive skill names to approximate summaries.
+- **Staging directories consume image space:** `/opt/hermes-skills-staging` (~10MB) and `/opt/hermes-agent-staging` (~50MB) remain in the image after content is copied to bind mounts.
 
 ## Resolution
 
-- OpenCode skills ephemerality is acceptable — the install adds 15–45s but guarantees the latest versions from upstream. To persist, add a volume mount for `/home/hermeswebui/.config/opencode/skills/` in `docker-compose.yml`.
-- The 120-second timeout is generous for most networks. If graphify consistently times out, increase the value in `install-skills.sh` or set `SKIP_SKILL_INSTALL=1` to skip the graphify section entirely.
-- Description truncation preserves the most important content (first 57 chars). The original descriptions are available in the phuryn/pm-skills repository. To keep full descriptions, remove the shortening loop from `install-skills.sh`.
-- Wrap individual clone blocks with `|| eprintf "WARNING: ..."` to make git failures non-fatal if resilient startup is preferred over guaranteed skill availability.
-- For air-gapped environments, pre-download skill directories into `build/data/opencode-skills/` and `build/data/hermes-skills/` and copy from local paths instead of git clone.
+- Build-time network dependency is inherent to the approach. For air-gapped environments, pre-download skill directories into `build/data/` and modify `install-skills.sh` to copy from local paths instead of git clone.
+- The 120-second graphify timeout is generous for most networks. If graphify consistently times out, increase the value in `install-skills.sh`.
+- Description truncation preserves the most important content (first 57 chars). To keep full descriptions, remove the shortening loop from `install-skills.sh`.
+- The staging directory overhead (~60MB total) is acceptable. To reclaim space, use a multi-stage build.
 
 ## Verdict
 
-The skill installation system provides comprehensive coverage across coding, documentation, product management, and codebase analysis domains for both agent platforms. The ephemeral OpenCode install and network dependency are the main operational constraints, both with straightforward mitigations.
+The two-phase skill installation architecture eliminates runtime network dependency and reduces container startup from 15–45s to under 1s for skill setup. The build-time cost (~60s) is paid once per image rebuild. The main constraint is build-time network access to six upstream repositories.

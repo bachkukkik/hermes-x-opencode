@@ -33,7 +33,7 @@ The project uses a `volumes_hermes_opencode/` directory to separate build artifa
     │   │   ├── config.yaml             # Generated at runtime
     │   │   ├── hermes-agent/           # Copied from staging on first boot
     │   │   ├── state.db                # Session history (SQLite)
-    │   │   ├── skills/
+    │   │   ├── skills/               # Populated from /opt/hermes-skills-staging at runtime
     │   │   ├── logs/
     │   │   ├── webui/
     │   │   └── ...
@@ -54,6 +54,12 @@ The project uses a `volumes_hermes_opencode/` directory to separate build artifa
 ### First-start agent copy
 
 The bind mount at `/home/hermeswebui/.hermes` starts empty on first boot. The entrypoint's `ensure_agent()` function copies the hermes-agent from `/opt/hermes-agent-staging` (baked into the image) to the bind mount. Subsequent boots detect the agent and skip the copy.
+
+### Hermes skills staging copy
+
+Similarly, Hermes skills are baked into the image at `/opt/hermes-skills-staging` during the Docker build (`04 — Build Pipeline`). At every boot, the entrypoint copies from staging to the bind mount path (`/home/hermeswebui/.hermes/skills/`). This runs on every boot (not just first) because the bind mount may have been modified or cleared between boots.
+
+OpenCode skills in `/home/hermeswebui/.config/opencode/skills` have no volume mount and persist directly in the image layer.
 
 ### .gitignore (volumes_hermes_opencode/)
 
@@ -111,6 +117,8 @@ docker exec <container> ls /workspace/
 - Bind mounts make all persistent data visible on the host for backup
 - `.gitignore` correctly excludes runtime data while preserving directory structure via `.gitkeep`
 - Agent source persists across container rebuilds (stored in the bind mount, not the image layer)
+- Hermes skills are populated automatically from the image's staging directory on every boot
+- OpenCode skills persist in the image layer without requiring a volume mount
 - Directory structure is created by `git clone` — no manual setup required
 
 ## What Fails

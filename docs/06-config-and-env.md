@@ -32,6 +32,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `HOST_UID` | No | `1000` | Linux UID for container file processes. Match your host user UID. |
 | `HOST_GID` | No | `1000` | Linux GID for container file processes. Match your host group GID. |
 | `HERMES_WORKSPACE` | No | `./volumes_hermes_opencode/data/workspace` | Host path for the workspace volume mount. |
+| `SKIP_SKILL_INSTALL` | No | `0` | Set `1` to skip the runtime Hermes skills staging copy and graphify hermes registration. Does not affect build-time skill installation. |
 
 ### Hardcoded environment (in docker-compose.yml)
 

@@ -191,6 +191,11 @@ echo "=== Done ==="
 | AC18 | No wildcard models | `docker exec $C grep -c '/\*' /home/hermeswebui/.hermes/config.yaml` returns 0 |
 | AC19 | Onboarding skipped | `curl $BASE/api/onboarding/status` returns `completed: true` |
 | AC20 | OpenCode config valid | `docker exec $C python3 -m json.tool /home/hermeswebui/.config/opencode/opencode.jsonc` succeeds |
+| AC21 | OpenCode skills installed | `docker exec $C find /home/hermeswebui/.config/opencode/skills -name "SKILL.md" \| wc -l` returns >0 |
+| AC22 | Security mode applied | `docker exec $C grep -c '"deny"' /home/hermeswebui/.config/opencode/opencode.jsonc` matches mode (strict=31, standard=22) |
+| AC23 | OpenCode serve healthy | `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` returns `{"healthy":true}` |
+| AC24 | Hermes skills present | `docker exec $C find /home/hermeswebui/.hermes/skills -name "SKILL.md" \| wc -l` returns >0 |
+| AC25 | Skills in Docker image | `docker run --rm --entrypoint bash $IMAGE -c 'find /opt/hermes-skills-staging -name "SKILL.md" \| wc -l'` returns >0 |
 
 ## Verification
 
@@ -198,29 +203,30 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## What Works
 
-- All acceptance criteria pass on a fresh build on ARM64
+- All 22 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`)
 - Health endpoints respond within 50ms for WebUI and Gateway
 - Gateway chat returns valid OpenAI-format responses with correct `usage` stats
 - Session creation, chat, streaming, and cleanup work through the WebUI API
-- OpenCode serve returns HTTP 200 at the root URL
+- OpenCode serve reports healthy via `/global/health` endpoint
 - Model discovery produces ~297 chat models with no wildcard patterns
 - Both Hermes and OpenCode configs contain the same model list
 - Onboarding is skipped and reported as completed
+- Skills are verified at build time (AC25: staging dir populated) and runtime (AC21: OpenCode skills, AC24: Hermes skills)
 
 ## What Fails
 
 - **Smoke test script requires manual API key extraction:** The API key must be read from container logs before testing the Gateway. The script automates this, but it requires `docker logs` access.
 - **SSE stream test is time-bounded:** The `timeout 30` on the SSE stream may cut off long-running agent responses. This is intentional for smoke testing but not suitable for latency measurements.
-- **No automated test runner:** The smoke test is a shell script that must be run manually. There is no CI integration.
+- **AC23 tests health only, not LLM call:** The OpenCode serve health endpoint (`/global/health`) verifies the process is running but does not confirm LLM connectivity. `opencode run` requires API quota and is not suitable for automated testing.
 - **Cosmetic has_key: false:** `/api/providers` reports `has_key: false` for `custom:litellm` and `models_total: 0`. This is a display-only issue; chat works correctly.
 
 ## Resolution
 
 - The smoke test script extracts the API key automatically from container logs. If `HERMES_API_KEY` is explicitly set in `.env`, the script falls back to that value.
 - Increase the `timeout` value for longer agent responses, or remove it for interactive testing.
-- Integrate the smoke test into a CI pipeline by adding it as a GitHub Actions workflow step. Not currently implemented.
+- AC23's health-only check is acceptable for CI. For manual LLM verification, use the full smoke test script's Gateway chat step (step 10) which tests end-to-end LLM connectivity via the Hermes gateway.
 - The `has_key: false` issue is upstream in the Hermes WebUI. The `key_env: OPENAI_API_KEY` field is correctly resolved at request time. No fix needed for functionality.
 
 ## Verdict
 
-The testing coverage is comprehensive for manual verification. All acceptance criteria are testable with curl and docker exec, including model discovery, wildcard filtering, and OpenCode config validation. The main gap is the lack of automated CI integration, which is deferred pending repository setup.
+The testing coverage is comprehensive. All 22 acceptance criteria are automated in the bats test suite (`tests/run.sh`), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), and OpenCode serve health (AC23). The main gap is AC23 testing only the health endpoint rather than a full LLM call through OpenCode serve.
