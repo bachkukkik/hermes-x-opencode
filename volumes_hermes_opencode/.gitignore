@@ -1,0 +1,5 @@
+data/hermes-home/*
+!data/hermes-home/.gitkeep
+
+data/workspace/*
+!data/workspace/.gitkeep
