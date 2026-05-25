@@ -24,15 +24,16 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
 | `OPENCODE_USER` | `hermeswebui` | Non-root user for opencode serve and gateway |
 | `OPENCODE_USER_HOME` | `/home/hermeswebui` | Home directory of the run user |
 | `OPENCODE_CONFIG` | `/home/hermeswebui/.config/opencode/opencode.jsonc` | Generated config path |
-| `OPENCODE_SKILLS_DIR` | `/home/hermeswebui/.config/opencode/skills` | Skills install target |
+| `OPENCODE_SKILLS_DIR` | `/home/hermeswebui/.config/opencode/skills` | OpenCode skills (baked into image at build time) |
 | `HERMES_HOME` | `/home/hermeswebui/.hermes` | Hermes state directory |
+| `HERMES_SKILLS_DIR` | `/home/hermeswebui/.hermes/skills` | Hermes skills runtime target (populated from staging) |
 
 ### Execution sequence
 
 ```
  1. set -euo pipefail
  2. export HERMES_HOME, OPENCODE_USER, OPENCODE_USER_HOME, OPENCODE_CONFIG, OPENCODE_SKILLS_DIR
- 3. install-skills.sh           — installs skills to OPENCODE_SKILLS_DIR, chowns to hermeswebui
+ 3. staging copy                 — copies /opt/hermes-skills-staging → ~/.hermes/skills/, registers graphify for hermes
  4. discover_models()           — curls OPENAI_BASE_URL/models, filters non-chat models and wildcards
  5. generate_config()           — writes config.yaml with multi-model models dict (if OPENAI_BASE_URL is set)
  6. generate_opencode_config()  — writes opencode.jsonc with plugins, permissions, discovered models; chowns to hermeswebui
@@ -93,10 +94,10 @@ After writing, the function runs `chown -R hermeswebui:hermeswebui` on the confi
 
 ### Timing
 
-| Boot type | Discovery | WebUI ready | Gateway ready | OpenCode ready | Total |
-|-----------|-----------|-------------|---------------|----------------|-------|
-| First boot | +5–15s | 60–120s (Python deps) | +10–20s | +5s | 80–160s |
-| Subsequent | +5–15s | 10–20s (cached deps) | +5–10s | +5s | 25–50s |
+| Boot type | Skills | Discovery | WebUI ready | Gateway ready | OpenCode ready | Total |
+|-----------|--------|-----------|-------------|---------------|----------------|-------|
+| First boot | <1s (cp -a staging) | +5–15s | 60–120s (Python deps) | +10–20s | +5s | 80–160s |
+| Subsequent | <1s (cp -a staging) | +5–15s | 10–20s (cached deps) | +5–10s | +5s | 25–50s |
 
 ## Verification
 
@@ -107,6 +108,8 @@ docker logs <container> 2>&1 | grep -E "(Discovering|Discovered|Wrote config|Wro
 
 Expected output lines in order:
 ```
+== Copying staged hermes skills...
+== Registering graphify for hermes...
 == Discovering models from https://litellm-sw.bachkukkik.com/v1 ...
 == Discovered 297 chat models.
 == Wrote config.yaml with 297 models.

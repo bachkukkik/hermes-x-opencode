@@ -5,6 +5,7 @@ export HERMES_HOME="/home/hermeswebui/.hermes"
 CONFIG="/home/hermeswebui/.hermes/config.yaml"
 AGENT_DIR="/home/hermeswebui/.hermes/hermes-agent"
 STAGING_DIR="/opt/hermes-agent-staging"
+HERMES_SKILLS_DIR="/home/hermeswebui/.hermes/skills"
 OPENCODE_USER="hermeswebui"
 OPENCODE_USER_HOME="/home/${OPENCODE_USER}"
 OPENCODE_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/opencode.jsonc"
@@ -412,12 +413,15 @@ start_opencode_serve() {
 }
 
 if [ "${SKIP_SKILL_INSTALL:-0}" != "1" ]; then
-    echo "== Installing skills..."
-    export OPENCODE_SKILLS_DIR
-    mkdir -p "$OPENCODE_SKILLS_DIR"
-    install-skills.sh
+    echo "== Copying staged hermes skills..."
+    mkdir -p "$HERMES_SKILLS_DIR"
+    cp -a /opt/hermes-skills-staging/. "$HERMES_SKILLS_DIR/" 2>/dev/null || true
+    if command -v graphify >/dev/null 2>&1; then
+        echo "== Registering graphify for hermes..."
+        graphify install --platform hermes 2>/dev/null || true
+    fi
 else
-    echo "== Skipping skill install (SKIP_SKILL_INSTALL=1)"
+    echo "== Skipping skill staging copy (SKIP_SKILL_INSTALL=1)"
 fi
 
 discover_models
@@ -435,6 +439,8 @@ start_gateway
 wait_for_port 8642 60
 
 start_opencode_serve
+
+wait_for_port 4096 30
 
 echo "== All services running. Waiting..."
 wait -n

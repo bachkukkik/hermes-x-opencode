@@ -32,6 +32,11 @@ COPY scripts/install-skills.sh /usr/local/bin/install-skills.sh
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh
 
+RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging \
+    SKIP_HERMES_REGISTRATION=1 \
+    OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills \
+    install-skills.sh
+
 RUN echo "=== Hermes x OpenCode Stack ===" \
     && python3 -c "import sys; print(f'Python: {sys.version}')" \
     && opencode --version \

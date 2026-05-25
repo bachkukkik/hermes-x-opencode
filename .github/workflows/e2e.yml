@@ -1,0 +1,49 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install bats
+        run: sudo apt-get update && sudo apt-get install -y bats
+
+      - name: Create .env from secrets
+        run: |
+          cat > .env << EOF
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}
+          OPENAI_DEFAULT_MODEL=${{ secrets.OPENAI_DEFAULT_MODEL }}
+          OPENCODE_API_KEY=${{ secrets.OPENCODE_API_KEY }}
+          HERMES_WEBUI_SKIP_ONBOARDING=true
+          HERMES_WEBUI_PASSWORD=
+          HERMES_API_KEY=
+          OPENCODE_SECURITY_MODE=strict
+          SKIP_SKILL_INSTALL=0
+          EOF
+
+      - name: Run e2e tests
+        run: bash tests/run.sh
+        env:
+          SKIP_BUILD: "0"
+          SKIP_CLEANUP: "0"
+
+      - name: Collect logs on failure
+        if: failure()
+        run: |
+          echo "=== Docker Compose Logs ==="
+          docker compose logs --tail=100 2>/dev/null || true
+          echo "=== Container Inspect ==="
+          cid=$(docker compose ps -q hermes-opencode 2>/dev/null || true)
+          if [ -n "$cid" ]; then
+            docker inspect "$cid" 2>/dev/null || true
+          fi
