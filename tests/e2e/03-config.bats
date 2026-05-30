@@ -182,7 +182,7 @@ print('OK')
     [ "$result" = "OK" ]
 }
 
-@test "opencode.jsonc llama_cpp models have 32k context" {
+@test "opencode.jsonc llama_cpp models have 200k context" {
     skip_if_no_secrets
     local cid
     cid=$(get_container)
@@ -203,10 +203,10 @@ bad = []
 for mid, val in llama_models.items():
     ctx = val.get('limit', {}).get('context', 0)
     out = val.get('limit', {}).get('output', 0)
-    if ctx != 32768:
-        bad.append('{}:context={}'.format(mid, ctx))
-    if out != 4096:
-        bad.append('{}:output={}'.format(mid, out))
+    if ctx < 200000:
+        bad.append('{}:context={} (expected >=200000)'.format(mid, ctx))
+    if out < 32768:
+        bad.append('{}:output={} (expected >=32768)'.format(mid, out))
 if bad:
     print('FAIL: ' + ','.join(bad))
     sys.exit(1)
