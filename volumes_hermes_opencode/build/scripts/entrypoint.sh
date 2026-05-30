@@ -11,8 +11,6 @@ OPENCODE_USER_HOME="/home/${OPENCODE_USER}"
 OPENCODE_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/opencode.jsonc"
 OPENCODE_SKILLS_DIR="${OPENCODE_USER_HOME}/.config/opencode/skills"
 
-_SKIP_MODEL_PATTERNS="embed whisper tts dall-e sora image realtime transcrib moderat audio codegen babbage davinci curie ^ada$ text- stable midjourney flux /sd/ mj replicate dall-e cli-proxy-api"
-
 ensure_agent() {
     if [ -f "$AGENT_DIR/pyproject.toml" ]; then
         echo "== Agent already present at $AGENT_DIR"
