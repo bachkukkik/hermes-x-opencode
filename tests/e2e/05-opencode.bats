@@ -37,6 +37,31 @@ setup() {
     [ "$count" -gt 0 ]
 }
 
+@test "opencode plugins are configured in jsonc" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local plugin_count
+    plugin_count=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+c = json.loads(text)
+print(len(c.get('plugin', [])))
+" 2>/dev/null)
+    [ "$plugin_count" -ge 1 ]
+}
+
+@test "Node.js 22 is available" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" node --version
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -q '^v22'
+}
+
 @test "AC22: security mode permission rules applied" {
     skip_if_no_secrets
     local cid

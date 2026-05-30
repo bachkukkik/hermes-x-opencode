@@ -18,3 +18,11 @@ setup() {
     run curl -sf --max-time 3 "$(opencode_base)/"
     [ "$status" -eq 0 ]
 }
+
+@test "healthcheck.sh exits 0 when all services are healthy" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash /usr/local/bin/healthcheck.sh
+    [ "$status" -eq 0 ]
+}

@@ -191,3 +191,91 @@ print(len(c.get('permission', {}).get('bash', {})))
         [ "$output" -ge "$expected_entries" ]
     fi
 }
+
+@test "D1.4: model discovery filter excludes known non-chat patterns from config" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" python3 -c "
+import sys, re
+skip_patterns = [
+    'embed', 'whisper', 'tts', 'dall-e', 'sora', 'image',
+    'realtime', 'transcrib', 'moderat', 'audio', 'codegen',
+    'babbage', 'davinci', 'curie', 'ada', 'text-', 'stable',
+    'midjourney', 'flux', '/sd/', 'mj', 'replicate',
+    'resolution', 'cli-proxy-api',
+]
+skip_re = [re.compile(p, re.IGNORECASE) for p in skip_patterns]
+found = []
+with open('/home/hermeswebui/.hermes/config.yaml') as f:
+    for line in f:
+        line = line.strip()
+        if line and any(p.search(line) for p in skip_re):
+            found.append(line)
+if found:
+    print('FAIL: ' + ','.join(found[:5]))
+    sys.exit(1)
+print('OK')
+"
+    [ "$output" = "OK" ]
+}
+
+@test "D6.2: opencode.jsonc permission block structurally valid for all modes" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local result
+    result=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+c = json.loads(text)
+perm = c.get('permission', {})
+if perm == 'allow':
+    print('allow')
+    sys.exit(0)
+bash_rules = perm.get('bash', {})
+if isinstance(bash_rules, dict):
+    print('rules:' + str(len(bash_rules)))
+else:
+    print('rules:' + str(bash_rules))
+" 2>/dev/null)
+    [[ "$result" == "allow" || "$result" == rules:* ]]
+    if [[ "$result" == rules:* ]]; then
+        local count="${result#rules:}"
+        [ "$count" -ge 22 ]
+    fi
+}
+
+@test "D7.1: gateway and opencode serve run as non-root user" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local gateway_user opencode_user
+    gateway_user=$(docker exec "$cid" bash -c 'ps -eo user:20,args | grep -E "hermes gateway|/hermes gateway" | grep -v grep | grep -v "su " | head -1 | awk "{print \$1}"' 2>/dev/null || echo "")
+    opencode_user=$(docker exec "$cid" bash -c 'ps -eo user:20,args | grep "opencode serve" | grep -v grep | grep -v "su " | head -1 | awk "{print \$1}"' 2>/dev/null || echo "")
+    gateway_user=$(echo "$gateway_user" | xargs)
+    opencode_user=$(echo "$opencode_user" | xargs)
+    [ "$gateway_user" = "hermeswebui" ]
+    [ "$opencode_user" = "hermeswebui" ]
+}
+
+@test "D7.2: all .env.example user-facing vars appear in docker-compose environment" {
+    local env_example="$PROJECT_DIR/.env.example"
+    local compose="$PROJECT_DIR/docker-compose.yml"
+    [ -f "$env_example" ] || skip ".env.example not found"
+    [ -f "$compose" ] || skip "docker-compose.yml not found"
+    local missing=0
+    while IFS= read -r line; do
+        local var_name
+        var_name=$(echo "$line" | sed 's/#.*//' | cut -d= -f1 | tr -d ' ')
+        [ -z "$var_name" ] && continue
+        if ! grep -q "$var_name" "$compose"; then
+            echo "MISSING in compose: $var_name"
+            missing=$((missing + 1))
+        fi
+    done < <(grep -v '^#' "$env_example" | grep -v '^$' | grep '=')
+    [ "$missing" -eq 0 ]
+}

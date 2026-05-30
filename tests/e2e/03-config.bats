@@ -182,6 +182,38 @@ print('OK')
     [ "$result" = "OK" ]
 }
 
+@test "config.yaml always has at least one model entry (fallback resilience)" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local count
+    count=$(docker exec "$cid" grep 'context_length' /home/hermeswebui/.hermes/config.yaml | wc -l)
+    [ "$count" -ge 1 ]
+}
+
+@test "AC12: model discovery populates multiple models in config" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local count
+    count=$(docker exec "$cid" grep 'context_length' /home/hermeswebui/.hermes/config.yaml | wc -l)
+    [ "$count" -gt 1 ]
+}
+
+@test "config.yaml model.default and model.name match OPENAI_DEFAULT_MODEL" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local expected="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
+    local default_val name_val
+    default_val=$(docker exec "$cid" grep '^ *default:' /home/hermeswebui/.hermes/config.yaml | head -1 | sed 's/.*default: *//' | tr -d '"')
+    name_val=$(docker exec "$cid" grep '^ *name:' /home/hermeswebui/.hermes/config.yaml | head -1 | sed 's/.*name: *//' | tr -d '"')
+    [ "$default_val" = "$expected" ]
+    [ "$name_val" = "$expected" ]
+}
+
 @test "opencode.jsonc llama_cpp models have 200k context" {
     skip_if_no_secrets
     local cid

@@ -24,6 +24,7 @@ setup() {
                 end=$(date +%s)
                 local duration=$((end - start))
                 echo "Second boot healthy in ${duration}s"
+                [ "$duration" -lt 60 ]
                 return 0
             fi
         fi
