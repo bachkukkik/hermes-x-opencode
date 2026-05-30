@@ -19,7 +19,7 @@ OpenCode Serve is started by the entrypoint as the third and final background pr
 | Internal port | `4096` | Pinned via `--port 4096` flag |
 | Host port | `${OPENCODE_SERVE_PORT:-4096}` | Configurable via `.env` |
 | Bind address | `0.0.0.0` | Required for host access. Set via `--hostname 0.0.0.0`. |
-| Auth | `OPENCODE_SERVER_PASSWORD` env var | If unset, server is unsecured (no auth) |
+| Auth | None (no HTTP auth support) | Server is unsecured — protect via firewall or VPN |
 | Binary | `/usr/local/bin/opencode` | Installed via `opencode.ai/install` during build |
 | Run user | `hermeswebui` (UID 1000) | Launched via `su` from root entrypoint |
 | Working directory | `/home/hermeswebui` | `HOME=/home/hermeswebui` for the hermeswebui user |
@@ -30,8 +30,6 @@ OpenCode Serve is started by the entrypoint as the third and final background pr
 ```bash
 opencode attach http://<host-ip>:4096
 
-opencode attach http://<host-ip>:4096 --password secret
-
 opencode run --attach http://<host-ip>:4096 "What does this project do?"
 ```
 
@@ -41,12 +39,13 @@ Containers on the `hermes_x_opencode_default` network can reach the server via t
 
 ### Authentication
 
-Set `OPENCODE_SERVER_PASSWORD` in `.env` to enable HTTP Basic Auth. The username defaults to `opencode` (overridable via `OPENCODE_SERVER_USERNAME`). If not set, the server logs a warning and accepts all connections.
+OpenCode serve has no built-in HTTP authentication. The server is unsecured by design — any client that reaches port 4096 can attach and execute commands. Protect the endpoint with a firewall, or deploy behind an authenticating reverse proxy (nginx, Caddy, Tailscale). The `OPENCODE_API_KEY` provides authentication at the OpenCode client level but does not protect the serve port.
 
 ## Verification
 
 ```bash
 curl -sf -o /dev/null -w "%{http_code}" http://localhost:${OPENCODE_SERVE_PORT:-4096}/
+curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health
 opencode --version
 ```
 
@@ -61,14 +60,14 @@ opencode --version
 
 ## What Fails
 
-- **No authentication by default:** Without `OPENCODE_SERVER_PASSWORD`, any network client can attach and execute commands with full filesystem access.
+- **No authentication:** OpenCode serve has no built-in HTTP auth. Any network client that reaches port 4096 can attach and execute commands with full filesystem access.
 - **Not started if gateway fails:** OpenCode serve starts after the gateway healthcheck passes. If the gateway never becomes healthy, OpenCode serve never starts (the entrypoint waits for port 8642 first).
 
 ## Resolution
 
-- Set `OPENCODE_SERVER_PASSWORD` in `.env` and pass it to the container environment block to secure the endpoint. Update `docker-compose.yml` to include `OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD:-}`.
+- Protect port 4096 with a firewall (e.g., `ufw deny 4096` on the host) or deploy behind an authenticating reverse proxy.
 - The sequential startup dependency ensures services start in order. If the gateway is intentionally disabled (no agent), modify the entrypoint to skip the gateway wait and start OpenCode serve directly.
 
 ## Verdict
 
-OpenCode Serve provides a convenient remote access point for the OpenCode CLI. Running as hermeswebui instead of root reduces the filesystem blast radius. The lack of default auth is the main operational concern, addressable via `OPENCODE_SERVER_PASSWORD`. The sequential startup ensures it only starts when the full stack is healthy.
+OpenCode Serve provides a convenient remote access point for the OpenCode CLI. Running as hermeswebui instead of root reduces the filesystem blast radius. The lack of built-in HTTP auth is the main operational concern — protect the port with a firewall or reverse proxy. The sequential startup ensures it only starts when the full stack is healthy.

@@ -141,6 +141,48 @@ Key constraints:
 - `model` (default) must be a string with provider prefix: `"litellm/MODEL_ID"`.
 - `apiKey` uses `{env:OPENAI_API_KEY}` because `@ai-sdk/openai-compatible` does not auto-detect env vars.
 
+### Model limits
+
+The `generate_opencode_config()` function in the entrypoint assigns `context` and `output` token limits per model using a python3 `get_limits()` function that pattern-matches the model ID against known model families. These limits are written into each model entry in the `opencode.jsonc` `models` dict and are consumed by OpenCode to set token budgets:
+
+```jsonc
+{
+  "provider": {
+    "litellm": {
+      "models": {
+        "openai/gpt-4o": {
+          "limit": { "context": 128000, "output": 16384 }
+        },
+        "anthropic/claude-opus-4-6": {
+          "limit": { "context": 200000, "output": 16384 }
+        }
+      }
+    }
+  }
+}
+```
+
+Limit assignment follows model name pattern matching (case-insensitive, checked in order):
+
+| Pattern match | Context | Output | Example match |
+|---------------|---------|--------|---------------|
+| `gpt-4.1` | 1048576 | 32768 | `openai/gpt-4.1`, `gpt-4.1-nano` |
+| `gpt-4o` | 128000 | 16384 | `openai/gpt-4o`, `gpt-4o-mini` |
+| `gpt-4-turbo` | 128000 | 4096 | `openai/gpt-4-turbo` |
+| `gpt-4` (other) | 8192 | 4096 | `openai/gpt-4`, `gpt-4-32k` |
+| `gpt-3.5` | 16384 | 4096 | `openai/gpt-3.5-turbo` |
+| `gpt-5` | 128000 | 16384 | `openai/gpt-5` |
+| `/o[134]` or `-o[134]` | 200000 | 100000 | `openai/o1`, `openai/o3-mini`, `openai/o4` |
+| `claude-3.7`, `claude-4+` | 200000 | 16384 | `anthropic/claude-3.7-sonnet`, `anthropic/claude-4-opus` |
+| `claude-3` (other) | 200000 | 4096 | `anthropic/claude-3-haiku` |
+| `deepseek` | 128000 | 8192 | `deepseek/deepseek-chat` |
+| `glm` | 128000 | 8192 | `zai/glm-5.1`, `zai/glm-4` |
+| `llama_cpp` | 200000 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` |
+| `gemini` | 1048576 | 65536 | `google/gemini-2.5-pro` |
+| default (no match) | 128000 | 8192 | Any unmatched model ID |
+
+These limits are used by the OpenCode serve's token budget calculation and are verified by the `03-config.bats` test suite.
+
 ### Model counts
 
 | Metric | Typical value |

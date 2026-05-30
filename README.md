@@ -157,9 +157,6 @@ Headless OpenCode server. Attach from another machine:
 # From any machine on the network
 opencode attach http://<host-ip>:4096
 
-# With auth (if OPENCODE_SERVER_PASSWORD is set in the container)
-opencode attach http://<host-ip>:4096 --password secret
-
 # One-shot prompt
 opencode run --attach http://<host-ip>:4096 "What does this project do?"
 ```

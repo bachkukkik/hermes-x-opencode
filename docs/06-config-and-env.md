@@ -21,6 +21,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `OPENAI_API_KEY` | Yes | — | API key for the LLM provider. Used by hermes-agent for all LLM calls and by OpenCode via `{env:OPENAI_API_KEY}`. |
 | `OPENAI_BASE_URL` | Yes | — | OpenAI-compatible base URL (e.g. `https://litellm-sw.example.com/v1`). Triggers config generation and model discovery. |
 | `OPENAI_DEFAULT_MODEL` | No | `openai/gpt-4o` | Default model identifier. Must match a model your provider supports. Used as the default in both Hermes and OpenCode configs. |
+| `OPENAI_SMALL_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Small model for lightweight OpenCode tasks (title generation, etc.). Written as `small_model` in `opencode.jsonc`. |
 | `OPENCODE_API_KEY` | Yes | — | API key for OpenCode CLI. Obtained from `https://opencode.ai`. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | No | — | Set to `true` to skip the WebUI onboarding wizard. Recommended for automated setups. |
 | `HERMES_WEBUI_PASSWORD` | No | empty | Password-protect the WebUI. Empty = no authentication. |
@@ -48,7 +49,7 @@ All runtime configuration is managed through environment variables defined in `.
 
 ### config.yaml (Hermes)
 
-The entrypoint generates `config.yaml` at `/home/hermeswebui/.hermes/config.yaml`. Both the WebUI and the Agent Gateway read this single file. The `models` dict contains all discovered chat models:
+The entrypoint generates `config.yaml` at `/home/hermeswebui/.hermes/config.yaml`. Both the WebUI and the Agent Gateway read this single file. The `models` dict contains all discovered chat models. The `model` section writes both `default` and `name` keys — the WebUI reads `default`, the agent reads `name` as fallback:
 
 ```yaml
 model:
@@ -108,7 +109,8 @@ The entrypoint generates `opencode.jsonc` at `/home/hermeswebui/.config/opencode
       }
     }
   },
-  "model": "litellm/zai/glm-5.1"
+  "model": "litellm/zai/glm-5.1",
+  "small_model": "litellm/zai/glm-5.1"
 }
 ```
 

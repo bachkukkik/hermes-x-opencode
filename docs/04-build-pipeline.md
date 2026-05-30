@@ -9,7 +9,7 @@ The Dockerfile builds a single image containing the Hermes WebUI base, system pa
 - Produces a self-contained image with all runtime dependencies pre-installed, eliminating network fetches during container startup
 - Applies the Cloudflare User-Agent fix at build time so it is baked into the image layer and never needs runtime patching
 - Clones the hermes-agent at a configurable version (branch, tag, or commit) via build arg, enabling version pinning
-- Installs all skills (12 OpenCode + ~66 Hermes) at build time, reducing container startup from 15–45s of git clones to a near-instant `cp -a`
+- Installs all skills (14 OpenCode + ~67 Hermes) at build time, reducing container startup from 15–45s of git clones to a near-instant `cp -a`
 
 ## How
 
@@ -23,12 +23,13 @@ The Dockerfile is located at `volumes_hermes_opencode/build/Dockerfile`. The bui
 | 2 | `ARG HERMES_AGENT_VERSION=main` | Build arg for agent version |
 | 3 | `RUN apt-get install build-essential git ripgrep ffmpeg procps curl` | System packages for agent build deps and OpenCode |
 | 4 | `RUN curl -fsSL https://opencode.ai/install \|\| bash` | Install OpenCode CLI, copy to `/usr/local/bin` |
-| 5 | `RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} ... /opt/hermes-agent-staging` | Clone agent to staging path (not the runtime path) |
-| 6 | `RUN sed -i ... custom/__init__.py` | Apply CustomProfile User-Agent patch (see `08 — Cloudflare UA Fix`) |
-| 7 | `COPY scripts/install-skills.sh scripts/entrypoint.sh /usr/local/bin/` | Copy scripts and set executable |
-| 8 | `RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging SKIP_HERMES_REGISTRATION=1 install-skills.sh` | Build-time skill installation (12 OpenCode + ~66 Hermes skills) |
-| 9 | `RUN echo "=== Hermes x OpenCode Stack ===" && ...` | Verification: Python version, opencode version, agent present, patch applied |
-| 10 | `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]` | Set entrypoint |
+| 5 | `RUN curl -LsSf https://astral.sh/uv/install.sh \|\| sh` | Install uv tool manager for graphify and other Python tool installs |
+| 6 | `RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} ... /opt/hermes-agent-staging` | Clone agent to staging path (not the runtime path) |
+| 7 | `RUN sed -i ... custom/__init__.py` | Apply CustomProfile User-Agent patch (see `08 — Cloudflare UA Fix`) |
+| 8 | `COPY scripts/install-skills.sh scripts/entrypoint.sh tests/healthcheck.sh /usr/local/bin/` | Copy scripts and set executable |
+| 9 | `RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills install-skills.sh` | Build-time skill installation (14 OpenCode + ~67 Hermes skills), including graphify for both platforms |
+| 10 | `RUN echo "=== Hermes x OpenCode Stack ===" && ...` | Verification: Python version, opencode version, graphify version, agent present, patch applied |
+| 11 | `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]` | Set entrypoint |
 
 ### Agent staging
 
@@ -45,12 +46,12 @@ Skills are installed at build time by running `install-skills.sh` with environme
 
 | Directory | Contents | Persisted via |
 |-----------|----------|---------------|
-| `/home/hermeswebui/.config/opencode/skills` | 12 OpenCode skills | Image layer (no volume mount) |
-| `/opt/hermes-skills-staging` | ~66 Hermes skills | Image layer (staging only) |
+| `/home/hermeswebui/.config/opencode/skills` | 14 OpenCode skills (incl. graphify) | Image layer (no volume mount) |
+| `/opt/hermes-skills-staging` | ~67 Hermes skills (incl. graphify) | Image layer (staging only) |
 
 Hermes skills are staged to `/opt/hermes-skills-staging` instead of the runtime path (`/home/hermeswebui/.hermes/skills`) because `~/.hermes` is a bind-mounted volume that overwrites at runtime. The entrypoint copies from staging to the bind mount at every boot (`cp -a`, near-instant). OpenCode skills have no volume mount and persist in the image directly.
 
-The build-time install uses `SKIP_HERMES_REGISTRATION=1` to skip graphify hermes registration (the hermes home dir is not available during build). Registration is deferred to runtime.
+Graphify registers for both platforms at build time. The OpenCode skill is written directly to `/home/hermeswebui/.config/opencode/skills/graphify/`. The Hermes skill is written to `$GRAPHIFY_HOME/.hermes/skills/graphify/` (with `HOME=/home/hermeswebui`), then copied to `/opt/hermes-skills-staging/graphify/` for staging. The graphify binary is also copied to `/usr/local/bin/graphify` for all-user accessibility. Runtime `entrypoint.sh` re-runs `graphify install --platform hermes` as an overlayfs safety net.
 
 ### Build command
 
@@ -74,7 +75,10 @@ docker compose run --rm --entrypoint bash hermes-opencode -c \
   'test -f /opt/hermes-agent-staging/pyproject.toml && echo "Agent: OK" && \
    grep -q "User-Agent.*hermes-agent" /opt/hermes-agent-staging/plugins/model-providers/custom/__init__.py && echo "Patch: OK" && \
    opencode --version && echo "OpenCode: OK" && \
+   uv --version && echo "uv: OK" && \
+   graphify --version && echo "graphify: OK" && \
    test -d /opt/hermes-skills-staging/product-management && echo "Hermes skills staging: OK" && \
+   test -f /opt/hermes-skills-staging/graphify/SKILL.md && echo "graphify staging: OK" && \
    find /home/hermeswebui/.config/opencode/skills -name "SKILL.md" | wc -l | grep -q "^[0-9]" && echo "OpenCode skills: OK"'
 ```
 
@@ -87,6 +91,9 @@ docker compose run --rm --entrypoint bash hermes-opencode -c \
 - `--build-arg HERMES_AGENT_VERSION` correctly switches branches/tags
 - Skills install at build time — all git clones and pip installs happen once during `docker compose build`
 - Runtime startup is fast — only a `cp -a` from staging to bind mount (near-instant)
+- `uv` tool manager installed and available for future Python tool installs
+- graphify installed and registered for both OpenCode and Hermes at build time
+- graphify binary copied to `/usr/local/bin` for all-user accessibility
 
 ## What Fails
 

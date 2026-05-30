@@ -444,3 +444,6 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 | AC20 | Onboarding skipped | WebUI reports onboarding complete | `curl $BASE/api/onboarding/status` returns `completed: true` |
 | AC21 | Skills installed | Both platforms have skills | `docker exec $C find /home/hermeswebui/.config/opencode/skills -name "SKILL.md" \| wc -l` > 0 |
 | AC22 | Security mode applied | Permission rules in opencode.jsonc | `docker exec $C python3 -c "import json; c=json.load(open('/home/hermeswebui/.config/opencode/opencode.jsonc')); print(len(c.get('permission',{}).get('bash',{})))"` shows rule count |
+| AC23 | OpenCode serve healthy | `/global/health` returns `{"healthy":true}` | `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` |
+| AC24 | Hermes skills present | More than 0 SKILL.md files under hermes skills dir | `docker exec $C find /home/hermeswebui/.hermes/skills -name "SKILL.md" \| wc -l` returns >0 |
+| AC25 | Skills baked in Docker image | More than 0 SKILL.md files in staging dir | `docker run --rm --entrypoint bash $IMAGE -c 'find /opt/hermes-skills-staging -name "SKILL.md" \| wc -l'` returns >0 |

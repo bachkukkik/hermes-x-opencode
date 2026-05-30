@@ -53,7 +53,7 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
 |----------|---------|
 | `discover_models()` | Curls `$OPENAI_BASE_URL/models` with the API key. Parses response with python3, filters non-chat models (embed, whisper, tts, dall-e, sora, etc.) and wildcard patterns (`anthropic/*`, `openai/*`). Falls back to `OPENAI_DEFAULT_MODEL` only on failure. Sets `DISCOVERED_MODELS` as newline-separated model ID list. |
 | `generate_config()` | Writes `config.yaml` with litellm custom provider using a `models` dict (key=model ID, value=`{context_length: 200000}`). Auto-generates API key if `HERMES_API_KEY` is empty. Sets default model from `OPENAI_DEFAULT_MODEL` as both `model.default` and `model.name` — the outer WebUI reads `model.default`, the hermes-agent reads `model.default` with fallback to `model.name`. |
-| `generate_opencode_config()` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models. Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). |
+| `generate_opencode_config()` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). |
 | `ensure_agent()` | Copies agent from `/opt/hermes-agent-staging` to `/home/hermeswebui/.hermes/hermes-agent` if not already present. Idempotent — skips if `pyproject.toml` exists. |
 | `wait_for_port(port, timeout)` | Loops `curl -sf http://localhost:${port}/health` every 2 seconds until success or timeout. |
 | `start_gateway()` | Starts the gateway as `hermeswebui` via `su`. Skips if agent not found or hermes CLI not in venv. |
@@ -87,8 +87,9 @@ The `default` key is consumed by the outer WebUI's `models_cache.json` builder (
 - A single provider named `litellm` using `@ai-sdk/openai-compatible` npm package
 - `apiKey: "{env:OPENAI_API_KEY}"` — OpenCode's env var interpolation syntax
 - `baseURL` set to `OPENAI_BASE_URL` with trailing slash stripped
-- `models` as an object dict `{model_id: {}}` — must be `{}`, not `[]`
+- `models` as an object dict `{model_id: {limit: {context: N, output: N}}}` where each model gets token limits assigned by a `get_limits()` function that pattern-matches the model ID against known families (see `10 — Model Discovery`)
 - `model` as a string `"litellm/OPENAI_DEFAULT_MODEL"` — the provider prefix is required
+- `small_model` as a string `"litellm/OPENAI_SMALL_MODEL"` — falls back to the default model if `OPENAI_SMALL_MODEL` is not set
 
 After writing, the function runs `chown -R hermeswebui:hermeswebui` on the config directory so the `hermeswebui` user can read it when opencode serve starts.
 

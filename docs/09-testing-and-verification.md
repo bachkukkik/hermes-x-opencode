@@ -196,6 +196,10 @@ echo "=== Done ==="
 | AC23 | OpenCode serve healthy | `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` returns `{"healthy":true}` |
 | AC24 | Hermes skills present | `docker exec $C find /home/hermeswebui/.hermes/skills -name "SKILL.md" \| wc -l` returns >0 |
 | AC25 | Skills in Docker image | `docker run --rm --entrypoint bash $IMAGE -c 'find /opt/hermes-skills-staging -name "SKILL.md" \| wc -l'` returns >0 |
+| AC26 | uv available in container | `docker exec $C test -x /usr/local/bin/uv` |
+| AC27 | graphify CLI available | `docker exec $C test -x /usr/local/bin/graphify` |
+| AC28 | graphify Hermes skill registered | `docker exec $C test -f /home/hermeswebui/.hermes/skills/graphify/SKILL.md` |
+| AC29 | graphify OpenCode skill registered | `docker exec $C test -f /home/hermeswebui/.config/opencode/skills/graphify/SKILL.md` |
 
 ## Verification
 
@@ -203,7 +207,7 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## What Works
 
-- All 22 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`)
+- All 29 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, 58 tests)
 - Health endpoints respond within 50ms for WebUI and Gateway
 - Gateway chat returns valid OpenAI-format responses with correct `usage` stats
 - Session creation, chat, streaming, and cleanup work through the WebUI API
@@ -212,6 +216,7 @@ Run the full smoke test script above. All steps must complete without error.
 - Both Hermes and OpenCode configs contain the same model list
 - Onboarding is skipped and reported as completed
 - Skills are verified at build time (AC25: staging dir populated) and runtime (AC21: OpenCode skills, AC24: Hermes skills)
+- Graphify integration verified (AC26: uv present, AC27: graphify CLI, AC28: Hermes skill, AC29: OpenCode skill)
 
 ## What Fails
 
@@ -229,4 +234,4 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## Verdict
 
-The testing coverage is comprehensive. All 22 acceptance criteria are automated in the bats test suite (`tests/run.sh`), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), and OpenCode serve health (AC23). The main gap is AC23 testing only the health endpoint rather than a full LLM call through OpenCode serve.
+The testing coverage is comprehensive. All 29 acceptance criteria are automated in the bats test suite (`tests/run.sh`, 58 tests), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), OpenCode serve health (AC23), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). The main gap is AC23 testing only the health endpoint rather than a full LLM call through OpenCode serve.
