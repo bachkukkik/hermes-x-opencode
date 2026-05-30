@@ -192,14 +192,28 @@ eprintf "=== graphify ==="
 if command -v uv >/dev/null 2>&1; then
   eprintf "  Installing graphifyy via uv tool..."
   timeout 120 uv tool install graphifyy || timeout 120 uv tool upgrade graphifyy || true
+  export PATH="$HOME/.local/bin:$PATH"
 
   if command -v graphify >/dev/null 2>&1; then
+    GRAPHIFY_HOME="/home/hermeswebui"
     eprintf "  Registering graphify for opencode..."
-    graphify install --platform opencode 2>/dev/null || true
+    HOME="$GRAPHIFY_HOME" graphify install --platform opencode 2>/dev/null || true
     if [ "${SKIP_HERMES_REGISTRATION:-0}" != "1" ]; then
       eprintf "  Registering graphify for hermes..."
-      graphify install --platform hermes 2>/dev/null || true
+      HOME="$GRAPHIFY_HOME" graphify install --platform hermes 2>/dev/null || true
     fi
+
+    # Copy graphify bin for runtime availability (uv installs to root's .local)
+    if [ -f /root/.local/bin/graphify ]; then
+      cp /root/.local/bin/graphify /usr/local/bin/graphify
+    fi
+
+    # Copy Hermes skill to staging dir (graphify writes to $HOME/.hermes)
+    if [ -f "$GRAPHIFY_HOME/.hermes/skills/graphify/SKILL.md" ]; then
+      mkdir -p /opt/hermes-skills-staging/graphify
+      cp "$GRAPHIFY_HOME/.hermes/skills/graphify/SKILL.md" /opt/hermes-skills-staging/graphify/SKILL.md
+    fi
+
     eprintf "  graphify installed and registered."
   else
     eprintf "  WARNING: graphify CLI not found after uv tool install"

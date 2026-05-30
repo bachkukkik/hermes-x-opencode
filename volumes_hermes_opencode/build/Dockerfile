@@ -21,6 +21,11 @@ RUN curl -fsSL https://opencode.ai/install | bash \
        fi \
     && opencode --version
 
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
+    && cp /root/.local/bin/uv /usr/local/bin/uv \
+    && cp /root/.local/bin/uvx /usr/local/bin/uvx 2>/dev/null || true \
+    && uv --version
+
 RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} \
     https://github.com/NousResearch/hermes-agent.git \
     /opt/hermes-agent-staging
@@ -34,7 +39,6 @@ COPY tests/healthcheck.sh /usr/local/bin/healthcheck.sh
 RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh
 
 RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging \
-    SKIP_HERMES_REGISTRATION=1 \
     OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills \
     install-skills.sh
 
