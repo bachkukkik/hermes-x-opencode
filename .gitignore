@@ -224,3 +224,5 @@ volumes_hermes_opencode/data/hermes-home/*
 !volumes_hermes_opencode/data/hermes-home/.gitkeep
 volumes_hermes_opencode/data/workspace/*
 !volumes_hermes_opencode/data/workspace/.gitkeep
+graphify-out/cache/*
+!graphify-out/cache/.gitkeep
