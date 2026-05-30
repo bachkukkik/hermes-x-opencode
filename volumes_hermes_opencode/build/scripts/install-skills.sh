@@ -76,6 +76,27 @@ for skill_path in "${OPENAI_SKILLS[@]}"; do
 done
 
 # ==============================================================================
+# --- multica-ai/andrej-karpathy-skills (1 skill) ---
+# ==============================================================================
+eprintf ""
+eprintf "=== multica-ai/andrej-karpathy-skills (1 opencode skill) ==="
+KARPATHY_REPO="https://github.com/multica-ai/andrej-karpathy-skills.git"
+KARPATHY_TMP="$TMPDIR/andrej-karpathy-skills"
+KARPATHY_SKILLS=(
+  "skills/karpathy-guidelines"
+)
+
+clone_sparse "$KARPATHY_REPO" "$KARPATHY_TMP" "${KARPATHY_SKILLS[@]}"
+
+for skill_path in "${KARPATHY_SKILLS[@]}"; do
+  skill_name="$(basename "$skill_path")"
+  eprintf "  Copying multica-ai/andrej-karpathy-skills -> %s" "$skill_name"
+  rm -rf "$OPENCODE_SKILLS_DIR/$skill_name"
+  cp -r "$KARPATHY_TMP/$skill_path" "$OPENCODE_SKILLS_DIR/$skill_name"
+  rm -rf "$OPENCODE_SKILLS_DIR/$skill_name/.git"
+done
+
+# ==============================================================================
 # --- bachkukkik/coding-agents-docs-guideline (1 skill) ---
 # ==============================================================================
 eprintf ""

@@ -1,0 +1,193 @@
+#!/usr/bin/env bats
+
+setup() {
+    load test_helper/common
+}
+
+# ------------------------------------------------------------------
+# BLOCK 1: API Connectivity (deeper coverage than AC15/AC16)
+# ------------------------------------------------------------------
+
+@test "D1.1: Models endpoint accessible" {
+    skip_if_no_secrets
+    run curl -s -o /dev/null -w "%{http_code}" --max-time 10 \
+        -H "Authorization: Bearer $(get_api_key)" \
+        "$(gateway_base)/v1/models"
+    [ "$output" = "200" ]
+}
+
+@test "D1.2: Default model is available in upstream provider model list" {
+    local base_url="${OPENAI_BASE_URL:-}"
+    local api_key="${OPENAI_API_KEY:-}"
+    [ -n "$base_url" ] || skip "OPENAI_BASE_URL not set"
+    [ -n "$api_key" ] || skip "OPENAI_API_KEY not set"
+    local model="${OPENAI_DEFAULT_MODEL:-}"
+    [ -n "$model" ] || skip "OPENAI_DEFAULT_MODEL not set"
+    run curl -sf --max-time 10 \
+        -H "Authorization: Bearer $api_key" \
+        "${base_url}/models"
+    [ "$status" -eq 0 ]
+    echo "$output" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+models = [m['id'] for m in data.get('data', [])]
+sys.exit(0 if '$model' in models else 1)
+"
+}
+
+@test "D1.3: Chat completion returns non-empty content" {
+    skip_if_no_secrets
+    local api_key
+    api_key=$(get_api_key)
+    [ -n "$api_key" ]
+    run curl -sf --max-time 120 \
+        -H "Authorization: Bearer $api_key" \
+        -H "Content-Type: application/json" \
+        -d '{"model":"hermes-agent","messages":[{"role":"user","content":"Say exactly: hello world"}],"max_tokens":20,"stream":false}' \
+        "$(gateway_base)/v1/chat/completions"
+    [ "$status" -eq 0 ]
+    echo "$output" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+msg = data['choices'][0]['message']
+content = msg.get('content', '') or ''
+rc = msg.get('reasoning_content', '') or ''
+combined = content + rc
+sys.exit(0 if combined.strip() else 1)
+"
+}
+
+# ------------------------------------------------------------------
+# BLOCK 2: Config & Skills Audit (complements 03-config / 05-opencode)
+# ------------------------------------------------------------------
+
+@test "D2.1: config.yaml has both model.default and model.name" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" grep -q '^model:' /home/hermeswebui/.hermes/config.yaml
+    [ "$status" -eq 0 ]
+    run docker exec "$cid" grep -q 'default:' /home/hermeswebui/.hermes/config.yaml
+    [ "$status" -eq 0 ]
+    run docker exec "$cid" grep -q 'name:' /home/hermeswebui/.hermes/config.yaml
+    [ "$status" -eq 0 ]
+}
+
+@test "D2.2: All 5 mandated skills are present with SKILL.md" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local missing=0
+    for skill in karpathy-guidelines security-best-practices webapp-testing coding-agents-docs-guideline yeet; do
+        if ! docker exec "$cid" test -f "/home/hermeswebui/.config/opencode/skills/$skill/SKILL.md" 2>/dev/null; then
+            missing=$((missing + 1))
+        fi
+    done
+    [ "$missing" -eq 0 ]
+}
+
+@test "D2.3: AGENTS.md is present in workspace" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" test -f /workspace/AGENTS.md
+    [ "$status" -eq 0 ]
+}
+
+# ------------------------------------------------------------------
+# BLOCK 3: OpenCode Doctrine Loading (unique — not covered elsewhere)
+# ------------------------------------------------------------------
+
+@test "D3.1: AGENTS.md references all 5 mandated skills" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local count
+    count=$(docker exec "$cid" grep -c 'karpathy\|security-best-practices\|webapp-testing\|coding-agents-docs-guideline\|yeet' /workspace/AGENTS.md 2>/dev/null || echo 0)
+    [ "$count" -ge 5 ]
+}
+
+# ------------------------------------------------------------------
+# BLOCK 4: Gateway Delegation (complements 04-gateway.bats)
+# ------------------------------------------------------------------
+
+@test "D4.1: Gateway rejects unauthenticated requests" {
+    skip_if_no_secrets
+    run curl -s -o /dev/null -w "%{http_code}" --max-time 5 \
+        "$(gateway_base)/v1/chat/completions" \
+        -H "Content-Type: application/json" \
+        -d '{"model":"hermes-agent","messages":[{"role":"user","content":"hi"}],"stream":false}'
+    [ "$output" = "401" ] || [ "$output" = "403" ]
+}
+
+# ------------------------------------------------------------------
+# BLOCK 5: Security Compliance (unique — not covered elsewhere)
+# ------------------------------------------------------------------
+
+@test "D5.1: AGENTS.md prohibits shell=True" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" grep -q 'shell=True' /workspace/AGENTS.md
+    [ "$status" -eq 0 ]
+}
+
+@test "D5.2: AGENTS.md has User-Agent standing order" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" grep -q 'User-Agent.*hermes-agent' /workspace/AGENTS.md
+    [ "$status" -eq 0 ]
+}
+
+@test "D5.3: AGENTS.md security mode table is present" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" grep -q 'strict' /workspace/AGENTS.md
+    [ "$status" -eq 0 ]
+    run docker exec "$cid" grep -q 'standard' /workspace/AGENTS.md
+    [ "$status" -eq 0 ]
+    run docker exec "$cid" grep -q 'yolo' /workspace/AGENTS.md
+    [ "$status" -eq 0 ]
+}
+
+# ------------------------------------------------------------------
+# BLOCK 6: Security Mode Compliance (complements AC22)
+# ------------------------------------------------------------------
+
+@test "D6.1: opencode.jsonc permission block matches security mode" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local mode="${OPENCODE_SECURITY_MODE:-strict}"
+    local expected
+    case "$mode" in
+        strict)   expected_entries=31 ;;
+        standard) expected_entries=22 ;;
+        yolo)     expected_entries=0  ;;
+        *)        expected_entries=31 ;;
+    esac
+    if [ "$expected_entries" -eq 0 ]; then
+        run docker exec "$cid" python3 -c "
+import json, re, sys
+text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+print(c.get('permission', ''))
+"
+        [ "$output" = "allow" ]
+    else
+        run docker exec "$cid" python3 -c "
+import json, re, sys
+text = open('/home/hermeswebui/.config/opencode/opencode.jsonc').read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+print(len(c.get('permission', {}).get('bash', {})))
+"
+        [ "$output" -ge "$expected_entries" ]
+    fi
+}

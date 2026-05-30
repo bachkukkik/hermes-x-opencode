@@ -11,7 +11,7 @@ OPENCODE_USER_HOME="/home/${OPENCODE_USER}"
 OPENCODE_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/opencode.jsonc"
 OPENCODE_SKILLS_DIR="${OPENCODE_USER_HOME}/.config/opencode/skills"
 
-_SKIP_MODEL_PATTERNS="embed whisper tts dall-e sora image realtime transcrib moderat audio codegen babbage davinci curie ^ada$ text- stable midjourney flux /sd/ mj replicate dall-e"
+_SKIP_MODEL_PATTERNS="embed whisper tts dall-e sora image realtime transcrib moderat audio codegen babbage davinci curie ^ada$ text- stable midjourney flux /sd/ mj replicate dall-e cli-proxy-api"
 
 ensure_agent() {
     if [ -f "$AGENT_DIR/pyproject.toml" ]; then
@@ -81,7 +81,7 @@ skip_patterns = [
     r'\bimage\b', r'realtime', r'transcrib', r'moderat', r'\baudio\b',
     r'codegen', r'babbage', r'davinci', r'\bcurie\b', r'\bada\b',
     r'text-', r'stable', r'midjourney', r'flux', r'/sd/', r'\bmj\b',
-    r'replicate', r'resolution',
+    r'replicate', r'resolution', r'cli-proxy-api',
 ]
 skip_re = [re.compile(p, re.IGNORECASE) for p in skip_patterns]
 
@@ -216,7 +216,7 @@ def get_limits(model_id):
     if 'glm' in name:
         return 128000, 8192
     if 'llama_cpp' in model_id:
-        return 32768, 4096
+        return 200000, 32768
     if 'gemini' in name:
         return 1048576, 65536
     return 128000, 8192
