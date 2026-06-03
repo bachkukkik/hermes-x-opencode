@@ -130,8 +130,21 @@ generate_config() {
     fi
 
     if [ -z "${OPENAI_BASE_URL:-}" ]; then
-        echo "!! No OPENAI_BASE_URL — writing minimal config (api_server only)."
+        echo "!! No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
         cat > "$CONFIG" << YAMLEOF
+model:
+  provider: litellm
+  default: openai/gpt-4o
+  name: openai/gpt-4o
+
+custom_providers:
+  - name: litellm
+    base_url: ""
+    models:
+      openai/gpt-4o:
+        context_length: 200000
+    key_env: OPENAI_API_KEY
+
 platforms:
   api_server:
     enabled: true

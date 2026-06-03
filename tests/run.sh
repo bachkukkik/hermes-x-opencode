@@ -42,6 +42,8 @@ else
 fi
 
 echo "== Starting stack..."
+mkdir -p "${PROJECT_DIR}/volumes_hermes_opencode/data/workspace"
+cp -f "${PROJECT_DIR}/AGENTS.md" "${PROJECT_DIR}/volumes_hermes_opencode/data/workspace/AGENTS.md"
 docker compose "${COMPOSE_OPTS[@]}" up -d
 
 HEALTH_TIMEOUT=${HEALTH_TIMEOUT:-300}
