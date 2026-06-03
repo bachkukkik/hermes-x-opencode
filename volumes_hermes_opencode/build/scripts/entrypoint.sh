@@ -121,15 +121,41 @@ for line in sys.stdin:
 }
 
 generate_config() {
-    if [ -z "${OPENAI_BASE_URL:-}" ]; then
-        return
-    fi
     mkdir -p "$(dirname "$CONFIG")"
 
     local api_key="${HERMES_API_KEY:-}"
     if [ -z "$api_key" ]; then
         api_key="hermes-$(openssl rand -hex 16)"
         echo "== Generated random HERMES_API_KEY: $api_key"
+    fi
+
+    if [ -z "${OPENAI_BASE_URL:-}" ]; then
+        echo "!! No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
+        cat > "$CONFIG" << YAMLEOF
+model:
+  provider: litellm
+  default: openai/gpt-4o
+  name: openai/gpt-4o
+
+custom_providers:
+  - name: litellm
+    base_url: ""
+    models:
+      openai/gpt-4o:
+        context_length: 200000
+    key_env: OPENAI_API_KEY
+
+platforms:
+  api_server:
+    enabled: true
+    extra:
+      host: "0.0.0.0"
+      port: 8642
+      key: "${api_key}"
+      cors_origins: "*"
+YAMLEOF
+        echo "== Wrote minimal config.yaml."
+        return
     fi
 
     local default_model="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
@@ -470,7 +496,7 @@ ensure_agent
 WEBUI_PID=$!
 echo "== WebUI init started (PID: $WEBUI_PID)"
 
-wait_for_port 8787 120
+wait_for_port 8787 300
 
 start_gateway
 wait_for_port 8642 60

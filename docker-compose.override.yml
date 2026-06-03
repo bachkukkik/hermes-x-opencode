@@ -1,0 +1,11 @@
+services:
+  hermes-opencode:
+    networks:
+      cloudflare:
+        aliases:
+          - vanilla-hermes-opencode
+
+networks:
+  cloudflare:
+    name: portainer-cloudflare-traefik_default
+    external: true
