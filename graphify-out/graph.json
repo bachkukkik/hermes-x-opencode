@@ -4,25 +4,290 @@
   "graph": {
     "hyperedges": [
       {
-        "id": "build_to_testing_skill_pipeline",
-        "label": "Build \" Testing \" Skill Pipeline",
+        "id": "three_service_stack",
+        "label": "Three-Service Docker Stack (WebUI + Gateway + OpenCode Serve)",
         "nodes": [
-          "doc04_docker_build_steps",
-          "doc04_graphify_dual_platform",
-          "doc09_graphify_integration_tests",
-          "doc11_graphify_install_mechanics",
-          "doc11_seven_skill_sources",
-          "doc11_two_phase_architecture",
-          "doc09_acceptance_criteria_29"
+          "concept_hermes_webui_service",
+          "concept_hermes_gateway_service",
+          "concept_opencode_serve_service"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "PRD.md"
+      },
+      {
+        "id": "sequential_startup_chain",
+        "label": "Sequential Health-Gated Startup Chain",
+        "nodes": [
+          "concept_entrypoint_sequence",
+          "concept_hermes_webui_service",
+          "concept_hermes_gateway_service",
+          "concept_opencode_serve_service",
+          "concept_wait_n_supervisor"
         ],
         "relation": "participate_in",
-        "confidence": "INFERRED",
-        "confidence_score": 0.75,
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docs/05-entrypoint-sequence.md"
+      },
+      {
+        "id": "model_discovery_pipeline",
+        "label": "Model Discovery \u2192 Config Generation Pipeline",
+        "nodes": [
+          "concept_model_discovery",
+          "concept_wildcard_filter",
+          "concept_nonchat_filter",
+          "concept_config_generation",
+          "concept_model_default_name_keys"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docs/10-model-discovery.md"
+      },
+      {
+        "id": "build_to_runtime_handoff",
+        "label": "Build-Time Staging to Runtime Bind Mount Handoff",
+        "nodes": [
+          "concept_build_pipeline",
+          "concept_staging_paths",
+          "concept_volume_layout",
+          "concept_entrypoint_sequence"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
         "source_file": "docs/04-build-pipeline.md"
+      },
+      {
+        "id": "defense_in_depth_security",
+        "label": "Defense-in-Depth Security Stack",
+        "nodes": [
+          "concept_user_isolation",
+          "concept_cc_safety_net",
+          "concept_security_modes",
+          "concept_plugin_system"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docs/13-security-hardening.md"
+      },
+      {
+        "id": "skill_install_pipeline",
+        "label": "Two-Phase Skill Installation Pipeline",
+        "nodes": [
+          "concept_skill_installation",
+          "concept_skill_sources",
+          "concept_graphify_integration",
+          "concept_staging_paths"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docs/11-skill-installation.md"
+      },
+      {
+        "id": "e2e_verification_pipeline",
+        "label": "E2E Verification Pipeline (CI \u2192 Bats \u2192 AC)",
+        "nodes": [
+          "doc_e2e_workflow",
+          "doc_tests_run_sh",
+          "doc_tests_common_bash",
+          "concept_e2e_tests",
+          "concept_acceptance_criteria"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": ".github/workflows/e2e.yml"
+      },
+      {
+        "id": "config_regeneration_cycle",
+        "label": "Boot-Time Config Regeneration Cycle",
+        "nodes": [
+          "concept_entrypoint_sequence",
+          "concept_config_generation",
+          "concept_model_discovery",
+          "concept_security_modes"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docs/06-config-and-env.md"
+      },
+      {
+        "id": "cloudflare_patch_chain",
+        "label": "Cloudflare UA Patch Pipeline",
+        "nodes": [
+          "concept_cloudflare_ua_patch",
+          "concept_build_pipeline",
+          "concept_hermes_agent",
+          "concept_hermes_gateway_service"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docs/08-cloudflare-ua-fix.md"
+      },
+      {
+        "id": "compose_service_definition",
+        "label": "Compose Service Definition Triple",
+        "nodes": [
+          "doc_docker_compose",
+          "doc_docker_compose_override",
+          "concept_volume_layout",
+          "concept_healthcheck"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docker-compose.yml"
+      },
+      {
+        "id": "secret_protection_layers",
+        "label": "Secret Protection Layers (env, file, network)",
+        "nodes": [
+          "concept_secrets_handling",
+          "concept_security_modes",
+          "concept_cc_safety_net",
+          "concept_hermes_api_key"
+        ],
+        "relation": "form",
+        "confidence": "INFERRED",
+        "confidence_score": 0.9,
+        "source_file": "AGENTS.md"
       }
     ]
   },
   "nodes": [
+    {
+      "label": ".graphify_detect.json",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "graphify_detect_json",
+      "community": 0,
+      "norm_label": ".graphify_detect.json"
+    },
+    {
+      "label": "files",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_files",
+      "community": 0,
+      "norm_label": "files"
+    },
+    {
+      "label": "code",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_files_code",
+      "community": 0,
+      "norm_label": "code"
+    },
+    {
+      "label": "document",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_files_document",
+      "community": 0,
+      "norm_label": "document"
+    },
+    {
+      "label": "paper",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_files_paper",
+      "community": 0,
+      "norm_label": "paper"
+    },
+    {
+      "label": "image",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_files_image",
+      "community": 0,
+      "norm_label": "image"
+    },
+    {
+      "label": "video",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_files_video",
+      "community": 0,
+      "norm_label": "video"
+    },
+    {
+      "label": "total_files",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_total_files",
+      "community": 0,
+      "norm_label": "total_files"
+    },
+    {
+      "label": "total_words",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_total_words",
+      "community": 0,
+      "norm_label": "total_words"
+    },
+    {
+      "label": "needs_graph",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_needs_graph",
+      "community": 0,
+      "norm_label": "needs_graph"
+    },
+    {
+      "label": "warning",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_warning",
+      "community": 0,
+      "norm_label": "warning"
+    },
+    {
+      "label": "skipped_sensitive",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_skipped_sensitive",
+      "community": 0,
+      "norm_label": "skipped_sensitive"
+    },
+    {
+      "label": "graphifyignore_patterns",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_graphifyignore_patterns",
+      "community": 0,
+      "norm_label": "graphifyignore_patterns"
+    },
+    {
+      "label": "scan_root",
+      "file_type": "code",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "id": "hermes_x_opencode_graphify_detect_scan_root",
+      "community": 0,
+      "norm_label": "scan_root"
+    },
     {
       "label": "run.sh",
       "file_type": "code",
@@ -32,9 +297,9 @@
         "language": "bash",
         "kind": "file"
       },
-      "community": 10,
-      "norm_label": "run.sh",
-      "id": "tests_run_sh"
+      "id": "tests_run_sh",
+      "community": 8,
+      "norm_label": "run.sh"
     },
     {
       "label": "run.sh script",
@@ -45,9 +310,9 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "community": 10,
-      "norm_label": "run.sh script",
-      "id": "home_bachkukkik_archives_git_repos_sandbox_hermes_x_opencode_tests_run_sh__entry"
+      "id": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_run_sh__entry",
+      "community": 8,
+      "norm_label": "run.sh script"
     },
     {
       "label": "cleanup()",
@@ -58,9 +323,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 10,
-      "norm_label": "cleanup()",
-      "id": "tests_run_cleanup"
+      "id": "tests_run_cleanup",
+      "community": 8,
+      "norm_label": "cleanup()"
     },
     {
       "label": "common.bash",
@@ -71,9 +336,9 @@
         "language": "bash",
         "kind": "file"
       },
-      "community": 2,
-      "norm_label": "common.bash",
-      "id": "tests_e2e_test_helper_common_bash"
+      "id": "tests_e2e_test_helper_common_bash",
+      "community": 5,
+      "norm_label": "common.bash"
     },
     {
       "label": "common.bash script",
@@ -84,9 +349,9 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "community": 2,
-      "norm_label": "common.bash script",
-      "id": "home_bachkukkik_archives_git_repos_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry"
+      "id": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry",
+      "community": 5,
+      "norm_label": "common.bash script"
     },
     {
       "label": "get_container()",
@@ -97,9 +362,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 2,
-      "norm_label": "get_container()",
-      "id": "test_helper_common_get_container"
+      "id": "test_helper_common_get_container",
+      "community": 5,
+      "norm_label": "get_container()"
     },
     {
       "label": "wait_for_healthy()",
@@ -110,9 +375,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 2,
-      "norm_label": "wait_for_healthy()",
-      "id": "test_helper_common_wait_for_healthy"
+      "id": "test_helper_common_wait_for_healthy",
+      "community": 5,
+      "norm_label": "wait_for_healthy()"
     },
     {
       "label": "get_api_key()",
@@ -123,9 +388,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 2,
-      "norm_label": "get_api_key()",
-      "id": "test_helper_common_get_api_key"
+      "id": "test_helper_common_get_api_key",
+      "community": 5,
+      "norm_label": "get_api_key()"
     },
     {
       "label": "webui_base()",
@@ -136,9 +401,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 2,
-      "norm_label": "webui_base()",
-      "id": "test_helper_common_webui_base"
+      "id": "test_helper_common_webui_base",
+      "community": 5,
+      "norm_label": "webui_base()"
     },
     {
       "label": "gateway_base()",
@@ -149,9 +414,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 2,
-      "norm_label": "gateway_base()",
-      "id": "test_helper_common_gateway_base"
+      "id": "test_helper_common_gateway_base",
+      "community": 5,
+      "norm_label": "gateway_base()"
     },
     {
       "label": "opencode_base()",
@@ -162,9 +427,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 2,
-      "norm_label": "opencode_base()",
-      "id": "test_helper_common_opencode_base"
+      "id": "test_helper_common_opencode_base",
+      "community": 5,
+      "norm_label": "opencode_base()"
     },
     {
       "label": "skip_if_no_secrets()",
@@ -175,565 +440,77 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "community": 2,
-      "norm_label": "skip_if_no_secrets()",
-      "id": "test_helper_common_skip_if_no_secrets"
+      "id": "test_helper_common_skip_if_no_secrets",
+      "community": 5,
+      "norm_label": "skip_if_no_secrets()"
     },
     {
-      "label": "opencode.json",
-      "file_type": "code",
-      "source_file": ".opencode/opencode.json",
-      "source_location": "L1",
-      "community": 8,
-      "norm_label": "opencode.json",
-      "id": "opencode_opencode_json"
-    },
-    {
-      "label": "$schema",
-      "file_type": "code",
-      "source_file": ".opencode/opencode.json",
-      "source_location": "L2",
-      "community": 8,
-      "norm_label": "$schema",
-      "id": "opencode_opencode_schema"
-    },
-    {
-      "label": "plugin",
-      "file_type": "code",
-      "source_file": ".opencode/opencode.json",
-      "source_location": "L3",
-      "community": 8,
-      "norm_label": "plugin",
-      "id": "opencode_opencode_plugin"
-    },
-    {
-      "label": "package.json",
-      "file_type": "code",
-      "source_file": ".opencode/package.json",
-      "source_location": "L1",
-      "community": 9,
-      "norm_label": "package.json",
-      "id": "opencode_package_json"
-    },
-    {
-      "label": "dependencies",
-      "file_type": "code",
-      "source_file": ".opencode/package.json",
-      "source_location": "L2",
-      "community": 9,
-      "norm_label": "dependencies",
-      "id": "opencode_package_dependencies"
-    },
-    {
-      "label": "@opencode-ai/plugin",
-      "file_type": "code",
-      "source_file": ".opencode/package.json",
-      "source_location": "L3",
-      "community": 9,
-      "norm_label": "@opencode-ai/plugin",
-      "id": "opencode_package_dependencies_opencode_ai_plugin"
-    },
-    {
-      "label": "graphify.js",
-      "file_type": "code",
-      "source_file": ".opencode/plugins/graphify.js",
-      "source_location": "L1",
-      "community": 12,
-      "norm_label": "graphify.js",
-      "id": "opencode_plugins_graphify_js"
-    },
-    {
-      "label": "GraphifyPlugin()",
-      "file_type": "code",
-      "source_file": ".opencode/plugins/graphify.js",
-      "source_location": "L6",
-      "community": 12,
-      "norm_label": "graphifyplugin()",
-      "id": "plugins_graphify_graphifyplugin"
-    },
-    {
-      "label": "Hermes x OpenCode Docker Stack",
+      "label": "tests/run.sh \u2014 E2E Test Orchestrator",
       "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 13,
-      "norm_label": "hermes x opencode docker stack",
-      "id": "README_md_hermes_opencode_stack"
-    },
-    {
-      "label": "hermes-opencode Service",
-      "file_type": "code",
-      "source_file": "docker-compose.yml",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "hermes-opencode service",
-      "id": "docker_compose_yml_service"
-    },
-    {
-      "label": "Hermes WebUI (:8787)",
-      "file_type": "code",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "hermes webui (:8787)",
-      "id": "README_md_hermes_webui"
-    },
-    {
-      "label": "Hermes Gateway (:8642)",
-      "file_type": "code",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "hermes gateway (:8642)",
-      "id": "README_md_hermes_gateway"
-    },
-    {
-      "label": "OpenCode Serve (:4096)",
-      "file_type": "code",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "opencode serve (:4096)",
-      "id": "README_md_opencode_serve"
-    },
-    {
-      "label": "Hermes Agent Runtime",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 6,
-      "norm_label": "hermes agent runtime",
-      "id": "PRD_md_hermes_agent"
-    },
-    {
-      "label": "OpenCode CLI",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "opencode cli",
-      "id": "PRD_md_opencode_cli"
-    },
-    {
-      "label": "Dockerfile",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "dockerfile",
-      "id": "PRD_md_dockerfile"
-    },
-    {
-      "label": "Entrypoint Script (entrypoint.sh)",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "entrypoint script (entrypoint.sh)",
-      "id": "PRD_md_entrypoint_script"
-    },
-    {
-      "label": "Install Skills Script (install-skills.sh)",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "install skills script (install-skills.sh)",
-      "id": "PRD_md_install_skills"
-    },
-    {
-      "label": "discover_models()",
-      "file_type": "code",
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "discover_models()",
-      "id": "doc05_discover_models_fn"
-    },
-    {
-      "label": "generate_config()",
-      "file_type": "code",
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "generate_config()",
-      "id": "doc05_generate_config_fn"
-    },
-    {
-      "label": "generate_opencode_config()",
-      "file_type": "code",
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "generate_opencode_config()",
-      "id": "doc05_generate_opencode_config_fn"
-    },
-    {
-      "label": "ensure_agent()",
-      "file_type": "code",
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "ensure_agent()",
-      "id": "doc05_ensure_agent_fn"
-    },
-    {
-      "label": "start_gateway()",
-      "file_type": "code",
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "start_gateway()",
-      "id": "doc05_start_gateway_fn"
-    },
-    {
-      "label": "start_opencode_serve()",
-      "file_type": "code",
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "start_opencode_serve()",
-      "id": "doc05_start_opencode_serve_fn"
-    },
-    {
-      "label": "wait_for_port()",
-      "file_type": "code",
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "wait_for_port()",
-      "id": "doc05_wait_for_port_fn"
-    },
-    {
-      "label": "CustomProfile UA Patch",
-      "file_type": "code",
-      "source_file": "docs/08-cloudflare-ua-fix.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 6,
-      "norm_label": "customprofile ua patch",
-      "id": "doc08_custom_profile_patch"
-    },
-    {
-      "label": "CustomProfile Class",
-      "file_type": "code",
-      "source_file": "docs/08-cloudflare-ua-fix.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 6,
-      "norm_label": "customprofile class",
-      "id": "doc08_custom_profile_class"
-    },
-    {
-      "label": "Model Discovery Feature",
-      "file_type": "document",
-      "source_file": "docs/10-model-discovery.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "model discovery feature",
-      "id": "doc10_model_discovery"
-    },
-    {
-      "label": "cc-safety-net Plugin",
-      "file_type": "code",
-      "source_file": "docs/12-plugin-system.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "cc-safety-net plugin",
-      "id": "doc12_cc_safety_net"
-    },
-    {
-      "label": "opencode-dcp Plugin",
-      "file_type": "code",
-      "source_file": "docs/12-plugin-system.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "opencode-dcp plugin",
-      "id": "doc12_opencode_dcp"
-    },
-    {
-      "label": "md-table-formatter Plugin",
-      "file_type": "code",
-      "source_file": "docs/12-plugin-system.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "md-table-formatter plugin",
-      "id": "doc12_md_table_formatter"
-    },
-    {
-      "label": "Security Hardening Defense-in-Depth",
-      "file_type": "document",
-      "source_file": "docs/13-security-hardening.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "security hardening defense-in-depth",
-      "id": "doc13_security_hardening"
-    },
-    {
-      "label": "hermeswebui Non-Root User",
-      "file_type": "code",
-      "source_file": "docs/13-security-hardening.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "hermeswebui non-root user",
-      "id": "doc13_hermeswebui_user"
-    },
-    {
-      "label": "External LLM Provider",
-      "file_type": "code",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 6,
-      "norm_label": "external llm provider",
-      "id": "README_md_llm_provider"
-    },
-    {
-      "label": "Node.js 22 Runtime",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "node.js 22 runtime",
-      "id": "PRD_md_nodejs22"
-    },
-    {
-      "label": "Shared Bind Mount (/home/hermeswebui/.hermes)",
-      "file_type": "code",
-      "source_file": "docker-compose.yml",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "shared bind mount (/home/hermeswebui/.hermes)",
-      "id": "docker_compose_yml_bind_mount"
-    },
-    {
-      "label": "AIAgent Class (run_conversation)",
-      "file_type": "code",
-      "source_file": "docs/01-hermes-webui.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "aiagent class (run_conversation)",
-      "id": "doc01_aiagent_class"
-    },
-    {
-      "label": "HERMES_HOME Directory",
-      "file_type": "code",
-      "source_file": "docs/06-config-and-env.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "hermes_home directory",
-      "id": "doc06_hermes_home"
-    },
-    {
-      "label": "Agent Staging Path (/opt/hermes-agent-staging)",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "agent staging path (/opt/hermes-agent-staging)",
-      "id": "PRD_md_agent_staging"
-    },
-    {
-      "label": "Skills Staging Path (/opt/hermes-skills-staging)",
-      "file_type": "code",
-      "source_file": "PRD.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 1,
-      "norm_label": "skills staging path (/opt/hermes-skills-staging)",
-      "id": "PRD_md_skills_staging"
-    },
-    {
-      "label": "Graphify OpenCode Plugin (graphify.js)",
-      "file_type": "code",
-      "source_file": ".opencode/plugins/graphify.js",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 11,
-      "norm_label": "graphify opencode plugin (graphify.js)",
-      "id": "opencode_pkg_graphify_plugin"
-    },
-    {
-      "label": ".opencode/opencode.json Config",
-      "file_type": "code",
-      "source_file": ".opencode/opencode.json",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 11,
-      "norm_label": ".opencode/opencode.json config",
-      "id": "opencode_pkg_project_config"
-    },
-    {
-      "label": "E2E GitHub Actions Workflow",
-      "file_type": "code",
-      "source_file": ".github/workflows/e2e.yml",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "norm_label": "e2e github actions workflow",
-      "id": "e2e_workflow_ci"
-    },
-    {
-      "label": "Test Runner (tests/run.sh)",
-      "file_type": "code",
       "source_file": "tests/run.sh",
       "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
+      "id": "doc_tests_run_sh",
       "community": 3,
-      "norm_label": "test runner (tests/run.sh)",
-      "id": "tests_run_sh_script"
+      "norm_label": "tests/run.sh \u2014 e2e test orchestrator"
     },
     {
-      "label": "Test Helper Library (common.bash)",
-      "file_type": "code",
+      "label": "tests/e2e/test_helper/common.bash \u2014 Bats Helper Library",
+      "file_type": "document",
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
-      "norm_label": "test helper library (common.bash)",
-      "id": "common_bash_helper"
+      "id": "doc_tests_common_bash",
+      "community": 3,
+      "norm_label": "tests/e2e/test_helper/common.bash \u2014 bats helper library"
     },
     {
-      "label": "AGENTS.md Mandated Skills",
+      "label": "docker-compose.override.yml \u2014 Cloudflare Network Override",
+      "file_type": "document",
+      "source_file": "docker-compose.override.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_docker_compose_override",
+      "community": 3,
+      "norm_label": "docker-compose.override.yml \u2014 cloudflare network override"
+    },
+    {
+      "label": "README.md \u2014 User Documentation",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_readme",
+      "community": 2,
+      "norm_label": "readme.md \u2014 user documentation"
+    },
+    {
+      "label": "docker-compose.yml \u2014 Service Definition",
+      "file_type": "document",
+      "source_file": "docker-compose.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_docker_compose",
+      "community": 3,
+      "norm_label": "docker-compose.yml \u2014 service definition"
+    },
+    {
+      "label": "AGENTS.md \u2014 Agent Standing Orders",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": null,
@@ -741,12 +518,25 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 6,
-      "norm_label": "agents.md mandated skills",
-      "id": "AGENTS_md_mandated_skills"
+      "id": "doc_agents",
+      "community": 2,
+      "norm_label": "agents.md \u2014 agent standing orders"
     },
     {
-      "label": "Build Pipeline Document",
+      "label": "PRD.md \u2014 Product Requirements Document",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_prd",
+      "community": 2,
+      "norm_label": "prd.md \u2014 product requirements document"
+    },
+    {
+      "label": "docs/04-build-pipeline.md \u2014 Build Pipeline Architecture",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
       "source_location": null,
@@ -754,12 +544,51 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
-      "norm_label": "build pipeline document",
-      "id": "doc04_build_pipeline"
+      "id": "doc_build_pipeline",
+      "community": 2,
+      "norm_label": "docs/04-build-pipeline.md \u2014 build pipeline architecture"
     },
     {
-      "label": "Entrypoint Sequence Document",
+      "label": "docs/11-skill-installation.md \u2014 Skill Installation Architecture",
+      "file_type": "document",
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_skill_installation",
+      "community": 1,
+      "norm_label": "docs/11-skill-installation.md \u2014 skill installation architecture"
+    },
+    {
+      "label": "docs/01-hermes-webui.md \u2014 Hermes WebUI Architecture",
+      "file_type": "document",
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_hermes_webui",
+      "community": 1,
+      "norm_label": "docs/01-hermes-webui.md \u2014 hermes webui architecture"
+    },
+    {
+      "label": "docs/03-opencode-serve.md \u2014 OpenCode Serve Architecture",
+      "file_type": "document",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_opencode_serve",
+      "community": 6,
+      "norm_label": "docs/03-opencode-serve.md \u2014 opencode serve architecture"
+    },
+    {
+      "label": "docs/05-entrypoint-sequence.md \u2014 Entrypoint Sequence",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
       "source_location": null,
@@ -767,38 +596,90 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
-      "norm_label": "entrypoint sequence document",
-      "id": "doc05_entrypoint_seq"
-    },
-    {
-      "label": "Volume Layout Document",
-      "file_type": "document",
-      "source_file": "docs/07-volume-layout.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "volume layout document",
-      "id": "doc07_volume_layout"
-    },
-    {
-      "label": "Skill Installation Document",
-      "file_type": "document",
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
+      "id": "doc_entrypoint_sequence",
       "community": 4,
-      "norm_label": "skill installation document",
-      "id": "doc11_skill_installation"
+      "norm_label": "docs/05-entrypoint-sequence.md \u2014 entrypoint sequence"
     },
     {
-      "label": "Plugin System Document",
+      "label": "docs/08-cloudflare-ua-fix.md \u2014 Cloudflare UA Fix",
+      "file_type": "document",
+      "source_file": "docs/08-cloudflare-ua-fix.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_cloudflare_ua_fix",
+      "community": 2,
+      "norm_label": "docs/08-cloudflare-ua-fix.md \u2014 cloudflare ua fix"
+    },
+    {
+      "label": "docs/10-model-discovery.md \u2014 Model Discovery & Multi-Model Support",
+      "file_type": "document",
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_model_discovery",
+      "community": 4,
+      "norm_label": "docs/10-model-discovery.md \u2014 model discovery & multi-model support"
+    },
+    {
+      "label": "docs/09-testing-and-verification.md \u2014 Testing and Verification",
+      "file_type": "document",
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_testing_verification",
+      "community": 3,
+      "norm_label": "docs/09-testing-and-verification.md \u2014 testing and verification"
+    },
+    {
+      "label": "docs/06-config-and-env.md \u2014 Configuration and Environment",
+      "file_type": "document",
+      "source_file": "docs/06-config-and-env.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_config_env",
+      "community": 4,
+      "norm_label": "docs/06-config-and-env.md \u2014 configuration and environment"
+    },
+    {
+      "label": "docs/02-hermes-gateway.md \u2014 Hermes Gateway Architecture",
+      "file_type": "document",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_hermes_gateway",
+      "community": 6,
+      "norm_label": "docs/02-hermes-gateway.md \u2014 hermes gateway architecture"
+    },
+    {
+      "label": "docs/13-security-hardening.md \u2014 Security Hardening",
+      "file_type": "document",
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_security_hardening",
+      "community": 7,
+      "norm_label": "docs/13-security-hardening.md \u2014 security hardening"
+    },
+    {
+      "label": "docs/12-plugin-system.md \u2014 OpenCode Plugin System",
       "file_type": "document",
       "source_file": "docs/12-plugin-system.md",
       "source_location": null,
@@ -806,307 +687,681 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 5,
-      "norm_label": "plugin system document",
-      "id": "doc12_plugin_system"
+      "id": "doc_plugin_system",
+      "community": 7,
+      "norm_label": "docs/12-plugin-system.md \u2014 opencode plugin system"
     },
     {
-      "label": "Testing and Verification Document",
+      "label": "docs/07-volume-layout.md \u2014 Volume Layout",
       "file_type": "document",
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "norm_label": "testing and verification document",
-      "id": "doc09_testing_verification"
-    },
-    {
-      "label": "Config and Env Document",
-      "file_type": "document",
-      "source_file": "docs/06-config-and-env.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 0,
-      "norm_label": "config and env document",
-      "id": "doc06_config_and_env"
-    },
-    {
-      "label": "OpenCode Security Modes (strict/standard/yolo)",
-      "file_type": "document",
-      "source_file": "README.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 5,
-      "norm_label": "opencode security modes (strict/standard/yolo)",
-      "id": "README_md_security_modes"
-    },
-    {
-      "label": "state.db SQLite Database",
-      "file_type": "code",
       "source_file": "docs/07-volume-layout.md",
       "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
-      "norm_label": "state.db sqlite database",
-      "id": "doc07_state_db"
+      "id": "doc_volume_layout",
+      "community": 1,
+      "norm_label": "docs/07-volume-layout.md \u2014 volume layout"
     },
     {
-      "label": "config.yaml Generated File",
-      "file_type": "code",
+      "label": ".github/workflows/e2e.yml \u2014 GitHub Actions E2E Workflow",
+      "file_type": "document",
+      "source_file": ".github/workflows/e2e.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "id": "doc_e2e_workflow",
+      "community": 3,
+      "norm_label": ".github/workflows/e2e.yml \u2014 github actions e2e workflow"
+    },
+    {
+      "label": "Hermes WebUI Service (:8787)",
+      "file_type": "rationale",
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Browser-based chat UI hosted on port 8787. Hosts AIAgent in-process via Python ThreadingHTTPServer. Bind address must be 0.0.0.0 inside container for host port mapping to work.",
+      "id": "concept_hermes_webui_service",
+      "community": 1,
+      "norm_label": "hermes webui service (:8787)"
+    },
+    {
+      "label": "Hermes Gateway Service (:8642)",
+      "file_type": "rationale",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "OpenAI-compatible aiohttp API server on port 8642. Runs hermes-agent server-side with tools, memory, skills. Refuses 0.0.0.0 binding without API_SERVER_KEY set.",
+      "id": "concept_hermes_gateway_service",
+      "community": 6,
+      "norm_label": "hermes gateway service (:8642)"
+    },
+    {
+      "label": "OpenCode Serve Service (:4096)",
+      "file_type": "rationale",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Headless OpenCode HTTP server on port 4096 for remote attach. Opt-in via OPENCODE_SERVE_ENABLED (default false) because serve exits immediately without LLM provider and would tear container down via wait -n.",
+      "id": "concept_opencode_serve_service",
+      "community": 6,
+      "norm_label": "opencode serve service (:4096)"
+    },
+    {
+      "label": "Model Discovery Mechanism",
+      "file_type": "rationale",
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Auto-discovers chat models from OPENAI_BASE_URL/models at startup. Filters non-chat (embed, whisper, tts, dall-e, etc.) and wildcard patterns (/*). Falls back to OPENAI_DEFAULT_MODEL on failure.",
+      "id": "concept_model_discovery",
+      "community": 4,
+      "norm_label": "model discovery mechanism"
+    },
+    {
+      "label": "Wildcard Model Filter (IDs ending in /*)",
+      "file_type": "rationale",
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Filters litellm model-group patterns (anthropic/*, openai/*, deepseek/*, openrouter/*, vertex_ai/*) that resolve to 404 errors when used as actual model IDs.",
+      "id": "concept_wildcard_filter",
+      "community": 4,
+      "norm_label": "wildcard model filter (ids ending in /*)"
+    },
+    {
+      "label": "Non-Chat Model Filter",
+      "file_type": "rationale",
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Filters models matching: embed, whisper, tts, dall-e, sora, image, realtime, transcrib, moderat, audio, codegen, babbage, davinci, curie, ada, text-, stable, midjourney, flux, /sd/, mj, replicate, resolution.",
+      "id": "concept_nonchat_filter",
+      "community": 4,
+      "norm_label": "non-chat model filter"
+    },
+    {
+      "label": "Config Generation (config.yaml + opencode.jsonc)",
+      "file_type": "rationale",
       "source_file": "docs/06-config-and-env.md",
       "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
-      "norm_label": "config.yaml generated file",
-      "id": "doc06_config_yaml"
+      "rationale": "Entrypoint regenerates config.yaml and opencode.jsonc from env vars on every boot. Both must write model.default AND model.name to satisfy WebUI's models_cache.json builder and hermes-agent's model resolution.",
+      "id": "concept_config_generation",
+      "community": 4,
+      "norm_label": "config generation (config.yaml + opencode.jsonc)"
     },
     {
-      "label": "opencode.jsonc Generated File",
-      "file_type": "code",
+      "label": "Two-Phase Skill Installation",
+      "file_type": "rationale",
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Build-time install (60s, full git clones) plus runtime cp -a from staging (<1s). Eliminates network fetches at startup. Hermes skills staged at /opt/hermes-skills-staging; OpenCode skills persist in image layer.",
+      "id": "concept_skill_installation",
+      "community": 1,
+      "norm_label": "two-phase skill installation"
+    },
+    {
+      "label": "OpenCode Security Modes (strict/standard/yolo)",
+      "file_type": "rationale",
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "strict=31 bash rules, interpreters denied, .env denied (default, production). standard=22 rules, interpreters allowed (development). yolo=allow all (trusted sandbox). Last-match-wins semantics.",
+      "id": "concept_security_modes",
+      "community": 2,
+      "norm_label": "opencode security modes (strict/standard/yolo)"
+    },
+    {
+      "label": "cc-safety-net Plugin (PreToolUse Hook)",
+      "file_type": "rationale",
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Blocks destructive git (reset --hard, push --force, clean -fd) and filesystem (rm -rf /, chmod 777) commands BEFORE OpenCode permission system. Active in all modes including yolo.",
+      "id": "concept_cc_safety_net",
+      "community": 7,
+      "norm_label": "cc-safety-net plugin (pretooluse hook)"
+    },
+    {
+      "label": "Cloudflare UA Patch (CustomProfile sed)",
+      "file_type": "rationale",
+      "source_file": "docs/08-cloudflare-ua-fix.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Build-time sed patch setting default_headers={User-Agent: hermes-agent/1.0} on CustomProfile class. Required because Cloudflare WAF blocks default OpenAI/Python SDK User-Agent with HTTP 403.",
+      "id": "concept_cloudflare_ua_patch",
+      "community": 2,
+      "norm_label": "cloudflare ua patch (customprofile sed)"
+    },
+    {
+      "label": "Multi-Step Docker Build Pipeline",
+      "file_type": "rationale",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Dockerfile builds single image with WebUI base, system packages, Node.js 22, OpenCode CLI, staged agent source, Cloudflare patch, and pre-installed skills. Targets Linux ARM64. Agent cloned to staging path, not runtime bind mount.",
+      "id": "concept_build_pipeline",
+      "community": 2,
+      "norm_label": "multi-step docker build pipeline"
+    },
+    {
+      "label": "Entrypoint Sequence (13-step startup)",
+      "file_type": "rationale",
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Sequential startup with health gates: skills staging copy \u2192 model discovery \u2192 config gen \u2192 agent copy \u2192 WebUI (:8787) \u2192 wait \u2192 gateway (:8642) \u2192 wait \u2192 opencode serve (:4096, opt-in) \u2192 wait -n.",
+      "id": "concept_entrypoint_sequence",
+      "community": 4,
+      "norm_label": "entrypoint sequence (13-step startup)"
+    },
+    {
+      "label": "Volume Layout (bind mounts)",
+      "file_type": "rationale",
+      "source_file": "docs/07-volume-layout.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "volumes_hermes_opencode/ separates build context from runtime data. Bind mounts: ./data/hermes-home \u2192 /home/hermeswebui/.hermes (agent config, sessions, skills); ./data/workspace \u2192 /workspace.",
+      "id": "concept_volume_layout",
+      "community": 1,
+      "norm_label": "volume layout (bind mounts)"
+    },
+    {
+      "label": "OpenCode Plugin System (npm-resolved)",
+      "file_type": "rationale",
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Three plugins: @tarquinen/opencode-dcp (context pruning), @franlol/opencode-md-table-formatter, cc-safety-net. Resolved via Node.js npm at $HOME/.config/opencode/node_modules/. Requires Node.js 22.",
+      "id": "concept_plugin_system",
+      "community": 7,
+      "norm_label": "opencode plugin system (npm-resolved)"
+    },
+    {
+      "label": "Acceptance Criteria (AC1-AC29)",
+      "file_type": "rationale",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "29 acceptance criteria in PRD covering build success, healthcheck, WebUI, agent presence, UA patch, config generation, OpenCode availability, LLM calls, secrets hygiene, second boot speed, model discovery, security mode, skills, graphify.",
+      "id": "concept_acceptance_criteria",
+      "community": 3,
+      "norm_label": "acceptance criteria (ac1-ac29)"
+    },
+    {
+      "label": "Bats E2E Test Suite",
+      "file_type": "rationale",
+      "source_file": "tests/run.sh",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "59 bats tests under tests/e2e/ run via tests/run.sh. Builds image, starts stack, waits for healthy, runs bats. Maps to AC1-AC29. Triggered on push/PR to main via GitHub Actions.",
+      "id": "concept_e2e_tests",
+      "community": 3,
+      "norm_label": "bats e2e test suite"
+    },
+    {
+      "label": "Graphify Integration (cross-platform skill)",
+      "file_type": "rationale",
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "graphifyy PyPI package installed via uv tool install. Registers skills for both OpenCode and Hermes at build time using HOME=/home/hermeswebui override. Binary at /usr/local/bin/graphify. Runtime re-registration is overlayfs safety net.",
+      "id": "concept_graphify_integration",
+      "community": 1,
+      "norm_label": "graphify integration (cross-platform skill)"
+    },
+    {
+      "label": "Hermes Agent (NousResearch/hermes-agent)",
+      "file_type": "rationale",
+      "source_file": "PRD.md",
+      "source_location": null,
+      "source_url": "https://github.com/NousResearch/hermes-agent",
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "AI agent runtime. Git cloned at build to /opt/hermes-agent-staging. Copied to bind mount /home/hermeswebui/.hermes/hermes-agent on first boot. Version pinned via HERMES_AGENT_VERSION build arg.",
+      "id": "concept_hermes_agent",
+      "community": 1,
+      "norm_label": "hermes agent (nousresearch/hermes-agent)"
+    },
+    {
+      "label": "HERMES_API_KEY (auto-generated gateway token)",
+      "file_type": "rationale",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Bearer token for Agent API :8642. Auto-generated as hermes-<32 hex chars> when empty, printed to container logs. Required for 0.0.0.0 binding because api_server refuses without key.",
+      "id": "concept_hermes_api_key",
+      "community": 6,
+      "norm_label": "hermes_api_key (auto-generated gateway token)"
+    },
+    {
+      "label": "Build-Time Staging Paths (/opt/*-staging)",
+      "file_type": "rationale",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Agent at /opt/hermes-agent-staging (~50MB), skills at /opt/hermes-skills-staging (~10MB). Separation required because runtime paths are bind mounts that start empty on first boot. Staging paths persist in image layer.",
+      "id": "concept_staging_paths",
+      "community": 1,
+      "norm_label": "build-time staging paths (/opt/*-staging)"
+    },
+    {
+      "label": "/workspace Bind Mount",
+      "file_type": "rationale",
+      "source_file": "docs/07-volume-layout.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "User project workspace mounted at /workspace inside container, configurable via HERMES_WORKSPACE env. Always trusted by resolve_trusted_workspace() because DEFAULT_WORKSPACE=/workspace is hardcoded.",
+      "id": "concept_workspace_bind_mount",
+      "community": 1,
+      "norm_label": "/workspace bind mount"
+    },
+    {
+      "label": "hermeswebui User Isolation (UID 1000)",
+      "file_type": "rationale",
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Gateway and opencode serve run as hermeswebui via su -s /bin/bash. Reduces filesystem blast radius \u2014 cannot write to /usr/local/bin, /opt, /root. Entrypoint (PID 1) runs as root.",
+      "id": "concept_user_isolation",
+      "community": 6,
+      "norm_label": "hermeswebui user isolation (uid 1000)"
+    },
+    {
+      "label": "@tarquinen/opencode-dcp (Context Pruner)",
+      "file_type": "rationale",
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Context transform plugin that prunes low-relevance messages from conversation to reduce token usage. npm spec @tarquinen/opencode-dcp@latest.",
+      "id": "concept_opencode_dcp_plugin",
+      "community": 7,
+      "norm_label": "@tarquinen/opencode-dcp (context pruner)"
+    },
+    {
+      "label": "@franlol/opencode-md-table-formatter",
+      "file_type": "rationale",
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Output transform plugin that normalizes markdown tables in tool output for consistent rendering. npm spec @franlol/opencode-md-table-formatter@latest.",
+      "id": "concept_md_table_formatter",
+      "community": 7,
+      "norm_label": "@franlol/opencode-md-table-formatter"
+    },
+    {
+      "label": "state.db (SQLite Session Store)",
+      "file_type": "rationale",
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "SQLite database at /home/hermeswebui/.hermes/state.db stores session history. Persisted across container restarts via bind mount. Should be backed up when container is stopped to avoid corruption.",
+      "id": "concept_state_db",
+      "community": 1,
+      "norm_label": "state.db (sqlite session store)"
+    },
+    {
+      "label": "X-Hermes-Session-Id Header (Session Continuity)",
+      "file_type": "rationale",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "HTTP header to continue existing conversation via gateway. Pair with X-Hermes-Session-Key for long-term memory scoping.",
+      "id": "concept_x_hermes_session_header",
+      "community": 1,
+      "norm_label": "x-hermes-session-id header (session continuity)"
+    },
+    {
+      "label": "wait -n Process Supervisor",
+      "file_type": "rationale",
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Bash builtin used by entrypoint to block until any background process (WebUI, gateway, opencode serve) exits. Propagates any crash as container exit. This is why OPENCODE_SERVE_ENABLED defaults to false \u2014 opencode serve exits without LLM provider and would tear container down.",
+      "id": "concept_wait_n_supervisor",
+      "community": 6,
+      "norm_label": "wait -n process supervisor"
+    },
+    {
+      "label": "Node.js 22 Requirement",
+      "file_type": "rationale",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Installed via nodesource setup_22.x. Required for OpenCode's npm-based plugin resolution at runtime. Constraint C9 in PRD.",
+      "id": "concept_nodejs_22",
+      "community": 2,
+      "norm_label": "node.js 22 requirement"
+    },
+    {
+      "label": "Docker Healthcheck (bash healthcheck.sh)",
+      "file_type": "rationale",
+      "source_file": "docker-compose.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Healthcheck runs bash /usr/local/bin/healthcheck.sh every 10s with 120s start_period and 10 retries. Used by tests/run.sh wait loop and GitHub Actions to gate test execution.",
+      "id": "concept_healthcheck",
+      "community": 3,
+      "norm_label": "docker healthcheck (bash healthcheck.sh)"
+    },
+    {
+      "label": "OpenAI-Compatible API Surface",
+      "file_type": "rationale",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "Gateway exposes /v1/chat/completions, /v1/models, /v1/responses, /v1/runs. Compatible with Open WebUI, LobeChat, LibreChat, AnythingLLM, ChatBox, NextChat.",
+      "id": "concept_openai_compatible_api",
+      "community": 6,
+      "norm_label": "openai-compatible api surface"
+    },
+    {
+      "label": "portainer-cloudflare-traefik_default Network",
+      "file_type": "rationale",
+      "source_file": "docker-compose.override.yml",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "External docker network defined in docker-compose.override.yml. Service joins with alias vanilla-hermes-opencode. Used by Portainer/Cloudflare/Traefik reverse proxy stack.",
+      "id": "concept_cloudflare_network",
+      "community": 3,
+      "norm_label": "portainer-cloudflare-traefik_default network"
+    },
+    {
+      "label": "Seven Skill Upstream Sources",
+      "file_type": "rationale",
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": null,
+      "source_url": null,
+      "captured_at": null,
+      "author": null,
+      "contributor": null,
+      "rationale": "anthropics/skills (6 OpenCode), openai/skills (4 OpenCode), multica-ai/andrej-karpathy-skills (1 OpenCode), coding-agents-docs-guideline (1 OpenCode), opencode-plan-build-orchestrator (1 both), phuryn/pm-skills (~55 Hermes), graphifyy PyPI (1 both). Total 14 OpenCode + ~67 Hermes skills.",
+      "id": "concept_skill_sources",
+      "community": 1,
+      "norm_label": "seven skill upstream sources"
+    },
+    {
+      "label": "model.default AND model.name Keys",
+      "file_type": "rationale",
       "source_file": "docs/06-config-and-env.md",
       "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 0,
-      "norm_label": "opencode.jsonc generated file",
-      "id": "doc06_opencode_jsonc"
-    },
-    {
-      "label": "Docker Build Steps (11-stage pipeline)",
-      "file_type": "document",
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Lines 18-32",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 7,
-      "norm_label": "docker build steps (11-stage pipeline)",
-      "id": "doc04_docker_build_steps"
-    },
-    {
-      "label": "Build Pipeline Risks",
-      "file_type": "document",
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Lines 98-110",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 7,
-      "norm_label": "build pipeline risks",
-      "id": "doc04_build_risks"
-    },
-    {
-      "label": "Staging Directory Overhead (~60MB)",
-      "file_type": "document",
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Lines 102-103",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 7,
-      "norm_label": "staging directory overhead (~60mb)",
-      "id": "doc04_staging_overhead"
-    },
-    {
-      "label": "Build-time graphify Dual-Platform Install",
-      "file_type": "document",
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Line 54",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
+      "rationale": "Both keys must be written to config.yaml. WebUI's get_effective_default_model() reads model.default without fallback. hermes-agent reads model.default with fallback to model.name. Missing default \u2192 empty models_cache.json. Constraint C7 in PRD.",
+      "id": "concept_model_default_name_keys",
       "community": 4,
-      "norm_label": "build-time graphify dual-platform install",
-      "id": "doc04_graphify_dual_platform"
+      "norm_label": "model.default and model.name keys"
     },
     {
-      "label": "COPY Scripts to /usr/local/bin (Dockerfile Step 8)",
-      "file_type": "document",
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Line 29",
+      "label": "Linux ARM64 Target Platform",
+      "file_type": "rationale",
+      "source_file": "PRD.md",
+      "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
-      "norm_label": "copy scripts to /usr/local/bin (dockerfile step 8)",
-      "id": "doc04_copy_scripts_step"
+      "rationale": "Must build and run on ARM64 (Raspberry Pi CM5). Constraint C1. ARM64 overlayfs may drop new layers \u2014 motivates runtime graphify re-registration and inline command: docker-compose overrides.",
+      "id": "concept_arm64_target",
+      "community": 2,
+      "norm_label": "linux arm64 target platform"
     },
     {
-      "label": "29 Acceptance Criteria (AC1-AC29)",
-      "file_type": "document",
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 172-203",
+      "label": "Secrets Handling (key_env vs literal)",
+      "file_type": "rationale",
+      "source_file": "AGENTS.md",
+      "source_location": null,
       "source_url": null,
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 3,
-      "norm_label": "29 acceptance criteria (ac1-ac29)",
-      "id": "doc09_acceptance_criteria_29"
-    },
-    {
-      "label": "Graphify Integration Tests (AC26-AC29)",
-      "file_type": "document",
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 198-202",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "norm_label": "graphify integration tests (ac26-ac29)",
-      "id": "doc09_graphify_integration_tests"
-    },
-    {
-      "label": "Full Smoke Test Script (12 steps)",
-      "file_type": "document",
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 108-168",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "norm_label": "full smoke test script (12 steps)",
-      "id": "doc09_smoke_test_script"
-    },
-    {
-      "label": "Runtime Security Hardening Checks",
-      "file_type": "document",
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 173-196",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "norm_label": "runtime security hardening checks",
-      "id": "doc09_security_checks"
-    },
-    {
-      "label": "Testing Known Issues (has_key, API key, SSE)",
-      "file_type": "document",
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 221-227",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 3,
-      "norm_label": "testing known issues (has_key, api key, sse)",
-      "id": "doc09_known_issues"
-    },
-    {
-      "label": "Two-Phase Skill Architecture (Build + Runtime)",
-      "file_type": "document",
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 20-25",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 4,
-      "norm_label": "two-phase skill architecture (build + runtime)",
-      "id": "doc11_two_phase_architecture"
-    },
-    {
-      "label": "Seven Upstream Skill Sources",
-      "file_type": "document",
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 70-78",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 4,
-      "norm_label": "seven upstream skill sources",
-      "id": "doc11_seven_skill_sources"
-    },
-    {
-      "label": "Graphify Install Mechanics (HOME override, PATH fix, staging copy)",
-      "file_type": "document",
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 141-163",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 4,
-      "norm_label": "graphify install mechanics (home override, path fix, staging copy)",
-      "id": "doc11_graphify_install_mechanics"
-    },
-    {
-      "label": "Sparse Clone Helper (clone_sparse)",
-      "file_type": "document",
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 169-174",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 4,
-      "norm_label": "sparse clone helper (clone_sparse)",
-      "id": "doc11_sparse_clone_helper"
-    },
-    {
-      "label": "Platform Discovery Differences (OpenCode flat vs Hermes recursive)",
-      "file_type": "document",
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 178-182",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 4,
-      "norm_label": "platform discovery differences (opencode flat vs hermes recursive)",
-      "id": "doc11_platform_discovery_diff"
-    },
-    {
-      "label": "Skill Installation Timing Impact (build 60s, runtime <1s)",
-      "file_type": "document",
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 193-198",
-      "source_url": null,
-      "captured_at": null,
-      "author": null,
-      "contributor": null,
-      "community": 4,
-      "norm_label": "skill installation timing impact (build 60s, runtime <1s)",
-      "id": "doc11_skill_timing_impact"
+      "rationale": "No hardcoded secrets in tracked files (public repo). config.yaml uses key_env: OPENAI_API_KEY (literal string, not expanded value). opencode.jsonc uses {env:OPENAI_API_KEY} interpolation. Constraint C2, C3.",
+      "id": "concept_secrets_handling",
+      "community": 2,
+      "norm_label": "secrets handling (key_env vs literal)"
     }
   ],
   "links": [
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_graphifyignore_patterns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_needs_graph",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_scan_root",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_skipped_sensitive",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_total_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_total_words",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "graphify_detect_json",
+      "target": "hermes_x_opencode_graphify_detect_warning",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "hermes_x_opencode_graphify_detect_files",
+      "target": "hermes_x_opencode_graphify_detect_files_code",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "hermes_x_opencode_graphify_detect_files",
+      "target": "hermes_x_opencode_graphify_detect_files_document",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "hermes_x_opencode_graphify_detect_files",
+      "target": "hermes_x_opencode_graphify_detect_files_image",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "hermes_x_opencode_graphify_detect_files",
+      "target": "hermes_x_opencode_graphify_detect_files_paper",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".graphify_detect.json",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "hermes_x_opencode_graphify_detect_files",
+      "target": "hermes_x_opencode_graphify_detect_files_video",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "tests/run.sh",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tests_run_sh",
-      "target": "home_bachkukkik_archives_git_repos_sandbox_hermes_x_opencode_tests_run_sh__entry"
+      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_run_sh__entry",
+      "confidence_score": 1.0
     },
     {
       "relation": "defines",
@@ -1114,9 +1369,9 @@
       "source_file": "tests/run.sh",
       "source_location": "L12",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tests_run_sh",
-      "target": "tests_run_cleanup"
+      "target": "tests_run_cleanup",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -1124,49 +1379,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L1",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "home_bachkukkik_archives_git_repos_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/e2e/test_helper/common.bash",
-      "source_location": "L14",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_get_container"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/e2e/test_helper/common.bash",
-      "source_location": "L18",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_wait_for_healthy"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/e2e/test_helper/common.bash",
-      "source_location": "L37",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_get_api_key"
-    },
-    {
-      "relation": "defines",
-      "confidence": "EXTRACTED",
-      "source_file": "tests/e2e/test_helper/common.bash",
-      "source_location": "L52",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_webui_base"
+      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry",
+      "confidence_score": 1.0
     },
     {
       "relation": "defines",
@@ -1174,9 +1389,29 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L56",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_gateway_base"
+      "target": "test_helper_common_gateway_base",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "tests_e2e_test_helper_common_bash",
+      "target": "test_helper_common_get_api_key",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "tests_e2e_test_helper_common_bash",
+      "target": "test_helper_common_get_container",
+      "confidence_score": 1.0
     },
     {
       "relation": "defines",
@@ -1184,9 +1419,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L60",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_opencode_base"
+      "target": "test_helper_common_opencode_base",
+      "confidence_score": 1.0
     },
     {
       "relation": "defines",
@@ -1194,1019 +1429,1578 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L64",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_skip_if_no_secrets"
+      "target": "test_helper_common_skip_if_no_secrets",
+      "confidence_score": 1.0
     },
     {
-      "relation": "contains",
+      "relation": "defines",
       "confidence": "EXTRACTED",
-      "source_file": ".opencode/opencode.json",
-      "source_location": "L2",
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": "L18",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "opencode_opencode_json",
-      "target": "opencode_opencode_schema"
+      "source": "tests_e2e_test_helper_common_bash",
+      "target": "test_helper_common_wait_for_healthy",
+      "confidence_score": 1.0
     },
     {
-      "relation": "contains",
+      "relation": "defines",
       "confidence": "EXTRACTED",
-      "source_file": ".opencode/opencode.json",
-      "source_location": "L3",
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": "L52",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "opencode_opencode_json",
-      "target": "opencode_opencode_plugin"
+      "source": "tests_e2e_test_helper_common_bash",
+      "target": "test_helper_common_webui_base",
+      "confidence_score": 1.0
     },
     {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".opencode/package.json",
-      "source_location": "L2",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": ".github/workflows/e2e.yml",
+      "source_location": "Workflow invokes tests/run.sh",
       "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "opencode_package_json",
-      "target": "opencode_package_dependencies"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".opencode/package.json",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "opencode_package_dependencies",
-      "target": "opencode_package_dependencies_opencode_ai_plugin"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".opencode/plugins/graphify.js",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "opencode_plugins_graphify_js",
-      "target": "plugins_graphify_graphifyplugin"
-    },
-    {
-      "relation": "hosts",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 16",
-      "weight": 1.0,
-      "source": "docker_compose_yml_service",
-      "target": "README_md_hermes_webui"
-    },
-    {
-      "relation": "hosts",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 28",
-      "weight": 1.0,
-      "source": "docker_compose_yml_service",
-      "target": "README_md_hermes_gateway"
-    },
-    {
-      "relation": "hosts",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "README.md",
-      "source_location": "line 36",
-      "weight": 1.0,
-      "source": "docker_compose_yml_service",
-      "target": "README_md_opencode_serve"
-    },
-    {
-      "relation": "uses",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docker-compose.yml",
-      "source_location": "line 11",
-      "weight": 1.0,
-      "source": "docker_compose_yml_service",
-      "target": "docker_compose_yml_bind_mount"
+      "source": "doc_tests_run_sh",
+      "target": "doc_e2e_workflow"
     },
     {
       "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "Verdict mentions tests/run.sh",
+      "weight": 1.0,
+      "source": "doc_testing_verification",
+      "target": "doc_tests_run_sh"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_tests_common_bash",
+      "target": "doc_tests_run_sh"
+    },
+    {
+      "relation": "implements",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/run.sh",
-      "source_location": "line 10",
+      "source_location": null,
       "weight": 1.0,
-      "source": "docker_compose_yml_service",
-      "target": "tests_run_sh_script"
+      "source": "doc_tests_run_sh",
+      "target": "concept_e2e_tests"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/run.sh",
+      "source_location": "Health wait loop",
+      "weight": 1.0,
+      "source": "doc_tests_run_sh",
+      "target": "concept_healthcheck"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/run.sh",
+      "source_location": "COMPOSE_OPTS uses docker-compose.yml",
+      "weight": 1.0,
+      "source": "doc_tests_run_sh",
+      "target": "doc_docker_compose"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "bats test suite",
+      "weight": 1.0,
+      "source": "doc_testing_verification",
+      "target": "doc_tests_common_bash"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "tests/e2e/test_helper/common.bash",
-      "source_location": "line 12",
+      "source_location": "gateway_base()",
       "weight": 1.0,
-      "source": "docker_compose_yml_service",
-      "target": "common_bash_helper"
+      "source": "doc_tests_common_bash",
+      "target": "concept_hermes_gateway_service"
     },
     {
-      "relation": "referenced_by",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/06-config-and-env.md",
-      "source_location": "line 128",
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": "webui_base()",
       "weight": 1.0,
-      "source": "README_md_hermes_webui",
-      "target": "doc06_config_yaml"
+      "source": "doc_tests_common_bash",
+      "target": "concept_hermes_webui_service"
     },
     {
-      "relation": "uses",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/01-hermes-webui.md",
-      "source_location": "line 11",
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": "opencode_base()",
       "weight": 1.0,
-      "source": "README_md_hermes_webui",
-      "target": "doc01_aiagent_class"
+      "source": "doc_tests_common_bash",
+      "target": "concept_opencode_serve_service"
     },
     {
-      "relation": "semantically_similar_to",
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/e2e/test_helper/common.bash",
+      "source_location": "COMPOSE_OPTS",
+      "weight": 1.0,
+      "source": "doc_tests_common_bash",
+      "target": "doc_docker_compose"
+    },
+    {
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.override.yml",
+      "source_location": "networks: cloudflare",
+      "weight": 1.0,
+      "source": "doc_docker_compose_override",
+      "target": "concept_cloudflare_network"
+    },
+    {
+      "relation": "configures",
       "confidence": "INFERRED",
-      "confidence_score": 0.7,
+      "confidence_score": 0.8,
+      "source_file": "docker-compose.override.yml",
+      "source_location": "Adds network alias for service",
+      "weight": 1.0,
+      "source": "doc_docker_compose_override",
+      "target": "concept_hermes_webui_service"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.override.yml",
+      "source_location": "extends services: hermes-opencode",
+      "weight": 1.0,
+      "source": "doc_docker_compose_override",
+      "target": "doc_docker_compose"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "README.md",
       "source_location": null,
-      "weight": 0.7,
-      "source": "README_md_hermes_webui",
-      "target": "README_md_hermes_gateway"
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "doc_readme"
     },
     {
-      "relation": "starts",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 41",
+      "source_file": "README.md",
+      "source_location": "Troubleshooting Cloudflare 403",
       "weight": 1.0,
-      "source": "README_md_hermes_webui",
-      "target": "PRD_md_entrypoint_script"
+      "source": "doc_readme",
+      "target": "concept_cloudflare_ua_patch"
     },
     {
-      "relation": "referenced_by",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/06-config-and-env.md",
-      "source_location": "line 129",
+      "source_file": "README.md",
+      "source_location": "Service Details",
       "weight": 1.0,
-      "source": "README_md_hermes_gateway",
-      "target": "doc06_config_yaml"
+      "source": "doc_readme",
+      "target": "concept_hermes_gateway_service"
     },
     {
-      "relation": "runs_as",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/13-security-hardening.md",
-      "source_location": "line 35",
+      "source_file": "README.md",
+      "source_location": "Service Details",
       "weight": 1.0,
-      "source": "README_md_hermes_gateway",
-      "target": "doc13_hermeswebui_user"
+      "source": "doc_readme",
+      "target": "concept_hermes_webui_service"
     },
     {
-      "relation": "uses",
-      "confidence": "INFERRED",
-      "confidence_score": 0.85,
-      "source_file": "docs/02-hermes-gateway.md",
-      "source_location": null,
-      "weight": 0.85,
-      "source": "README_md_hermes_gateway",
-      "target": "doc01_aiagent_class"
-    },
-    {
-      "relation": "starts",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 58",
+      "source_file": "README.md",
+      "source_location": "Model Discovery section",
       "weight": 1.0,
-      "source": "README_md_hermes_gateway",
-      "target": "doc05_start_gateway_fn"
+      "source": "doc_readme",
+      "target": "concept_model_discovery"
     },
     {
-      "relation": "referenced_by",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/06-config-and-env.md",
-      "source_location": "line 130",
+      "source_file": "README.md",
+      "source_location": "Service Details",
       "weight": 1.0,
-      "source": "README_md_opencode_serve",
-      "target": "doc06_opencode_jsonc"
+      "source": "doc_readme",
+      "target": "concept_opencode_serve_service"
     },
     {
-      "relation": "runs_as",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/13-security-hardening.md",
-      "source_location": "line 36",
+      "source_file": "README.md",
+      "source_location": "Security Modes",
       "weight": 1.0,
-      "source": "README_md_opencode_serve",
-      "target": "doc13_hermeswebui_user"
-    },
-    {
-      "relation": "starts",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 59",
-      "weight": 1.0,
-      "source": "README_md_opencode_serve",
-      "target": "doc05_start_opencode_serve_fn"
-    },
-    {
-      "relation": "uses",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/08-cloudflare-ua-fix.md",
-      "source_location": "line 5",
-      "weight": 1.0,
-      "source": "PRD_md_hermes_agent",
-      "target": "doc08_custom_profile_class"
-    },
-    {
-      "relation": "is_instance_of",
-      "confidence": "INFERRED",
-      "confidence_score": 0.9,
-      "source_file": "docs/01-hermes-webui.md",
-      "source_location": null,
-      "weight": 0.9,
-      "source": "PRD_md_hermes_agent",
-      "target": "doc01_aiagent_class"
-    },
-    {
-      "relation": "installs_skills_to",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "line 60",
-      "weight": 1.0,
-      "source": "PRD_md_hermes_agent",
-      "target": "doc11_skill_installation"
+      "source": "doc_readme",
+      "target": "concept_security_modes"
     },
     {
       "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "AGENTS.md",
-      "source_location": "line 3",
+      "source_location": null,
       "weight": 1.0,
-      "source": "PRD_md_hermes_agent",
-      "target": "AGENTS_md_mandated_skills"
+      "source": "doc_agents",
+      "target": "doc_docker_compose"
     },
     {
-      "relation": "installs",
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml",
+      "source_location": "healthcheck block",
+      "weight": 1.0,
+      "source": "doc_docker_compose",
+      "target": "concept_healthcheck"
+    },
+    {
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml",
+      "source_location": "ports: ${HERMES_API_PORT:-8642}:8642",
+      "weight": 1.0,
+      "source": "doc_docker_compose",
+      "target": "concept_hermes_gateway_service"
+    },
+    {
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml",
+      "source_location": "ports: ${HERMES_WEBUI_PORT:-8787}:8787",
+      "weight": 1.0,
+      "source": "doc_docker_compose",
+      "target": "concept_hermes_webui_service"
+    },
+    {
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml",
+      "source_location": "ports: ${OPENCODE_SERVE_PORT:-4096}:4096",
+      "weight": 1.0,
+      "source": "doc_docker_compose",
+      "target": "concept_opencode_serve_service"
+    },
+    {
+      "relation": "configures",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docker-compose.yml",
+      "source_location": "WANTED_UID/WANTED_GID env",
+      "weight": 1.0,
+      "source": "doc_docker_compose",
+      "target": "concept_user_isolation"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml",
+      "source_location": "volumes block",
+      "weight": 1.0,
+      "source": "doc_docker_compose",
+      "target": "concept_volume_layout"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": ".github/workflows/e2e.yml",
+      "source_location": "Indirect via tests/run.sh COMPOSE_OPTS",
+      "weight": 1.0,
+      "source": "doc_e2e_workflow",
+      "target": "doc_docker_compose"
+    },
+    {
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PRD.md",
-      "source_location": "line 138",
+      "source_location": "Section 5.3 compose spec",
       "weight": 1.0,
-      "source": "PRD_md_opencode_cli",
-      "target": "PRD_md_dockerfile"
+      "source": "doc_prd",
+      "target": "doc_docker_compose"
     },
     {
-      "relation": "installs_skills_to",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "line 60",
+      "source_file": "AGENTS.md",
+      "source_location": "Section 3 Docker/Build Constraints",
       "weight": 1.0,
-      "source": "PRD_md_opencode_cli",
-      "target": "doc11_skill_installation"
+      "source": "doc_agents",
+      "target": "concept_arm64_target"
     },
     {
-      "relation": "copies",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "Section 7 Project-Specific Patterns",
+      "weight": 1.0,
+      "source": "doc_agents",
+      "target": "concept_cloudflare_ua_patch"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "AGENTS.md",
+      "source_location": "Implicit via build constraints",
+      "weight": 1.0,
+      "source": "doc_agents",
+      "target": "concept_nodejs_22"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "Section 7 model discovery filters",
+      "weight": 1.0,
+      "source": "doc_agents",
+      "target": "concept_nonchat_filter"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "Code Quality Rules",
+      "weight": 1.0,
+      "source": "doc_agents",
+      "target": "concept_secrets_handling"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": "Section 5",
+      "weight": 1.0,
+      "source": "doc_agents",
+      "target": "concept_security_modes"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_agents",
+      "target": "doc_prd"
+    },
+    {
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PRD.md",
-      "source_location": "line 155",
+      "source_location": "Section 10",
       "weight": 1.0,
-      "source": "PRD_md_dockerfile",
-      "target": "PRD_md_entrypoint_script"
+      "source": "doc_prd",
+      "target": "concept_acceptance_criteria"
     },
     {
-      "relation": "copies",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PRD.md",
-      "source_location": "line 154",
+      "source_location": "Constraint C1",
       "weight": 1.0,
-      "source": "PRD_md_dockerfile",
-      "target": "PRD_md_install_skills"
+      "source": "doc_prd",
+      "target": "concept_arm64_target"
     },
     {
-      "relation": "applies",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PRD.md",
-      "source_location": "line 150",
+      "source_location": "Constraint C4",
       "weight": 1.0,
-      "source": "PRD_md_dockerfile",
-      "target": "doc08_custom_profile_patch"
+      "source": "doc_prd",
+      "target": "concept_cloudflare_ua_patch"
     },
     {
-      "relation": "installs",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PRD.md",
-      "source_location": "line 132",
+      "source_location": "Section 2 Component Roles",
       "weight": 1.0,
-      "source": "PRD_md_dockerfile",
-      "target": "PRD_md_nodejs22"
+      "source": "doc_prd",
+      "target": "concept_hermes_agent"
     },
     {
-      "relation": "clones_to",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PRD.md",
-      "source_location": "line 145",
+      "source_location": "Section 2",
       "weight": 1.0,
-      "source": "PRD_md_dockerfile",
-      "target": "PRD_md_agent_staging"
+      "source": "doc_prd",
+      "target": "concept_hermes_gateway_service"
     },
     {
-      "relation": "installs_to",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "PRD.md",
-      "source_location": "line 157",
+      "source_location": "Section 2",
       "weight": 1.0,
-      "source": "PRD_md_dockerfile",
-      "target": "PRD_md_skills_staging"
+      "source": "doc_prd",
+      "target": "concept_hermes_webui_service"
     },
     {
-      "relation": "documents",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Constraint C7",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "concept_model_default_name_keys"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Constraint C9",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "concept_nodejs_22"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Section 2",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "concept_opencode_serve_service"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Constraints C2, C3",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "concept_secrets_handling"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Constraint C8",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "concept_staging_paths"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Section 5.1 Dockerfile spec",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "doc_build_pipeline"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Section 7 Configuration Reference",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "doc_config_env"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Section 5.2 entrypoint spec",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "doc_entrypoint_sequence"
+    },
+    {
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "PRD.md",
+      "source_location": "Section 4 File Inventory",
+      "weight": 1.0,
+      "source": "doc_prd",
+      "target": "doc_volume_layout"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "Maps directly to AC in PRD.md",
+      "weight": 1.0,
+      "source": "doc_testing_verification",
+      "target": "doc_prd"
+    },
+    {
+      "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "line 16",
+      "source_location": null,
       "weight": 1.0,
-      "source": "PRD_md_dockerfile",
-      "target": "doc04_build_pipeline"
+      "source": "doc_build_pipeline",
+      "target": "concept_build_pipeline"
     },
     {
-      "relation": "calls",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 54",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": "Step 7 sed",
       "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_discover_models_fn"
+      "source": "doc_build_pipeline",
+      "target": "concept_cloudflare_ua_patch"
     },
     {
-      "relation": "calls",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 55",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": "Skill staging section",
       "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_generate_config_fn"
+      "source": "doc_build_pipeline",
+      "target": "concept_graphify_integration"
     },
     {
-      "relation": "calls",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 56",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": "Step 5",
       "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_generate_opencode_config_fn"
+      "source": "doc_build_pipeline",
+      "target": "concept_nodejs_22"
     },
     {
-      "relation": "calls",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 57",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": "Agent staging",
       "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_ensure_agent_fn"
+      "source": "doc_build_pipeline",
+      "target": "concept_staging_paths"
     },
     {
-      "relation": "calls",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 43",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": "Step 7",
       "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_start_gateway_fn"
+      "source": "doc_build_pipeline",
+      "target": "doc_cloudflare_ua_fix"
     },
     {
-      "relation": "calls",
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": "Build hands off to entrypoint at runtime",
+      "weight": 1.0,
+      "source": "doc_build_pipeline",
+      "target": "doc_entrypoint_sequence"
+    },
+    {
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 45",
+      "source_file": "docs/04-build-pipeline.md",
+      "source_location": "Skill staging section",
       "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_start_opencode_serve_fn"
+      "source": "doc_build_pipeline",
+      "target": "doc_skill_installation"
     },
     {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 60",
-      "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_wait_for_port_fn"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 18",
-      "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc05_entrypoint_seq"
-    },
-    {
-      "relation": "exports",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 34",
-      "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "doc06_hermes_home"
-    },
-    {
-      "relation": "copies_from",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 36",
-      "weight": 1.0,
-      "source": "PRD_md_entrypoint_script",
-      "target": "PRD_md_skills_staging"
-    },
-    {
-      "relation": "implements",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "line 16",
+      "source_location": "Source 7: graphify",
       "weight": 1.0,
-      "source": "PRD_md_install_skills",
-      "target": "doc11_skill_installation"
+      "source": "doc_skill_installation",
+      "target": "concept_graphify_integration"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_skill_installation",
+      "target": "concept_skill_installation"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": "Skill sources table",
+      "weight": 1.0,
+      "source": "doc_skill_installation",
+      "target": "concept_skill_sources"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": "Runtime copy \u2192 07 \u2014 Volume Layout",
+      "weight": 1.0,
+      "source": "doc_skill_installation",
+      "target": "doc_volume_layout"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_hermes_webui",
+      "target": "concept_hermes_webui_service"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": "models_cache.json default_model",
+      "weight": 1.0,
+      "source": "doc_hermes_webui",
+      "target": "concept_model_default_name_keys"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": "Session management",
+      "weight": 1.0,
+      "source": "doc_hermes_webui",
+      "target": "concept_state_db"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": "Both read same config.yaml",
+      "weight": 1.0,
+      "source": "doc_hermes_webui",
+      "target": "doc_hermes_gateway"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "Both run as hermeswebui via su, sequential startup",
+      "weight": 1.0,
+      "source": "doc_hermes_gateway",
+      "target": "doc_opencode_serve"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_opencode_serve",
+      "target": "concept_opencode_serve_service"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "Run user: hermeswebui",
+      "weight": 1.0,
+      "source": "doc_opencode_serve",
+      "target": "concept_user_isolation"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_opencode_serve",
+      "target": "concept_wait_n_supervisor"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "generate_config() and generate_opencode_config()",
+      "weight": 1.0,
+      "source": "doc_entrypoint_sequence",
+      "target": "concept_config_generation"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_entrypoint_sequence",
+      "target": "concept_entrypoint_sequence"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "discover_models() function",
+      "weight": 1.0,
+      "source": "doc_entrypoint_sequence",
+      "target": "concept_model_discovery"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "model.default vs model.name mismatch",
+      "weight": 1.0,
+      "source": "doc_entrypoint_sequence",
+      "target": "doc_config_env"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "Model discovery details",
+      "weight": 1.0,
+      "source": "doc_entrypoint_sequence",
+      "target": "doc_model_discovery"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "permission block generation",
+      "weight": 1.0,
+      "source": "doc_entrypoint_sequence",
+      "target": "doc_security_hardening"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/08-cloudflare-ua-fix.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_cloudflare_ua_fix",
+      "target": "concept_cloudflare_ua_patch"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/08-cloudflare-ua-fix.md",
+      "source_location": "Patch enables gateway LLM calls through Cloudflare",
+      "weight": 1.0,
+      "source": "doc_cloudflare_ua_fix",
+      "target": "doc_hermes_gateway"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_model_discovery",
+      "target": "concept_model_discovery"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": "Non-chat model filter",
+      "weight": 1.0,
+      "source": "doc_model_discovery",
+      "target": "concept_nonchat_filter"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": "Wildcard filter",
+      "weight": 1.0,
+      "source": "doc_model_discovery",
+      "target": "concept_wildcard_filter"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": "Discovery output feeds config generation",
+      "weight": 1.0,
+      "source": "doc_model_discovery",
+      "target": "doc_config_env"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".github/workflows/e2e.yml",
+      "source_location": "CI implementation of testing strategy",
+      "weight": 1.0,
+      "source": "doc_e2e_workflow",
+      "target": "doc_testing_verification"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "Acceptance criteria mapping",
+      "weight": 1.0,
+      "source": "doc_testing_verification",
+      "target": "concept_acceptance_criteria"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "Verdict: 59 tests",
+      "weight": 1.0,
+      "source": "doc_testing_verification",
+      "target": "concept_e2e_tests"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/06-config-and-env.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_config_env",
+      "target": "concept_config_generation"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/06-config-and-env.md",
+      "source_location": "config.yaml (Hermes)",
+      "weight": 1.0,
+      "source": "doc_config_env",
+      "target": "concept_model_default_name_keys"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/06-config-and-env.md",
+      "source_location": "Key constraints",
+      "weight": 1.0,
+      "source": "doc_config_env",
+      "target": "concept_secrets_handling"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": "API key auto-generation",
+      "weight": 1.0,
+      "source": "doc_hermes_gateway",
+      "target": "concept_hermes_api_key"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_hermes_gateway",
+      "target": "concept_hermes_gateway_service"
     },
     {
       "relation": "implements",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/10-model-discovery.md",
-      "source_location": "line 17",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
       "weight": 1.0,
-      "source": "doc05_discover_models_fn",
-      "target": "doc10_model_discovery"
+      "source": "doc_hermes_gateway",
+      "target": "concept_openai_compatible_api"
     },
     {
-      "relation": "writes",
+      "relation": "depends_on",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 73",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": "HERMES_HOME must point to bind mount",
       "weight": 1.0,
-      "source": "doc05_generate_config_fn",
-      "target": "doc06_config_yaml"
+      "source": "doc_hermes_gateway",
+      "target": "concept_volume_layout"
     },
     {
-      "relation": "writes",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 84",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
       "weight": 1.0,
-      "source": "doc05_generate_opencode_config_fn",
-      "target": "doc06_opencode_jsonc"
+      "source": "doc_hermes_gateway",
+      "target": "concept_x_hermes_session_header"
     },
     {
-      "relation": "copies_from",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "line 57",
-      "weight": 1.0,
-      "source": "doc05_ensure_agent_fn",
-      "target": "PRD_md_agent_staging"
-    },
-    {
-      "relation": "modifies",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/08-cloudflare-ua-fix.md",
-      "source_location": "line 26",
-      "weight": 1.0,
-      "source": "doc08_custom_profile_patch",
-      "target": "doc08_custom_profile_class"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/08-cloudflare-ua-fix.md",
-      "source_location": "line 9",
-      "weight": 1.0,
-      "source": "doc08_custom_profile_class",
-      "target": "README_md_llm_provider"
-    },
-    {
-      "relation": "feeds",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/10-model-discovery.md",
-      "source_location": "line 27",
-      "weight": 1.0,
-      "source": "doc10_model_discovery",
-      "target": "doc06_config_yaml"
-    },
-    {
-      "relation": "feeds",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/10-model-discovery.md",
-      "source_location": "line 28",
-      "weight": 1.0,
-      "source": "doc10_model_discovery",
-      "target": "doc06_opencode_jsonc"
-    },
-    {
-      "relation": "declared_in",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/12-plugin-system.md",
-      "source_location": "line 18",
-      "weight": 1.0,
-      "source": "doc12_cc_safety_net",
-      "target": "doc06_opencode_jsonc"
-    },
-    {
-      "relation": "documents",
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/13-security-hardening.md",
-      "source_location": "line 40",
+      "source_location": "Layer 2: See 12 \u2014 Plugin System",
       "weight": 1.0,
-      "source": "doc12_cc_safety_net",
-      "target": "doc13_security_hardening"
+      "source": "doc_security_hardening",
+      "target": "doc_plugin_system"
     },
     {
-      "relation": "documents",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": "Layer 2: cc-safety-net plugin",
+      "weight": 1.0,
+      "source": "doc_security_hardening",
+      "target": "concept_cc_safety_net"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_security_hardening",
+      "target": "concept_security_modes"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": "Layer 1: User isolation",
+      "weight": 1.0,
+      "source": "doc_security_hardening",
+      "target": "concept_user_isolation"
+    },
+    {
+      "relation": "references",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/12-plugin-system.md",
-      "source_location": "line 41",
+      "source_location": "cc-safety-net architecture",
       "weight": 1.0,
-      "source": "doc12_cc_safety_net",
-      "target": "doc12_plugin_system"
+      "source": "doc_plugin_system",
+      "target": "concept_cc_safety_net"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": "Plugin inventory",
+      "weight": 1.0,
+      "source": "doc_plugin_system",
+      "target": "concept_md_table_formatter"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": "Plugin inventory",
+      "weight": 1.0,
+      "source": "doc_plugin_system",
+      "target": "concept_opencode_dcp_plugin"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_plugin_system",
+      "target": "concept_plugin_system"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/07-volume-layout.md",
+      "source_location": "First-start agent copy",
+      "weight": 1.0,
+      "source": "doc_volume_layout",
+      "target": "concept_staging_paths"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/07-volume-layout.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_volume_layout",
+      "target": "concept_volume_layout"
+    },
+    {
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/07-volume-layout.md",
+      "source_location": "Bind mounts table",
+      "weight": 1.0,
+      "source": "doc_volume_layout",
+      "target": "concept_workspace_bind_mount"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/e2e.yml",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "doc_e2e_workflow",
+      "target": "concept_e2e_tests"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": ".github/workflows/e2e.yml",
+      "source_location": "Indirect via tests/run.sh wait loop",
+      "weight": 1.0,
+      "source": "doc_e2e_workflow",
+      "target": "concept_healthcheck"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.7,
+      "source_file": "PRD.md",
+      "source_location": "Both expose Hermes Agent via HTTP",
+      "weight": 1.0,
+      "source": "concept_hermes_webui_service",
+      "target": "concept_hermes_gateway_service"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": "Imports AIAgent in-process",
+      "weight": 1.0,
+      "source": "concept_hermes_webui_service",
+      "target": "concept_hermes_agent"
+    },
+    {
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": "Session management",
+      "weight": 1.0,
+      "source": "concept_state_db",
+      "target": "concept_hermes_webui_service"
+    },
+    {
+      "relation": "configures",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": "DEFAULT_WORKSPACE=/workspace is trusted",
+      "weight": 1.0,
+      "source": "concept_workspace_bind_mount",
+      "target": "concept_hermes_webui_service"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": "Refuses 0.0.0.0 without API_SERVER_KEY",
+      "weight": 1.0,
+      "source": "concept_hermes_gateway_service",
+      "target": "concept_hermes_api_key"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "start_gateway() runs via su",
+      "weight": 1.0,
+      "source": "concept_hermes_gateway_service",
+      "target": "concept_user_isolation"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": null,
+      "weight": 1.0,
+      "source": "concept_openai_compatible_api",
+      "target": "concept_hermes_gateway_service"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "Not started if gateway fails",
+      "weight": 1.0,
+      "source": "concept_opencode_serve_service",
+      "target": "concept_hermes_gateway_service"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "Run as hermeswebui via su",
+      "weight": 1.0,
+      "source": "concept_opencode_serve_service",
+      "target": "concept_user_isolation"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "Disabled by default because wait -n would tear container",
+      "weight": 1.0,
+      "source": "concept_opencode_serve_service",
+      "target": "concept_wait_n_supervisor"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": "DISCOVERED_MODELS feeds both configs",
+      "weight": 1.0,
+      "source": "concept_model_discovery",
+      "target": "concept_config_generation"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": "discover_models() in entrypoint.sh",
+      "weight": 1.0,
+      "source": "concept_model_discovery",
+      "target": "concept_entrypoint_sequence"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/10-model-discovery.md",
+      "source_location": "Both are model filter passes in discover_models()",
+      "weight": 1.0,
+      "source": "concept_wildcard_filter",
+      "target": "concept_nonchat_filter"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/06-config-and-env.md",
+      "source_location": "Both keys required",
+      "weight": 1.0,
+      "source": "concept_config_generation",
+      "target": "concept_model_default_name_keys"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": "graphify is Source 7 in skill install",
+      "weight": 1.0,
+      "source": "concept_graphify_integration",
+      "target": "concept_skill_installation"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": "Build phase: HERMES_SKILLS_DIR=/opt/hermes-skills-staging",
+      "weight": 1.0,
+      "source": "concept_skill_installation",
+      "target": "concept_staging_paths"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": "cc-safety-net active in all modes including yolo",
+      "weight": 1.0,
+      "source": "concept_security_modes",
+      "target": "concept_cc_safety_net"
+    },
+    {
+      "relation": "semantically_similar_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "docs/13-security-hardening.md",
+      "source_location": "Both prevent secret exfiltration via different mechanisms",
+      "weight": 1.0,
+      "source": "concept_security_modes",
+      "target": "concept_secrets_handling"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": "npm resolution via Node.js",
+      "weight": 1.0,
+      "source": "concept_cc_safety_net",
+      "target": "concept_plugin_system"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/08-cloudflare-ua-fix.md",
+      "source_location": "Applied in Dockerfile",
+      "weight": 1.0,
+      "source": "concept_cloudflare_ua_patch",
+      "target": "concept_build_pipeline"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "docs/08-cloudflare-ua-fix.md",
+      "source_location": "Without patch, agent LLM calls get 403",
+      "weight": 1.0,
+      "source": "concept_hermes_agent",
+      "target": "concept_cloudflare_ua_patch"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "ensure_agent() copies to bind mount",
+      "weight": 1.0,
+      "source": "concept_hermes_agent",
+      "target": "concept_volume_layout"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/01-hermes-webui.md",
+      "source_location": "Persisted via bind mount",
+      "weight": 1.0,
+      "source": "concept_state_db",
+      "target": "concept_volume_layout"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/12-plugin-system.md",
+      "source_location": "Node.js v22 required",
+      "weight": 1.0,
+      "source": "concept_plugin_system",
+      "target": "concept_nodejs_22"
+    },
+    {
+      "relation": "implements",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "All 29 AC automated",
+      "weight": 1.0,
+      "source": "concept_e2e_tests",
+      "target": "concept_acceptance_criteria"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tests/run.sh",
+      "source_location": "Wait for healthy loop",
+      "weight": 1.0,
+      "source": "concept_e2e_tests",
+      "target": "concept_healthcheck"
+    },
+    {
+      "relation": "conceptually_related_to",
+      "confidence": "INFERRED",
+      "confidence_score": 0.75,
+      "source_file": "docs/11-skill-installation.md",
+      "source_location": "Runtime graphify re-registration is overlayfs safety net for ARM64",
+      "weight": 1.0,
+      "source": "concept_arm64_target",
+      "target": "concept_graphify_integration"
+    },
+    {
+      "relation": "depends_on",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md",
+      "source_location": "Cloned to /opt/hermes-agent-staging",
+      "weight": 1.0,
+      "source": "concept_hermes_agent",
+      "target": "concept_staging_paths"
     },
     {
       "relation": "semantically_similar_to",
       "confidence": "INFERRED",
       "confidence_score": 0.75,
-      "source_file": "docs/13-security-hardening.md",
-      "source_location": null,
-      "weight": 0.75,
-      "source": "doc12_cc_safety_net",
-      "target": "README_md_security_modes"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
       "source_file": "docs/12-plugin-system.md",
-      "source_location": "line 39",
+      "source_location": "Both are quality-of-life plugins resolved via npm",
       "weight": 1.0,
-      "source": "doc12_opencode_dcp",
-      "target": "doc12_plugin_system"
+      "source": "concept_opencode_dcp_plugin",
+      "target": "concept_md_table_formatter"
     },
     {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/12-plugin-system.md",
-      "source_location": "line 40",
-      "weight": 1.0,
-      "source": "doc12_md_table_formatter",
-      "target": "doc12_plugin_system"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/13-security-hardening.md",
-      "source_location": "line 50",
-      "weight": 1.0,
-      "source": "doc13_security_hardening",
-      "target": "README_md_security_modes"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/13-security-hardening.md",
-      "source_location": "line 24",
-      "weight": 1.0,
-      "source": "doc13_security_hardening",
-      "target": "doc13_hermeswebui_user"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/07-volume-layout.md",
-      "source_location": "line 33",
-      "weight": 1.0,
-      "source": "docker_compose_yml_bind_mount",
-      "target": "doc06_config_yaml"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/07-volume-layout.md",
-      "source_location": "line 35",
-      "weight": 1.0,
-      "source": "docker_compose_yml_bind_mount",
-      "target": "doc07_state_db"
-    },
-    {
-      "relation": "receives_copy",
+      "relation": "depends_on",
       "confidence": "INFERRED",
       "confidence_score": 0.85,
-      "source_file": "docs/07-volume-layout.md",
-      "source_location": null,
-      "weight": 0.85,
-      "source": "docker_compose_yml_bind_mount",
-      "target": "PRD_md_agent_staging"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/07-volume-layout.md",
-      "source_location": "line 49",
+      "source_file": "docs/02-hermes-gateway.md",
+      "source_location": "Session continuity needs persistent state",
       "weight": 1.0,
-      "source": "docker_compose_yml_bind_mount",
-      "target": "doc07_volume_layout"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".opencode/opencode.json",
-      "source_location": "line 4",
-      "weight": 1.0,
-      "source": "opencode_pkg_graphify_plugin",
-      "target": "opencode_pkg_project_config"
-    },
-    {
-      "relation": "calls",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": ".github/workflows/e2e.yml",
-      "source_location": "line 35",
-      "weight": 1.0,
-      "source": "e2e_workflow_ci",
-      "target": "tests_run_sh_script"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "line 170",
-      "weight": 1.0,
-      "source": "e2e_workflow_ci",
-      "target": "doc09_testing_verification"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc04_build_pipeline",
-      "target": "doc04_build_risks"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc04_build_pipeline",
-      "target": "doc04_copy_scripts_step"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc04_build_pipeline",
-      "target": "doc04_docker_build_steps"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc04_build_pipeline",
-      "target": "doc04_graphify_dual_platform"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc04_build_pipeline",
-      "target": "doc04_staging_overhead"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Line 45",
-      "weight": 1.0,
-      "source": "doc04_build_pipeline",
-      "target": "doc11_skill_installation"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc11_skill_installation",
-      "target": "doc11_graphify_install_mechanics"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc11_skill_installation",
-      "target": "doc11_platform_discovery_diff"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc11_skill_installation",
-      "target": "doc11_seven_skill_sources"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc11_skill_installation",
-      "target": "doc11_skill_timing_impact"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc11_skill_installation",
-      "target": "doc11_sparse_clone_helper"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc11_skill_installation",
-      "target": "doc11_two_phase_architecture"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc09_testing_verification",
-      "target": "doc09_acceptance_criteria_29"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc09_testing_verification",
-      "target": "doc09_graphify_integration_tests"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc09_testing_verification",
-      "target": "doc09_known_issues"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc09_testing_verification",
-      "target": "doc09_security_checks"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "doc09_testing_verification",
-      "target": "doc09_smoke_test_script"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/06-config-and-env.md",
-      "source_location": "line 52",
-      "weight": 1.0,
-      "source": "doc06_config_and_env",
-      "target": "doc06_config_yaml"
-    },
-    {
-      "relation": "documents",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/06-config-and-env.md",
-      "source_location": "line 84",
-      "weight": 1.0,
-      "source": "doc06_config_and_env",
-      "target": "doc06_opencode_jsonc"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Lines 98-110",
-      "weight": 1.0,
-      "source": "doc04_docker_build_steps",
-      "target": "doc04_build_risks"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Line 29",
-      "weight": 1.0,
-      "source": "doc04_docker_build_steps",
-      "target": "doc04_copy_scripts_step"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Lines 102-103",
-      "weight": 1.0,
-      "source": "doc04_build_risks",
-      "target": "doc04_staging_overhead"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/04-build-pipeline.md",
-      "source_location": "Line 54",
-      "weight": 1.0,
-      "source": "doc04_graphify_dual_platform",
-      "target": "doc11_graphify_install_mechanics"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 198-202",
-      "weight": 1.0,
-      "source": "doc09_acceptance_criteria_29",
-      "target": "doc09_graphify_integration_tests"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 173-196",
-      "weight": 1.0,
-      "source": "doc09_acceptance_criteria_29",
-      "target": "doc09_security_checks"
-    },
-    {
-      "relation": "implements",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 108-168",
-      "weight": 1.0,
-      "source": "doc09_acceptance_criteria_29",
-      "target": "doc09_smoke_test_script"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "Lines 198-202",
-      "weight": 1.0,
-      "source": "doc09_graphify_integration_tests",
-      "target": "doc11_graphify_install_mechanics"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 193-198",
-      "weight": 1.0,
-      "source": "doc11_two_phase_architecture",
-      "target": "doc11_skill_timing_impact"
-    },
-    {
-      "relation": "references",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 169-174",
-      "weight": 1.0,
-      "source": "doc11_seven_skill_sources",
-      "target": "doc11_sparse_clone_helper"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 0.7,
-      "source_file": "docs/11-skill-installation.md",
-      "source_location": "Lines 141-163",
-      "weight": 1.0,
-      "source": "doc11_graphify_install_mechanics",
-      "target": "doc11_platform_discovery_diff"
+      "source": "concept_x_hermes_session_header",
+      "target": "concept_state_db"
     }
   ],
   "hyperedges": [
     {
-      "id": "build_to_testing_skill_pipeline",
-      "label": "Build \" Testing \" Skill Pipeline",
+      "id": "three_service_stack",
+      "label": "Three-Service Docker Stack (WebUI + Gateway + OpenCode Serve)",
       "nodes": [
-        "doc04_docker_build_steps",
-        "doc04_graphify_dual_platform",
-        "doc09_graphify_integration_tests",
-        "doc11_graphify_install_mechanics",
-        "doc11_seven_skill_sources",
-        "doc11_two_phase_architecture",
-        "doc09_acceptance_criteria_29"
+        "concept_hermes_webui_service",
+        "concept_hermes_gateway_service",
+        "concept_opencode_serve_service"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "PRD.md"
+    },
+    {
+      "id": "sequential_startup_chain",
+      "label": "Sequential Health-Gated Startup Chain",
+      "nodes": [
+        "concept_entrypoint_sequence",
+        "concept_hermes_webui_service",
+        "concept_hermes_gateway_service",
+        "concept_opencode_serve_service",
+        "concept_wait_n_supervisor"
       ],
       "relation": "participate_in",
-      "confidence": "INFERRED",
-      "confidence_score": 0.75,
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/05-entrypoint-sequence.md"
+    },
+    {
+      "id": "model_discovery_pipeline",
+      "label": "Model Discovery \u2192 Config Generation Pipeline",
+      "nodes": [
+        "concept_model_discovery",
+        "concept_wildcard_filter",
+        "concept_nonchat_filter",
+        "concept_config_generation",
+        "concept_model_default_name_keys"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/10-model-discovery.md"
+    },
+    {
+      "id": "build_to_runtime_handoff",
+      "label": "Build-Time Staging to Runtime Bind Mount Handoff",
+      "nodes": [
+        "concept_build_pipeline",
+        "concept_staging_paths",
+        "concept_volume_layout",
+        "concept_entrypoint_sequence"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
       "source_file": "docs/04-build-pipeline.md"
+    },
+    {
+      "id": "defense_in_depth_security",
+      "label": "Defense-in-Depth Security Stack",
+      "nodes": [
+        "concept_user_isolation",
+        "concept_cc_safety_net",
+        "concept_security_modes",
+        "concept_plugin_system"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/13-security-hardening.md"
+    },
+    {
+      "id": "skill_install_pipeline",
+      "label": "Two-Phase Skill Installation Pipeline",
+      "nodes": [
+        "concept_skill_installation",
+        "concept_skill_sources",
+        "concept_graphify_integration",
+        "concept_staging_paths"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/11-skill-installation.md"
+    },
+    {
+      "id": "e2e_verification_pipeline",
+      "label": "E2E Verification Pipeline (CI \u2192 Bats \u2192 AC)",
+      "nodes": [
+        "doc_e2e_workflow",
+        "doc_tests_run_sh",
+        "doc_tests_common_bash",
+        "concept_e2e_tests",
+        "concept_acceptance_criteria"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": ".github/workflows/e2e.yml"
+    },
+    {
+      "id": "config_regeneration_cycle",
+      "label": "Boot-Time Config Regeneration Cycle",
+      "nodes": [
+        "concept_entrypoint_sequence",
+        "concept_config_generation",
+        "concept_model_discovery",
+        "concept_security_modes"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/06-config-and-env.md"
+    },
+    {
+      "id": "cloudflare_patch_chain",
+      "label": "Cloudflare UA Patch Pipeline",
+      "nodes": [
+        "concept_cloudflare_ua_patch",
+        "concept_build_pipeline",
+        "concept_hermes_agent",
+        "concept_hermes_gateway_service"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/08-cloudflare-ua-fix.md"
+    },
+    {
+      "id": "compose_service_definition",
+      "label": "Compose Service Definition Triple",
+      "nodes": [
+        "doc_docker_compose",
+        "doc_docker_compose_override",
+        "concept_volume_layout",
+        "concept_healthcheck"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docker-compose.yml"
+    },
+    {
+      "id": "secret_protection_layers",
+      "label": "Secret Protection Layers (env, file, network)",
+      "nodes": [
+        "concept_secrets_handling",
+        "concept_security_modes",
+        "concept_cc_safety_net",
+        "concept_hermes_api_key"
+      ],
+      "relation": "form",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "AGENTS.md"
     }
   ],
-  "built_at_commit": "76d084c01e384d166abe5d85cf93c565fb2bf87a"
+  "built_at_commit": "95159a2c99678467d91a3595359c55e99a22d2ac"
 }

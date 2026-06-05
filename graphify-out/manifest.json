@@ -1,102 +1,112 @@
 {
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/tests/run.sh": {
-    "mtime": 1780148086.6862507,
-    "ast_hash": "fe9073afd77d881cfe386e9609ff7285",
-    "semantic_hash": "fe9073afd77d881cfe386e9609ff7285"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/.graphify_detect.json": {
+    "mtime": 1780656338.8323042,
+    "ast_hash": "522ce9248e15788d52e91e53649876df",
+    "semantic_hash": "522ce9248e15788d52e91e53649876df"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/tests/e2e/test_helper/common.bash": {
-    "mtime": 1780148086.6862507,
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/tests/run.sh": {
+    "mtime": 1780508339.3630097,
+    "ast_hash": "5bcbcb510cb4492a648df5316bd4689f",
+    "semantic_hash": "5bcbcb510cb4492a648df5316bd4689f"
+  },
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/tests/e2e/test_helper/common.bash": {
+    "mtime": 1779983847.2381947,
     "ast_hash": "6ea57c645db83a375a73fb3f759b7466",
     "semantic_hash": "6ea57c645db83a375a73fb3f759b7466"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/README.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "e1a65f002be3651809e1ee23aac2aaf0",
-    "semantic_hash": "e1a65f002be3651809e1ee23aac2aaf0"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docker-compose.override.yml": {
+    "mtime": 1780508339.3630097,
+    "ast_hash": "2578f65282089ec0af6236c0b9baaf51",
+    "semantic_hash": "2578f65282089ec0af6236c0b9baaf51"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/PRD.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "4cfd2dabdf42864212ca347ef70aeac4",
-    "semantic_hash": "4cfd2dabdf42864212ca347ef70aeac4"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/README.md": {
+    "mtime": 1780654946.6081347,
+    "ast_hash": "864707008bedaa34cb240a07bdfbfde0",
+    "semantic_hash": "864707008bedaa34cb240a07bdfbfde0"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/AGENTS.md": {
-    "mtime": 1780148086.678251,
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docker-compose.yml": {
+    "mtime": 1780656180.323963,
+    "ast_hash": "a27810ee13981ed21b4f5afdd7c4dcbd",
+    "semantic_hash": "a27810ee13981ed21b4f5afdd7c4dcbd"
+  },
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/AGENTS.md": {
+    "mtime": 1780296653.6038816,
     "ast_hash": "6e319120d250b690dcb2f41ba3e10547",
     "semantic_hash": "6e319120d250b690dcb2f41ba3e10547"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docker-compose.yml": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "836bfedadd51121b445f650b0a6e8375",
-    "semantic_hash": "836bfedadd51121b445f650b0a6e8375"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/PRD.md": {
+    "mtime": 1780655034.8302505,
+    "ast_hash": "e492d6a89e55600fa8ba304573b0ab24",
+    "semantic_hash": "e492d6a89e55600fa8ba304573b0ab24"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/.github/workflows/e2e.yml": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "ea23800fbfee15ff5a5672840da352d5",
-    "semantic_hash": "ea23800fbfee15ff5a5672840da352d5"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/04-build-pipeline.md": {
+    "mtime": 1780296653.6038816,
+    "ast_hash": "ab0bb5caf0a929df12b9e59d56a18de5",
+    "semantic_hash": "ab0bb5caf0a929df12b9e59d56a18de5"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/09-testing-and-verification.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "d666e8b5d3b29e536afd0926a378c43c",
-    "semantic_hash": "d666e8b5d3b29e536afd0926a378c43c"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/11-skill-installation.md": {
+    "mtime": 1780296653.6038816,
+    "ast_hash": "22bf75a945d2d117d0c410ce4c13748b",
+    "semantic_hash": "22bf75a945d2d117d0c410ce4c13748b"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/10-model-discovery.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "48b8d3157da23361420099ffdaacfa3f",
-    "semantic_hash": "48b8d3157da23361420099ffdaacfa3f"
-  },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/04-build-pipeline.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "57235f8a05684cecc12dcf30bf276326",
-    "semantic_hash": "57235f8a05684cecc12dcf30bf276326"
-  },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/11-skill-installation.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "f67a468aee928de999eaff0455b8e8d4",
-    "semantic_hash": "f67a468aee928de999eaff0455b8e8d4"
-  },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/13-security-hardening.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "6e0444c74976bc50a7766c6b858a2186",
-    "semantic_hash": "6e0444c74976bc50a7766c6b858a2186"
-  },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/06-config-and-env.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "b8bfc1113ddd011653d99dde2a4a920b",
-    "semantic_hash": "b8bfc1113ddd011653d99dde2a4a920b"
-  },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/01-hermes-webui.md": {
-    "mtime": 1780148086.678251,
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/01-hermes-webui.md": {
+    "mtime": 1779983847.2381947,
     "ast_hash": "9387754122d59e93f790d9407df47936",
     "semantic_hash": "9387754122d59e93f790d9407df47936"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/07-volume-layout.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "1af8e9d3c7aedbd02ed0baaf000b89b4",
-    "semantic_hash": "1af8e9d3c7aedbd02ed0baaf000b89b4"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/03-opencode-serve.md": {
+    "mtime": 1780656295.2151215,
+    "ast_hash": "3a355b3c0f1adc53e6fd31aef8d40be3",
+    "semantic_hash": "3a355b3c0f1adc53e6fd31aef8d40be3"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/05-entrypoint-sequence.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "2ffce43a79695a3515a76d50777ed125",
-    "semantic_hash": "2ffce43a79695a3515a76d50777ed125"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/05-entrypoint-sequence.md": {
+    "mtime": 1780656288.4229364,
+    "ast_hash": "3bec8f90ed2dbdc129929bbf6f608013",
+    "semantic_hash": "3bec8f90ed2dbdc129929bbf6f608013"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/08-cloudflare-ua-fix.md": {
-    "mtime": 1780148086.678251,
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/08-cloudflare-ua-fix.md": {
+    "mtime": 1779983847.2381947,
     "ast_hash": "064d67c6e374d26ed327964df6d74bf2",
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/03-opencode-serve.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "bd6ec1da5120d91bc671e46f0010c30e",
-    "semantic_hash": "bd6ec1da5120d91bc671e46f0010c30e"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/10-model-discovery.md": {
+    "mtime": 1780296653.6038816,
+    "ast_hash": "48b8d3157da23361420099ffdaacfa3f",
+    "semantic_hash": "48b8d3157da23361420099ffdaacfa3f"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/12-plugin-system.md": {
-    "mtime": 1780148086.678251,
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/09-testing-and-verification.md": {
+    "mtime": 1780656277.438637,
+    "ast_hash": "169b20b133e8c2d03ac584ee69c90383",
+    "semantic_hash": "169b20b133e8c2d03ac584ee69c90383"
+  },
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/06-config-and-env.md": {
+    "mtime": 1780296653.6038816,
+    "ast_hash": "b8bfc1113ddd011653d99dde2a4a920b",
+    "semantic_hash": "b8bfc1113ddd011653d99dde2a4a920b"
+  },
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/02-hermes-gateway.md": {
+    "mtime": 1779983847.2381947,
+    "ast_hash": "e9fa9046d250d5eed4fa33fd5483726a",
+    "semantic_hash": "e9fa9046d250d5eed4fa33fd5483726a"
+  },
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/13-security-hardening.md": {
+    "mtime": 1779983847.2381947,
+    "ast_hash": "6e0444c74976bc50a7766c6b858a2186",
+    "semantic_hash": "6e0444c74976bc50a7766c6b858a2186"
+  },
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/12-plugin-system.md": {
+    "mtime": 1779983847.2381947,
     "ast_hash": "27d86575894089661a9d910784138511",
     "semantic_hash": "27d86575894089661a9d910784138511"
   },
-  "/home/bachkukkik/Archives/git_repos/sandbox/hermes_x_opencode/docs/02-hermes-gateway.md": {
-    "mtime": 1780148086.678251,
-    "ast_hash": "e9fa9046d250d5eed4fa33fd5483726a",
-    "semantic_hash": "e9fa9046d250d5eed4fa33fd5483726a"
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/07-volume-layout.md": {
+    "mtime": 1779983847.2381947,
+    "ast_hash": "1af8e9d3c7aedbd02ed0baaf000b89b4",
+    "semantic_hash": "1af8e9d3c7aedbd02ed0baaf000b89b4"
+  },
+  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/.github/workflows/e2e.yml": {
+    "mtime": 1779983847.2381947,
+    "ast_hash": "ea23800fbfee15ff5a5672840da352d5",
+    "semantic_hash": "ea23800fbfee15ff5a5672840da352d5"
   }
 }
