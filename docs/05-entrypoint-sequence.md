@@ -42,7 +42,9 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
  9. wait_for_port 8787 120      — blocks until WebUI health endpoint responds
 10. start_gateway()             — su hermeswebui -c "/app/venv/bin/hermes gateway run --accept-hooks" &
 11. wait_for_port 8642 60       — blocks until Gateway health endpoint responds
-12. start_opencode_serve()      — su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
+12. start_opencode_serve()      — if OPENCODE_SERVE_ENABLED=true: su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
+                                else: log and skip
+12b. wait_for_port 4096         — (only if serve enabled) boot readiness probe, non-fatal timeout
 13. wait -n                     — blocks until any background process exits
 14. Container shuts down
 ```

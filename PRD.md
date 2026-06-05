@@ -38,8 +38,11 @@ A Docker Compose stack that runs [Hermes WebUI](https://github.com/nicholasgriff
 │                                                                      │
 │  ┌──────────────────────────┐                                        │
 │  │  OpenCode Serve          │  :4096 (headless server)               │
-│  │  (opencode serve)        │                                        │
-│  │                          │  Remote attach via:                    │
+│  │  (opencode serve)        │  ── OPTIONAL ───────────────────────── │
+│  │  ⚠ gated by              │  Started only when                     │
+│  │    OPENCODE_SERVE_ENABLED│    OPENCODE_SERVE_ENABLED=true         │
+│  │    (default: false)      │  (default: false). See §9 Usage        │
+│  │                          │  Patterns — most workflows do NOT      │
 │  │    opencode attach       │    opencode attach http://host:4096    │
 │  └──────────────────────────┘                                        │
 │                                                                      │
@@ -68,7 +71,7 @@ A Docker Compose stack that runs [Hermes WebUI](https://github.com/nicholasgriff
 | Hermes Gateway | `/app/venv/bin/hermes gateway run --accept-hooks` | OpenAI-compatible API on :8642 |
 | Hermes Agent | `https://github.com/NousResearch/hermes-agent.git` | AI agent runtime, runs in-process |
 | OpenCode CLI | Official install script (`opencode.ai/install`) | Autonomous coding agent via `terminal` tool |
-| OpenCode Serve | `opencode serve` | Headless server for remote `opencode attach` |
+| OpenCode Serve | `opencode serve` | **Optional.** Headless server for remote `opencode attach`. Disabled by default; gated by `OPENCODE_SERVE_ENABLED=true` (see §9 Usage Patterns). |
 | Node.js 22 | nodesource setup script | Required for OpenCode plugin resolution |
 | LLM Provider | External (user-configured) | OpenAI-compatible API endpoint |
 
@@ -203,7 +206,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 | `ensure_agent()` | Copies agent from `/opt/hermes-agent-staging` to bind mount if not already present. Idempotent. |
 | `wait_for_port(port, timeout)` | Loops curl on health endpoint every 2 seconds until ready or timeout. |
 | `start_gateway()` | Starts gateway as `hermeswebui` via `su`. Command: `/app/venv/bin/hermes gateway run --accept-hooks`. Skips if agent not found. |
-| `start_opencode_serve()` | Starts OpenCode serve as `hermeswebui` via `su`. Command: `opencode serve --port 4096 --hostname 0.0.0.0`. |
+| `start_opencode_serve()` | Starts OpenCode serve as `hermeswebui` via `su`. Command: `opencode serve --port 4096 --hostname 0.0.0.0`. **No-op when `OPENCODE_SERVE_ENABLED` is not `true`** (default). |
 
 **Startup sequence:**
 1. Install skills (`install-skills.sh`) — 6 upstream sources, can skip with `SKIP_SKILL_INSTALL=1`
@@ -215,7 +218,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 7. Wait for port 8787 to be healthy (timeout 120s)
 8. Start hermes gateway (`/app/venv/bin/hermes gateway run --accept-hooks`) in background
 9. Wait for port 8642 to be healthy (timeout 60s)
-10. Start `opencode serve --port 4096 --hostname 0.0.0.0` in background
+10. Start `opencode serve --port 4096 --hostname 0.0.0.0` in background **only if `OPENCODE_SERVE_ENABLED=true`** (default: skipped)
 11. `wait -n` to keep container alive (exits if any background process dies)
 
 **Model discovery filter patterns:**
@@ -244,7 +247,7 @@ Non-chat models matching: embed, whisper, tts, dall-e, sora, image, realtime, tr
 |-------------|-----------|---------|
 | `${HERMES_WEBUI_PORT:-8787}:8787` | 8787 | Hermes WebUI (browser) |
 | `${HERMES_API_PORT:-8642}:8642` | 8642 | Hermes Agent API (OpenAI-compatible) |
-| `${OPENCODE_SERVE_PORT:-4096}:4096` | 4096 | OpenCode Serve (remote attach) |
+| `${OPENCODE_SERVE_PORT:-4096}:4096` | 4096 | OpenCode Serve (remote attach) — **only published when `OPENCODE_SERVE_ENABLED=true`** |
 
 **Volumes (bind mounts):**
 | Mount | Purpose |
@@ -264,8 +267,9 @@ Non-chat models matching: embed, whisper, tts, dall-e, sora, image, realtime, tr
 | `HERMES_WEBUI_PORT` | No | Host port for WebUI (default: 8787) |
 | `HERMES_API_KEY` | No | Bearer token for Agent API (empty = auto-generated) |
 | `HERMES_API_PORT` | No | Host port for Agent API (default: 8642) |
-| `OPENCODE_SERVE_PORT` | No | Host port for OpenCode serve (default: 4096) |
-| `SKIP_SKILL_INSTALL` | No | Skip skill installation (set `1`) |
+| `OPENCODE_SERVE_ENABLED` | No | `false` | Set to `true` to start `opencode serve` on :4096. Disabled by default — see §9 Usage Patterns. |
+| `OPENCODE_SERVE_PORT` | No | `4096` | Host port for OpenCode serve (only used when `OPENCODE_SERVE_ENABLED=true`) |
+| `SKIP_SKILL_INSTALL` | No | `0` | Skip skill installation (set `1`) |
 | `OPENCODE_SECURITY_MODE` | No | Security profile: strict/standard/yolo (default: strict) |
 | `HOST_UID` | No | UID for file permissions (default: 1000) |
 | `HOST_GID` | No | GID for file permissions (default: 1000) |
@@ -344,7 +348,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
  9. Wait for port 8787 to respond to /health (timeout: 120s)
 10. Start hermes gateway: /app/venv/bin/hermes gateway run --accept-hooks
 11. Wait for port 8642 to respond to /health (timeout: 60s)
-12. Start opencode serve --port 4096 --hostname 0.0.0.0
+12. Start opencode serve --port 4096 --hostname 0.0.0.0 **(only if `OPENCODE_SERVE_ENABLED=true`)**
 13. wait -n to keep container alive
 ```
 
@@ -359,7 +363,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
  4. Agent already present in bind mount (skips copy)
  5. WebUI init: deps already installed, fast startup (~10-20s)
  6. Gateway starts: deps already installed (~5-10s)
- 7. OpenCode serve starts (~2-5s)
+ 7. OpenCode serve starts (~2-5s) — **only when `OPENCODE_SERVE_ENABLED=true`**; otherwise skipped
  8. All ports ready
 ```
 
@@ -372,8 +376,8 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 - The hermes-agent source is copied from the image's staging path to the bind mount on first start. It persists across container restarts.
 - Session history, skills, and memories persist in the `hermes-home` bind mount across container restarts and rebuilds.
 - OpenCode skills are ephemeral (no volume mount) and reinstalled on every boot. Hermes skills persist in the bind mount.
-- All three services run as background processes. If any process exits, the container shuts down (`wait -n`).
-- The gateway and opencode serve are started as `hermeswebui` user (not root) via `su`.
+- The WebUI, gateway, and (when enabled) `opencode serve` run as background processes. If any started process exits, the container shuts down (`wait -n`). This is why `opencode serve` is gated behind `OPENCODE_SERVE_ENABLED` — without an LLM provider it would exit immediately and tear the container down.
+- The gateway and opencode serve are started as `hermeswebui` user (not root) via `su`. Note: `opencode serve` only starts when `OPENCODE_SERVE_ENABLED=true` (default: `false`); see §9 Usage Patterns for why.
 - Both `model.default` and `model.name` are written to `config.yaml` to satisfy both the WebUI's `models_cache.json` builder and the hermes-agent's model resolution.
 
 ## 7. Configuration Reference
@@ -392,7 +396,8 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 | `HERMES_API_KEY` | string | No | auto-generated | Bearer token for the Hermes Agent API. Auto-generated random key if empty. Printed to container logs. |
 | `HERMES_API_PORT` | int | No | `8642` | Host port for the Hermes Agent API. Container always listens on 8642 internally. |
 | `OPENCODE_SECURITY_MODE` | string | No | `strict` | Security profile for OpenCode: `strict` (31 bash rules), `standard` (22 rules), `yolo` (allow all). |
-| `OPENCODE_SERVE_PORT` | int | No | `4096` | Host port for OpenCode serve. Container always listens on 4096 internally. |
+| `OPENCODE_SERVE_ENABLED` | bool | No | `false` | Set to `true` to start `opencode serve` on :4096. Disabled by default because serve exits immediately without an LLM provider and would tear the container down via `wait -n`. See §9 Usage Patterns. |
+| `OPENCODE_SERVE_PORT` | int | No | `4096` | Host port for OpenCode serve. Only used when `OPENCODE_SERVE_ENABLED=true`. Container always listens on 4096 internally. |
 | `SKIP_SKILL_INSTALL` | string | No | `0` | Set to `1` to skip skill installation at container start. |
 | `HOST_UID` | int | No | `1000` | Linux UID for container file processes. Match your host user UID. |
 | `HOST_GID` | int | No | `1000` | Linux GID for container file processes. Match your host group GID. |
@@ -418,7 +423,73 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 | C8 | Agent must be cloned to staging path, not runtime path | Runtime path is a bind mount that starts empty on first boot |
 | C9 | Node.js 22 must be installed in the image | Required for OpenCode's npm-based plugin resolution |
 
-## 9. Acceptance Criteria
+## 9. Usage Patterns
+
+This section is the canonical reference for how end-users invoke OpenCode from inside (or attached to) the container. It mirrors the README's "Usage Patterns" section and exists in the PRD so architecture decisions can be cross-referenced against verified workflows.
+
+> **Note:** The historical `opencode run --agent plan` / `opencode run --agent build` subcommands are **broken** in the current environment (see [#8](https://github.com/bachkukkik/hermes-x-opencode/issues/8) and [#9](https://github.com/bachkukkik/hermes-x-opencode/issues/9)). The patterns below use the verified one-shot `opencode <dir> --prompt` flow.
+
+### Pattern Summary Table
+
+| # | Pattern | Command Shape | Status | Notes |
+|---|---------|---------------|--------|-------|
+| 1 | Direct one-shot coding | `opencode <dir> -m <model> --prompt "<task>"` | ✅ Verified | Single task, single invocation, model-pinned, scriptable. Default recommendation for CI/CD and `terminal`-tool delegation from Hermes. |
+| 2 | Plan → build (chained one-shots) | `opencode <dir> --prompt "<plan>" > plan.md` then `opencode <dir> --prompt "Implement plan.md"` | ✅ Verified | Two-step: first call emits a plan to a file, second call consumes it. No agent state shared between calls. |
+| 3 | Gateway chat (Hermes Agent API) | `POST :8642/v1/chat/completions` with model `hermes-agent` | ✅ Verified | OpenAI-compatible. Bypasses OpenCode entirely; agent runs server-side with full tool access. Best for browser/UI and programmatic clients. |
+| 4 | Remote attach via `opencode serve` | `opencode attach http://host:4096` | ⚠ Conditional | Only works when `OPENCODE_SERVE_ENABLED=true`. Disabled by default because serve exits without an LLM provider and tears the container down via `wait -n`. |
+| 5 | `opencode run --agent plan/build` | `opencode run --agent plan ...` | ❌ Broken | Was the historical CEO-delegation interface. Broken in current OpenCode builds — see issues [#8](https://github.com/bachkukkik/hermes-x-opencode/issues/8) and [#9](https://github.com/bachkukkik/hermes-x-opencode/issues/9). Do **not** document as a supported workflow; tracked for replacement. |
+
+### Pattern 1 — Direct One-Shot Coding (verified)
+
+Run a single coding task in one shot, then return. This is the only pattern the Hermes agent should use when delegating to OpenCode via the `terminal` tool.
+
+```bash
+# Inside the container, or on a host with opencode installed
+opencode /workspace/project -m opencode/deepseek-v4-flash-free \
+  --prompt "Add retry logic to api.py"
+```
+
+Free models that require no auth: `opencode/deepseek-v4-flash-free`, `opencode/mimo-v2.5-free`.
+
+### Pattern 2 — Plan → Build Pipeline, Chained One-Shots (verified)
+
+Generate a plan first, then feed it back as the implementation prompt. Two independent invocations; no shared agent state between them.
+
+```bash
+# Step 1: Generate a plan
+opencode /workspace/project -m opencode/deepseek-v4-flash-free \
+  --prompt "Read PRD.md and output a step-by-step implementation plan" \
+  > /tmp/plan.md
+
+# Step 2: Execute the plan
+opencode /workspace/project -m opencode/deepseek-v4-flash-free \
+  --prompt "Implement the plan in /tmp/plan.md"
+```
+
+### Pattern 3 — Direct Chat via Agent API (verified)
+
+Point any OpenAI-compatible client at `:8642/v1` and use model `hermes-agent`. The agent runs server-side with full tool access.
+
+```bash
+curl -X POST http://localhost:8642/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"hello"}]}'
+```
+
+For the full CEO-OpenCode multi-agent delegation workflow (Hermes decomposes, OpenCode implements, Hermes verifies) that *replaces* the broken `--agent plan/build` interface, see [issue #9](https://github.com/bachkukkik/hermes-x-opencode/issues/9).
+
+### When to Use What
+
+| Scenario | Service / Pattern | Why |
+|----------|-------------------|-----|
+| Browser-based chat | WebUI :8787 | Full UI with sessions, file browser |
+| Connect external chat UI | Agent API :8642 (Pattern 3) | OpenAI-compatible, streaming |
+| Code implementation from agent | `opencode <dir> --prompt` (Pattern 1) | One-shot, model-pinned, scriptable |
+| Multi-step build with separate plan | Chained one-shots (Pattern 2) | Cheap, no shared state, retry-friendly |
+| CI/CD integration | Agent API :8642 (Pattern 3) | Programmatic access |
+| Remote coding (experimental) | OpenCode :4096 (Pattern 4) | Attach from another machine — needs `OPENCODE_SERVE_ENABLED=true` |
+
+## 10. Acceptance Criteria
 
 | # | Test | Expected Result | How to Verify |
 |---|------|----------------|---------------|
@@ -438,12 +509,12 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 | AC14 | Agent API health | Gateway responds on :8642 | `curl -f http://localhost:${HERMES_API_PORT:-8642}/health` returns OK |
 | AC15 | Agent API models | Lists hermes-agent model | `curl http://localhost:${HERMES_API_PORT:-8642}/v1/models` returns model list |
 | AC16 | Agent API chat | OpenAI-compatible chat works | Send chat completion to `:8642/v1/chat/completions` and get LLM response |
-| AC17 | OpenCode serve responds | Headless server on :4096 | `curl -f http://localhost:${OPENCODE_SERVE_PORT:-4096}/` responds |
+| AC17 | OpenCode serve responds (when enabled) | Headless server on :4096 | `OPENCODE_SERVE_ENABLED=true` set, then `curl -f http://localhost:${OPENCODE_SERVE_PORT:-4096}/` responds |
 | AC18 | Config includes platform | api_server in config.yaml | `docker exec $C grep -q 'api_server' /home/hermeswebui/.hermes/config.yaml && echo OK` |
 | AC19 | OpenCode config valid | opencode.jsonc is valid JSON | `docker exec $C python3 -m json.tool /home/hermeswebui/.config/opencode/opencode.jsonc` succeeds |
 | AC20 | Onboarding skipped | WebUI reports onboarding complete | `curl $BASE/api/onboarding/status` returns `completed: true` |
 | AC21 | Skills installed | Both platforms have skills | `docker exec $C find /home/hermeswebui/.config/opencode/skills -name "SKILL.md" \| wc -l` > 0 |
 | AC22 | Security mode applied | Permission rules in opencode.jsonc | `docker exec $C python3 -c "import json; c=json.load(open('/home/hermeswebui/.config/opencode/opencode.jsonc')); print(len(c.get('permission',{}).get('bash',{})))"` shows rule count |
-| AC23 | OpenCode serve healthy | `/global/health` returns `{"healthy":true}` | `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` |
+| AC23 | OpenCode serve healthy (when enabled) | `/global/health` returns `{"healthy":true}` | `OPENCODE_SERVE_ENABLED=true` set, then `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` |
 | AC24 | Hermes skills present | More than 0 SKILL.md files under hermes skills dir | `docker exec $C find /home/hermeswebui/.hermes/skills -name "SKILL.md" \| wc -l` returns >0 |
 | AC25 | Skills baked in Docker image | More than 0 SKILL.md files in staging dir | `docker run --rm --entrypoint bash $IMAGE -c 'find /opt/hermes-skills-staging -name "SKILL.md" \| wc -l'` returns >0 |

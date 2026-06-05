@@ -12,7 +12,7 @@ OpenCode Serve is a headless HTTP server that exposes the OpenCode CLI as a remo
 
 ## How
 
-OpenCode Serve is started by the entrypoint as the third and final background process, after the WebUI and Gateway are healthy. It runs `opencode serve --port 4096 --hostname 0.0.0.0` as the `hermeswebui` user via `su`, ensuring the process operates with reduced privileges. The entrypoint (PID 1) runs as root and wraps the serve command: `su -s /bin/bash hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0"`.
+OpenCode Serve is started by the entrypoint as the third background process, after the WebUI and Gateway are healthy. It is **opt-in** — controlled by the `OPENCODE_SERVE_ENABLED` environment variable (default: `false`). When enabled, it runs `opencode serve --port 4096 --hostname 0.0.0.0` as the `hermeswebui` user via `su`, ensuring the process operates with reduced privileges. The entrypoint (PID 1) runs as root and wraps the serve command: `su -s /bin/bash hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0"`.
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|
@@ -22,6 +22,8 @@ OpenCode Serve is started by the entrypoint as the third and final background pr
 | Auth | None (no HTTP auth support) | Server is unsecured — protect via firewall or VPN |
 | Binary | `/usr/local/bin/opencode` | Installed via `opencode.ai/install` during build |
 | Run user | `hermeswebui` (UID 1000) | Launched via `su` from root entrypoint |
+| Enable flag | `OPENCODE_SERVE_ENABLED=true` | Required to start serve (default: `false`) |
+| Boot timeout | `OPENCODE_SERVE_BOOT_TIMEOUT=30` | Seconds to wait for serve to bind :4096 |
 | Working directory | `/home/hermeswebui` | `HOME=/home/hermeswebui` for the hermeswebui user |
 | Config path | `/home/hermeswebui/.config/opencode/opencode.jsonc` | Owned by hermeswebui |
 
@@ -42,6 +44,8 @@ Containers on the `hermes_x_opencode_default` network can reach the server via t
 OpenCode serve has no built-in HTTP authentication. The server is unsecured by design — any client that reaches port 4096 can attach and execute commands. Protect the endpoint with a firewall, or deploy behind an authenticating reverse proxy (nginx, Caddy, Tailscale). The `OPENCODE_API_KEY` provides authentication at the OpenCode client level but does not protect the serve port.
 
 ## Verification
+
+**Prerequisite:** Set `OPENCODE_SERVE_ENABLED=true` in `.env` before starting the stack.
 
 ```bash
 curl -sf -o /dev/null -w "%{http_code}" http://localhost:${OPENCODE_SERVE_PORT:-4096}/

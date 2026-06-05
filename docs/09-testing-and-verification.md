@@ -186,14 +186,14 @@ echo "=== Done ==="
 | AC13 | Gateway health | `curl -sf http://localhost:${HERMES_API_PORT:-8642}/health` |
 | AC14 | Gateway models | `curl http://localhost:${HERMES_API_PORT:-8642}/v1/models` |
 | AC15 | Gateway chat | Send completion to `:8642/v1/chat/completions`, verify response |
-| AC16 | OpenCode serve responds | `curl -sf -o /dev/null -w "%{http_code}" http://localhost:${OPENCODE_SERVE_PORT:-4096}/` |
+| AC16 | OpenCode serve responds | (requires OPENCODE_SERVE_ENABLED=true) `curl -sf -o /dev/null -w "%{http_code}" http://localhost:${OPENCODE_SERVE_PORT:-4096}/` |
 | AC17 | Config includes api_server | `docker exec $C grep -q 'api_server' /home/hermeswebui/.hermes/config.yaml` |
 | AC18 | No wildcard models | `docker exec $C grep -c '/\*' /home/hermeswebui/.hermes/config.yaml` returns 0 |
 | AC19 | Onboarding skipped | `curl $BASE/api/onboarding/status` returns `completed: true` |
 | AC20 | OpenCode config valid | `docker exec $C python3 -m json.tool /home/hermeswebui/.config/opencode/opencode.jsonc` succeeds |
 | AC21 | OpenCode skills installed | `docker exec $C find /home/hermeswebui/.config/opencode/skills -name "SKILL.md" \| wc -l` returns >0 |
 | AC22 | Security mode applied | `docker exec $C grep -c '"deny"' /home/hermeswebui/.config/opencode/opencode.jsonc` matches mode (strict=31, standard=22) |
-| AC23 | OpenCode serve healthy | `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` returns `{"healthy":true}` |
+| AC23 | OpenCode serve healthy | (requires OPENCODE_SERVE_ENABLED=true) `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` returns `{"healthy":true}` |
 | AC24 | Hermes skills present | `docker exec $C find /home/hermeswebui/.hermes/skills -name "SKILL.md" \| wc -l` returns >0 |
 | AC25 | Skills in Docker image | `docker run --rm --entrypoint bash $IMAGE -c 'find /opt/hermes-skills-staging -name "SKILL.md" \| wc -l'` returns >0 |
 | AC26 | uv available in container | `docker exec $C test -x /usr/local/bin/uv` |
@@ -207,7 +207,7 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## What Works
 
-- All 29 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, 58 tests)
+- All 29 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, 59 tests). AC16 and AC23 require `OPENCODE_SERVE_ENABLED=true`.
 - Health endpoints respond within 50ms for WebUI and Gateway
 - Gateway chat returns valid OpenAI-format responses with correct `usage` stats
 - Session creation, chat, streaming, and cleanup work through the WebUI API
@@ -234,4 +234,4 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## Verdict
 
-The testing coverage is comprehensive. All 29 acceptance criteria are automated in the bats test suite (`tests/run.sh`, 58 tests), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), OpenCode serve health (AC23), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). The main gap is AC23 testing only the health endpoint rather than a full LLM call through OpenCode serve.
+The testing coverage is comprehensive. All 29 acceptance criteria are automated in the bats test suite (`tests/run.sh`, 59 tests), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), OpenCode serve health (AC23, requires `OPENCODE_SERVE_ENABLED=true`), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). A negative test verifies port 4096 is NOT listening when serve is disabled. The main gap is AC23 testing only the health endpoint rather than a full LLM call through OpenCode serve.

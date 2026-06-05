@@ -95,6 +95,14 @@ First build clones hermes-agent and installs OpenCode + Node.js 22. First startu
 - **Agent API:** http://localhost:8642/v1/chat/completions
 - **OpenCode attach:** `opencode attach http://localhost:4096`
 
+### 5. Verify OpenCode works
+
+```bash
+# Verify OpenCode works
+opencode /workspace -m opencode/deepseek-v4-flash-free --prompt "Respond with exactly: OPENCODE_SMOKE_OK"
+# Expected: output includes OPENCODE_SMOKE_OK
+```
+
 ## Service Details
 
 ### Hermes WebUI (:8787)
@@ -151,6 +159,8 @@ curl http://localhost:8642/v1/chat/completions \
 
 ### OpenCode Serve (:4096)
 
+> **⚠ EXPERIMENTAL:** The `opencode serve` + `attach` pattern is not fully functional. See [Limitations](#limitations) and [issue #10](https://github.com/bachkukkik/hermes-x-opencode/issues/10).
+
 Headless OpenCode server. Attach from another machine:
 
 ```bash
@@ -163,31 +173,46 @@ opencode run --attach http://<host-ip>:4096 "What does this project do?"
 
 ## Usage Patterns
 
-### Pattern 1: Direct Coding via OpenCode
+> **Note:** The previous `opencode run --agent plan/build` commands are broken in the current environment (see [#8](https://github.com/bachkukkik/hermes-x-opencode/issues/8) and [#9](https://github.com/bachkukkik/hermes-x-opencode/issues/9)). The patterns below use the verified one-shot flow.
 
-```
-"Use opencode to build me a Python CLI tool that converts CSV to JSON"
-```
+### Pattern 1: Direct One-Shot Coding
 
-Hermes will:
-1. Run `opencode run --agent plan --title "Plan: CSV to JSON" "<prompt>"`
-2. Review the plan output
-3. Run `opencode run --agent build -s <session_id> "Implement the plan"`
-4. Verify and report results
+Run a single coding task in one shot, then return:
 
-### Pattern 2: Plan -> Build Pipeline
-
-```
-"First plan, then build: add user authentication to my Express app"
+```bash
+# Inside the container, or on a host with opencode installed
+opencode /workspace/project -m opencode/deepseek-v4-flash-free \
+  --prompt "Add retry logic to api.py"
 ```
 
-This uses the two-phase OpenCode flow:
-- **Plan agent**: reads codebase, designs approach (read-only, no files written)
-- **Build agent**: picks up the plan, implements it, runs tests
+Free models that require no auth: `opencode/deepseek-v4-flash-free`, `opencode/mimo-v2.5-free`.
 
-### Pattern 3: Via Agent API
+### Pattern 2: Plan → Build Pipeline (Chained One-Shots)
+
+Generate a plan first, then feed it back as the implementation prompt:
+
+```bash
+# Step 1: Generate a plan
+opencode /workspace/project -m opencode/deepseek-v4-flash-free \
+  --prompt "Read PRD.md and output a step-by-step implementation plan" \
+  > /tmp/plan.md
+
+# Step 2: Execute the plan
+opencode /workspace/project -m opencode/deepseek-v4-flash-free \
+  --prompt "Implement the plan in /tmp/plan.md"
+```
+
+### Pattern 3: Direct Chat via Agent API
 
 Point any OpenAI-compatible client at `:8642/v1` and use model `hermes-agent`. The agent runs server-side with full tool access.
+
+```bash
+curl -X POST http://localhost:8642/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{"messages":[{"role":"user","content":"hello"}]}'
+```
+
+For the full CEO-OpenCode multi-agent delegation workflow (Hermes decomposes, OpenCode implements, Hermes verifies), see [issue #9](https://github.com/bachkukkik/hermes-x-opencode/issues/9).
 
 ### When to Use What
 
@@ -195,9 +220,19 @@ Point any OpenAI-compatible client at `:8642/v1` and use model `hermes-agent`. T
 |----------|---------|-----|
 | Browser-based chat | WebUI :8787 | Full UI with sessions, file browser |
 | Connect external chat UI | Agent API :8642 | OpenAI-compatible, streaming |
-| Remote coding session | OpenCode :4096 | Attach from another machine |
+| Remote coding (experimental) | OpenCode :4096 | Attach from another machine — see Limitations |
 | CI/CD integration | Agent API :8642 | Programmatic access |
-| Code implementation | opencode run | Built for code, plan->build flow |
+| Code implementation | `opencode <dir> --prompt` | One-shot, model-pinned, scriptable |
+
+## Limitations
+
+The following are known limitations of the current setup. Most have workarounds documented in the linked issues.
+
+- **`opencode run` returns "Session not found"** — the `run` subcommand cannot re-enter an existing session. Use the one-shot `opencode <dir> --prompt` pattern instead (see [Usage Patterns](#usage-patterns) and [#7](https://github.com/bachkukkik/hermes-x-opencode/issues/7)).
+- **`opencode serve` exits immediately** — the headless server is not yet stable in this environment and is disabled by default via the `OPENCODE_SERVE_ENABLED` env var. See [#10](https://github.com/bachkukkik/hermes-x-opencode/issues/10).
+- **Interactive multi-turn TUI sessions cannot receive follow-up stdin** from the Hermes process layer — the agent can launch `opencode` but cannot drive an interactive REPL. Use one-shot prompts or the Agent API (see [#6](https://github.com/bachkukkik/hermes-x-opencode/issues/6)).
+- **`host.docker.internal` does not resolve on bare Linux hosts** — the entrypoint auto-detects the host IP and injects the correct value. See [#12](https://github.com/bachkukkik/hermes-x-opencode/issues/12).
+- **`opencode acp` is non-functional** in the current setup. There is no workaround yet; ACP integration is deferred.
 
 ## Configuration
 
