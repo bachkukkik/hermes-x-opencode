@@ -23,6 +23,7 @@ setup() {
 
 @test "AC23: opencode serve health endpoint returns healthy" {
     skip_if_no_secrets
+    [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ] || skip "OPENCODE_SERVE_ENABLED!=true"
     run curl -sf "$(opencode_base)/global/health"
     [ "$status" -eq 0 ]
     echo "$output" | grep -q '"healthy": *true'
@@ -98,4 +99,13 @@ print(len(c.get('permission', {}).get('bash', {})))
 " 2>/dev/null)
         [ "$count" -ge "$expected" ]
     fi
+}
+
+@test "port 4096 is NOT listening when OPENCODE_SERVE_ENABLED=false" {
+    [ "${OPENCODE_SERVE_ENABLED:-false}" != "true" ] || skip "OPENCODE_SERVE_ENABLED=true"
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c 'echo > /dev/tcp/127.0.0.1/4096' 2>/dev/null
+    [ "$status" -ne 0 ]
 }

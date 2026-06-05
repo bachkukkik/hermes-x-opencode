@@ -15,6 +15,7 @@ setup() {
 }
 
 @test "AC0.3: OpenCode Serve endpoint is reachable" {
+    [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ] || skip "OPENCODE_SERVE_ENABLED!=true"
     run curl -sf --max-time 3 "$(opencode_base)/"
     [ "$status" -eq 0 ]
 }

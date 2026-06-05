@@ -11,6 +11,46 @@ OPENCODE_USER_HOME="/home/${OPENCODE_USER}"
 OPENCODE_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/opencode.jsonc"
 OPENCODE_SKILLS_DIR="${OPENCODE_USER_HOME}/.config/opencode/skills"
 
+# Detect whether we're running inside Docker or on bare Linux.
+# Precedence: RUNTIME_ENV env var > /.dockerenv > KUBERNETES_SERVICE_HOST > default "local"
+detect_runtime_env() {
+    local mode source
+    if [ -n "${RUNTIME_ENV:-}" ]; then
+        mode="$(printf '%s' "$RUNTIME_ENV" | tr '[:upper:]' '[:lower:]')"
+        case "$mode" in
+            docker|local) source="RUNTIME_ENV" ;;
+            *)
+                echo "!! WARNING: Invalid RUNTIME_ENV value '${RUNTIME_ENV}', falling through to auto-detection." >&2
+                mode=""
+                ;;
+        esac
+    fi
+    if [ -z "${mode:-}" ] && [ -f "/.dockerenv" ]; then
+        mode="docker"
+        source="/.dockerenv"
+    fi
+    if [ -z "${mode:-}" ] && [ -n "${KUBERNETES_SERVICE_HOST:-}" ]; then
+        mode="docker"
+        source="KUBERNETES_SERVICE_HOST"
+    fi
+    if [ -z "${mode:-}" ]; then
+        mode="local"
+        source="default"
+    fi
+    echo "== Detected runtime environment: ${mode} (source: ${source})" >&2
+    echo "${mode}"
+}
+
+# Replace host.docker.internal with localhost when running outside Docker.
+normalize_base_url_for_local() {
+    local url="$1"
+    if [ "${RUNTIME_ENV_MODE}" = "local" ] && [[ "$url" == *host.docker.internal* ]]; then
+        url="${url//host.docker.internal/localhost}"
+        echo "== Substituted host.docker.internal -> localhost in OPENAI_BASE_URL (local runtime mode)" >&2
+    fi
+    echo "${url}"
+}
+
 ensure_agent() {
     if [ -f "$AGENT_DIR/pyproject.toml" ]; then
         echo "== Agent already present at $AGENT_DIR"
@@ -434,20 +474,34 @@ JSONEOF
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
 }
 
+# Poll a TCP port until it accepts a connection or the timeout is reached.
+# Uses bash /dev/tcp (no external deps). Does NOT exit on timeout — caller decides.
+#
+# Args:
+#   $1: port number (default: 4096)
+#   $2: timeout in seconds (default: 30)
+#   $3: label used in log lines (default: "service")
+#
+# Returns:
+#   0 if the port accepts a connection within the timeout
+#   1 on timeout
 wait_for_port() {
-    local port=$1
-    local max_wait=${2:-120}
+    local port="${1:-4096}"
+    local timeout="${2:-30}"
+    local label="${3:-service}"
     local elapsed=0
-    echo "== Waiting for port $port to be ready (timeout: ${max_wait}s)..."
-    while ! curl -sf "http://localhost:${port}/health" >/dev/null 2>&1; do
-        sleep 2
-        elapsed=$((elapsed + 2))
-        if [ "$elapsed" -ge "$max_wait" ]; then
-            echo "!! Timeout waiting for port $port after ${max_wait}s"
+    echo "== ${label}: waiting for :${port} (0/${timeout}s)"
+    while ! (exec 3<>"/dev/tcp/127.0.0.1/${port}") >/dev/null 2>&1; do
+        sleep 5
+        elapsed=$((elapsed + 5))
+        if [ "$elapsed" -ge "$timeout" ]; then
+            echo "!! ${label}: timeout waiting for :${port} after ${timeout}s"
             return 1
         fi
+        echo "== ${label}: waiting for :${port} (${elapsed}/${timeout}s)"
     done
-    echo "== Port $port is ready."
+    echo "== ${label}: port ${port} ready (after ${elapsed}s)"
+    return 0
 }
 
 start_gateway() {
@@ -465,9 +519,14 @@ start_gateway() {
 }
 
 start_opencode_serve() {
+    local enabled="${OPENCODE_SERVE_ENABLED:-false}"
+    if [ "$enabled" != "true" ]; then
+        echo "[entrypoint] opencode serve disabled (OPENCODE_SERVE_ENABLED=${enabled})"
+        return 0
+    fi
     if ! command -v opencode >/dev/null 2>&1; then
         echo "!! opencode not found, skipping serve start."
-        return
+        return 0
     fi
     local workdir="${OPENCODE_USER_HOME}"
     echo "== Starting opencode serve on :4096 (workdir: $workdir, user: $OPENCODE_USER)..."
@@ -487,6 +546,13 @@ else
     echo "== Skipping skill staging copy (SKIP_SKILL_INSTALL=1)"
 fi
 
+RUNTIME_ENV_MODE="$(detect_runtime_env)"
+export RUNTIME_ENV_MODE
+if [ -n "${OPENAI_BASE_URL:-}" ]; then
+    OPENAI_BASE_URL="$(normalize_base_url_for_local "${OPENAI_BASE_URL}")"
+    export OPENAI_BASE_URL
+fi
+
 discover_models
 generate_config
 generate_opencode_config
@@ -496,14 +562,18 @@ ensure_agent
 WEBUI_PID=$!
 echo "== WebUI init started (PID: $WEBUI_PID)"
 
-wait_for_port 8787 300
+wait_for_port 8787 300 "webui"
 
 start_gateway
-wait_for_port 8642 60
+wait_for_port 8642 60 "hermes gateway"
 
 start_opencode_serve
 
-wait_for_port 4096 30
+if [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ]; then
+    # Boot-time readiness probe for opencode serve. Non-fatal: a timeout only logs.
+    wait_for_port 4096 "${OPENCODE_SERVE_BOOT_TIMEOUT:-30}" "opencode serve" || \
+        echo "!! opencode serve did not become ready within ${OPENCODE_SERVE_BOOT_TIMEOUT:-30}s; continuing."
+fi
 
 echo "== All services running. Waiting..."
 wait -n

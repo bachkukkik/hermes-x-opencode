@@ -259,7 +259,9 @@ else:
     gateway_user=$(echo "$gateway_user" | xargs)
     opencode_user=$(echo "$opencode_user" | xargs)
     [ "$gateway_user" = "hermeswebui" ]
-    [ "$opencode_user" = "hermeswebui" ]
+    if [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ]; then
+        [ "$opencode_user" = "hermeswebui" ]
+    fi
 }
 
 @test "D7.2: all .env.example user-facing vars appear in docker-compose environment" {

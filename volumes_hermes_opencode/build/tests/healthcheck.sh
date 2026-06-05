@@ -15,7 +15,11 @@ check() {
 
 check "http://localhost:8787/health" "Hermes WebUI"
 check "http://localhost:8642/health" "Hermes Gateway"
-check "http://localhost:4096/"         "OpenCode Serve"
+if [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ]; then
+    check "http://localhost:4096/"         "OpenCode Serve"
+else
+    echo "SKIP  OpenCode Serve (OPENCODE_SERVE_ENABLED!=true)"
+fi
 
 if [ "$failed" -ne 0 ]; then
     echo "$failed service(s) unhealthy"
