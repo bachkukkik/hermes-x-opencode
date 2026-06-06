@@ -232,7 +232,7 @@ The following are known limitations of the current setup. Most have workarounds 
 - **`opencode serve` exits immediately** — the headless server is not yet stable in this environment and is disabled by default via the `OPENCODE_SERVE_ENABLED` env var. See [#10](https://github.com/bachkukkik/hermes-x-opencode/issues/10).
 - **Interactive multi-turn TUI sessions cannot receive follow-up stdin** from the Hermes process layer — the agent can launch `opencode` but cannot drive an interactive REPL. Use one-shot prompts or the Agent API (see [#6](https://github.com/bachkukkik/hermes-x-opencode/issues/6)).
 - **`host.docker.internal` does not resolve on bare Linux hosts** — the entrypoint auto-detects the host IP and injects the correct value. See [#12](https://github.com/bachkukkik/hermes-x-opencode/issues/12).
-- **`opencode acp` is non-functional** in the current setup. There is no workaround yet; ACP integration is deferred.
+- **`opencode acp` does not bind TCP ports** — ACP is designed for IDE stdio integration, not as a standalone TCP server. The `--port` flag is accepted but never binds. This is an upstream limitation (see [vanilla-coder#6](https://github.com/vanilla-republic/vanilla-coder/issues/6)). Use **Serve + Attach** instead (`opencode serve` + `opencode run --attach`).
 
 ## Configuration
 

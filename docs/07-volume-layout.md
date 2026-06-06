@@ -126,12 +126,14 @@ docker exec <container> ls /workspace/
 - **First boot requires agent copy:** The bind mount starts empty. The entrypoint must copy the agent from staging, adding ~2 seconds to first boot. Subsequent boots skip this.
 - **Bind mount ownership:** Files written by the container (as root) are owned by root on the host. This may cause permission issues if the host user needs to read or modify them.
 - **No backup automation:** Data lives in `data/` with no automated backup mechanism. Manual backup requires copying the bind mount directories.
+- **Docker overlayfs on ARM64 drops new files:** When building on ARM64 (Raspberry Pi CM5), Docker's overlayfs may silently drop newly created files in new image layers. Modifications to existing files survive. The workaround is to use inline `command:` in docker-compose rather than expecting new files from the build layer to persist at runtime.
 
 ## Resolution
 
 - The agent copy is automatic and fast (~2s). No action needed.
 - The WebUI's init script sets up UID/GID via `WANTED_UID`/`WANTED_GID`. Match these to your host user (set `HOST_UID` and `HOST_GID` in `.env`) to avoid permission issues.
 - Back up `volumes_hermes_opencode/data/` manually or via a cron job. The SQLite database (`state.db`) should be backed up when the container is stopped to avoid corruption.
+- For ARM64 deployments, avoid relying on new files from the build layer for runtime behavior. Use bind mounts or `command:` in docker-compose to work around overlayfs dropping new files. The entrypoint's staging copy mechanism is designed to work around this — files that exist in the build layer and are copied to a bind mount at runtime survive across boots.
 
 ## Verdict
 

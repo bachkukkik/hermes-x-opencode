@@ -11,7 +11,7 @@ The entrypoint script (`scripts/entrypoint.sh`) is the container's `ENTRYPOINT`.
 - Skips WebUI onboarding by setting `HERMES_WEBUI_SKIP_ONBOARDING`, removing the interactive setup wizard
 - Copies the hermes-agent from the image's staging path to the bind-mounted volume on first start, bridging build-time content with runtime persistence
 - Starts services sequentially with health gates, ensuring each service's dependencies are ready before it launches
-- Uses `wait -n` to propagate any background process crash as a container exit
+- Uses `wait` to keep the container alive until any background process exits
 
 ## How
 
@@ -45,7 +45,7 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
 12. start_opencode_serve()      — if OPENCODE_SERVE_ENABLED=true: su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
                                 else: log and skip
 12b. wait_for_port 4096         — (only if serve enabled) boot readiness probe, non-fatal timeout
-13. wait -n                     — blocks until any background process exits
+13. wait                        — blocks until any background process exits
 14. Container shuts down
 ```
 
@@ -137,7 +137,7 @@ Expected output lines in order:
 - Config regeneration is consistent — same env vars produce same configs every boot
 - Agent copy skips on subsequent boots (`Agent already present at ...`)
 - Sequential startup with health gates prevents race conditions
-- `wait -n` correctly propagates any process crash as a container exit
+- `wait` correctly keeps the container alive until any background process exits
 - Auto-generated API key is printed to logs and written to config.yaml
 
 ## What Fails

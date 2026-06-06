@@ -30,13 +30,13 @@ services:
       - OPENCODE_SECURITY_MODE=${OPENCODE_SECURITY_MODE:-strict}
       - OPENCODE_SERVE_ENABLED=${OPENCODE_SERVE_ENABLED:-false}
       - OPENCODE_SERVE_BOOT_TIMEOUT=${OPENCODE_SERVE_BOOT_TIMEOUT:-30}
+      - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD:-}
     networks:
       default:
         aliases:
           - hermes-opencode
     # Set OPENCODE_SERVE_ENABLED=true to start `opencode serve` on :4096.
-    # Disabled by default — serve exits immediately without an LLM provider
-    # and would tear the container down via `wait -n`.
+    # Disabled by default — serve exits immediately without an LLM provider.
     # Example .env override: OPENCODE_SERVE_ENABLED=true
     healthcheck:
       test: ["CMD", "bash", "/usr/local/bin/healthcheck.sh"]

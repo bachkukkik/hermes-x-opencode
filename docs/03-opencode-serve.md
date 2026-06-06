@@ -19,7 +19,7 @@ OpenCode Serve is started by the entrypoint as the third background process, aft
 | Internal port | `4096` | Pinned via `--port 4096` flag |
 | Host port | `${OPENCODE_SERVE_PORT:-4096}` | Configurable via `.env` |
 | Bind address | `0.0.0.0` | Required for host access. Set via `--hostname 0.0.0.0`. |
-| Auth | None (no HTTP auth support) | Server is unsecured — protect via firewall or VPN |
+| Auth | `OPENCODE_SERVER_PASSWORD` env var | Auto-generated if empty. Pass via `-p` flag when attaching. |
 | Binary | `/usr/local/bin/opencode` | Installed via `opencode.ai/install` during build |
 | Run user | `hermeswebui` (UID 1000) | Launched via `su` from root entrypoint |
 | Enable flag | `OPENCODE_SERVE_ENABLED=true` | Required to start serve (default: `false`) |
@@ -41,15 +41,23 @@ Containers on the `hermes_x_opencode_default` network can reach the server via t
 
 ### Authentication
 
-OpenCode serve has no built-in HTTP authentication. The server is unsecured by design — any client that reaches port 4096 can attach and execute commands. Protect the endpoint with a firewall, or deploy behind an authenticating reverse proxy (nginx, Caddy, Tailscale). The `OPENCODE_API_KEY` provides authentication at the OpenCode client level but does not protect the serve port.
+OpenCode serve authenticates clients via the `OPENCODE_SERVER_PASSWORD` environment variable. The entrypoint auto-generates a random password if the variable is empty and writes it to `/tmp/opencode-server-password` (for `docker exec` access) and to the container logs. Clients must pass the password via the `-p` flag:
+
+```bash
+opencode attach http://<host-ip>:4096 -p "$password"
+opencode run --attach http://<host-ip>:4096 -p "$password" "prompt"
+```
+
+The password is exported into the entrypoint's environment and inherited by the `su`-launched serve process. `docker exec` does not inherit exported env vars, so the file `/tmp/opencode-server-password` is the reliable way to read the password from outside the container.
 
 ## Verification
 
 **Prerequisite:** Set `OPENCODE_SERVE_ENABLED=true` in `.env` before starting the stack.
 
 ```bash
-curl -sf -o /dev/null -w "%{http_code}" http://localhost:${OPENCODE_SERVE_PORT:-4096}/
-curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health
+# Port-based check (auth blocks curl)
+CONTAINER=$(docker compose ps -q hermes-opencode)
+docker exec "$CONTAINER" bash -c 'echo > /dev/tcp/127.0.0.1/4096'
 opencode --version
 ```
 
@@ -64,14 +72,14 @@ opencode --version
 
 ## What Fails
 
-- **No authentication:** OpenCode serve has no built-in HTTP auth. Any network client that reaches port 4096 can attach and execute commands with full filesystem access.
+- **Password required for remote access:** Clients must know the `OPENCODE_SERVER_PASSWORD` to attach. The password is auto-generated and must be read from logs or the `/tmp/opencode-server-password` file.
 - **Not started if gateway fails:** OpenCode serve starts after the gateway healthcheck passes. If the gateway never becomes healthy, OpenCode serve never starts (the entrypoint waits for port 8642 first).
 
 ## Resolution
 
-- Protect port 4096 with a firewall (e.g., `ufw deny 4096` on the host) or deploy behind an authenticating reverse proxy.
+- Read the auto-generated password from `docker logs` or `docker exec <container> cat /tmp/opencode-server-password`. Pass it with the `-p` flag when attaching.
 - The sequential startup dependency ensures services start in order. If the gateway is intentionally disabled (no agent), modify the entrypoint to skip the gateway wait and start OpenCode serve directly.
 
 ## Verdict
 
-OpenCode Serve provides a convenient remote access point for the OpenCode CLI. Running as hermeswebui instead of root reduces the filesystem blast radius. The lack of built-in HTTP auth is the main operational concern — protect the port with a firewall or reverse proxy. The sequential startup ensures it only starts when the full stack is healthy.
+OpenCode Serve provides a convenient remote access point for the OpenCode CLI. Running as hermeswebui instead of root reduces the filesystem blast radius. The `OPENCODE_SERVER_PASSWORD` auth prevents unauthorized access. The sequential startup ensures it only starts when the full stack is healthy.

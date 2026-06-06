@@ -66,3 +66,11 @@ skip_if_no_secrets() {
         skip "OPENAI_BASE_URL or OPENAI_API_KEY not set"
     fi
 }
+
+# Get the PID of the actual hermes gateway process (not the su/bash wrapper)
+get_gateway_pid() {
+    local cid="$1"
+    docker exec "$cid" bash -c '
+        ps aux | grep "[h]ermes gateway run" | grep -v "su \|bash -c " | head -1 | awk "{print \$2}"
+    ' 2>/dev/null || echo ""
+}

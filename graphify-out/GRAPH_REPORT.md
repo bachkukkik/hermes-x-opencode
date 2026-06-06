@@ -1,7 +1,7 @@
-# Graph Report - .  (2026-06-05)
+# Graph Report - .  (2026-06-06)
 
 ## Corpus Check
-- Corpus is ~22,941 words - fits in a single context window. You may not need a graph.
+- Corpus is ~23,993 words - fits in a single context window. You may not need a graph.
 
 ## Summary
 - 83 nodes · 162 edges · 9 communities (7 shown, 2 thin omitted)
@@ -9,15 +9,15 @@
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Graphify Detection|Graphify Detection]]
-- [[_COMMUNITY_Service Architecture|Service Architecture]]
-- [[_COMMUNITY_Build & Security|Build & Security]]
-- [[_COMMUNITY_Testing & CICD|Testing & CI/CD]]
-- [[_COMMUNITY_Config & Discovery|Config & Discovery]]
-- [[_COMMUNITY_Test Helpers|Test Helpers]]
-- [[_COMMUNITY_Gateway & Serve|Gateway & Serve]]
-- [[_COMMUNITY_Plugins & Security|Plugins & Security]]
-- [[_COMMUNITY_Test Runner|Test Runner]]
+- [[_COMMUNITY_Graphify Corpus Detection|Graphify Corpus Detection]]
+- [[_COMMUNITY_Hermes Agent & WebUI Stack|Hermes Agent & WebUI Stack]]
+- [[_COMMUNITY_Docker Build & ARM64 Platform|Docker Build & ARM64 Platform]]
+- [[_COMMUNITY_Testing & CI Infrastructure|Testing & CI Infrastructure]]
+- [[_COMMUNITY_Model Discovery & Config Generation|Model Discovery & Config Generation]]
+- [[_COMMUNITY_Test Helper Functions|Test Helper Functions]]
+- [[_COMMUNITY_Gateway & OpenCode Serve|Gateway & OpenCode Serve]]
+- [[_COMMUNITY_Plugin System & Security|Plugin System & Security]]
+- [[_COMMUNITY_Test Orchestration|Test Orchestration]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `PRD.md — Product Requirements Document` - 19 edges
@@ -34,14 +34,17 @@
 ## Surprising Connections (you probably didn't know these)
 - `tests/run.sh — E2E Test Orchestrator` --conceptually_related_to--> `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`  [INFERRED]
   tests/run.sh → .github/workflows/e2e.yml
-- `docs/09-testing-and-verification.md — Testing and Verification` --references--> `tests/run.sh — E2E Test Orchestrator`  [INFERRED]
-  docs/09-testing-and-verification.md → tests/run.sh
-- `docs/09-testing-and-verification.md — Testing and Verification` --references--> `tests/e2e/test_helper/common.bash — Bats Helper Library`  [INFERRED]
-  docs/09-testing-and-verification.md → tests/e2e/test_helper/common.bash
+- `tests/run.sh — E2E Test Orchestrator` --references--> `docs/09-testing-and-verification.md — Testing and Verification`  [INFERRED]
+  tests/run.sh → docs/09-testing-and-verification.md
+- `tests/e2e/test_helper/common.bash — Bats Helper Library` --references--> `docs/09-testing-and-verification.md — Testing and Verification`  [INFERRED]
+  tests/e2e/test_helper/common.bash → docs/09-testing-and-verification.md
 - `tests/e2e/test_helper/common.bash — Bats Helper Library` --references--> `Hermes Gateway Service (:8642)`  [EXTRACTED]
   tests/e2e/test_helper/common.bash → docs/02-hermes-gateway.md
 - `tests/e2e/test_helper/common.bash — Bats Helper Library` --references--> `Hermes WebUI Service (:8787)`  [EXTRACTED]
   tests/e2e/test_helper/common.bash → docs/01-hermes-webui.md
+
+## Import Cycles
+- None detected.
 
 ## Hyperedges (group relationships)
 - **Three-Service Docker Stack (WebUI + Gateway + OpenCode Serve)** — concept_hermes_webui_service, concept_hermes_gateway_service, concept_opencode_serve_service [EXTRACTED 1.00]
@@ -58,31 +61,31 @@
 
 ## Communities (9 total, 2 thin omitted)
 
-### Community 0 - "Graphify Detection"
+### Community 0 - "Graphify Corpus Detection"
 Cohesion: 0.14
 Nodes (13): files, code, document, image, paper, video, graphifyignore_patterns, needs_graph (+5 more)
 
-### Community 1 - "Service Architecture"
+### Community 1 - "Hermes Agent & WebUI Stack"
 Cohesion: 0.23
 Nodes (13): Graphify Integration (cross-platform skill), Hermes Agent (NousResearch/hermes-agent), Hermes WebUI Service (:8787), Two-Phase Skill Installation, Seven Skill Upstream Sources, Build-Time Staging Paths (/opt/*-staging), state.db (SQLite Session Store), Volume Layout (bind mounts) (+5 more)
 
-### Community 2 - "Build & Security"
+### Community 2 - "Docker Build & ARM64 Platform"
 Cohesion: 0.38
 Nodes (11): Linux ARM64 Target Platform, Multi-Step Docker Build Pipeline, Cloudflare UA Patch (CustomProfile sed), Node.js 22 Requirement, Secrets Handling (key_env vs literal), OpenCode Security Modes (strict/standard/yolo), AGENTS.md — Agent Standing Orders, docs/04-build-pipeline.md — Build Pipeline Architecture (+3 more)
 
-### Community 3 - "Testing & CI/CD"
+### Community 3 - "Testing & CI Infrastructure"
 Cohesion: 0.42
 Nodes (10): Acceptance Criteria (AC1-AC29), portainer-cloudflare-traefik_default Network, Bats E2E Test Suite, Docker Healthcheck (bash healthcheck.sh), docker-compose.yml — Service Definition, docker-compose.override.yml — Cloudflare Network Override, .github/workflows/e2e.yml — GitHub Actions E2E Workflow, docs/09-testing-and-verification.md — Testing and Verification (+2 more)
 
-### Community 4 - "Config & Discovery"
+### Community 4 - "Model Discovery & Config Generation"
 Cohesion: 0.42
 Nodes (9): Config Generation (config.yaml + opencode.jsonc), Entrypoint Sequence (13-step startup), model.default AND model.name Keys, Model Discovery Mechanism, Non-Chat Model Filter, Wildcard Model Filter (IDs ending in /*), docs/06-config-and-env.md — Configuration and Environment, docs/05-entrypoint-sequence.md — Entrypoint Sequence (+1 more)
 
-### Community 6 - "Gateway & Serve"
+### Community 6 - "Gateway & OpenCode Serve"
 Cohesion: 0.46
 Nodes (8): HERMES_API_KEY (auto-generated gateway token), Hermes Gateway Service (:8642), OpenAI-Compatible API Surface, OpenCode Serve Service (:4096), hermeswebui User Isolation (UID 1000), wait -n Process Supervisor, docs/02-hermes-gateway.md — Hermes Gateway Architecture, docs/03-opencode-serve.md — OpenCode Serve Architecture
 
-### Community 7 - "Plugins & Security"
+### Community 7 - "Plugin System & Security"
 Cohesion: 0.53
 Nodes (6): cc-safety-net Plugin (PreToolUse Hook), @franlol/opencode-md-table-formatter, @tarquinen/opencode-dcp (Context Pruner), OpenCode Plugin System (npm-resolved), docs/12-plugin-system.md — OpenCode Plugin System, docs/13-security-hardening.md — Security Hardening
 
@@ -94,17 +97,17 @@ Nodes (6): cc-safety-net Plugin (PreToolUse Hook), @franlol/opencode-md-table-fo
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PRD.md — Product Requirements Document` connect `Build & Security` to `Service Architecture`, `Testing & CI/CD`, `Config & Discovery`, `Gateway & Serve`?**
+- **Why does `PRD.md — Product Requirements Document` connect `Docker Build & ARM64 Platform` to `Hermes Agent & WebUI Stack`, `Testing & CI Infrastructure`, `Model Discovery & Config Generation`, `Gateway & OpenCode Serve`?**
   _High betweenness centrality (0.168) - this node is a cross-community bridge._
-- **Why does `docker-compose.yml — Service Definition` connect `Testing & CI/CD` to `Service Architecture`, `Build & Security`, `Gateway & Serve`?**
+- **Why does `docker-compose.yml — Service Definition` connect `Testing & CI Infrastructure` to `Hermes Agent & WebUI Stack`, `Docker Build & ARM64 Platform`, `Gateway & OpenCode Serve`?**
   _High betweenness centrality (0.075) - this node is a cross-community bridge._
-- **Why does `docs/05-entrypoint-sequence.md — Entrypoint Sequence` connect `Config & Discovery` to `Build & Security`, `Plugins & Security`?**
+- **Why does `docs/05-entrypoint-sequence.md — Entrypoint Sequence` connect `Model Discovery & Config Generation` to `Docker Build & ARM64 Platform`, `Plugin System & Security`?**
   _High betweenness centrality (0.055) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `docker-compose.yml — Service Definition` (e.g. with `hermeswebui User Isolation (UID 1000)` and `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`) actually correct?**
   _`docker-compose.yml — Service Definition` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `Hermes WebUI Service (:8787)` (e.g. with `Hermes Gateway Service (:8642)` and `docker-compose.override.yml — Cloudflare Network Override`) actually correct?**
+- **Are the 2 inferred relationships involving `Hermes WebUI Service (:8787)` (e.g. with `docker-compose.override.yml — Cloudflare Network Override` and `Hermes Gateway Service (:8642)`) actually correct?**
   _`Hermes WebUI Service (:8787)` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `code`, `document`, `paper` to the rest of the system?**
   _16 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Graphify Detection` be split into smaller, more focused modules?**
+- **Should `Graphify Corpus Detection` be split into smaller, more focused modules?**
   _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._

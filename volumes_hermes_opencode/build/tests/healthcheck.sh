@@ -16,7 +16,12 @@ check() {
 check "http://localhost:8787/health" "Hermes WebUI"
 check "http://localhost:8642/health" "Hermes Gateway"
 if [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ]; then
-    check "http://localhost:4096/"         "OpenCode Serve"
+    if timeout 3 bash -c "echo > /dev/tcp/127.0.0.1/4096" 2>/dev/null; then
+        echo "OK  OpenCode Serve (port 4096 open)"
+    else
+        echo "FAIL  OpenCode Serve (port 4096)"
+        failed=$((failed + 1))
+    fi
 else
     echo "SKIP  OpenCode Serve (OPENCODE_SERVE_ENABLED!=true)"
 fi
