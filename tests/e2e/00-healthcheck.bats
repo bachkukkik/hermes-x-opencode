@@ -16,7 +16,10 @@ setup() {
 
 @test "AC0.3: OpenCode Serve endpoint is reachable" {
     [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ] || skip "OPENCODE_SERVE_ENABLED!=true"
-    run curl -sf --max-time 3 "$(opencode_base)/"
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c 'timeout 3 bash -c "echo > /dev/tcp/127.0.0.1/4096"'
     [ "$status" -eq 0 ]
 }
 

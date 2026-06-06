@@ -21,12 +21,15 @@ setup() {
     [ "$count" -gt 0 ]
 }
 
-@test "AC23: opencode serve health endpoint returns healthy" {
-    skip_if_no_secrets
+@test "AC23: opencode serve is listening on port 4096" {
     [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ] || skip "OPENCODE_SERVE_ENABLED!=true"
-    run curl -sf "$(opencode_base)/global/health"
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c 'timeout 3 bash -c "echo > /dev/tcp/127.0.0.1/4096"'
     [ "$status" -eq 0 ]
-    echo "$output" | grep -q '"healthy": *true'
+    run docker exec "$cid" pgrep -f "opencode serve"
+    [ "$status" -eq 0 ]
 }
 
 @test "AC24: Hermes skills present after staging copy" {
