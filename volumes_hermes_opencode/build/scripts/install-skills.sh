@@ -185,6 +185,45 @@ done
 eprintf "  Shortened %d descriptions to <=60 chars" "$shortened"
 
 # ==============================================================================
+# --- llm-wiki (from hermes-agent staging -> opencode + hermes/research/) ---
+# ==============================================================================
+eprintf ""
+eprintf "=== llm-wiki (opencode + hermes research skill) ==="
+LLM_WIKI_SRC="/opt/hermes-agent-staging/skills/research/llm-wiki"
+LLM_WIKI_SKILL="llm-wiki"
+
+if [ -f "$LLM_WIKI_SRC/SKILL.md" ]; then
+  # OpenCode (flat namespace)
+  rm -rf "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL"
+  mkdir -p "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL"
+  cp "$LLM_WIKI_SRC/SKILL.md" "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL/SKILL.md"
+  # Copy any sibling files (references/, scripts/, assets/) if present
+  cp -r "$LLM_WIKI_SRC"/. "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL/" 2>/dev/null || true
+  rm -rf "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL/.git"
+
+  # Hermes (categorized under research/)
+  rm -rf "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL"
+  mkdir -p "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL"
+  cp "$LLM_WIKI_SRC/SKILL.md" "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL/SKILL.md"
+  cp -r "$LLM_WIKI_SRC"/. "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL/" 2>/dev/null || true
+  rm -rf "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL/.git"
+
+  eprintf "  Installed llm-wiki -> opencode + hermes/research/"
+else
+  eprintf "  WARNING: llm-wiki source not found at $LLM_WIKI_SRC"
+fi
+
+# Research category description (mirrors product-management pattern)
+if [ ! -f "$HERMES_SKILLS_DIR/research/DESCRIPTION.md" ]; then
+  mkdir -p "$HERMES_SKILLS_DIR/research"
+  cat > "$HERMES_SKILLS_DIR/research/DESCRIPTION.md" <<'DESEOF'
+---
+description: Research skills for academic literature, knowledge bases, and domain reconnaissance.
+---
+DESEOF
+fi
+
+# ==============================================================================
 # --- graphify (PyPI package -> registers skill for opencode + hermes) ---
 # ==============================================================================
 eprintf ""
