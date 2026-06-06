@@ -203,7 +203,7 @@ YAMLEOF
         return
     fi
 
-    local default_model="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
+    local default_model="${HERMES_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
 
     local models_yaml=""
     while IFS= read -r model_id; do
@@ -247,8 +247,8 @@ generate_opencode_config() {
 
     mkdir -p "$(dirname "$OPENCODE_CONFIG")"
 
-    local default_model="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
-    local small_model="${OPENAI_SMALL_MODEL:-$default_model}"
+    local default_model="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
+    local small_model="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-$default_model}}"
     local base_url="${OPENAI_BASE_URL%/}"
 
     local models_json
