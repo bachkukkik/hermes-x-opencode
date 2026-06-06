@@ -92,7 +92,7 @@ print(sm)
     [[ "$small_model" == litellm/* ]]
 }
 
-@test "opencode.jsonc small_model matches OPENAI_SMALL_MODEL or defaults to model" {
+@test "opencode.jsonc small_model matches OPENCODE_SMALL_MODEL, OPENAI_SMALL_MODEL, or defaults to model" {
     skip_if_no_secrets
     local cid
     cid=$(get_container)
@@ -110,7 +110,9 @@ print(c.get('model', ''))
     configured_small=$(echo "$small_model" | head -1)
     default_model=$(echo "$small_model" | tail -1)
     [ -n "$configured_small" ]
-    if [ -n "${OPENAI_SMALL_MODEL:-}" ]; then
+    if [ -n "${OPENCODE_SMALL_MODEL:-}" ]; then
+        [ "$configured_small" = "litellm/${OPENCODE_SMALL_MODEL}" ]
+    elif [ -n "${OPENAI_SMALL_MODEL:-}" ]; then
         [ "$configured_small" = "litellm/${OPENAI_SMALL_MODEL}" ]
     else
         [ "$configured_small" = "$default_model" ]
@@ -201,17 +203,36 @@ print('OK')
     [ "$count" -ge 1 ]
 }
 
-@test "config.yaml model.default and model.name match OPENAI_DEFAULT_MODEL" {
+@test "config.yaml model.default and model.name match HERMES_DEFAULT_MODEL or OPENAI_DEFAULT_MODEL" {
     skip_if_no_secrets
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    local expected="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
+    local expected="${HERMES_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
     local default_val name_val
     default_val=$(docker exec "$cid" grep '^ *default:' /home/hermeswebui/.hermes/config.yaml | head -1 | sed 's/.*default: *//' | tr -d '"')
     name_val=$(docker exec "$cid" grep '^ *name:' /home/hermeswebui/.hermes/config.yaml | head -1 | sed 's/.*name: *//' | tr -d '"')
     [ "$default_val" = "$expected" ]
     [ "$name_val" = "$expected" ]
+}
+
+@test "opencode.jsonc model matches OPENCODE_DEFAULT_MODEL or OPENAI_DEFAULT_MODEL" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local expected="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
+    local configured_model
+    configured_model=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+print(c.get('model', ''))
+" /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
+    [ -n "$configured_model" ]
+    [ "$configured_model" = "litellm/${expected}" ]
 }
 
 @test "opencode.jsonc llama_cpp models have 200k context" {
