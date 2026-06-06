@@ -29,6 +29,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `HERMES_API_KEY` | No | auto-generated | Bearer token for the Agent API (`:8642`). If empty, a random key is generated and printed to logs. |
 | `HERMES_API_PORT` | No | `8642` | Host port for the Agent API. Container always listens on 8642. |
 | `OPENCODE_SECURITY_MODE` | No | `strict` | Security profile for OpenCode: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). See `13 — Security Hardening`. |
+| `OPENCODE_SERVER_PASSWORD` | No | auto-generated | Password for `opencode serve` authentication. Pass via `-p` flag when attaching or running tasks. Auto-generated and printed to logs if empty. Written to `/tmp/opencode-server-password` for `docker exec` access. |
 | `OPENCODE_SERVE_PORT` | No | `4096` | Host port for OpenCode serve. Container always listens on 4096. |
 | `HOST_UID` | No | `1000` | Linux UID for container file processes. Match your host user UID. |
 | `HOST_GID` | No | `1000` | Linux GID for container file processes. Match your host group GID. |

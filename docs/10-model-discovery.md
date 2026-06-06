@@ -23,6 +23,7 @@ entrypoint.sh
        ├─ python3: extract all model IDs from data[]
        ├─ python3: filter non-chat models (regex skip patterns)
        ├─ python3: filter wildcard patterns (IDs ending with /*)
+       ├─ python3: case-insensitive dedup (model_id.lower() as set key)
        ├─ ensure OPENAI_DEFAULT_MODEL is in the list
        └─ DISCOVERED_MODELS = newline-separated model IDs
             ├─ generate_config()     → config.yaml (models dict)
@@ -79,6 +80,10 @@ This filters out patterns like:
 | `vertex_ai/*` | Litellm model group alias |
 
 These patterns are litellm routing aliases (meaning "any model in this group") that return 404 when used as an actual model ID in a chat completion request.
+
+### Case-insensitive dedup
+
+After filtering, model IDs are deduplicated case-insensitively using `model_id.lower()` as a set key. This prevents duplicate entries when a provider returns the same model with different casing (e.g., `Model/name` and `model/name`). The original casing from the provider response is preserved in the final list — only exact-case duplicates are removed after the lowercased dedup pass.
 
 ### Fallback behavior
 
