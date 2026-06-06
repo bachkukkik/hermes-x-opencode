@@ -123,6 +123,7 @@ skip_patterns = [
 ]
 skip_re = [re.compile(p, re.IGNORECASE) for p in skip_patterns]
 
+seen_keys = set()
 for line in sys.stdin:
     model_id = line.strip()
     if not model_id:
@@ -131,6 +132,10 @@ for line in sys.stdin:
         continue
     if re.search(r'/\*$', model_id):
         continue
+    key = model_id.lower()
+    if key in seen_keys:
+        continue
+    seen_keys.add(key)
     print(model_id)
 " 2>/dev/null || echo "")
 
@@ -514,7 +519,15 @@ start_gateway() {
         return
     fi
     echo "== Starting hermes gateway (api_server on :8642)..."
-    su -s /bin/bash "$OPENCODE_USER" -c "/app/venv/bin/hermes gateway run --accept-hooks" &
+    mkdir -p "${HERMES_HOME}/logs"
+    nohup su -s /bin/bash "$OPENCODE_USER" -c '
+        while true; do
+            /app/venv/bin/hermes gateway run --accept-hooks
+            rc=$?
+            echo "[$(date)] gateway exited rc=$rc, restarting in 2s" >> "'"${HERMES_HOME}"'/logs/gateway-restart.log"
+            sleep 2
+        done
+    ' > "${HERMES_HOME}/logs/gateway.log" 2>&1 &
     echo "== Gateway started (PID: $!)"
 }
 
@@ -528,9 +541,17 @@ start_opencode_serve() {
         echo "!! opencode not found, skipping serve start."
         return 0
     fi
+    local password="${OPENCODE_SERVER_PASSWORD:-}"
+    if [ -z "$password" ]; then
+        password="$(openssl rand -hex 16)"
+        echo "== Generated random OPENCODE_SERVER_PASSWORD: $password"
+        export OPENCODE_SERVER_PASSWORD="$password"
+    fi
+    echo "$password" > /tmp/opencode-server-password
+    chown "$OPENCODE_USER":"$OPENCODE_USER" /tmp/opencode-server-password
     local workdir="${OPENCODE_USER_HOME}"
     echo "== Starting opencode serve on :4096 (workdir: $workdir, user: $OPENCODE_USER)..."
-    su -s /bin/bash "$OPENCODE_USER" -c "opencode serve --port 4096 --hostname 0.0.0.0" &
+    su -s /bin/bash "$OPENCODE_USER" -c "OPENCODE_SERVER_PASSWORD='$password' opencode serve --port 4096 --hostname 0.0.0.0" &
     echo "== OpenCode serve started (PID: $!)"
 }
 
@@ -576,5 +597,5 @@ if [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ]; then
 fi
 
 echo "== All services running. Waiting..."
-wait -n
+wait
 echo "!! A background process exited. Container shutting down."
