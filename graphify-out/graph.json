@@ -167,126 +167,126 @@
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "graphify_detect_json",
       "community": 0,
-      "norm_label": ".graphify_detect.json"
+      "norm_label": ".graphify_detect.json",
+      "id": "graphify_detect_json"
     },
     {
       "label": "files",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_files",
       "community": 0,
-      "norm_label": "files"
+      "norm_label": "files",
+      "id": "hermes_x_opencode_graphify_detect_files"
     },
     {
       "label": "code",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_files_code",
       "community": 0,
-      "norm_label": "code"
+      "norm_label": "code",
+      "id": "hermes_x_opencode_graphify_detect_files_code"
     },
     {
       "label": "document",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_files_document",
       "community": 0,
-      "norm_label": "document"
+      "norm_label": "document",
+      "id": "hermes_x_opencode_graphify_detect_files_document"
     },
     {
       "label": "paper",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_files_paper",
       "community": 0,
-      "norm_label": "paper"
+      "norm_label": "paper",
+      "id": "hermes_x_opencode_graphify_detect_files_paper"
     },
     {
       "label": "image",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_files_image",
       "community": 0,
-      "norm_label": "image"
+      "norm_label": "image",
+      "id": "hermes_x_opencode_graphify_detect_files_image"
     },
     {
       "label": "video",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_files_video",
       "community": 0,
-      "norm_label": "video"
+      "norm_label": "video",
+      "id": "hermes_x_opencode_graphify_detect_files_video"
     },
     {
       "label": "total_files",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_total_files",
       "community": 0,
-      "norm_label": "total_files"
+      "norm_label": "total_files",
+      "id": "hermes_x_opencode_graphify_detect_total_files"
     },
     {
       "label": "total_words",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_total_words",
       "community": 0,
-      "norm_label": "total_words"
+      "norm_label": "total_words",
+      "id": "hermes_x_opencode_graphify_detect_total_words"
     },
     {
       "label": "needs_graph",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_needs_graph",
       "community": 0,
-      "norm_label": "needs_graph"
+      "norm_label": "needs_graph",
+      "id": "hermes_x_opencode_graphify_detect_needs_graph"
     },
     {
       "label": "warning",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_warning",
       "community": 0,
-      "norm_label": "warning"
+      "norm_label": "warning",
+      "id": "hermes_x_opencode_graphify_detect_warning"
     },
     {
       "label": "skipped_sensitive",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_skipped_sensitive",
       "community": 0,
-      "norm_label": "skipped_sensitive"
+      "norm_label": "skipped_sensitive",
+      "id": "hermes_x_opencode_graphify_detect_skipped_sensitive"
     },
     {
       "label": "graphifyignore_patterns",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_graphifyignore_patterns",
       "community": 0,
-      "norm_label": "graphifyignore_patterns"
+      "norm_label": "graphifyignore_patterns",
+      "id": "hermes_x_opencode_graphify_detect_graphifyignore_patterns"
     },
     {
       "label": "scan_root",
       "file_type": "code",
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
-      "id": "hermes_x_opencode_graphify_detect_scan_root",
       "community": 0,
-      "norm_label": "scan_root"
+      "norm_label": "scan_root",
+      "id": "hermes_x_opencode_graphify_detect_scan_root"
     },
     {
       "label": "run.sh",
@@ -297,9 +297,9 @@
         "language": "bash",
         "kind": "file"
       },
-      "id": "tests_run_sh",
       "community": 8,
-      "norm_label": "run.sh"
+      "norm_label": "run.sh",
+      "id": "tests_run_sh"
     },
     {
       "label": "run.sh script",
@@ -310,9 +310,9 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "id": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_run_sh__entry",
       "community": 8,
-      "norm_label": "run.sh script"
+      "norm_label": "run.sh script",
+      "id": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_run_sh__entry"
     },
     {
       "label": "cleanup()",
@@ -323,9 +323,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "tests_run_cleanup",
       "community": 8,
-      "norm_label": "cleanup()"
+      "norm_label": "cleanup()",
+      "id": "tests_run_cleanup"
     },
     {
       "label": "common.bash",
@@ -336,9 +336,9 @@
         "language": "bash",
         "kind": "file"
       },
-      "id": "tests_e2e_test_helper_common_bash",
       "community": 5,
-      "norm_label": "common.bash"
+      "norm_label": "common.bash",
+      "id": "tests_e2e_test_helper_common_bash"
     },
     {
       "label": "common.bash script",
@@ -349,9 +349,9 @@
         "language": "bash",
         "kind": "bash_entrypoint"
       },
-      "id": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry",
       "community": 5,
-      "norm_label": "common.bash script"
+      "norm_label": "common.bash script",
+      "id": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry"
     },
     {
       "label": "get_container()",
@@ -362,9 +362,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "test_helper_common_get_container",
       "community": 5,
-      "norm_label": "get_container()"
+      "norm_label": "get_container()",
+      "id": "test_helper_common_get_container"
     },
     {
       "label": "wait_for_healthy()",
@@ -375,9 +375,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "test_helper_common_wait_for_healthy",
       "community": 5,
-      "norm_label": "wait_for_healthy()"
+      "norm_label": "wait_for_healthy()",
+      "id": "test_helper_common_wait_for_healthy"
     },
     {
       "label": "get_api_key()",
@@ -388,9 +388,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "test_helper_common_get_api_key",
       "community": 5,
-      "norm_label": "get_api_key()"
+      "norm_label": "get_api_key()",
+      "id": "test_helper_common_get_api_key"
     },
     {
       "label": "webui_base()",
@@ -401,9 +401,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "test_helper_common_webui_base",
       "community": 5,
-      "norm_label": "webui_base()"
+      "norm_label": "webui_base()",
+      "id": "test_helper_common_webui_base"
     },
     {
       "label": "gateway_base()",
@@ -414,9 +414,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "test_helper_common_gateway_base",
       "community": 5,
-      "norm_label": "gateway_base()"
+      "norm_label": "gateway_base()",
+      "id": "test_helper_common_gateway_base"
     },
     {
       "label": "opencode_base()",
@@ -427,9 +427,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "test_helper_common_opencode_base",
       "community": 5,
-      "norm_label": "opencode_base()"
+      "norm_label": "opencode_base()",
+      "id": "test_helper_common_opencode_base"
     },
     {
       "label": "skip_if_no_secrets()",
@@ -440,9 +440,9 @@
         "language": "bash",
         "kind": "bash_function"
       },
-      "id": "test_helper_common_skip_if_no_secrets",
       "community": 5,
-      "norm_label": "skip_if_no_secrets()"
+      "norm_label": "skip_if_no_secrets()",
+      "id": "test_helper_common_skip_if_no_secrets"
     },
     {
       "label": "tests/run.sh \u2014 E2E Test Orchestrator",
@@ -453,9 +453,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_tests_run_sh",
       "community": 3,
-      "norm_label": "tests/run.sh \u2014 e2e test orchestrator"
+      "norm_label": "tests/run.sh \u2014 e2e test orchestrator",
+      "id": "doc_tests_run_sh"
     },
     {
       "label": "tests/e2e/test_helper/common.bash \u2014 Bats Helper Library",
@@ -466,9 +466,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_tests_common_bash",
       "community": 3,
-      "norm_label": "tests/e2e/test_helper/common.bash \u2014 bats helper library"
+      "norm_label": "tests/e2e/test_helper/common.bash \u2014 bats helper library",
+      "id": "doc_tests_common_bash"
     },
     {
       "label": "docker-compose.override.yml \u2014 Cloudflare Network Override",
@@ -479,9 +479,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_docker_compose_override",
       "community": 3,
-      "norm_label": "docker-compose.override.yml \u2014 cloudflare network override"
+      "norm_label": "docker-compose.override.yml \u2014 cloudflare network override",
+      "id": "doc_docker_compose_override"
     },
     {
       "label": "README.md \u2014 User Documentation",
@@ -492,9 +492,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_readme",
       "community": 2,
-      "norm_label": "readme.md \u2014 user documentation"
+      "norm_label": "readme.md \u2014 user documentation",
+      "id": "doc_readme"
     },
     {
       "label": "docker-compose.yml \u2014 Service Definition",
@@ -505,9 +505,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_docker_compose",
       "community": 3,
-      "norm_label": "docker-compose.yml \u2014 service definition"
+      "norm_label": "docker-compose.yml \u2014 service definition",
+      "id": "doc_docker_compose"
     },
     {
       "label": "AGENTS.md \u2014 Agent Standing Orders",
@@ -518,9 +518,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_agents",
       "community": 2,
-      "norm_label": "agents.md \u2014 agent standing orders"
+      "norm_label": "agents.md \u2014 agent standing orders",
+      "id": "doc_agents"
     },
     {
       "label": "PRD.md \u2014 Product Requirements Document",
@@ -531,9 +531,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_prd",
       "community": 2,
-      "norm_label": "prd.md \u2014 product requirements document"
+      "norm_label": "prd.md \u2014 product requirements document",
+      "id": "doc_prd"
     },
     {
       "label": "docs/04-build-pipeline.md \u2014 Build Pipeline Architecture",
@@ -544,9 +544,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_build_pipeline",
       "community": 2,
-      "norm_label": "docs/04-build-pipeline.md \u2014 build pipeline architecture"
+      "norm_label": "docs/04-build-pipeline.md \u2014 build pipeline architecture",
+      "id": "doc_build_pipeline"
     },
     {
       "label": "docs/11-skill-installation.md \u2014 Skill Installation Architecture",
@@ -557,9 +557,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_skill_installation",
       "community": 1,
-      "norm_label": "docs/11-skill-installation.md \u2014 skill installation architecture"
+      "norm_label": "docs/11-skill-installation.md \u2014 skill installation architecture",
+      "id": "doc_skill_installation"
     },
     {
       "label": "docs/01-hermes-webui.md \u2014 Hermes WebUI Architecture",
@@ -570,9 +570,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_hermes_webui",
       "community": 1,
-      "norm_label": "docs/01-hermes-webui.md \u2014 hermes webui architecture"
+      "norm_label": "docs/01-hermes-webui.md \u2014 hermes webui architecture",
+      "id": "doc_hermes_webui"
     },
     {
       "label": "docs/03-opencode-serve.md \u2014 OpenCode Serve Architecture",
@@ -583,9 +583,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_opencode_serve",
       "community": 6,
-      "norm_label": "docs/03-opencode-serve.md \u2014 opencode serve architecture"
+      "norm_label": "docs/03-opencode-serve.md \u2014 opencode serve architecture",
+      "id": "doc_opencode_serve"
     },
     {
       "label": "docs/05-entrypoint-sequence.md \u2014 Entrypoint Sequence",
@@ -596,9 +596,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_entrypoint_sequence",
       "community": 4,
-      "norm_label": "docs/05-entrypoint-sequence.md \u2014 entrypoint sequence"
+      "norm_label": "docs/05-entrypoint-sequence.md \u2014 entrypoint sequence",
+      "id": "doc_entrypoint_sequence"
     },
     {
       "label": "docs/08-cloudflare-ua-fix.md \u2014 Cloudflare UA Fix",
@@ -609,9 +609,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_cloudflare_ua_fix",
       "community": 2,
-      "norm_label": "docs/08-cloudflare-ua-fix.md \u2014 cloudflare ua fix"
+      "norm_label": "docs/08-cloudflare-ua-fix.md \u2014 cloudflare ua fix",
+      "id": "doc_cloudflare_ua_fix"
     },
     {
       "label": "docs/10-model-discovery.md \u2014 Model Discovery & Multi-Model Support",
@@ -622,9 +622,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_model_discovery",
       "community": 4,
-      "norm_label": "docs/10-model-discovery.md \u2014 model discovery & multi-model support"
+      "norm_label": "docs/10-model-discovery.md \u2014 model discovery & multi-model support",
+      "id": "doc_model_discovery"
     },
     {
       "label": "docs/09-testing-and-verification.md \u2014 Testing and Verification",
@@ -635,9 +635,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_testing_verification",
       "community": 3,
-      "norm_label": "docs/09-testing-and-verification.md \u2014 testing and verification"
+      "norm_label": "docs/09-testing-and-verification.md \u2014 testing and verification",
+      "id": "doc_testing_verification"
     },
     {
       "label": "docs/06-config-and-env.md \u2014 Configuration and Environment",
@@ -648,9 +648,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_config_env",
       "community": 4,
-      "norm_label": "docs/06-config-and-env.md \u2014 configuration and environment"
+      "norm_label": "docs/06-config-and-env.md \u2014 configuration and environment",
+      "id": "doc_config_env"
     },
     {
       "label": "docs/02-hermes-gateway.md \u2014 Hermes Gateway Architecture",
@@ -661,9 +661,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_hermes_gateway",
       "community": 6,
-      "norm_label": "docs/02-hermes-gateway.md \u2014 hermes gateway architecture"
+      "norm_label": "docs/02-hermes-gateway.md \u2014 hermes gateway architecture",
+      "id": "doc_hermes_gateway"
     },
     {
       "label": "docs/13-security-hardening.md \u2014 Security Hardening",
@@ -674,9 +674,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_security_hardening",
       "community": 7,
-      "norm_label": "docs/13-security-hardening.md \u2014 security hardening"
+      "norm_label": "docs/13-security-hardening.md \u2014 security hardening",
+      "id": "doc_security_hardening"
     },
     {
       "label": "docs/12-plugin-system.md \u2014 OpenCode Plugin System",
@@ -687,9 +687,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_plugin_system",
       "community": 7,
-      "norm_label": "docs/12-plugin-system.md \u2014 opencode plugin system"
+      "norm_label": "docs/12-plugin-system.md \u2014 opencode plugin system",
+      "id": "doc_plugin_system"
     },
     {
       "label": "docs/07-volume-layout.md \u2014 Volume Layout",
@@ -700,9 +700,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_volume_layout",
       "community": 1,
-      "norm_label": "docs/07-volume-layout.md \u2014 volume layout"
+      "norm_label": "docs/07-volume-layout.md \u2014 volume layout",
+      "id": "doc_volume_layout"
     },
     {
       "label": ".github/workflows/e2e.yml \u2014 GitHub Actions E2E Workflow",
@@ -713,9 +713,9 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "id": "doc_e2e_workflow",
       "community": 3,
-      "norm_label": ".github/workflows/e2e.yml \u2014 github actions e2e workflow"
+      "norm_label": ".github/workflows/e2e.yml \u2014 github actions e2e workflow",
+      "id": "doc_e2e_workflow"
     },
     {
       "label": "Hermes WebUI Service (:8787)",
@@ -727,9 +727,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Browser-based chat UI hosted on port 8787. Hosts AIAgent in-process via Python ThreadingHTTPServer. Bind address must be 0.0.0.0 inside container for host port mapping to work.",
-      "id": "concept_hermes_webui_service",
       "community": 1,
-      "norm_label": "hermes webui service (:8787)"
+      "norm_label": "hermes webui service (:8787)",
+      "id": "concept_hermes_webui_service"
     },
     {
       "label": "Hermes Gateway Service (:8642)",
@@ -741,9 +741,9 @@
       "author": null,
       "contributor": null,
       "rationale": "OpenAI-compatible aiohttp API server on port 8642. Runs hermes-agent server-side with tools, memory, skills. Refuses 0.0.0.0 binding without API_SERVER_KEY set.",
-      "id": "concept_hermes_gateway_service",
       "community": 6,
-      "norm_label": "hermes gateway service (:8642)"
+      "norm_label": "hermes gateway service (:8642)",
+      "id": "concept_hermes_gateway_service"
     },
     {
       "label": "OpenCode Serve Service (:4096)",
@@ -755,9 +755,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Headless OpenCode HTTP server on port 4096 for remote attach. Opt-in via OPENCODE_SERVE_ENABLED (default false) because serve exits immediately without LLM provider and would tear container down via wait -n.",
-      "id": "concept_opencode_serve_service",
       "community": 6,
-      "norm_label": "opencode serve service (:4096)"
+      "norm_label": "opencode serve service (:4096)",
+      "id": "concept_opencode_serve_service"
     },
     {
       "label": "Model Discovery Mechanism",
@@ -769,9 +769,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Auto-discovers chat models from OPENAI_BASE_URL/models at startup. Filters non-chat (embed, whisper, tts, dall-e, etc.) and wildcard patterns (/*). Falls back to OPENAI_DEFAULT_MODEL on failure.",
-      "id": "concept_model_discovery",
       "community": 4,
-      "norm_label": "model discovery mechanism"
+      "norm_label": "model discovery mechanism",
+      "id": "concept_model_discovery"
     },
     {
       "label": "Wildcard Model Filter (IDs ending in /*)",
@@ -783,9 +783,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Filters litellm model-group patterns (anthropic/*, openai/*, deepseek/*, openrouter/*, vertex_ai/*) that resolve to 404 errors when used as actual model IDs.",
-      "id": "concept_wildcard_filter",
       "community": 4,
-      "norm_label": "wildcard model filter (ids ending in /*)"
+      "norm_label": "wildcard model filter (ids ending in /*)",
+      "id": "concept_wildcard_filter"
     },
     {
       "label": "Non-Chat Model Filter",
@@ -797,9 +797,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Filters models matching: embed, whisper, tts, dall-e, sora, image, realtime, transcrib, moderat, audio, codegen, babbage, davinci, curie, ada, text-, stable, midjourney, flux, /sd/, mj, replicate, resolution.",
-      "id": "concept_nonchat_filter",
       "community": 4,
-      "norm_label": "non-chat model filter"
+      "norm_label": "non-chat model filter",
+      "id": "concept_nonchat_filter"
     },
     {
       "label": "Config Generation (config.yaml + opencode.jsonc)",
@@ -811,9 +811,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Entrypoint regenerates config.yaml and opencode.jsonc from env vars on every boot. Both must write model.default AND model.name to satisfy WebUI's models_cache.json builder and hermes-agent's model resolution.",
-      "id": "concept_config_generation",
       "community": 4,
-      "norm_label": "config generation (config.yaml + opencode.jsonc)"
+      "norm_label": "config generation (config.yaml + opencode.jsonc)",
+      "id": "concept_config_generation"
     },
     {
       "label": "Two-Phase Skill Installation",
@@ -825,9 +825,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Build-time install (60s, full git clones) plus runtime cp -a from staging (<1s). Eliminates network fetches at startup. Hermes skills staged at /opt/hermes-skills-staging; OpenCode skills persist in image layer.",
-      "id": "concept_skill_installation",
       "community": 1,
-      "norm_label": "two-phase skill installation"
+      "norm_label": "two-phase skill installation",
+      "id": "concept_skill_installation"
     },
     {
       "label": "OpenCode Security Modes (strict/standard/yolo)",
@@ -839,9 +839,9 @@
       "author": null,
       "contributor": null,
       "rationale": "strict=31 bash rules, interpreters denied, .env denied (default, production). standard=22 rules, interpreters allowed (development). yolo=allow all (trusted sandbox). Last-match-wins semantics.",
-      "id": "concept_security_modes",
       "community": 2,
-      "norm_label": "opencode security modes (strict/standard/yolo)"
+      "norm_label": "opencode security modes (strict/standard/yolo)",
+      "id": "concept_security_modes"
     },
     {
       "label": "cc-safety-net Plugin (PreToolUse Hook)",
@@ -853,9 +853,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Blocks destructive git (reset --hard, push --force, clean -fd) and filesystem (rm -rf /, chmod 777) commands BEFORE OpenCode permission system. Active in all modes including yolo.",
-      "id": "concept_cc_safety_net",
       "community": 7,
-      "norm_label": "cc-safety-net plugin (pretooluse hook)"
+      "norm_label": "cc-safety-net plugin (pretooluse hook)",
+      "id": "concept_cc_safety_net"
     },
     {
       "label": "Cloudflare UA Patch (CustomProfile sed)",
@@ -867,9 +867,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Build-time sed patch setting default_headers={User-Agent: hermes-agent/1.0} on CustomProfile class. Required because Cloudflare WAF blocks default OpenAI/Python SDK User-Agent with HTTP 403.",
-      "id": "concept_cloudflare_ua_patch",
       "community": 2,
-      "norm_label": "cloudflare ua patch (customprofile sed)"
+      "norm_label": "cloudflare ua patch (customprofile sed)",
+      "id": "concept_cloudflare_ua_patch"
     },
     {
       "label": "Multi-Step Docker Build Pipeline",
@@ -881,9 +881,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Dockerfile builds single image with WebUI base, system packages, Node.js 22, OpenCode CLI, staged agent source, Cloudflare patch, and pre-installed skills. Targets Linux ARM64. Agent cloned to staging path, not runtime bind mount.",
-      "id": "concept_build_pipeline",
       "community": 2,
-      "norm_label": "multi-step docker build pipeline"
+      "norm_label": "multi-step docker build pipeline",
+      "id": "concept_build_pipeline"
     },
     {
       "label": "Entrypoint Sequence (13-step startup)",
@@ -895,9 +895,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Sequential startup with health gates: skills staging copy \u2192 model discovery \u2192 config gen \u2192 agent copy \u2192 WebUI (:8787) \u2192 wait \u2192 gateway (:8642) \u2192 wait \u2192 opencode serve (:4096, opt-in) \u2192 wait -n.",
-      "id": "concept_entrypoint_sequence",
       "community": 4,
-      "norm_label": "entrypoint sequence (13-step startup)"
+      "norm_label": "entrypoint sequence (13-step startup)",
+      "id": "concept_entrypoint_sequence"
     },
     {
       "label": "Volume Layout (bind mounts)",
@@ -909,9 +909,9 @@
       "author": null,
       "contributor": null,
       "rationale": "volumes_hermes_opencode/ separates build context from runtime data. Bind mounts: ./data/hermes-home \u2192 /home/hermeswebui/.hermes (agent config, sessions, skills); ./data/workspace \u2192 /workspace.",
-      "id": "concept_volume_layout",
       "community": 1,
-      "norm_label": "volume layout (bind mounts)"
+      "norm_label": "volume layout (bind mounts)",
+      "id": "concept_volume_layout"
     },
     {
       "label": "OpenCode Plugin System (npm-resolved)",
@@ -923,9 +923,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Three plugins: @tarquinen/opencode-dcp (context pruning), @franlol/opencode-md-table-formatter, cc-safety-net. Resolved via Node.js npm at $HOME/.config/opencode/node_modules/. Requires Node.js 22.",
-      "id": "concept_plugin_system",
       "community": 7,
-      "norm_label": "opencode plugin system (npm-resolved)"
+      "norm_label": "opencode plugin system (npm-resolved)",
+      "id": "concept_plugin_system"
     },
     {
       "label": "Acceptance Criteria (AC1-AC29)",
@@ -937,9 +937,9 @@
       "author": null,
       "contributor": null,
       "rationale": "29 acceptance criteria in PRD covering build success, healthcheck, WebUI, agent presence, UA patch, config generation, OpenCode availability, LLM calls, secrets hygiene, second boot speed, model discovery, security mode, skills, graphify.",
-      "id": "concept_acceptance_criteria",
       "community": 3,
-      "norm_label": "acceptance criteria (ac1-ac29)"
+      "norm_label": "acceptance criteria (ac1-ac29)",
+      "id": "concept_acceptance_criteria"
     },
     {
       "label": "Bats E2E Test Suite",
@@ -951,9 +951,9 @@
       "author": null,
       "contributor": null,
       "rationale": "59 bats tests under tests/e2e/ run via tests/run.sh. Builds image, starts stack, waits for healthy, runs bats. Maps to AC1-AC29. Triggered on push/PR to main via GitHub Actions.",
-      "id": "concept_e2e_tests",
       "community": 3,
-      "norm_label": "bats e2e test suite"
+      "norm_label": "bats e2e test suite",
+      "id": "concept_e2e_tests"
     },
     {
       "label": "Graphify Integration (cross-platform skill)",
@@ -965,9 +965,9 @@
       "author": null,
       "contributor": null,
       "rationale": "graphifyy PyPI package installed via uv tool install. Registers skills for both OpenCode and Hermes at build time using HOME=/home/hermeswebui override. Binary at /usr/local/bin/graphify. Runtime re-registration is overlayfs safety net.",
-      "id": "concept_graphify_integration",
       "community": 1,
-      "norm_label": "graphify integration (cross-platform skill)"
+      "norm_label": "graphify integration (cross-platform skill)",
+      "id": "concept_graphify_integration"
     },
     {
       "label": "Hermes Agent (NousResearch/hermes-agent)",
@@ -979,9 +979,9 @@
       "author": null,
       "contributor": null,
       "rationale": "AI agent runtime. Git cloned at build to /opt/hermes-agent-staging. Copied to bind mount /home/hermeswebui/.hermes/hermes-agent on first boot. Version pinned via HERMES_AGENT_VERSION build arg.",
-      "id": "concept_hermes_agent",
       "community": 1,
-      "norm_label": "hermes agent (nousresearch/hermes-agent)"
+      "norm_label": "hermes agent (nousresearch/hermes-agent)",
+      "id": "concept_hermes_agent"
     },
     {
       "label": "HERMES_API_KEY (auto-generated gateway token)",
@@ -993,9 +993,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Bearer token for Agent API :8642. Auto-generated as hermes-<32 hex chars> when empty, printed to container logs. Required for 0.0.0.0 binding because api_server refuses without key.",
-      "id": "concept_hermes_api_key",
       "community": 6,
-      "norm_label": "hermes_api_key (auto-generated gateway token)"
+      "norm_label": "hermes_api_key (auto-generated gateway token)",
+      "id": "concept_hermes_api_key"
     },
     {
       "label": "Build-Time Staging Paths (/opt/*-staging)",
@@ -1007,9 +1007,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Agent at /opt/hermes-agent-staging (~50MB), skills at /opt/hermes-skills-staging (~10MB). Separation required because runtime paths are bind mounts that start empty on first boot. Staging paths persist in image layer.",
-      "id": "concept_staging_paths",
       "community": 1,
-      "norm_label": "build-time staging paths (/opt/*-staging)"
+      "norm_label": "build-time staging paths (/opt/*-staging)",
+      "id": "concept_staging_paths"
     },
     {
       "label": "/workspace Bind Mount",
@@ -1021,9 +1021,9 @@
       "author": null,
       "contributor": null,
       "rationale": "User project workspace mounted at /workspace inside container, configurable via HERMES_WORKSPACE env. Always trusted by resolve_trusted_workspace() because DEFAULT_WORKSPACE=/workspace is hardcoded.",
-      "id": "concept_workspace_bind_mount",
       "community": 1,
-      "norm_label": "/workspace bind mount"
+      "norm_label": "/workspace bind mount",
+      "id": "concept_workspace_bind_mount"
     },
     {
       "label": "hermeswebui User Isolation (UID 1000)",
@@ -1035,9 +1035,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Gateway and opencode serve run as hermeswebui via su -s /bin/bash. Reduces filesystem blast radius \u2014 cannot write to /usr/local/bin, /opt, /root. Entrypoint (PID 1) runs as root.",
-      "id": "concept_user_isolation",
       "community": 6,
-      "norm_label": "hermeswebui user isolation (uid 1000)"
+      "norm_label": "hermeswebui user isolation (uid 1000)",
+      "id": "concept_user_isolation"
     },
     {
       "label": "@tarquinen/opencode-dcp (Context Pruner)",
@@ -1049,9 +1049,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Context transform plugin that prunes low-relevance messages from conversation to reduce token usage. npm spec @tarquinen/opencode-dcp@latest.",
-      "id": "concept_opencode_dcp_plugin",
       "community": 7,
-      "norm_label": "@tarquinen/opencode-dcp (context pruner)"
+      "norm_label": "@tarquinen/opencode-dcp (context pruner)",
+      "id": "concept_opencode_dcp_plugin"
     },
     {
       "label": "@franlol/opencode-md-table-formatter",
@@ -1063,9 +1063,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Output transform plugin that normalizes markdown tables in tool output for consistent rendering. npm spec @franlol/opencode-md-table-formatter@latest.",
-      "id": "concept_md_table_formatter",
       "community": 7,
-      "norm_label": "@franlol/opencode-md-table-formatter"
+      "norm_label": "@franlol/opencode-md-table-formatter",
+      "id": "concept_md_table_formatter"
     },
     {
       "label": "state.db (SQLite Session Store)",
@@ -1077,9 +1077,9 @@
       "author": null,
       "contributor": null,
       "rationale": "SQLite database at /home/hermeswebui/.hermes/state.db stores session history. Persisted across container restarts via bind mount. Should be backed up when container is stopped to avoid corruption.",
-      "id": "concept_state_db",
       "community": 1,
-      "norm_label": "state.db (sqlite session store)"
+      "norm_label": "state.db (sqlite session store)",
+      "id": "concept_state_db"
     },
     {
       "label": "X-Hermes-Session-Id Header (Session Continuity)",
@@ -1091,9 +1091,9 @@
       "author": null,
       "contributor": null,
       "rationale": "HTTP header to continue existing conversation via gateway. Pair with X-Hermes-Session-Key for long-term memory scoping.",
-      "id": "concept_x_hermes_session_header",
       "community": 1,
-      "norm_label": "x-hermes-session-id header (session continuity)"
+      "norm_label": "x-hermes-session-id header (session continuity)",
+      "id": "concept_x_hermes_session_header"
     },
     {
       "label": "wait -n Process Supervisor",
@@ -1105,9 +1105,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Bash builtin used by entrypoint to block until any background process (WebUI, gateway, opencode serve) exits. Propagates any crash as container exit. This is why OPENCODE_SERVE_ENABLED defaults to false \u2014 opencode serve exits without LLM provider and would tear container down.",
-      "id": "concept_wait_n_supervisor",
       "community": 6,
-      "norm_label": "wait -n process supervisor"
+      "norm_label": "wait -n process supervisor",
+      "id": "concept_wait_n_supervisor"
     },
     {
       "label": "Node.js 22 Requirement",
@@ -1119,9 +1119,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Installed via nodesource setup_22.x. Required for OpenCode's npm-based plugin resolution at runtime. Constraint C9 in PRD.",
-      "id": "concept_nodejs_22",
       "community": 2,
-      "norm_label": "node.js 22 requirement"
+      "norm_label": "node.js 22 requirement",
+      "id": "concept_nodejs_22"
     },
     {
       "label": "Docker Healthcheck (bash healthcheck.sh)",
@@ -1133,9 +1133,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Healthcheck runs bash /usr/local/bin/healthcheck.sh every 10s with 120s start_period and 10 retries. Used by tests/run.sh wait loop and GitHub Actions to gate test execution.",
-      "id": "concept_healthcheck",
       "community": 3,
-      "norm_label": "docker healthcheck (bash healthcheck.sh)"
+      "norm_label": "docker healthcheck (bash healthcheck.sh)",
+      "id": "concept_healthcheck"
     },
     {
       "label": "OpenAI-Compatible API Surface",
@@ -1147,9 +1147,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Gateway exposes /v1/chat/completions, /v1/models, /v1/responses, /v1/runs. Compatible with Open WebUI, LobeChat, LibreChat, AnythingLLM, ChatBox, NextChat.",
-      "id": "concept_openai_compatible_api",
       "community": 6,
-      "norm_label": "openai-compatible api surface"
+      "norm_label": "openai-compatible api surface",
+      "id": "concept_openai_compatible_api"
     },
     {
       "label": "portainer-cloudflare-traefik_default Network",
@@ -1161,9 +1161,9 @@
       "author": null,
       "contributor": null,
       "rationale": "External docker network defined in docker-compose.override.yml. Service joins with alias vanilla-hermes-opencode. Used by Portainer/Cloudflare/Traefik reverse proxy stack.",
-      "id": "concept_cloudflare_network",
       "community": 3,
-      "norm_label": "portainer-cloudflare-traefik_default network"
+      "norm_label": "portainer-cloudflare-traefik_default network",
+      "id": "concept_cloudflare_network"
     },
     {
       "label": "Seven Skill Upstream Sources",
@@ -1175,9 +1175,9 @@
       "author": null,
       "contributor": null,
       "rationale": "anthropics/skills (6 OpenCode), openai/skills (4 OpenCode), multica-ai/andrej-karpathy-skills (1 OpenCode), coding-agents-docs-guideline (1 OpenCode), opencode-plan-build-orchestrator (1 both), phuryn/pm-skills (~55 Hermes), graphifyy PyPI (1 both). Total 14 OpenCode + ~67 Hermes skills.",
-      "id": "concept_skill_sources",
       "community": 1,
-      "norm_label": "seven skill upstream sources"
+      "norm_label": "seven skill upstream sources",
+      "id": "concept_skill_sources"
     },
     {
       "label": "model.default AND model.name Keys",
@@ -1189,9 +1189,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Both keys must be written to config.yaml. WebUI's get_effective_default_model() reads model.default without fallback. hermes-agent reads model.default with fallback to model.name. Missing default \u2192 empty models_cache.json. Constraint C7 in PRD.",
-      "id": "concept_model_default_name_keys",
       "community": 4,
-      "norm_label": "model.default and model.name keys"
+      "norm_label": "model.default and model.name keys",
+      "id": "concept_model_default_name_keys"
     },
     {
       "label": "Linux ARM64 Target Platform",
@@ -1203,9 +1203,9 @@
       "author": null,
       "contributor": null,
       "rationale": "Must build and run on ARM64 (Raspberry Pi CM5). Constraint C1. ARM64 overlayfs may drop new layers \u2014 motivates runtime graphify re-registration and inline command: docker-compose overrides.",
-      "id": "concept_arm64_target",
       "community": 2,
-      "norm_label": "linux arm64 target platform"
+      "norm_label": "linux arm64 target platform",
+      "id": "concept_arm64_target"
     },
     {
       "label": "Secrets Handling (key_env vs literal)",
@@ -1217,9 +1217,9 @@
       "author": null,
       "contributor": null,
       "rationale": "No hardcoded secrets in tracked files (public repo). config.yaml uses key_env: OPENAI_API_KEY (literal string, not expanded value). opencode.jsonc uses {env:OPENAI_API_KEY} interpolation. Constraint C2, C3.",
-      "id": "concept_secrets_handling",
       "community": 2,
-      "norm_label": "secrets handling (key_env vs literal)"
+      "norm_label": "secrets handling (key_env vs literal)",
+      "id": "concept_secrets_handling"
     }
   ],
   "links": [
@@ -1229,9 +1229,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_files",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_files"
     },
     {
       "relation": "contains",
@@ -1239,9 +1239,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_graphifyignore_patterns",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_graphifyignore_patterns"
     },
     {
       "relation": "contains",
@@ -1249,9 +1249,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_needs_graph",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_needs_graph"
     },
     {
       "relation": "contains",
@@ -1259,9 +1259,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_scan_root",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_scan_root"
     },
     {
       "relation": "contains",
@@ -1269,9 +1269,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_skipped_sensitive",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_skipped_sensitive"
     },
     {
       "relation": "contains",
@@ -1279,9 +1279,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_total_files",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_total_files"
     },
     {
       "relation": "contains",
@@ -1289,9 +1289,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_total_words",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_total_words"
     },
     {
       "relation": "contains",
@@ -1299,9 +1299,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "graphify_detect_json",
-      "target": "hermes_x_opencode_graphify_detect_warning",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_warning"
     },
     {
       "relation": "contains",
@@ -1309,9 +1309,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "hermes_x_opencode_graphify_detect_files",
-      "target": "hermes_x_opencode_graphify_detect_files_code",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_files_code"
     },
     {
       "relation": "contains",
@@ -1319,9 +1319,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "hermes_x_opencode_graphify_detect_files",
-      "target": "hermes_x_opencode_graphify_detect_files_document",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_files_document"
     },
     {
       "relation": "contains",
@@ -1329,9 +1329,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "hermes_x_opencode_graphify_detect_files",
-      "target": "hermes_x_opencode_graphify_detect_files_image",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_files_image"
     },
     {
       "relation": "contains",
@@ -1339,9 +1339,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "hermes_x_opencode_graphify_detect_files",
-      "target": "hermes_x_opencode_graphify_detect_files_paper",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_files_paper"
     },
     {
       "relation": "contains",
@@ -1349,9 +1349,9 @@
       "source_file": ".graphify_detect.json",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "hermes_x_opencode_graphify_detect_files",
-      "target": "hermes_x_opencode_graphify_detect_files_video",
-      "confidence_score": 1.0
+      "target": "hermes_x_opencode_graphify_detect_files_video"
     },
     {
       "relation": "contains",
@@ -1359,9 +1359,9 @@
       "source_file": "tests/run.sh",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_run_sh",
-      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_run_sh__entry",
-      "confidence_score": 1.0
+      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_run_sh__entry"
     },
     {
       "relation": "defines",
@@ -1369,9 +1369,9 @@
       "source_file": "tests/run.sh",
       "source_location": "L12",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_run_sh",
-      "target": "tests_run_cleanup",
-      "confidence_score": 1.0
+      "target": "tests_run_cleanup"
     },
     {
       "relation": "contains",
@@ -1379,9 +1379,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry",
-      "confidence_score": 1.0
+      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_e2e_test_helper_common_bash__entry"
     },
     {
       "relation": "defines",
@@ -1389,9 +1389,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_gateway_base",
-      "confidence_score": 1.0
+      "target": "test_helper_common_gateway_base"
     },
     {
       "relation": "defines",
@@ -1399,9 +1399,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L37",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_get_api_key",
-      "confidence_score": 1.0
+      "target": "test_helper_common_get_api_key"
     },
     {
       "relation": "defines",
@@ -1409,9 +1409,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L14",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_get_container",
-      "confidence_score": 1.0
+      "target": "test_helper_common_get_container"
     },
     {
       "relation": "defines",
@@ -1419,9 +1419,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L60",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_opencode_base",
-      "confidence_score": 1.0
+      "target": "test_helper_common_opencode_base"
     },
     {
       "relation": "defines",
@@ -1429,9 +1429,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_skip_if_no_secrets",
-      "confidence_score": 1.0
+      "target": "test_helper_common_skip_if_no_secrets"
     },
     {
       "relation": "defines",
@@ -1439,9 +1439,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_wait_for_healthy",
-      "confidence_score": 1.0
+      "target": "test_helper_common_wait_for_healthy"
     },
     {
       "relation": "defines",
@@ -1449,9 +1449,9 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": "L52",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_e2e_test_helper_common_bash",
-      "target": "test_helper_common_webui_base",
-      "confidence_score": 1.0
+      "target": "test_helper_common_webui_base"
     },
     {
       "relation": "conceptually_related_to",
@@ -1470,8 +1470,8 @@
       "source_file": "docs/09-testing-and-verification.md",
       "source_location": "Verdict mentions tests/run.sh",
       "weight": 1.0,
-      "source": "doc_testing_verification",
-      "target": "doc_tests_run_sh"
+      "source": "doc_tests_run_sh",
+      "target": "doc_testing_verification"
     },
     {
       "relation": "conceptually_related_to",
@@ -1480,8 +1480,8 @@
       "source_file": "tests/e2e/test_helper/common.bash",
       "source_location": null,
       "weight": 1.0,
-      "source": "doc_tests_common_bash",
-      "target": "doc_tests_run_sh"
+      "source": "doc_tests_run_sh",
+      "target": "doc_tests_common_bash"
     },
     {
       "relation": "implements",
@@ -1520,8 +1520,8 @@
       "source_file": "docs/09-testing-and-verification.md",
       "source_location": "bats test suite",
       "weight": 1.0,
-      "source": "doc_testing_verification",
-      "target": "doc_tests_common_bash"
+      "source": "doc_tests_common_bash",
+      "target": "doc_testing_verification"
     },
     {
       "relation": "references",
@@ -1600,8 +1600,8 @@
       "source_file": "README.md",
       "source_location": null,
       "weight": 1.0,
-      "source": "doc_prd",
-      "target": "doc_readme"
+      "source": "doc_readme",
+      "target": "doc_prd"
     },
     {
       "relation": "references",
@@ -1670,8 +1670,8 @@
       "source_file": "AGENTS.md",
       "source_location": null,
       "weight": 1.0,
-      "source": "doc_agents",
-      "target": "doc_docker_compose"
+      "source": "doc_docker_compose",
+      "target": "doc_agents"
     },
     {
       "relation": "configures",
@@ -1740,8 +1740,8 @@
       "source_file": ".github/workflows/e2e.yml",
       "source_location": "Indirect via tests/run.sh COMPOSE_OPTS",
       "weight": 1.0,
-      "source": "doc_e2e_workflow",
-      "target": "doc_docker_compose"
+      "source": "doc_docker_compose",
+      "target": "doc_e2e_workflow"
     },
     {
       "relation": "references",
@@ -1750,8 +1750,8 @@
       "source_file": "PRD.md",
       "source_location": "Section 5.3 compose spec",
       "weight": 1.0,
-      "source": "doc_prd",
-      "target": "doc_docker_compose"
+      "source": "doc_docker_compose",
+      "target": "doc_prd"
     },
     {
       "relation": "references",
@@ -1980,8 +1980,8 @@
       "source_file": "docs/09-testing-and-verification.md",
       "source_location": "Maps directly to AC in PRD.md",
       "weight": 1.0,
-      "source": "doc_testing_verification",
-      "target": "doc_prd"
+      "source": "doc_prd",
+      "target": "doc_testing_verification"
     },
     {
       "relation": "rationale_for",
@@ -2150,8 +2150,8 @@
       "source_file": "docs/03-opencode-serve.md",
       "source_location": "Both run as hermeswebui via su, sequential startup",
       "weight": 1.0,
-      "source": "doc_hermes_gateway",
-      "target": "doc_opencode_serve"
+      "source": "doc_opencode_serve",
+      "target": "doc_hermes_gateway"
     },
     {
       "relation": "rationale_for",
@@ -2310,8 +2310,8 @@
       "source_file": ".github/workflows/e2e.yml",
       "source_location": "CI implementation of testing strategy",
       "weight": 1.0,
-      "source": "doc_e2e_workflow",
-      "target": "doc_testing_verification"
+      "source": "doc_testing_verification",
+      "target": "doc_e2e_workflow"
     },
     {
       "relation": "references",
@@ -2570,8 +2570,8 @@
       "source_file": "docs/01-hermes-webui.md",
       "source_location": "Session management",
       "weight": 1.0,
-      "source": "concept_state_db",
-      "target": "concept_hermes_webui_service"
+      "source": "concept_hermes_webui_service",
+      "target": "concept_state_db"
     },
     {
       "relation": "configures",
@@ -2580,8 +2580,8 @@
       "source_file": "docs/01-hermes-webui.md",
       "source_location": "DEFAULT_WORKSPACE=/workspace is trusted",
       "weight": 1.0,
-      "source": "concept_workspace_bind_mount",
-      "target": "concept_hermes_webui_service"
+      "source": "concept_hermes_webui_service",
+      "target": "concept_workspace_bind_mount"
     },
     {
       "relation": "depends_on",
@@ -2610,8 +2610,8 @@
       "source_file": "docs/02-hermes-gateway.md",
       "source_location": null,
       "weight": 1.0,
-      "source": "concept_openai_compatible_api",
-      "target": "concept_hermes_gateway_service"
+      "source": "concept_hermes_gateway_service",
+      "target": "concept_openai_compatible_api"
     },
     {
       "relation": "depends_on",
@@ -2620,8 +2620,8 @@
       "source_file": "docs/03-opencode-serve.md",
       "source_location": "Not started if gateway fails",
       "weight": 1.0,
-      "source": "concept_opencode_serve_service",
-      "target": "concept_hermes_gateway_service"
+      "source": "concept_hermes_gateway_service",
+      "target": "concept_opencode_serve_service"
     },
     {
       "relation": "depends_on",
@@ -2690,8 +2690,8 @@
       "source_file": "docs/11-skill-installation.md",
       "source_location": "graphify is Source 7 in skill install",
       "weight": 1.0,
-      "source": "concept_graphify_integration",
-      "target": "concept_skill_installation"
+      "source": "concept_skill_installation",
+      "target": "concept_graphify_integration"
     },
     {
       "relation": "depends_on",
@@ -2750,8 +2750,8 @@
       "source_file": "docs/08-cloudflare-ua-fix.md",
       "source_location": "Without patch, agent LLM calls get 403",
       "weight": 1.0,
-      "source": "concept_hermes_agent",
-      "target": "concept_cloudflare_ua_patch"
+      "source": "concept_cloudflare_ua_patch",
+      "target": "concept_hermes_agent"
     },
     {
       "relation": "depends_on",
@@ -2760,8 +2760,8 @@
       "source_file": "docs/05-entrypoint-sequence.md",
       "source_location": "ensure_agent() copies to bind mount",
       "weight": 1.0,
-      "source": "concept_hermes_agent",
-      "target": "concept_volume_layout"
+      "source": "concept_volume_layout",
+      "target": "concept_hermes_agent"
     },
     {
       "relation": "depends_on",
@@ -2770,8 +2770,8 @@
       "source_file": "docs/01-hermes-webui.md",
       "source_location": "Persisted via bind mount",
       "weight": 1.0,
-      "source": "concept_state_db",
-      "target": "concept_volume_layout"
+      "source": "concept_volume_layout",
+      "target": "concept_state_db"
     },
     {
       "relation": "depends_on",
@@ -2790,8 +2790,8 @@
       "source_file": "docs/09-testing-and-verification.md",
       "source_location": "All 29 AC automated",
       "weight": 1.0,
-      "source": "concept_e2e_tests",
-      "target": "concept_acceptance_criteria"
+      "source": "concept_acceptance_criteria",
+      "target": "concept_e2e_tests"
     },
     {
       "relation": "depends_on",
@@ -2810,8 +2810,8 @@
       "source_file": "docs/11-skill-installation.md",
       "source_location": "Runtime graphify re-registration is overlayfs safety net for ARM64",
       "weight": 1.0,
-      "source": "concept_arm64_target",
-      "target": "concept_graphify_integration"
+      "source": "concept_graphify_integration",
+      "target": "concept_arm64_target"
     },
     {
       "relation": "depends_on",
@@ -2840,8 +2840,8 @@
       "source_file": "docs/02-hermes-gateway.md",
       "source_location": "Session continuity needs persistent state",
       "weight": 1.0,
-      "source": "concept_x_hermes_session_header",
-      "target": "concept_state_db"
+      "source": "concept_state_db",
+      "target": "concept_x_hermes_session_header"
     }
   ],
   "hyperedges": [
@@ -3002,5 +3002,5 @@
       "source_file": "AGENTS.md"
     }
   ],
-  "built_at_commit": "95159a2c99678467d91a3595359c55e99a22d2ac"
+  "built_at_commit": "fc13cc817bbfaf9dd24f1a2603accfc550d45fc9"
 }
