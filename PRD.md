@@ -388,7 +388,11 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 |----------|------|----------|---------|-------------|
 | `OPENAI_API_KEY` | string | **Yes** | — | API key for the LLM provider. Used by hermes-agent for all LLM calls and by OpenCode via `{env:OPENAI_API_KEY}`. |
 | `OPENAI_BASE_URL` | string | **Yes** | — | OpenAI-compatible base URL for the LLM provider. Triggers config generation and model discovery. |
-| `OPENAI_DEFAULT_MODEL` | string | No | `openai/gpt-4o` | Default model identifier. Must match a model your provider supports. All other chat models are auto-discovered. |
+| `OPENAI_DEFAULT_MODEL` | string | No | `openai/gpt-4o` | Default model identifier. Must match a model your provider supports. All other chat models are auto-discovered. Used as the fallback default for both Hermes and OpenCode when no per-app override is set. |
+| `OPENAI_SMALL_MODEL` | string | No | falls back to `OPENAI_DEFAULT_MODEL` | Small model for lightweight OpenCode tasks (title generation, etc.). Written as `small_model` in `opencode.jsonc`. |
+| `HERMES_DEFAULT_MODEL` | string | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. When set, written to `config.yaml` as both `model.default` and `model.name`. |
+| `OPENCODE_DEFAULT_MODEL` | string | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. When set, written to `opencode.jsonc` as `"model": "litellm/<value>"`. |
+| `OPENCODE_SMALL_MODEL` | string | No | falls back to `OPENAI_SMALL_MODEL` | Per-app override for the OpenCode small model. When set, written to `opencode.jsonc` as `"small_model": "litellm/<value>"`. |
 | `OPENCODE_API_KEY` | string | **Yes** | — | API key for OpenCode CLI. Obtained from https://opencode.ai |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | string | No | — | Set to `true` to skip the WebUI onboarding wizard. |
 | `HERMES_WEBUI_PASSWORD` | string | No | empty | Password-protect the WebUI. Empty = no authentication. |

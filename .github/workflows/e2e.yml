@@ -28,6 +28,7 @@ jobs:
           HERMES_WEBUI_PASSWORD=
           HERMES_API_KEY=
           OPENCODE_SECURITY_MODE=strict
+          OPENCODE_SERVE_BOOT_TIMEOUT=30
           SKIP_SKILL_INSTALL=0
           EOF
 

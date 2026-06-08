@@ -244,7 +244,11 @@ All configuration is done through the `.env` file. See `.env.example` for the fu
 |----------|----------|---------|-------------|
 | `OPENAI_API_KEY` | Yes | — | API key for the LLM provider |
 | `OPENAI_BASE_URL` | Yes | — | OpenAI-compatible base URL |
-| `OPENAI_DEFAULT_MODEL` | No | `openai/gpt-4o` | Default model (others auto-discovered) |
+| `OPENAI_DEFAULT_MODEL` | No | `openai/gpt-4o` | Default model (others auto-discovered). Shared fallback for both Hermes and OpenCode when no per-app override is set. |
+| `OPENAI_SMALL_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Small model for lightweight OpenCode tasks. |
+| `HERMES_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. |
+| `OPENCODE_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. |
+| `OPENCODE_SMALL_MODEL` | No | falls back to `OPENAI_SMALL_MODEL` | Per-app override for the OpenCode small model. |
 | `OPENCODE_API_KEY` | Yes | — | API key for OpenCode CLI |
 | `HERMES_WEBUI_PASSWORD` | No | empty | Password-protect the WebUI |
 | `HERMES_WEBUI_PORT` | No | `8787` | Host port for WebUI |
@@ -259,7 +263,7 @@ All configuration is done through the `.env` file. See `.env.example` for the fu
 
 When `OPENAI_BASE_URL` and `OPENAI_API_KEY` are set, the entrypoint automatically discovers all available chat models from your LLM provider at startup. Non-chat models (embeddings, TTS, image generation) and wildcard patterns are filtered out. Both the Hermes config and OpenCode config receive the same model list.
 
-`OPENAI_DEFAULT_MODEL` specifies the default model. If it's not found in the discovered list, it's added automatically. No manual model configuration needed.
+`OPENAI_DEFAULT_MODEL` specifies the default model. If it's not found in the discovered list, it's added automatically. Set `HERMES_DEFAULT_MODEL`, `OPENCODE_DEFAULT_MODEL`, or `OPENCODE_SMALL_MODEL` to use a different model for a specific app — otherwise each app follows `OPENAI_DEFAULT_MODEL` (and `OPENAI_SMALL_MODEL` where applicable). No manual model configuration needed.
 
 ### Security Modes
 

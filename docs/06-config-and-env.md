@@ -20,8 +20,11 @@ All runtime configuration is managed through environment variables defined in `.
 |----------|----------|---------|-------------|
 | `OPENAI_API_KEY` | Yes | — | API key for the LLM provider. Used by hermes-agent for all LLM calls and by OpenCode via `{env:OPENAI_API_KEY}`. |
 | `OPENAI_BASE_URL` | Yes | — | OpenAI-compatible base URL (e.g. `https://litellm-sw.example.com/v1`). Triggers config generation and model discovery. |
-| `OPENAI_DEFAULT_MODEL` | No | `openai/gpt-4o` | Default model identifier. Must match a model your provider supports. Used as the default in both Hermes and OpenCode configs. |
-| `OPENAI_SMALL_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Small model for lightweight OpenCode tasks (title generation, etc.). Written as `small_model` in `opencode.jsonc`. |
+| `OPENAI_DEFAULT_MODEL` | No | `openai/gpt-4o` | Default model identifier. Must match a model your provider supports. Used as the fallback default for both Hermes and OpenCode when no per-app override is set. Also used as the safety-net model for `/models` discovery. |
+| `OPENAI_SMALL_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Small model for lightweight OpenCode tasks (title generation, etc.). Written as `small_model` in `opencode.jsonc`. Falls back to `OPENAI_DEFAULT_MODEL` if unset. |
+| `HERMES_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. When set, written to `config.yaml` as both `model.default` and `model.name`. Leave unset to follow `OPENAI_DEFAULT_MODEL`. |
+| `OPENCODE_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. When set, written to `opencode.jsonc` as `"model": "litellm/<value>"`. Leave unset to follow `OPENAI_DEFAULT_MODEL`. |
+| `OPENCODE_SMALL_MODEL` | No | falls back to `OPENAI_SMALL_MODEL` then `OPENCODE_DEFAULT_MODEL` (resolved) | Per-app override for the OpenCode small model. When set, written to `opencode.jsonc` as `"small_model": "litellm/<value>"`. Leave unset to follow `OPENAI_SMALL_MODEL`. |
 | `OPENCODE_API_KEY` | Yes | — | API key for OpenCode CLI. Obtained from `https://opencode.ai`. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | No | — | Set to `true` to skip the WebUI onboarding wizard. Recommended for automated setups. |
 | `HERMES_WEBUI_PASSWORD` | No | empty | Password-protect the WebUI. Empty = no authentication. |
@@ -135,7 +138,7 @@ Key constraints for the OpenCode config:
 ```bash
 docker exec <container> cat /home/hermeswebui/.hermes/config.yaml
 docker exec <container> cat /home/hermeswebui/.config/opencode/opencode.jsonc
-docker exec <container> env | grep -E "HERMES_HOME|OPENAI_BASE_URL|OPENAI_DEFAULT_MODEL|OPENCODE_SECURITY_MODE"
+docker exec <container> env | grep -E "HERMES_HOME|OPENAI_BASE_URL|HERMES_DEFAULT_MODEL|OPENCODE_DEFAULT_MODEL|OPENCODE_SMALL_MODEL|OPENCODE_SECURITY_MODE"
 docker logs <container> 2>&1 | grep "Generated random HERMES_API_KEY"
 ```
 

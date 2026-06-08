@@ -1,0 +1,11 @@
+# CI override: publish ports for E2E tests.
+# The base docker-compose.yml uses expose-only (no host ports) by default.
+# Tests curl localhost:8787 and localhost:8642, so CI needs published ports.
+#
+# Usage: docker compose -f docker-compose.yml -f docker-compose.ci.yml up -d
+services:
+  hermes-opencode:
+    ports:
+      - "${HERMES_WEBUI_PORT:-8787}:8787"
+      - "${HERMES_API_PORT:-8642}:8642"
+      - "${OPENCODE_SERVE_PORT:-4096}:4096"
