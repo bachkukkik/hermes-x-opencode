@@ -61,9 +61,9 @@ This copy is near-instant because the data is already in the image layer. The `g
 
 | Directory | Contents | Persisted via | Installed at |
 |-----------|----------|---------------|-------------|
-| `/home/hermeswebui/.config/opencode/skills` | 14 OpenCode skills (incl. graphify) | Image layer (no volume mount) | Build time |
-| `/opt/hermes-skills-staging` | ~67 Hermes skills (incl. graphify) | Image layer (staging) | Build time |
-| `/home/hermeswebui/.hermes/skills` | ~67 Hermes skills (runtime copy) | Bind mount (`07 — Volume Layout`) | Runtime `cp -a` |
+| `/home/hermeswebui/.config/opencode/skills` | 15 OpenCode skills (incl. graphify) | Image layer (no volume mount) | Build time |
+| `/opt/hermes-skills-staging` | ~68 Hermes skills (incl. graphify) | Image layer (staging) | Build time |
+| `/home/hermeswebui/.hermes/skills` | ~68 Hermes skills (runtime copy) | Bind mount (`07 — Volume Layout`) | Runtime `cp -a` |
 
 ### Skill sources
 
@@ -75,7 +75,8 @@ This copy is near-instant because the data is already in the image layer. The `g
 | 4 | `bachkukkik/coding-agents-docs-guideline` | OpenCode | 1 | Shallow (`--depth 1`) |
 | 5 | `bachkukkik/opencode-plan-build-orchestrator` | OpenCode + Hermes | 1 | Shallow |
 | 6 | `phuryn/pm-skills` | Hermes | ~55 | Shallow |
-| 7 | `graphifyy` (PyPI) | OpenCode + Hermes | 1 | `uv tool install` + `graphify install` |
+| 7 | `NousResearch/hermes-agent` (staging) | OpenCode + Hermes | 1 | No clone (uses `/opt/hermes-agent-staging`) |
+| 8 | `graphifyy` (PyPI) | OpenCode + Hermes | 1 | `uv tool install` + `graphify install` |
 
 ### Source 1: anthropics/skills
 
@@ -136,7 +137,20 @@ Iterates all `pm-*/skills/*/` directories from the cloned repo and copies each i
 1. **DESCRIPTION.md creation** — Writes a category description file at `product-management/DESCRIPTION.md` with YAML frontmatter
 2. **Description shortening** — Truncates `description:` values exceeding 60 chars to 57 chars + `...` via sed
 
-### Source 7: graphify
+### Source 7: llm-wiki (from hermes-agent staging)
+
+Installs the `llm-wiki` skill (Karpathy's LLM Wiki pattern) to both platforms. Sources from `/opt/hermes-agent-staging/skills/research/llm-wiki/` — the hermes-agent repo is already cloned by the Dockerfile, so no additional git fetch is needed.
+
+| Platform | Path |
+|----------|------|
+| OpenCode | `$OPENCODE_SKILLS_DIR/llm-wiki/` |
+| Hermes | `$HERMES_SKILLS_DIR/research/llm-wiki/` |
+
+Also creates `$HERMES_SKILLS_DIR/research/DESCRIPTION.md` (mirroring the `product-management/` category pattern) so Hermes's recursive skill scanner groups this under a `research` category.
+
+**Zero network cost:** Reuses the existing `/opt/hermes-agent-staging` clone. No additional git operation, no extra build time.
+
+### Source 8: graphify
 
 Installs the `graphifyy` Python package via `uv tool install`, then registers skills for both platforms:
 
@@ -194,7 +208,7 @@ The script ends with a verification pass that checks for `SKILL.md` in every ins
 
 | Phase | Duration | Primary cost |
 |-------|----------|-------------|
-| Build (one-time) | ~60s | Six git clones + uv + graphify pip install |
+| Build (one-time) | ~60s | Six git clones + uv + graphify pip install (llm-wiki adds ~0s — reuses staging) |
 | Runtime (every boot) | <1s | `cp -a` from staging + graphify hermes re-registration |
 
 ## Verification
@@ -225,17 +239,19 @@ Expected build output:
 === opencode-plan-build-orchestrator (opencode + hermes) ===
 === phuryn/pm-skills (hermes product-management skills) ===
   Copied 55 skills into product-management/
+=== llm-wiki (opencode + hermes research skill) ===
+  Installed llm-wiki -> opencode + hermes/research/
 === graphify ===
   graphify installed and registered.
 === Verification ===
-  Total: 14 skills
-  Total: 67 skills
+  Total: 15 skills
+  Total: 68 skills
 All skills installed successfully.
 ```
 
 ## What Works
 
-- All seven upstream sources install correctly from their respective clone or pip methods at build time
+- All eight upstream sources install correctly from their respective clone, staging, or pip methods at build time
 - Sparse checkout avoids downloading entire repositories for `anthropics/skills` and `openai/skills`
 - Both platforms discover their installed skills using their native discovery mechanisms
 - Runtime startup is fast — only a `cp -a` from staging (<1s) instead of git clones (15–45s)
@@ -250,7 +266,7 @@ All skills installed successfully.
 
 ## What Fails
 
-- **Build requires network access:** All skill sources (6 git repos + 1 PyPI package) must be reachable during `docker compose build`. If any is unavailable, the build fails.
+- **Build requires network access:** Six git repos + 1 PyPI package must be reachable during `docker compose build`. (The 7th skill source, llm-wiki, reuses the already-cloned hermes-agent staging dir — no extra network cost.) If any remote source is unavailable, the build fails.
 - **graphify install can be slow:** The `uv tool install graphifyy` step downloads ~50MB of Python packages. On slow networks, the 120-second timeout may fire, leaving graphify unregistered. The build continues and the warning is visible in build output.
 - **HOME override required for graphify:** `graphify install --platform` writes to `$HOME`-relative paths. During build, HOME must be set to `/home/hermeswebui` instead of `/root` for skills to land in the correct locations.
 - **Staging copy needed for Hermes graphify skill:** graphify writes Hermes skills to `$HOME/.hermes/skills/`, not to `/opt/hermes-skills-staging/`. The script must explicitly copy the SKILL.md to the staging dir.
