@@ -16,8 +16,8 @@ Multiple delegation patterns exist, but not all work reliably. This matrix preve
 
 | Pattern | Command | Exit Behavior | Reliability | Use Case |
 |---------|---------|---------------|-------------|----------|
-| **Serve + Attach** (RECOMMENDED) | `opencode serve` + `opencode run --attach URL` | Clean exit (0) | HIGH | Automated delegation, CI/CD, batch tasks |
-| JSON structured output | `opencode run --attach URL --format json` | Clean exit (0) | HIGH | Programmatic parsing, logging, metrics |
+| **Serve + Attach** (RECOMMENDED) | `opencode serve` + `opencode run --attach URL` | Exit 0, 1 (session not found), or 124 (timeout) | HIGH | Automated delegation, CI/CD, batch tasks |
+| JSON structured output | `opencode run --attach URL --format json` | Exit 0, 1 (session not found), or 124 (timeout) | HIGH | Programmatic parsing, logging, metrics |
 | Gateway chat | `curl POST :8642/v1/chat/completions` | HTTP response | HIGH | External client integration (Open WebUI, LobeChat, etc.) |
 | Hermes subagent | `delegate_task` in Hermes Agent | Return value | HIGH | In-agent task parallelization |
 

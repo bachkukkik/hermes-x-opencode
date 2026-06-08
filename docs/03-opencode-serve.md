@@ -74,6 +74,7 @@ opencode --version
 
 - **Password required for remote access:** Clients must know the `OPENCODE_SERVER_PASSWORD` to attach. The password is auto-generated and must be read from logs or the `/tmp/opencode-server-password` file.
 - **Not started if gateway fails:** OpenCode serve starts after the gateway healthcheck passes. If the gateway never becomes healthy, OpenCode serve never starts (the entrypoint waits for port 8642 first).
+- **opencode 1.16+ `--attach` requires a pre-existing session:** As of opencode v1.16, `opencode run --attach` returns exit code 1 with `Error: Session not found` unless a session already exists on the serve side. Previously, attach would auto-create a session. This means one-shot `run --attach` invocations fail when no session has been established via an interactive `opencode attach` first. The serve process itself is healthy (port open, auth works), but the attach flow cannot bootstrap a new session autonomously. Tests in `tests/e2e/11-serve-attach.bats` accept exit code 1 as a known regression.
 
 ## Resolution
 
