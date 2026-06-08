@@ -10,6 +10,10 @@ if [ -f "$PROJECT_DIR/.env" ]; then
 fi
 
 COMPOSE_OPTS=(--project-name hermes_x_opencode -f "$PROJECT_DIR/docker-compose.yml")
+# Append CI override if present (publishes ports for test curls to localhost).
+if [ -f "$PROJECT_DIR/docker-compose.ci.yml" ]; then
+    COMPOSE_OPTS+=(-f "$PROJECT_DIR/docker-compose.ci.yml")
+fi
 
 get_container() {
     docker compose "${COMPOSE_OPTS[@]}" ps -q hermes-opencode 2>/dev/null

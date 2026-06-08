@@ -8,6 +8,10 @@ SKIP_CLEANUP="${SKIP_CLEANUP:-0}"
 BATS_FLAGS="${BATS_FLAGS:-}"
 
 COMPOSE_OPTS=(--project-name hermes_x_opencode -f "$PROJECT_DIR/docker-compose.yml")
+# Append CI override if present (publishes ports for test curls to localhost).
+if [ -f "$PROJECT_DIR/docker-compose.ci.yml" ]; then
+    COMPOSE_OPTS+=(-f "$PROJECT_DIR/docker-compose.ci.yml")
+fi
 
 cleanup() {
     if [ "$SKIP_CLEANUP" = "1" ]; then
