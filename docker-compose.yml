@@ -7,6 +7,10 @@ services:
     #   - "${HERMES_WEBUI_PORT:-8787}:8787"
     #   - "${HERMES_API_PORT:-8642}:8642"
     #   - "${OPENCODE_SERVE_PORT:-4096}:4096"
+    # Optional: Uncomment to allow container to reach host services.
+    # Required on Linux when OPENAI_BASE_URL points to a host-side proxy.
+    # extra_hosts:
+    #   - "host.docker.internal:host-gateway"
     volumes:
       - ./volumes_hermes_opencode/data/hermes-home:/home/hermeswebui/.hermes
       - ${HERMES_WORKSPACE:-./volumes_hermes_opencode/data/workspace}:/workspace
