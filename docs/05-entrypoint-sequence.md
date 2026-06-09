@@ -78,6 +78,8 @@ Defined in `lib/constants.sh`:
  6c. symlink session DB (fix #29) — symlinks /root/.local/share/opencode → hermeswebui's data dir
  7. validate_opencode_zen_key() — if OPENCODE_API_KEY is set, validates it against Zen API; warns on failure (fix #30)
  8. ensure_agent()              — copies /opt/hermes-agent-staging → /home/hermeswebui/.hermes/hermes-agent (first boot only)
+ 8b. init_wiki()               — initializes wiki directory at $WIKI_DIR with SCHEMA.md backbone (idempotent, skips if SCHEMA.md exists)
+ 8c. append_skills_external_dirs() — appends skills.external_dirs to config.yaml pointing to hermes-agent/optional-skills (must run after ensure_agent copies the dir into place; makes 94 built-in skills discoverable alongside 72 custom skills = 166 total)
  9. /hermeswebui_init.bash &    — starts WebUI init (UID/GID setup, Python deps, HTTP server)
 10. wait_for_port 8787 300      — blocks until WebUI health endpoint responds
 10b. start_browser_vnc()        — starts Browser/VNC human-in-the-loop stack (if BROWSER_HUMAN_LOOP_ENABLED=true)
@@ -105,6 +107,8 @@ Defined in `lib/constants.sh`:
 | `start_gateway()` | `lib/service-gateway.sh` | Starts the gateway as `hermeswebui` via `su`. Skips if agent not found or hermes CLI not in venv. |
 | `start_opencode_serve()` | `lib/service-opencode.sh` | Starts OpenCode serve as `hermeswebui` via `su`. Skips if `opencode` binary not found. |
 | `start_browser_vnc()` | `lib/service-browser-vnc.sh` | Starts the Browser/VNC human-in-the-loop stack (Xvfb + openbox + x11vnc + websockify + Chromium). All processes run as `hermeswebui`. Controlled by `BROWSER_HUMAN_LOOP_ENABLED`. |
+| `init_wiki()` | `lib/wiki-init.sh` | Initializes wiki directory at `$WIKI_DIR` with SCHEMA.md backbone, index.md, log.md, and subdirectories. Idempotent — skips if SCHEMA.md already exists. All dirs/files chowned to `OPENCODE_USER`. |
+| `append_skills_external_dirs()` | `lib/config-hermes.sh` | Appends `skills.external_dirs` pointing to `${HERMES_HOME}/hermes-agent/optional-skills` in config.yaml. Must run after `ensure_agent()` because the optional-skills dir doesn't exist at config generation time. Hermes scans local skills first, then external dirs, skipping duplicates by name. Result: 72 custom + 94 built-in = 166 total visible skills. |
 
 ### Model discovery details
 
