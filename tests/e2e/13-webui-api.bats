@@ -33,6 +33,10 @@ sys.exit(0)
 # ------------------------------------------------------------------
 
 @test "AC17b: WebUI chat start API responds" {
+    # Skip if no LLM provider configured (chat requires a working model)
+    if [ -z "${OPENAI_BASE_URL:-}" ] || [ -z "${OPENAI_API_KEY:-}" ]; then
+        skip "OPENAI_BASE_URL or OPENAI_API_KEY not set"
+    fi
     run curl -sf --max-time 5 \
         -X POST \
         -H "Content-Type: application/json" \
