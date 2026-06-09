@@ -10,8 +10,9 @@ start_browser_vnc() {
 
     echo "== Starting browser human-in-the-loop stack..."
 
-    # Ensure log directory exists
+    # Ensure log directory exists (owned by hermeswebui)
     mkdir -p "${HERMES_HOME}/logs"
+    chown "${OPENCODE_USER}:${OPENCODE_USER}" "${HERMES_HOME}/logs"
 
     # Create chromium user-data directory and remove stale lockfiles from previous containers
     mkdir -p /home/hermeswebui/.hermes/chrome-debug
@@ -38,8 +39,9 @@ start_browser_vnc() {
         > "${HERMES_HOME}/logs/openbox.log" 2>&1 &
     echo "== Openbox started (PID: $!)"
 
-    # 3. Set up VNC password
+    # 3. Set up VNC password (remove stale file from prior container starts)
     local vnc_password="${BROWSER_VNC_PASSWORD:-hermes}"
+    rm -f /tmp/.vnc_passwd
     x11vnc -storepasswd "$vnc_password" /tmp/.vnc_passwd
     chown "${OPENCODE_USER}:${OPENCODE_USER}" /tmp/.vnc_passwd
 
