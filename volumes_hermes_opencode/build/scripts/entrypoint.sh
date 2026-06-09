@@ -691,7 +691,7 @@ start_browser_vnc() {
     # 6. Start Chromium with remote debugging
     echo "== Starting Chromium (CDP on :9222)..."
     su -s /bin/bash "$OPENCODE_USER" -c \
-        "DISPLAY=:99 chromium --remote-debugging-port=9222 --user-data-dir=/home/hermeswebui/.hermes/chrome-debug --no-sandbox --disable-gpu --no-first-run --disable-dev-shm-usage" \
+        "DISPLAY=:99 chromium --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --user-data-dir=/home/hermeswebui/.hermes/chrome-debug --no-sandbox --disable-gpu --no-first-run --disable-dev-shm-usage" \
         > "${HERMES_HOME}/logs/chromium.log" 2>&1 &
     echo "== Chromium started (PID: $!)"
 
