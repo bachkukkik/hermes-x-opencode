@@ -486,6 +486,70 @@ JSONEOF
     echo "== Wrote opencode.jsonc with $(echo "$DISCOVERED_MODELS" | wc -l) models (security: ${security_mode})."
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
+
+    # --- Fix #28: Copy opencode config to root's config dir ---
+    # When Hermes agent uses terminal() -> docker exec, it runs as root.
+    # Without this, root has an empty config and custom providers are invisible.
+    local root_opencode_config_dir="/root/.config/opencode"
+    mkdir -p "$root_opencode_config_dir"
+    cp "$OPENCODE_CONFIG" "${root_opencode_config_dir}/opencode.jsonc"
+    echo "== Copied opencode.jsonc to ${root_opencode_config_dir}/opencode.jsonc (root config)."
+
+    # --- Fix #29: Symlink root's opencode data dir to hermeswebui's ---
+    # opencode serve runs as hermeswebui, so sessions live in hermeswebui's DB.
+    # Root's DB (/root/.local/share/opencode/) is empty -> --attach always fails.
+    local root_opencode_data="/root/.local/share/opencode"
+    local user_opencode_data="${OPENCODE_USER_HOME}/.local/share/opencode"
+    mkdir -p "$user_opencode_data"
+    if [ -L "$root_opencode_data" ]; then
+        echo "== ${root_opencode_data} already a symlink, skipping."
+    elif [ -d "$root_opencode_data" ]; then
+        # opencode installer creates this dir; replace with symlink
+        rmdir "$root_opencode_data" 2>/dev/null || rm -rf "$root_opencode_data"
+        ln -s "$user_opencode_data" "$root_opencode_data"
+        echo "== Replaced existing ${root_opencode_data} dir with symlink -> ${user_opencode_data}."
+    else
+        ln -s "$user_opencode_data" "$root_opencode_data"
+        echo "== Symlinked ${root_opencode_data} -> ${user_opencode_data} (shared session DB)."
+    fi
+    chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$user_opencode_data"
+}
+
+# --- Fix #30: Validate OpenCode Zen API key if set ---
+# When OPENCODE_API_KEY is set but invalid, opencode/ models return 401.
+# This check provides a helpful startup message instead of silent failures.
+validate_opencode_zen_key() {
+    local key="${OPENCODE_API_KEY:-}"
+    if [ -z "$key" ]; then
+        echo "== OPENCODE_API_KEY not set. opencode/ free models will use public fallback (may be limited)."
+        return 0
+    fi
+
+    # Quick validation: try the Zen API models endpoint with the provided key
+    local response
+    response=$(curl -sf --max-time 10 \
+        -H "Authorization: Bearer ${key}" \
+        "https://opencode.ai/zen/v1/models" 2>/dev/null || echo "")
+
+    if [ -z "$response" ]; then
+        echo "!! WARNING: OPENCODE_API_KEY is set but the Zen API returned an error."
+        echo "   opencode/ models may fail with 401 Invalid API key."
+        echo "   Get a valid key at: https://opencode.ai/auth"
+        return 1
+    fi
+
+    local model_count
+    model_count=$(echo "$response" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    print(len(d.get('data', [])))
+except Exception:
+    print(0)
+" 2>/dev/null || echo "0")
+
+    echo "== OPENCODE_API_KEY validated. Zen API returned ${model_count} models."
+    return 0
 }
 
 # Poll a TCP port until it accepts a connection or the timeout is reached.
@@ -656,6 +720,7 @@ fi
 discover_models
 generate_config
 generate_opencode_config
+validate_opencode_zen_key || true
 ensure_agent
 
 /hermeswebui_init.bash &
