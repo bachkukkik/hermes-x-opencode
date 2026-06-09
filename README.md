@@ -46,7 +46,7 @@ Three services exposed:
 │                                                                      │
 │  External:                                                           │
 │    LLM Provider (OpenAI-compatible endpoint via OPENAI_BASE_URL)     │
-│    OpenCode auth (OPENCODE_API_KEY)                                  │
+│    OpenCode Zen auth (OPENCODE_API_KEY) — optional                   │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -77,8 +77,10 @@ OPENAI_BASE_URL=https://openrouter.ai/api/v1
 # Required: Default model (other chat models are auto-discovered)
 OPENAI_DEFAULT_MODEL=openai/gpt-4o
 
-# Required: OpenCode API key (get from https://opencode.ai)
-OPENCODE_API_KEY=your-opencode-key-here
+# Optional: OpenCode Zen API key (sign up at https://opencode.ai/auth)
+# Required only for opencode/ built-in models (deepseek-v4-flash-free, etc.).
+# If you only use models from your own LLM provider (via OPENAI_BASE_URL), leave this empty.
+OPENCODE_API_KEY=
 ```
 
 ### 3. Build and start
@@ -231,7 +233,7 @@ The following are known limitations of the current setup. Most have workarounds 
 - **`opencode run` returns "Session not found"** — the `run` subcommand cannot re-enter an existing session. Use the one-shot `opencode <dir> --prompt` pattern instead (see [Usage Patterns](#usage-patterns) and [#7](https://github.com/bachkukkik/hermes-x-opencode/issues/7)).
 - **`opencode serve` exits immediately** — the headless server is not yet stable in this environment and is disabled by default via the `OPENCODE_SERVE_ENABLED` env var. See [#10](https://github.com/bachkukkik/hermes-x-opencode/issues/10).
 - **Interactive multi-turn TUI sessions cannot receive follow-up stdin** from the Hermes process layer — the agent can launch `opencode` but cannot drive an interactive REPL. Use one-shot prompts or the Agent API (see [#6](https://github.com/bachkukkik/hermes-x-opencode/issues/6)).
-- **`host.docker.internal` does not resolve on bare Linux hosts** — the entrypoint auto-detects the host IP and injects the correct value. See [#12](https://github.com/bachkukkik/hermes-x-opencode/issues/12).
+- **`host.docker.internal` resolves via `extra_hosts`** in `docker-compose.yml`, which maps it to the host gateway IP. This works on all platforms including bare Linux. Previously required entrypoint-level IP detection (see [#12](https://github.com/bachkukkik/hermes-x-opencode/issues/12), [#27](https://github.com/bachkukkik/hermes-x-opencode/issues/27), [#31](https://github.com/bachkukkik/hermes-x-opencode/issues/31)).
 - **`opencode acp` does not bind TCP ports** — ACP is designed for IDE stdio integration, not as a standalone TCP server. The `--port` flag is accepted but never binds. This is an upstream limitation (see [vanilla-coder#6](https://github.com/vanilla-republic/vanilla-coder/issues/6)). Use **Serve + Attach** instead (`opencode serve` + `opencode run --attach`).
 
 ## Configuration
@@ -249,7 +251,7 @@ All configuration is done through the `.env` file. See `.env.example` for the fu
 | `HERMES_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. |
 | `OPENCODE_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. |
 | `OPENCODE_SMALL_MODEL` | No | falls back to `OPENAI_SMALL_MODEL` | Per-app override for the OpenCode small model. |
-| `OPENCODE_API_KEY` | Yes | — | API key for OpenCode CLI |
+| `OPENCODE_API_KEY` | No | — | API key for OpenCode Zen models (sign up at https://opencode.ai/auth). Required only for opencode/ built-in models. |
 | `HERMES_WEBUI_PASSWORD` | No | empty | Password-protect the WebUI |
 | `HERMES_WEBUI_PORT` | No | `8787` | Host port for WebUI |
 | `HERMES_API_KEY` | No | auto-generated | Bearer token for Agent API |
@@ -292,7 +294,7 @@ docker compose up -d
 
 ### OpenCode Auth
 
-Set `OPENCODE_API_KEY` in `.env`. The key is passed through as an environment variable to the container.
+Set `OPENCODE_API_KEY` in `.env` if you want to use opencode/ built-in Zen models (e.g. `opencode/deepseek-v4-flash-free`). The key is validated at startup with a helpful warning on failure. If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), you can leave this empty — the litellm provider in `opencode.jsonc` works without it. Get a key at https://opencode.ai/auth.
 
 ### Persistent Data
 

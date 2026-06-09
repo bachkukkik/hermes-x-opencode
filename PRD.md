@@ -59,7 +59,7 @@ A Docker Compose stack that runs [Hermes WebUI](https://github.com/nicholasgriff
 │                                                                      │
 │  External:                                                           │
 │    LLM Provider (OpenAI-compatible endpoint via OPENAI_BASE_URL)     │
-│    OpenCode auth (OPENCODE_API_KEY)                                  │
+│    OpenCode Zen auth (OPENCODE_API_KEY) — optional                   │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -202,7 +202,8 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 |----------|---------|
 | `discover_models()` | Curls `OPENAI_BASE_URL/models` with API key. Filters non-chat models (embed, whisper, tts, dall-e, sora, etc.) and wildcard patterns. Falls back to `OPENAI_DEFAULT_MODEL` only on failure. Sets `DISCOVERED_MODELS`. |
 | `generate_config()` | Writes `config.yaml` with litellm custom provider, multi-model `models` dict, `api_server` platform. Auto-generates API key if `HERMES_API_KEY` is empty. Writes both `model.default` and `model.name`. |
-| `generate_opencode_config()` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and provider config. Chowns to `hermeswebui`. |
+| `generate_opencode_config()` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and provider config. Copies config to `/root/.config/opencode/` for root access (fix #28). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns to `hermeswebui`. |
+| `validate_opencode_zen_key()` | Validates `OPENCODE_API_KEY` against the Zen API models endpoint if set. Non-fatal warning on failure (fix #30). |
 | `ensure_agent()` | Copies agent from `/opt/hermes-agent-staging` to bind mount if not already present. Idempotent. |
 | `wait_for_port(port, timeout)` | Loops curl on health endpoint every 2 seconds until ready or timeout. |
 | `start_gateway()` | Starts gateway as `hermeswebui` via `su`. Command: `/app/venv/bin/hermes gateway run --accept-hooks`. Skips if agent not found. |
@@ -212,14 +213,15 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 1. Install skills (`install-skills.sh`) — 6 upstream sources, can skip with `SKIP_SKILL_INSTALL=1`
 2. `discover_models()` — discover all chat models from provider
 3. `generate_config()` — write `config.yaml` with multi-model support
-4. `generate_opencode_config()` — write `opencode.jsonc` with plugins, permissions, provider
-5. `ensure_agent()` — copy staged agent to bind mount (first boot only)
-6. Start `/hermeswebui_init.bash` in background
-7. Wait for port 8787 to be healthy (timeout 120s)
-8. Start hermes gateway (`/app/venv/bin/hermes gateway run --accept-hooks`) in background
-9. Wait for port 8642 to be healthy (timeout 60s)
-10. Start `opencode serve --port 4096 --hostname 0.0.0.0` in background **only if `OPENCODE_SERVE_ENABLED=true`** (default: skipped)
-11. `wait -n` to keep container alive (exits if any background process dies)
+4. `generate_opencode_config()` — write `opencode.jsonc` with plugins, permissions, provider; copy to root config; symlink root session DB (fixes #28, #29)
+5. `validate_opencode_zen_key()` — validate OPENCODE_API_KEY if set; warn on failure (fix #30)
+6. `ensure_agent()` — copy staged agent to bind mount (first boot only)
+7. Start `/hermeswebui_init.bash` in background
+8. Wait for port 8787 to be healthy (timeout 120s)
+9. Start hermes gateway (`/app/venv/bin/hermes gateway run --accept-hooks`) in background
+10. Wait for port 8642 to be healthy (timeout 60s)
+11. Start `opencode serve --port 4096 --hostname 0.0.0.0` in background **only if `OPENCODE_SERVE_ENABLED=true`** (default: skipped)
+12. `wait -n` to keep container alive (exits if any background process dies)
 
 **Model discovery filter patterns:**
 Non-chat models matching: embed, whisper, tts, dall-e, sora, image, realtime, transcrib, moderat, audio, codegen, babbage, davinci, curie, ada, text-, stable, midjourney, flux, /sd/, mj, replicate, resolution. Also filters litellm wildcard patterns (IDs ending with `/*`).
@@ -261,7 +263,7 @@ Non-chat models matching: embed, whisper, tts, dall-e, sora, image, realtime, tr
 | `OPENAI_API_KEY` | Yes | API key for the LLM provider |
 | `OPENAI_BASE_URL` | Yes | Base URL for the LLM provider endpoint |
 | `OPENAI_DEFAULT_MODEL` | No | Model identifier (default: `openai/gpt-4o`) |
-| `OPENCODE_API_KEY` | Yes | API key for OpenCode CLI |
+| `OPENCODE_API_KEY` | No | API key for OpenCode Zen models. Required only for opencode/ built-in models; leave empty if using your own LLM provider. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | No | Skip WebUI onboarding wizard (set `true`) |
 | `HERMES_WEBUI_PASSWORD` | No | Optional password for the WebUI |
 | `HERMES_WEBUI_PORT` | No | Host port for WebUI (default: 8787) |
@@ -339,17 +341,20 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
  3. Discover models: curl OPENAI_BASE_URL/models, filter non-chat + wildcards (5–15s)
  4. Generate config.yaml with multi-model support (all discovered chat models)
  5. Generate opencode.jsonc with plugins, permissions, provider
- 6. Copy agent from /opt/hermes-agent-staging to bind mount (~2s)
- 7. Start /hermeswebui_init.bash in background
- 8. WebUI init script (background):
+ 5b. Copy opencode.jsonc to /root/.config/opencode/ (fix #28)
+ 5c. Symlink /root/.local/share/opencode → hermeswebui's data dir (fix #29)
+ 6. Validate OPENCODE_API_KEY if set — warn on failure (fix #30)
+ 7. Copy agent from /opt/hermes-agent-staging to bind mount (~2s)
+ 8. Start /hermeswebui_init.bash in background
+ 9. WebUI init script (background):
     a. Sets up UID/GID
     b. Installs hermes-agent Python deps
     c. Starts the WebUI HTTP server on :8787
- 9. Wait for port 8787 to respond to /health (timeout: 120s)
-10. Start hermes gateway: /app/venv/bin/hermes gateway run --accept-hooks
-11. Wait for port 8642 to respond to /health (timeout: 60s)
-12. Start opencode serve --port 4096 --hostname 0.0.0.0 **(only if `OPENCODE_SERVE_ENABLED=true`)**
-13. wait -n to keep container alive
+10. Wait for port 8787 to respond to /health (timeout: 120s)
+11. Start hermes gateway: /app/venv/bin/hermes gateway run --accept-hooks
+12. Wait for port 8642 to respond to /health (timeout: 60s)
+13. Start opencode serve --port 4096 --hostname 0.0.0.0 **(only if `OPENCODE_SERVE_ENABLED=true`)**
+14. wait -n to keep container alive
 ```
 
 **Expected first boot time:** 80–160 seconds (skill install + Python deps + model discovery)
@@ -360,11 +365,14 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
  1. Install skills (OpenCode skills are ephemeral, always reinstalled)
  2. Re-discover models (idempotent)
  3. Regenerate config.yaml and opencode.jsonc (idempotent overwrite)
- 4. Agent already present in bind mount (skips copy)
- 5. WebUI init: deps already installed, fast startup (~10-20s)
- 6. Gateway starts: deps already installed (~5-10s)
- 7. OpenCode serve starts (~2-5s) — **only when `OPENCODE_SERVE_ENABLED=true`**; otherwise skipped
- 8. All ports ready
+ 3b. Copy opencode.jsonc to /root/.config/opencode/ (fix #28)
+ 3c. Symlink /root/.local/share/opencode → hermeswebui's data dir (idempotent, fix #29)
+ 4. Validate OPENCODE_API_KEY if set (fix #30)
+ 5. Agent already present in bind mount (skips copy)
+ 6. WebUI init: deps already installed, fast startup (~10-20s)
+ 7. Gateway starts: deps already installed (~5-10s)
+ 8. OpenCode serve starts (~2-5s) — **only when `OPENCODE_SERVE_ENABLED=true`**; otherwise skipped
+ 9. All ports ready
 ```
 
 **Expected subsequent boot time:** 25–50 seconds
@@ -377,6 +385,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 - Session history, skills, and memories persist in the `hermes-home` bind mount across container restarts and rebuilds.
 - OpenCode skills are ephemeral (no volume mount) and reinstalled on every boot. Hermes skills persist in the bind mount.
 - The WebUI, gateway, and (when enabled) `opencode serve` run as background processes. If any started process exits, the container shuts down (`wait -n`). This is why `opencode serve` is gated behind `OPENCODE_SERVE_ENABLED` — without an LLM provider it would exit immediately and tear the container down.
+- `host.docker.internal` resolves inside the container via `extra_hosts` in `docker-compose.yml` (maps to `host-gateway`). This works on all platforms including bare Linux (fixes #27, #31).
 - The gateway and opencode serve are started as `hermeswebui` user (not root) via `su`. Note: `opencode serve` only starts when `OPENCODE_SERVE_ENABLED=true` (default: `false`); see §9 Usage Patterns for why.
 - Both `model.default` and `model.name` are written to `config.yaml` to satisfy both the WebUI's `models_cache.json` builder and the hermes-agent's model resolution.
 
@@ -393,7 +402,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 | `HERMES_DEFAULT_MODEL` | string | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. When set, written to `config.yaml` as both `model.default` and `model.name`. |
 | `OPENCODE_DEFAULT_MODEL` | string | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. When set, written to `opencode.jsonc` as `"model": "litellm/<value>"`. |
 | `OPENCODE_SMALL_MODEL` | string | No | falls back to `OPENAI_SMALL_MODEL` | Per-app override for the OpenCode small model. When set, written to `opencode.jsonc` as `"small_model": "litellm/<value>"`. |
-| `OPENCODE_API_KEY` | string | **Yes** | — | API key for OpenCode CLI. Obtained from https://opencode.ai |
+| `OPENCODE_API_KEY` | string | No | — | API key for OpenCode Zen models. Required only for opencode/ built-in models (sign up at https://opencode.ai/auth). If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), leave this empty. Validated at startup with a warning on failure. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | string | No | — | Set to `true` to skip the WebUI onboarding wizard. |
 | `HERMES_WEBUI_PASSWORD` | string | No | empty | Password-protect the WebUI. Empty = no authentication. |
 | `HERMES_WEBUI_PORT` | int | No | `8787` | Host port for the WebUI. Container always listens on 8787 internally. |

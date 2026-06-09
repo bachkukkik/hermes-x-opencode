@@ -25,7 +25,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `HERMES_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. When set, written to `config.yaml` as both `model.default` and `model.name`. Leave unset to follow `OPENAI_DEFAULT_MODEL`. |
 | `OPENCODE_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. When set, written to `opencode.jsonc` as `"model": "litellm/<value>"`. Leave unset to follow `OPENAI_DEFAULT_MODEL`. |
 | `OPENCODE_SMALL_MODEL` | No | falls back to `OPENAI_SMALL_MODEL` then `OPENCODE_DEFAULT_MODEL` (resolved) | Per-app override for the OpenCode small model. When set, written to `opencode.jsonc` as `"small_model": "litellm/<value>"`. Leave unset to follow `OPENAI_SMALL_MODEL`. |
-| `OPENCODE_API_KEY` | Yes | — | API key for OpenCode CLI. Obtained from `https://opencode.ai`. |
+| `OPENCODE_API_KEY` | No | — | API key for OpenCode Zen models. Sign up at `https://opencode.ai/auth`, add billing details, copy your key. Even "free" models (deepseek-v4-flash-free, etc.) require a valid key. If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), leave this empty — the litellm provider in `opencode.jsonc` will work without it. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | No | — | Set to `true` to skip the WebUI onboarding wizard. Recommended for automated setups. |
 | `HERMES_WEBUI_PASSWORD` | No | empty | Password-protect the WebUI. Empty = no authentication. |
 | `HERMES_WEBUI_PORT` | No | `8787` | Host port for the WebUI. Container always listens on 8787. |
@@ -132,6 +132,8 @@ Key constraints for the OpenCode config:
 | Hermes WebUI | `/home/hermeswebui/.hermes/config.yaml` | `api/config.py` → `get_active_hermes_home() / "config.yaml"` |
 | Hermes Agent Gateway | `/home/hermeswebui/.hermes/config.yaml` | `gateway/run.py` → `get_hermes_home() / "config.yaml"` |
 | OpenCode Serve | `/home/hermeswebui/.config/opencode/opencode.jsonc` | OpenCode binary reads `$HOME/.config/opencode/opencode.jsonc` (runs as hermeswebui) |
+| OpenCode (root / docker exec) | `/root/.config/opencode/opencode.jsonc` | Copy of hermeswebui's config — ensures root sees providers when invoked via `terminal()` tool (fix #28) |
+| OpenCode session DB (root) | `/root/.local/share/opencode/` | Symlink → `/home/hermeswebui/.local/share/opencode/` — ensures root shares the session DB (fix #29) |
 
 ## Verification
 

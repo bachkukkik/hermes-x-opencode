@@ -43,12 +43,13 @@ Load and use these skills on EVERY task:
 
 ### 3. Docker/Build Constraints
 
-- Target platform: **Linux ARM64** (Raspberry Pi CM5)
+- Target platform: **Linux ARM64** (Raspberry Pi)
 - **No interactive setup** — everything must be unattended from `docker compose up -d`
 - **No secrets in tracked files** — repo is public
 - `config.yaml` and `opencode.jsonc` are regenerated every boot — manual edits are lost
 - OpenCode skills are ephemeral (no volume mount) — reinstalled every boot
 - Hermes skills persist in the bind mount
+- **`host.docker.internal`** resolves inside the container via `extra_hosts` in `docker-compose.yml` (maps to `host-gateway`) — fixes DNS resolution on bare Linux hosts (#27, #31)
 
 ### 4. File Locations (inside container)
 
@@ -57,7 +58,9 @@ Load and use these skills on EVERY task:
 | `/home/hermeswebui/.hermes/config.yaml` | Agent config (generated) |
 | `/home/hermeswebui/.hermes/hermes-agent/` | Agent runtime (bind mount) |
 | `/home/hermeswebui/.hermes/state.db` | Session history (SQLite) |
-| `/home/hermeswebui/.config/opencode/opencode.jsonc` | OpenCode config (generated) |
+| `/home/hermeswebui/.config/opencode/opencode.jsonc` | OpenCode config (generated, copied to root) |
+| `/root/.config/opencode/opencode.jsonc` | Root's OpenCode config (copy of hermeswebui's, fix #28) |
+| `/root/.local/share/opencode/` | Symlink → hermeswebui's data dir (shared session DB, fix #29) |
 | `/home/hermeswebui/.config/opencode/skills/` | OpenCode skills (ephemeral) |
 | `/opt/hermes-agent-staging/` | Agent source (build-time) |
 | `/workspace/` | User project workspace (bind mount) |
