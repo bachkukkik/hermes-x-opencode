@@ -40,8 +40,15 @@ RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} \
 RUN sed -i 's/base_url="",/base_url="",\n    default_headers={"User-Agent": "hermes-agent\/1.0"},/' \
     /opt/hermes-agent-staging/plugins/model-providers/custom/__init__.py
 
+# Fix #20: WebUI providers.py ignores key_env for provider status display.
+# Upstream: https://github.com/nesquena/hermes-webui (not yet fixed as of v0.51.340)
+# The runtime's _resolve_key() already handles key_env; this brings the display in sync.
+COPY scripts/fix20-providers-keyenv.py /tmp/fix20-providers-keyenv.py
+RUN python3 /tmp/fix20-providers-keyenv.py && rm /tmp/fix20-providers-keyenv.py
+
 COPY scripts/install-skills.sh /usr/local/bin/install-skills.sh
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY scripts/lib/ /usr/local/bin/lib/
 COPY tests/healthcheck.sh /usr/local/bin/healthcheck.sh
 RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh
 

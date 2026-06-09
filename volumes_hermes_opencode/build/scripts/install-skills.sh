@@ -75,6 +75,22 @@ for skill_path in "${OPENAI_SKILLS[@]}"; do
   rm -rf "$OPENCODE_SKILLS_DIR/$skill_name/.git"
 done
 
+# Also install yeet as a Hermes skill (under github/ category)
+rm -rf "$HERMES_SKILLS_DIR/github/yeet"
+mkdir -p "$HERMES_SKILLS_DIR/github/yeet"
+cp "$OPENCODE_SKILLS_DIR/yeet/SKILL.md" "$HERMES_SKILLS_DIR/github/yeet/SKILL.md"
+eprintf "  Installed yeet -> hermes/github/"
+
+# GitHub category description
+if [ ! -f "$HERMES_SKILLS_DIR/github/DESCRIPTION.md" ]; then
+  mkdir -p "$HERMES_SKILLS_DIR/github"
+  cat > "$HERMES_SKILLS_DIR/github/DESCRIPTION.md" <<'DESEOF'
+---
+description: GitHub workflow skills for managing repositories, pull requests, code reviews, and CI/CD pipelines.
+---
+DESEOF
+fi
+
 # ==============================================================================
 # --- multica-ai/andrej-karpathy-skills (1 skill) ---
 # ==============================================================================

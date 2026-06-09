@@ -37,16 +37,19 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
  4. discover_models()           — curls OPENAI_BASE_URL/models, filters non-chat models and wildcards
  5. generate_config()           — writes config.yaml with multi-model models dict (if OPENAI_BASE_URL is set)
  6. generate_opencode_config()  — writes opencode.jsonc with plugins, permissions, discovered models; chowns to hermeswebui
- 7. ensure_agent()              — copies /opt/hermes-agent-staging → /home/hermeswebui/.hermes/hermes-agent (first boot only)
- 8. /hermeswebui_init.bash &    — starts WebUI init (UID/GID setup, Python deps, HTTP server)
- 9. wait_for_port 8787 120      — blocks until WebUI health endpoint responds
-10. start_gateway()             — su hermeswebui -c "/app/venv/bin/hermes gateway run --accept-hooks" &
-11. wait_for_port 8642 60       — blocks until Gateway health endpoint responds
-12. start_opencode_serve()      — if OPENCODE_SERVE_ENABLED=true: su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
+ 6b. copy root config (fix #28) — copies opencode.jsonc to /root/.config/opencode/ so root sees providers
+ 6c. symlink session DB (fix #29) — symlinks /root/.local/share/opencode → hermeswebui's data dir
+ 7. validate_opencode_zen_key() — if OPENCODE_API_KEY is set, validates it against Zen API; warns on failure (fix #30)
+ 8. ensure_agent()              — copies /opt/hermes-agent-staging → /home/hermeswebui/.hermes/hermes-agent (first boot only)
+ 9. /hermeswebui_init.bash &    — starts WebUI init (UID/GID setup, Python deps, HTTP server)
+10. wait_for_port 8787 120      — blocks until WebUI health endpoint responds
+11. start_gateway()             — su hermeswebui -c "/app/venv/bin/hermes gateway run --accept-hooks" &
+12. wait_for_port 8642 60       — blocks until Gateway health endpoint responds
+13. start_opencode_serve()      — if OPENCODE_SERVE_ENABLED=true: su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
                                 else: log and skip
-12b. wait_for_port 4096         — (only if serve enabled) boot readiness probe, non-fatal timeout
-13. wait                        — blocks until any background process exits
-14. Container shuts down
+13b. wait_for_port 4096         — (only if serve enabled) boot readiness probe, non-fatal timeout
+14. wait                        — blocks until any background process exits
+15. Container shuts down
 ```
 
 ### Functions
@@ -55,7 +58,8 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
 |----------|---------|
 | `discover_models()` | Curls `$OPENAI_BASE_URL/models` with the API key. Parses response with python3, filters non-chat models (embed, whisper, tts, dall-e, sora, etc.) and wildcard patterns (`anthropic/*`, `openai/*`). Falls back to `OPENAI_DEFAULT_MODEL` only on failure. Sets `DISCOVERED_MODELS` as newline-separated model ID list. |
 | `generate_config()` | Writes `config.yaml` with litellm custom provider using a `models` dict (key=model ID, value=`{context_length: 200000}`). Auto-generates API key if `HERMES_API_KEY` is empty. Sets default model from `HERMES_DEFAULT_MODEL` (with `OPENAI_DEFAULT_MODEL` fallback) as both `model.default` and `model.name` — the outer WebUI reads `model.default`, the hermes-agent reads `model.default` with fallback to `model.name`. |
-| `generate_opencode_config()` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). |
+| `generate_opencode_config()` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. Copies the config to `/root/.config/opencode/` so root sees providers (fix #28). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). |
+| `validate_opencode_zen_key()` | Validates `OPENCODE_API_KEY` against the Zen API models endpoint. If the key is empty, logs an informational message and returns. If set but invalid, logs a warning with instructions to get a valid key. Non-fatal — the container always continues starting (fix #30). |
 | `ensure_agent()` | Copies agent from `/opt/hermes-agent-staging` to `/home/hermeswebui/.hermes/hermes-agent` if not already present. Idempotent — skips if `pyproject.toml` exists. |
 | `wait_for_port(port, timeout)` | Loops `curl -sf http://localhost:${port}/health` every 2 seconds until success or timeout. |
 | `start_gateway()` | Starts the gateway as `hermeswebui` via `su`. Skips if agent not found or hermes CLI not in venv. |
@@ -117,6 +121,9 @@ Expected output lines in order:
 == Discovered 297 chat models.
 == Wrote config.yaml with 297 models.
 == Wrote opencode.jsonc with 297 models.
+== Copied opencode.jsonc to /root/.config/opencode/opencode.jsonc (root config).
+== Symlinked /root/.local/share/opencode -> /home/hermeswebui/.local/share/opencode (shared session DB).
+== OPENCODE_API_KEY not set. opencode/ free models will use public fallback (may be limited).
 == Agent already present at /home/hermeswebui/.hermes  (or "Copying staged agent..." on first boot)
 == WebUI init started (PID: N)
 == Port 8787 is ready.

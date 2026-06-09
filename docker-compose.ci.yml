@@ -9,3 +9,4 @@ services:
       - "${HERMES_WEBUI_PORT:-8787}:8787"
       - "${HERMES_API_PORT:-8642}:8642"
       - "${OPENCODE_SERVE_PORT:-4096}:4096"
+      - "${CHROME_CDP_PORT:-9222}:9222"
