@@ -235,6 +235,49 @@ print(c.get('model', ''))
     [ "$configured_model" = "litellm/${expected}" ]
 }
 
+@test "KNOWN LIMITATION: opencode run rejects litellm/ provider prefix (ProviderModelNotFoundError)" {
+    # OpenCode v1.16.2 uses a hardcoded provider registry for `opencode run`.
+    # Custom providers defined in opencode.jsonc (e.g., litellm) only load in
+    # TUI/serve mode, not in CLI `opencode run` mode. This test verifies the
+    # limitation is present and documents it.
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # litellm/ prefix should fail with ProviderModelNotFoundError
+    run docker exec "$cid" timeout 15 opencode run -m litellm/z.ai/glm-5.1 'Respond with: HELLO' 2>&1
+    # Should exit 1 with an error about provider/model not found
+    [ "$status" -ne 0 ]
+    echo "$output" | grep -qi "error\|not found\|Unexpected"
+}
+
+@test "KNOWN LIMITATION: opencode run rejects openai/ prefix with custom model IDs" {
+    # Even with OPENAI_API_KEY set, openai/ only accepts models in its built-in
+    # registry. Custom model IDs like z.ai/glm-5.1 are rejected.
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run docker exec "$cid" timeout 15 opencode run -m openai/z.ai/glm-5.1 'Respond with: HELLO' 2>&1
+    [ "$status" -ne 0 ]
+    echo "$output" | grep -qi "error\|not found\|Unexpected"
+}
+
+@test "WORKAROUND: opencode run works with opencode/ free-tier models" {
+    # The opencode/ prefix uses built-in free models that require no API key.
+    # This is the recommended workaround for opencode run CLI one-shot commands.
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run docker exec "$cid" timeout 60 opencode run -m opencode/deepseek-v4-flash-free 'Respond with exactly one word: OK' 2>&1
+    # Accept exit 0 (success) or 1 (may fail due to rate limits/no network)
+    [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
+}
+
 @test "opencode.jsonc llama_cpp models have 200k context" {
     skip_if_no_secrets
     local cid

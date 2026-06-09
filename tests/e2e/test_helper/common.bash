@@ -16,7 +16,14 @@ if [ -f "$PROJECT_DIR/docker-compose.ci.yml" ]; then
 fi
 
 get_container() {
-    docker compose "${COMPOSE_OPTS[@]}" ps -q hermes-opencode 2>/dev/null
+    local cid
+    cid=$(docker compose "${COMPOSE_OPTS[@]}" ps -q hermes-opencode 2>/dev/null)
+    if [ -n "$cid" ]; then
+        echo "$cid"
+        return
+    fi
+    # Fallback: find by compose service label (works regardless of project name)
+    docker ps -q --filter "label=com.docker.compose.service=hermes-opencode" 2>/dev/null | head -1
 }
 
 wait_for_healthy() {

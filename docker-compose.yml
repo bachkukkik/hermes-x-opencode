@@ -7,6 +7,7 @@ services:
     #   - "${HERMES_WEBUI_PORT:-8787}:8787"
     #   - "${HERMES_API_PORT:-8642}:8642"
     #   - "${OPENCODE_SERVE_PORT:-4096}:4096"
+    #   - "${BROWSER_VNC_PORT:-6901}:6901"
     # Optional: Uncomment to allow container to reach host services.
     # Required on Linux when OPENAI_BASE_URL points to a host-side proxy.
     # extra_hosts:
@@ -38,6 +39,8 @@ services:
       - OPENCODE_SERVE_ENABLED=${OPENCODE_SERVE_ENABLED:-false}
       - OPENCODE_SERVE_BOOT_TIMEOUT=${OPENCODE_SERVE_BOOT_TIMEOUT:-30}
       - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD:-}
+      - BROWSER_HUMAN_LOOP_ENABLED=${BROWSER_HUMAN_LOOP_ENABLED:-false}
+      - BROWSER_VNC_PASSWORD=${BROWSER_VNC_PASSWORD:-}
     networks:
       default:
         aliases:

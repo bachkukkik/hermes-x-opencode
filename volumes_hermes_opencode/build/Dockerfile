@@ -8,6 +8,13 @@ RUN apt-get update -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+# Browser human-in-the-loop: Xvfb + VNC + Chromium (always installed, enabled at runtime via BROWSER_HUMAN_LOOP_ENABLED)
+RUN apt-get update -y --no-install-recommends \
+    && apt-get install -y --no-install-recommends \
+       chromium xvfb x11vnc openbox websockify novnc \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && apt-get clean \

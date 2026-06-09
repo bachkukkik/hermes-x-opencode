@@ -27,6 +27,7 @@ Multiple delegation patterns exist, but not all work reliably. This matrix preve
 |---------|---------|---------------|-------------|------------|
 | One-shot `<dir> --prompt` | `opencode /path -m model --prompt "task"` | Enters TUI | MEDIUM | Blocks if no PTY; use `--format json` or `opencode run` instead |
 | `opencode run` (standalone) | `opencode run -m model "task"` | Clean exit (0) | MEDIUM | Requires session DB to be initialized; fails on first run after install |
+| `opencode run` with custom model via litellm | `opencode run -m litellm/z.ai/glm-5.1 "task"` | Exit 1, `ProviderModelNotFoundError` | BROKEN | OpenCode v1.16.2 has a hardcoded provider registry for `opencode run`; custom providers from opencode.jsonc only load in TUI/serve mode. Use `opencode/` prefix with built-in models instead. |
 
 ### Broken Patterns (Do Not Use)
 
@@ -34,6 +35,8 @@ Multiple delegation patterns exist, but not all work reliably. This matrix preve
 |---------|---------|-------|------------|-------|
 | ACP standalone TCP | `opencode acp --port N` | Exits immediately, port never bound | ACP is IDE stdio only, not TCP server | v1.15.x |
 | `opencode serve` unsupervised | `nohup opencode serve &` + `wait -n` | Container exits when serve dies | Serve exits on lifecycle signals; needs restart loop | fixed via OPENCODE_SERVE_ENABLED |
+| Custom model via `openai/` prefix | `opencode run -m openai/z.ai/glm-5.1 "task"` | `ProviderModelNotFoundError` | Model ID not in `openai` provider's built-in registry; config can only add metadata, not register new models | v1.16.2 |
+| Custom model via `litellm/` prefix | `opencode run -m litellm/z.ai/glm-5.1 "task"` | `ProviderModelNotFoundError` | `litellm` is not a built-in provider; custom providers from config only load in TUI/serve mode | v1.16.2 |
 
 ## Architecture: Serve + Attach (Recommended)
 
