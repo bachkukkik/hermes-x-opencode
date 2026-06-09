@@ -10,8 +10,10 @@ services:
     #   - "${BROWSER_VNC_PORT:-6901}:6901"
     # Optional: Uncomment to allow container to reach host services.
     # Required on Linux when OPENAI_BASE_URL points to a host-side proxy.
-    # extra_hosts:
-    #   - "host.docker.internal:host-gateway"
+    # Fix #31: host.docker.internal does not resolve on vanilla Linux Docker.
+    # This maps host.docker.internal to the host's gateway IP inside the container.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - ./volumes_hermes_opencode/data/hermes-home:/home/hermeswebui/.hermes
       - ${HERMES_WORKSPACE:-./volumes_hermes_opencode/data/workspace}:/workspace
