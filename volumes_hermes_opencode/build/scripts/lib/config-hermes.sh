@@ -93,3 +93,24 @@ YAMLEOF
 
     echo "== Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."
 }
+
+# Append skills.external_dirs to config.yaml — called AFTER ensure_agent()
+# so that the optional-skills directory exists on disk.
+append_skills_external_dirs() {
+    local optional_skills_dir="${HERMES_HOME}/hermes-agent/optional-skills"
+    if [ ! -d "$optional_skills_dir" ]; then
+        echo "!! optional-skills dir not found at $optional_skills_dir, skipping external_dirs."
+        return
+    fi
+    # Only add if not already present
+    if grep -q 'external_dirs' "$CONFIG" 2>/dev/null; then
+        return
+    fi
+    cat >> "$CONFIG" << YAMLEOF
+
+skills:
+  external_dirs:
+    - ${optional_skills_dir}
+YAMLEOF
+    echo "== Appended skills.external_dirs -> ${optional_skills_dir}"
+}
