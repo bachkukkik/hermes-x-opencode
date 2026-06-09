@@ -322,6 +322,18 @@ print(c.get('model', ''))
     [ "$status" -eq 0 ] || [ "$status" -eq 1 ]
 }
 
+@test "FIX #20: WebUI providers display respects key_env for custom providers" {
+    # After the Dockerfile patch, _provider_has_key() and get_providers()
+    # check key_env in addition to api_key. Verify the patch is present.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # The patched code should contain key_env references in providers.py
+    docker exec "$cid" grep -q 'cp.get.*key_env' /app/api/providers.py
+    docker exec "$cid" grep -q 'provider_cfg.get.*key_env' /app/api/providers.py
+}
+
 @test "opencode.jsonc llama_cpp models have 200k context" {
     skip_if_no_secrets
     local cid

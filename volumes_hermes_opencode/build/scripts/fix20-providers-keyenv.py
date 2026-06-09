@@ -11,7 +11,7 @@ Patches two functions:
 import os
 import sys
 
-path = '/app/api/providers.py'
+path = '/apptoo/api/providers.py'
 
 try:
     with open(path) as f:
