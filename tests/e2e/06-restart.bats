@@ -6,6 +6,10 @@ setup() {
 
 @test "AC11: second boot reaches healthy within 60 seconds" {
     docker compose "${COMPOSE_OPTS[@]}" down
+    # Also stop any container holding our test ports (e.g. a manually-started
+    # instance using the default hyphenated project name). Port collision on
+    # 4096/8642/8787 causes "Bind failed: port already allocated".
+    docker compose -f "$PROJECT_DIR/docker-compose.yml" -f "$PROJECT_DIR/docker-compose.ci.yml" down 2>/dev/null || true
     local start
     start=$(date +%s)
 

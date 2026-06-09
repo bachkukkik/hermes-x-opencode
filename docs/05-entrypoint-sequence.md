@@ -2,7 +2,7 @@
 
 ## What
 
-The entrypoint script (`scripts/entrypoint.sh`) is the container's `ENTRYPOINT`. It discovers available models from the LLM provider, generates configuration files for both Hermes and OpenCode, copies the staged agent, and starts three background services in dependency order, keeping the container alive until any process exits.
+The entrypoint script (`scripts/entrypoint.sh`) is the container's `ENTRYPOINT`. It is a thin 78-line orchestrator that sources 11 library modules from `scripts/lib/`, then discovers available models from the LLM provider, generates configuration files for both Hermes and OpenCode, copies the staged agent, and starts background services in dependency order, keeping the container alive until any process exits.
 
 ## Why
 
@@ -15,9 +15,33 @@ The entrypoint script (`scripts/entrypoint.sh`) is the container's `ENTRYPOINT`.
 
 ## How
 
-The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` and is copied to `/usr/local/bin/entrypoint.sh` during the Docker build.
+The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` and is copied to `/usr/local/bin/entrypoint.sh` during the Docker build. The library modules live in `scripts/lib/` and are copied to `/usr/local/bin/lib/`.
+
+### Modular architecture
+
+The entrypoint is a 78-line orchestrator. All logic lives in 11 sourced library modules under `scripts/lib/`:
+
+```
+scripts/entrypoint.sh          (78 lines — orchestrator, sources lib/*.sh)
+scripts/lib/
+├── constants.sh               (11 lines — path and user variable declarations)
+├── runtime-env.sh             (41 lines — runtime environment detection helpers)
+├── port-utils.sh              (31 lines — TCP port readiness polling)
+├── agent-setup.sh             (16 lines — hermes-agent staging/copy logic)
+├── model-discovery.sh         (100 lines — model list discovery from OpenAI-compatible API)
+├── config-hermes.sh           (84 lines — hermes config.yaml generation)
+├── config-opencode.sh         (268 lines — OpenCode config generation)
+├── validate-opencode.sh       (38 lines — OpenCode Zen API key validation)
+├── service-gateway.sh         (23 lines — Hermes gateway service startup)
+├── service-opencode.sh        (25 lines — OpenCode serve service startup)
+└── service-browser-vnc.sh     (71 lines — Browser/VNC human-in-the-loop stack startup)
+```
+
+Modules are sourced in dependency order: constants first (defines paths), then helpers (runtime-env, port-utils, agent-setup), then configuration generators (model-discovery → config-hermes → config-opencode → validate-opencode), then service starters (gateway → opencode → browser-vnc).
 
 ### Key variables
+
+Defined in `lib/constants.sh`:
 
 | Variable | Value | Purpose |
 |----------|-------|---------|
@@ -32,42 +56,55 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
 
 ```
  1. set -euo pipefail
+ 1b. LIB_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/lib"
+ 1c. source "${LIB_DIR}/constants.sh"
+ 1d. source "${LIB_DIR}/runtime-env.sh"
+ 1e. source "${LIB_DIR}/port-utils.sh"
+ 1f. source "${LIB_DIR}/agent-setup.sh"
+ 1g. source "${LIB_DIR}/model-discovery.sh"
+ 1h. source "${LIB_DIR}/config-hermes.sh"
+ 1i. source "${LIB_DIR}/config-opencode.sh"
+ 1j. source "${LIB_DIR}/validate-opencode.sh"
+ 1k. source "${LIB_DIR}/service-gateway.sh"
+ 1l. source "${LIB_DIR}/service-opencode.sh"
+ 1m. source "${LIB_DIR}/service-browser-vnc.sh"
  2. export HERMES_HOME, OPENCODE_USER, OPENCODE_USER_HOME, OPENCODE_CONFIG, OPENCODE_SKILLS_DIR
  3. staging copy                 — copies /opt/hermes-skills-staging → ~/.hermes/skills/, registers graphify for hermes
- 4. discover_models()           — curls OPENAI_BASE_URL/models, filters non-chat models and wildcards
- 5. generate_config()           — writes config.yaml with multi-model models dict (if OPENAI_BASE_URL is set)
- 6. generate_opencode_config()  — writes opencode.jsonc with plugins, permissions, discovered models; chowns to hermeswebui
- 6b. copy root config (fix #28) — copies opencode.jsonc to /root/.config/opencode/ so root sees providers
+ 3b. detect_runtime_env()        — detects Docker/local; normalizes OPENAI_BASE_URL for local networking
+ 4. discover_models()            — curls OPENAI_BASE_URL/models, filters non-chat models and wildcards
+ 5. generate_config()            — writes config.yaml with multi-model models dict (if OPENAI_BASE_URL is set)
+ 6. generate_opencode_config()   — writes opencode.jsonc with plugins, permissions, discovered models; chowns to hermeswebui
+ 6b. copy root config (fix #28)  — copies opencode.jsonc to /root/.config/opencode/ so root sees providers
  6c. symlink session DB (fix #29) — symlinks /root/.local/share/opencode → hermeswebui's data dir
  7. validate_opencode_zen_key() — if OPENCODE_API_KEY is set, validates it against Zen API; warns on failure (fix #30)
  8. ensure_agent()              — copies /opt/hermes-agent-staging → /home/hermeswebui/.hermes/hermes-agent (first boot only)
  9. /hermeswebui_init.bash &    — starts WebUI init (UID/GID setup, Python deps, HTTP server)
-10. wait_for_port 8787 300      — blocks until WebUI port accepts TCP connection
-10b. start_browser_vnc()        — if BROWSER_HUMAN_LOOP_ENABLED=true: starts Xvfb + openbox + x11vnc + websockify + Chromium (all as hermeswebui). See `15 — Browser Human-in-the-Loop`.
-11. start_gateway()             — su hermeswebui -c "/app/venv/bin/hermes gateway run --accept-hooks" &
-                                [NOTE: wrapped in a `while true` restart-loop supervisor — 2s delay on exit,
-                                 logs restart events to ${HERMES_HOME}/logs/gateway-restart.log]
-12. wait_for_port 8642 60       — blocks until Gateway port accepts TCP connection
-13. start_opencode_serve()      — if OPENCODE_SERVE_ENABLED=true: su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
+10. wait_for_port 8787 300      — blocks until WebUI health endpoint responds
+10b. start_browser_vnc()        — starts Browser/VNC human-in-the-loop stack (if BROWSER_HUMAN_LOOP_ENABLED=true)
+11. start_gateway()              — su hermeswebui -c "/app/venv/bin/hermes gateway run --accept-hooks" &
+12. wait_for_port 8642 60        — blocks until Gateway health endpoint responds
+13. start_opencode_serve()       — if OPENCODE_SERVE_ENABLED=true: su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
                                 else: log and skip
-13b. wait_for_port 4096         — (only if serve enabled) boot readiness probe, non-fatal timeout
-14. wait                        — blocks until any background process exits
+13b. wait_for_port 4096          — (only if serve enabled) boot readiness probe, non-fatal timeout
+14. wait                         — blocks until any background process exits
 15. Container shuts down
 ```
 
 ### Functions
 
-| Function | Purpose |
-|----------|---------|
-| `discover_models()` | Curls `$OPENAI_BASE_URL/models` with the API key. Parses response with python3, filters non-chat models (embed, whisper, tts, dall-e, sora, etc.) and wildcard patterns (`anthropic/*`, `openai/*`). Falls back to `OPENAI_DEFAULT_MODEL` only on failure. Sets `DISCOVERED_MODELS` as newline-separated model ID list. |
-| `generate_config()` | Writes `config.yaml` with litellm custom provider using a `models` dict (key=model ID, value=`{context_length: 200000}`). Auto-generates API key if `HERMES_API_KEY` is empty. Sets default model from `HERMES_DEFAULT_MODEL` (with `OPENAI_DEFAULT_MODEL` fallback) as both `model.default` and `model.name` — the outer WebUI reads `model.default`, the hermes-agent reads `model.default` with fallback to `model.name`. |
-| `generate_opencode_config()` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. Copies the config to `/root/.config/opencode/` so root sees providers (fix #28). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). |
-| `validate_opencode_zen_key()` | Validates `OPENCODE_API_KEY` against the Zen API models endpoint. If the key is empty, logs an informational message and returns. If set but invalid, logs a warning with instructions to get a valid key. Non-fatal — the container always continues starting (fix #30). |
-|| `ensure_agent()` | Copies agent from `/opt/hermes-agent-staging` to `/home/hermeswebui/.hermes/hermes-agent` if not already present. Idempotent — skips if `pyproject.toml` exists. **Note:** The staged clone is a deps source for `/hermeswebui_init.bash` (which rsyncs it and runs `uv pip install` into `/app/venv/`), not a second runtime. See `16 — Agent Installation Architecture`. |
-| `wait_for_port(port, timeout)` | Loops bash built-in `/dev/tcp/127.0.0.1/${port}` every 5 seconds until success or timeout. No external deps (no curl). |
-| `start_browser_vnc()` | Starts browser human-in-the-loop stack (Xvfb, openbox, x11vnc, websockify, Chromium) if `BROWSER_HUMAN_LOOP_ENABLED=true`. All processes run as `hermeswebui`. See `15 — Browser Human-in-the-Loop`. |
-| `start_gateway()` | Starts the gateway as `hermeswebui` via `su`. Skips if agent not found or hermes CLI not in venv. |
-| `start_opencode_serve()` | Starts OpenCode serve as `hermeswebui` via `su`. Skips if `opencode` binary not found. |
+| Function | Source file | Purpose |
+|----------|-------------|---------|
+| `detect_runtime_env()` | `lib/runtime-env.sh` | Detects whether running inside Docker, Kubernetes, or on bare Linux. Sets `RUNTIME_ENV_MODE`. |
+| `normalize_base_url_for_local(url)` | `lib/runtime-env.sh` | Replaces `host.docker.internal` with `localhost` when running locally (non-Docker). |
+| `discover_models()` | `lib/model-discovery.sh` | Curls `$OPENAI_BASE_URL/models` with the API key. Parses response with python3, filters non-chat models (embed, whisper, tts, dall-e, sora, etc.) and wildcard patterns (`anthropic/*`, `openai/*`). Falls back to `OPENAI_DEFAULT_MODEL` only on failure. Sets `DISCOVERED_MODELS` as newline-separated model ID list. |
+| `generate_config()` | `lib/config-hermes.sh` | Writes `config.yaml` with litellm custom provider using a `models` dict (key=model ID, value=`{context_length: 200000}`). Auto-generates API key if `HERMES_API_KEY` is empty. Sets default model from `HERMES_DEFAULT_MODEL` (with `OPENAI_DEFAULT_MODEL` fallback) as both `model.default` and `model.name` — the outer WebUI reads `model.default`, the hermes-agent reads `model.default` with fallback to `model.name`. |
+| `generate_opencode_config()` | `lib/config-opencode.sh` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. Copies the config to `/root/.config/opencode/` so root sees providers (fix #28). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). |
+| `validate_opencode_zen_key()` | `lib/validate-opencode.sh` | Validates `OPENCODE_API_KEY` against the Zen API models endpoint. If the key is empty, logs an informational message and returns. If set but invalid, logs a warning with instructions to get a valid key. Non-fatal — the container always continues starting (fix #30). |
+| `ensure_agent()` | `lib/agent-setup.sh` | Copies agent from `/opt/hermes-agent-staging` to `/home/hermeswebui/.hermes/hermes-agent` if not already present. Idempotent — skips if `pyproject.toml` exists. **Note:** The staged clone is a deps source for `/hermeswebui_init.bash` (which rsyncs it and runs `uv pip install` into `/app/venv/`), not a second runtime. See `16 — Agent Installation Architecture`. |
+| `wait_for_port(port, timeout, label)` | `lib/port-utils.sh` | Loops `curl -sf http://localhost:${port}/health` every 2 seconds until success or timeout. |
+| `start_gateway()` | `lib/service-gateway.sh` | Starts the gateway as `hermeswebui` via `su`. Skips if agent not found or hermes CLI not in venv. |
+| `start_opencode_serve()` | `lib/service-opencode.sh` | Starts OpenCode serve as `hermeswebui` via `su`. Skips if `opencode` binary not found. |
+| `start_browser_vnc()` | `lib/service-browser-vnc.sh` | Starts the Browser/VNC human-in-the-loop stack (Xvfb + openbox + x11vnc + websockify + Chromium). All processes run as `hermeswebui`. Controlled by `BROWSER_HUMAN_LOOP_ENABLED`. |
 
 ### Model discovery details
 
@@ -162,8 +199,8 @@ Expected output lines in order:
 
 ## Resolution
 
-- Increase the curl timeout in `discover_models()` if the provider is consistently slow (edit the `--max-time 15` flag in `entrypoint.sh`).
-- The 60-second gateway timeout is generous for normal operation. If gateway startup is consistently slow, increase the timeout in `wait_for_port 8642` call.
+- Increase the curl timeout in `discover_models()` if the provider is consistently slow (edit the `--max-time 15` flag in `lib/model-discovery.sh`).
+- The 60-second gateway timeout is generous for normal operation. If gateway startup is consistently slow, increase the timeout in `wait_for_port 8642` call in `entrypoint.sh`.
 - Always set `OPENAI_BASE_URL` in `.env`. Without it, the stack runs in degraded mode with no custom provider and no gateway platform.
 - The agent staging path is verified during the Docker build (step 8 in `04 — Build Pipeline`). If the build passes, the staging path is guaranteed to exist.
 - The `has_key: false` cosmetic issue is upstream in the Hermes WebUI code. The `resolve_custom_provider_connection()` function correctly reads `key_env: OPENAI_API_KEY` at request time, so chat works despite the display issue.
