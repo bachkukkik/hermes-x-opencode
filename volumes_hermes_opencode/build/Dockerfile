@@ -48,6 +48,7 @@ RUN python3 /tmp/fix20-providers-keyenv.py && rm /tmp/fix20-providers-keyenv.py
 
 COPY scripts/install-skills.sh /usr/local/bin/install-skills.sh
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY scripts/lib/ /usr/local/bin/lib/
 COPY tests/healthcheck.sh /usr/local/bin/healthcheck.sh
 RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh
 
