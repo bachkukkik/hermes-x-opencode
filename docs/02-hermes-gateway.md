@@ -14,6 +14,10 @@ The Hermes Gateway is an aiohttp-based OpenAI-compatible API server that runs as
 
 The gateway runs via `hermes gateway run --accept-hooks` using the hermes CLI from the WebUI's venv (`/app/venv/bin/hermes`). It is started by the entrypoint after the WebUI becomes healthy.
 
+### Restart-loop supervisor
+
+The gateway process is wrapped in a `while true` restart-loop supervisor (see `lib/service-gateway.sh`, lines 14-21). If the gateway exits for any reason, the loop automatically restarts it with a 2-second delay. Each restart event is logged to `${HERMES_HOME}/logs/gateway-restart.log` with the exit code and timestamp. The primary stdout/stderr log goes to `${HERMES_HOME}/logs/gateway.log`. This ensures the gateway recovers from crashes without requiring a full container restart.
+
 | Parameter | Value | Notes |
 |-----------|-------|-------|
 | Internal port | `8642` | Configured in `config.yaml` under `platforms.api_server.extra.port` |

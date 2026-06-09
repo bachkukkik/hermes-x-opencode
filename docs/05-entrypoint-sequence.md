@@ -76,11 +76,11 @@ Defined in `lib/constants.sh`:
  6. generate_opencode_config()   — writes opencode.jsonc with plugins, permissions, discovered models; chowns to hermeswebui
  6b. copy root config (fix #28)  — copies opencode.jsonc to /root/.config/opencode/ so root sees providers
  6c. symlink session DB (fix #29) — symlinks /root/.local/share/opencode → hermeswebui's data dir
- 7. validate_opencode_zen_key()  — if OPENCODE_API_KEY is set, validates it against Zen API; warns on failure (fix #30)
- 8. ensure_agent()               — copies /opt/hermes-agent-staging → /home/hermeswebui/.hermes/hermes-agent (first boot only)
- 9. /hermeswebui_init.bash &     — starts WebUI init (UID/GID setup, Python deps, HTTP server)
-10. wait_for_port 8787 300       — blocks until WebUI health endpoint responds
-10b. start_browser_vnc()         — starts Browser/VNC human-in-the-loop stack (if BROWSER_HUMAN_LOOP_ENABLED=true)
+ 7. validate_opencode_zen_key() — if OPENCODE_API_KEY is set, validates it against Zen API; warns on failure (fix #30)
+ 8. ensure_agent()              — copies /opt/hermes-agent-staging → /home/hermeswebui/.hermes/hermes-agent (first boot only)
+ 9. /hermeswebui_init.bash &    — starts WebUI init (UID/GID setup, Python deps, HTTP server)
+10. wait_for_port 8787 300      — blocks until WebUI health endpoint responds
+10b. start_browser_vnc()        — starts Browser/VNC human-in-the-loop stack (if BROWSER_HUMAN_LOOP_ENABLED=true)
 11. start_gateway()              — su hermeswebui -c "/app/venv/bin/hermes gateway run --accept-hooks" &
 12. wait_for_port 8642 60        — blocks until Gateway health endpoint responds
 13. start_opencode_serve()       — if OPENCODE_SERVE_ENABLED=true: su hermeswebui -c "opencode serve --port 4096 --hostname 0.0.0.0" &
@@ -100,7 +100,7 @@ Defined in `lib/constants.sh`:
 | `generate_config()` | `lib/config-hermes.sh` | Writes `config.yaml` with litellm custom provider using a `models` dict (key=model ID, value=`{context_length: 200000}`). Auto-generates API key if `HERMES_API_KEY` is empty. Sets default model from `HERMES_DEFAULT_MODEL` (with `OPENAI_DEFAULT_MODEL` fallback) as both `model.default` and `model.name` — the outer WebUI reads `model.default`, the hermes-agent reads `model.default` with fallback to `model.name`. |
 | `generate_opencode_config()` | `lib/config-opencode.sh` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. Copies the config to `/root/.config/opencode/` so root sees providers (fix #28). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). |
 | `validate_opencode_zen_key()` | `lib/validate-opencode.sh` | Validates `OPENCODE_API_KEY` against the Zen API models endpoint. If the key is empty, logs an informational message and returns. If set but invalid, logs a warning with instructions to get a valid key. Non-fatal — the container always continues starting (fix #30). |
-| `ensure_agent()` | `lib/agent-setup.sh` | Copies agent from `/opt/hermes-agent-staging` to `/home/hermeswebui/.hermes/hermes-agent` if not already present. Idempotent — skips if `pyproject.toml` exists. |
+| `ensure_agent()` | `lib/agent-setup.sh` | Copies agent from `/opt/hermes-agent-staging` to `/home/hermeswebui/.hermes/hermes-agent` if not already present. Idempotent — skips if `pyproject.toml` exists. **Note:** The staged clone is a deps source for `/hermeswebui_init.bash` (which rsyncs it and runs `uv pip install` into `/app/venv/`), not a second runtime. See `16 — Agent Installation Architecture`. |
 | `wait_for_port(port, timeout, label)` | `lib/port-utils.sh` | Loops `curl -sf http://localhost:${port}/health` every 2 seconds until success or timeout. |
 | `start_gateway()` | `lib/service-gateway.sh` | Starts the gateway as `hermeswebui` via `su`. Skips if agent not found or hermes CLI not in venv. |
 | `start_opencode_serve()` | `lib/service-opencode.sh` | Starts OpenCode serve as `hermeswebui` via `su`. Skips if `opencode` binary not found. |
@@ -142,10 +142,10 @@ After writing, the function runs `chown -R hermeswebui:hermeswebui` on the confi
 
 ### Timing
 
-| Boot type | Skills | Discovery | WebUI ready | Gateway ready | OpenCode ready | Total |
-|-----------|--------|-----------|-------------|---------------|----------------|-------|
-| First boot | <1s (cp -a staging) | +5–15s | 60–120s (Python deps) | +10–20s | +5s | 80–160s |
-| Subsequent | <1s (cp -a staging) | +5–15s | 10–20s (cached deps) | +5–10s | +5s | 25–50s |
+| Boot type | Skills | Discovery | WebUI ready | Browser/VNC | Gateway ready | OpenCode ready | Total |
+|-----------|--------|-----------|-------------|-------------|---------------|----------------|-------|
+| First boot | <1s (cp -a staging) | +5–15s | 60–120s (Python deps) | +2s (if enabled) | +10–20s | +5s | 80–160s |
+| Subsequent | <1s (cp -a staging) | +5–15s | 10–20s (cached deps) | +2s (if enabled) | +5–10s | +5s | 25–50s |
 
 ## Verification
 

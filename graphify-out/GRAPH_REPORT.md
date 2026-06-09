@@ -1,35 +1,57 @@
-# Graph Report - .  (2026-06-06)
+# Graph Report - hermes-x-opencode  (2026-06-10)
 
 ## Corpus Check
-- Corpus is ~23,993 words - fits in a single context window. You may not need a graph.
+- 23 files · ~30,901 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 83 nodes · 162 edges · 9 communities (7 shown, 2 thin omitted)
-- Extraction: 85% EXTRACTED · 15% INFERRED · 0% AMBIGUOUS · INFERRED: 25 edges (avg confidence: 0.84)
+- 445 nodes · 512 edges · 25 communities (24 shown, 1 thin omitted)
+- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 25 edges (avg confidence: 0.84)
 - Token cost: 0 input · 0 output
 
+## Graph Freshness
+- Built from commit: `09c730d0`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
+
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Graphify Corpus Detection|Graphify Corpus Detection]]
-- [[_COMMUNITY_Hermes Agent & WebUI Stack|Hermes Agent & WebUI Stack]]
-- [[_COMMUNITY_Docker Build & ARM64 Platform|Docker Build & ARM64 Platform]]
-- [[_COMMUNITY_Testing & CI Infrastructure|Testing & CI Infrastructure]]
-- [[_COMMUNITY_Model Discovery & Config Generation|Model Discovery & Config Generation]]
-- [[_COMMUNITY_Test Helper Functions|Test Helper Functions]]
-- [[_COMMUNITY_Gateway & OpenCode Serve|Gateway & OpenCode Serve]]
-- [[_COMMUNITY_Plugin System & Security|Plugin System & Security]]
-- [[_COMMUNITY_Test Orchestration|Test Orchestration]]
+- [[_COMMUNITY_Community 0|Community 0]]
+- [[_COMMUNITY_Community 1|Community 1]]
+- [[_COMMUNITY_Community 2|Community 2]]
+- [[_COMMUNITY_Community 3|Community 3]]
+- [[_COMMUNITY_Community 4|Community 4]]
+- [[_COMMUNITY_Community 5|Community 5]]
+- [[_COMMUNITY_Community 6|Community 6]]
+- [[_COMMUNITY_Community 7|Community 7]]
+- [[_COMMUNITY_Community 8|Community 8]]
+- [[_COMMUNITY_Community 9|Community 9]]
+- [[_COMMUNITY_Community 10|Community 10]]
+- [[_COMMUNITY_Community 11|Community 11]]
+- [[_COMMUNITY_Community 12|Community 12]]
+- [[_COMMUNITY_Community 13|Community 13]]
+- [[_COMMUNITY_Community 14|Community 14]]
+- [[_COMMUNITY_Community 15|Community 15]]
+- [[_COMMUNITY_Community 16|Community 16]]
+- [[_COMMUNITY_Community 17|Community 17]]
+- [[_COMMUNITY_Community 18|Community 18]]
+- [[_COMMUNITY_Community 19|Community 19]]
+- [[_COMMUNITY_Community 20|Community 20]]
+- [[_COMMUNITY_Community 21|Community 21]]
+- [[_COMMUNITY_Community 22|Community 22]]
+- [[_COMMUNITY_Community 23|Community 23]]
+- [[_COMMUNITY_Community 24|Community 24]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `PRD.md — Product Requirements Document` - 19 edges
-2. `docker-compose.yml — Service Definition` - 12 edges
-3. `Hermes WebUI Service (:8787)` - 10 edges
-4. `Hermes Gateway Service (:8642)` - 10 edges
-5. `docs/04-build-pipeline.md — Build Pipeline Architecture` - 9 edges
-6. `AGENTS.md — Agent Standing Orders` - 8 edges
-7. `docs/05-entrypoint-sequence.md — Entrypoint Sequence` - 8 edges
-8. `docs/02-hermes-gateway.md — Hermes Gateway Architecture` - 8 edges
-9. `OpenCode Serve Service (:4096)` - 8 edges
-10. `README.md — User Documentation` - 7 edges
+1. `How` - 19 edges
+2. `PRD.md — Product Requirements Document` - 19 edges
+3. `docker-compose.yml — Service Definition` - 12 edges
+4. `PRD: Hermes x OpenCode Docker Stack` - 11 edges
+5. `Hermes x OpenCode` - 11 edges
+6. `How` - 11 edges
+7. `16 — Agent Installation Architecture` - 11 edges
+8. `How` - 10 edges
+9. `How` - 10 edges
+10. `15 — Browser Human-in-the-Loop` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `tests/run.sh — E2E Test Orchestrator` --conceptually_related_to--> `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`  [INFERRED]
@@ -38,10 +60,10 @@
   tests/run.sh → docs/09-testing-and-verification.md
 - `tests/e2e/test_helper/common.bash — Bats Helper Library` --references--> `docs/09-testing-and-verification.md — Testing and Verification`  [INFERRED]
   tests/e2e/test_helper/common.bash → docs/09-testing-and-verification.md
-- `tests/e2e/test_helper/common.bash — Bats Helper Library` --references--> `Hermes Gateway Service (:8642)`  [EXTRACTED]
-  tests/e2e/test_helper/common.bash → docs/02-hermes-gateway.md
-- `tests/e2e/test_helper/common.bash — Bats Helper Library` --references--> `Hermes WebUI Service (:8787)`  [EXTRACTED]
-  tests/e2e/test_helper/common.bash → docs/01-hermes-webui.md
+- `OpenCode Security Modes (strict/standard/yolo)` --semantically_similar_to--> `Secrets Handling (key_env vs literal)`  [INFERRED] [semantically similar]
+  docs/13-security-hardening.md → AGENTS.md
+- `tests/run.sh — E2E Test Orchestrator` --depends_on--> `Docker Healthcheck (bash healthcheck.sh)`  [EXTRACTED]
+  tests/run.sh → docker-compose.yml
 
 ## Import Cycles
 - None detected.
@@ -59,55 +81,123 @@
 - **Compose Service Definition Triple** — doc_docker_compose, doc_docker_compose_override, concept_volume_layout, concept_healthcheck [EXTRACTED 1.00]
 - **Secret Protection Layers (env, file, network)** — concept_secrets_handling, concept_security_modes, concept_cc_safety_net, concept_hermes_api_key [INFERRED 0.90]
 
-## Communities (9 total, 2 thin omitted)
+## Communities (25 total, 1 thin omitted)
 
-### Community 0 - "Graphify Corpus Detection"
-Cohesion: 0.14
-Nodes (13): files, code, document, image, paper, video, graphifyignore_patterns, needs_graph (+5 more)
+### Community 0 - "Community 0"
+Cohesion: 0.06
+Nodes (34): 1. Clone this repo, 2. Configure environment, 3. Build and start, 4. Use it, 5. Verify OpenCode works, Agent Version, Architecture, config.yaml has expanded API key instead of literal string (+26 more)
 
-### Community 1 - "Hermes Agent & WebUI Stack"
+### Community 1 - "Community 1"
+Cohesion: 0.07
+Nodes (29): 10. Acceptance Criteria, 1. Product Overview, 2. Architecture, 3. Tech Stack, 4. File Inventory, 5.1 `Dockerfile` (at `volumes_hermes_opencode/build/Dockerfile`), 5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`), 5.3 `docker-compose.yml` (+21 more)
+
+### Community 2 - "Community 2"
 Cohesion: 0.23
-Nodes (13): Graphify Integration (cross-platform skill), Hermes Agent (NousResearch/hermes-agent), Hermes WebUI Service (:8787), Two-Phase Skill Installation, Seven Skill Upstream Sources, Build-Time Staging Paths (/opt/*-staging), state.db (SQLite Session Store), Volume Layout (bind mounts) (+5 more)
+Nodes (15): cc-safety-net Plugin (PreToolUse Hook), Config Generation (config.yaml + opencode.jsonc), Entrypoint Sequence (13-step startup), @franlol/opencode-md-table-formatter, model.default AND model.name Keys, Model Discovery Mechanism, Non-Chat Model Filter, @tarquinen/opencode-dcp (Context Pruner) (+7 more)
 
-### Community 2 - "Docker Build & ARM64 Platform"
-Cohesion: 0.38
-Nodes (11): Linux ARM64 Target Platform, Multi-Step Docker Build Pipeline, Cloudflare UA Patch (CustomProfile sed), Node.js 22 Requirement, Secrets Handling (key_env vs literal), OpenCode Security Modes (strict/standard/yolo), AGENTS.md — Agent Standing Orders, docs/04-build-pipeline.md — Build Pipeline Architecture (+3 more)
+### Community 3 - "Community 3"
+Cohesion: 0.12
+Nodes (42): Acceptance Criteria (AC1-AC29), Linux ARM64 Target Platform, Multi-Step Docker Build Pipeline, portainer-cloudflare-traefik_default Network, Cloudflare UA Patch (CustomProfile sed), Bats E2E Test Suite, Graphify Integration (cross-platform skill), Docker Healthcheck (bash healthcheck.sh) (+34 more)
 
-### Community 3 - "Testing & CI Infrastructure"
-Cohesion: 0.42
-Nodes (10): Acceptance Criteria (AC1-AC29), portainer-cloudflare-traefik_default Network, Bats E2E Test Suite, Docker Healthcheck (bash healthcheck.sh), docker-compose.yml — Service Definition, docker-compose.override.yml — Cloudflare Network Override, .github/workflows/e2e.yml — GitHub Actions E2E Workflow, docs/09-testing-and-verification.md — Testing and Verification (+2 more)
+### Community 4 - "Community 4"
+Cohesion: 0.07
+Nodes (27): 11 — Skill Installation, Build phase, How, Platform skill discovery, Resolution, Runtime phase, Skill directories, Skill sources (+19 more)
 
-### Community 4 - "Model Discovery & Config Generation"
-Cohesion: 0.42
-Nodes (9): Config Generation (config.yaml + opencode.jsonc), Entrypoint Sequence (13-step startup), model.default AND model.name Keys, Model Discovery Mechanism, Non-Chat Model Filter, Wildcard Model Filter (IDs ending in /*), docs/06-config-and-env.md — Configuration and Environment, docs/05-entrypoint-sequence.md — Entrypoint Sequence (+1 more)
+### Community 5 - "Community 5"
+Cohesion: 0.31
+Nodes (8): common.bash script, gateway_base(), get_api_key(), get_container(), opencode_base(), skip_if_no_secrets(), wait_for_healthy(), webui_base()
 
-### Community 6 - "Gateway & OpenCode Serve"
-Cohesion: 0.46
-Nodes (8): HERMES_API_KEY (auto-generated gateway token), Hermes Gateway Service (:8642), OpenAI-Compatible API Surface, OpenCode Serve Service (:4096), hermeswebui User Isolation (UID 1000), wait -n Process Supervisor, docs/02-hermes-gateway.md — Hermes Gateway Architecture, docs/03-opencode-serve.md — OpenCode Serve Architecture
+### Community 6 - "Community 6"
+Cohesion: 0.10
+Nodes (19): 09 — Testing and Verification, Acceptance criteria mapping, Agent source and patch, Full smoke test script, Gateway chat test, Gateway models endpoint, How, Model discovery and config (+11 more)
 
-### Community 7 - "Plugin System & Security"
-Cohesion: 0.53
-Nodes (6): cc-safety-net Plugin (PreToolUse Hook), @franlol/opencode-md-table-formatter, @tarquinen/opencode-dcp (Context Pruner), OpenCode Plugin System (npm-resolved), docs/12-plugin-system.md — OpenCode Plugin System, docs/13-security-hardening.md — Security Hardening
+### Community 7 - "Community 7"
+Cohesion: 0.11
+Nodes (18): 10 — Model Discovery and Multi-Model Support, Case-insensitive dedup, Discovery flow, Fallback behavior, Hermes config format, How, Model counts, Model limits (+10 more)
+
+### Community 9 - "Community 9"
+Cohesion: 0.11
+Nodes (18): 13 — Security Hardening, Attack testing results, Configuration, File access rules, How, Known remaining gaps, Layer 1: User isolation, Layer 2: cc-safety-net plugin (+10 more)
+
+### Community 10 - "Community 10"
+Cohesion: 0.11
+Nodes (17): 06 — Config and Env, Config path resolution, config.yaml (Hermes), Environment variables, Hardcoded environment (in docker-compose.yml), How, opencode.jsonc (OpenCode), Resolution (+9 more)
+
+### Community 11 - "Community 11"
+Cohesion: 0.11
+Nodes (17): 07 — Volume Layout, Bind mounts, Directory structure, .dockerignore (volumes_hermes_opencode/), .dockerignore (volumes_hermes_opencode/build/), First-start agent copy, .gitignore (root), .gitignore (volumes_hermes_opencode/) (+9 more)
+
+### Community 12 - "Community 12"
+Cohesion: 0.12
+Nodes (15): 05 — Entrypoint Sequence, Config generation details, Execution sequence, Functions, How, Key variables, Model discovery details, Resolution (+7 more)
+
+### Community 13 - "Community 13"
+Cohesion: 0.13
+Nodes (14): 02 — Hermes Gateway, API key auto-generation, HERMES_HOME resolution, How, Key endpoints, Resolution, Restart-loop supervisor, Usage example (+6 more)
+
+### Community 14 - "Community 14"
+Cohesion: 0.13
+Nodes (14): 04 — Build Pipeline, Agent staging, Build command, Build steps (in order), How, Platform, Resolution, Skill staging (+6 more)
+
+### Community 15 - "Community 15"
+Cohesion: 0.13
+Nodes (14): 08 — Cloudflare UA Fix, Affected file, Build-time vs runtime, How, Patch command, Resolution, Verdict, Verification (+6 more)
+
+### Community 16 - "Community 16"
+Cohesion: 0.13
+Nodes (14): 12 — Plugin System, cc-safety-net architecture, How, Interaction with permission system, Plugin failure behavior, Plugin inventory, Plugin resolution, Resolution (+6 more)
+
+### Community 17 - "Community 17"
+Cohesion: 0.15
+Nodes (12): 01 — Hermes WebUI, Chat flow, How, Key endpoints, Resolution, Session management, Verdict, Verification (+4 more)
+
+### Community 18 - "Community 18"
+Cohesion: 0.15
+Nodes (12): 03 — OpenCode Serve, Authentication, Connect from a remote machine, Connect from another container on the same network, How, Resolution, Verdict, Verification (+4 more)
+
+### Community 19 - "Community 19"
+Cohesion: 0.15
+Nodes (12): 14 — Delegation Pattern Matrix, Architecture: Serve + Attach (Recommended), Broken Patterns (Do Not Use), Conditionally Working Patterns, Delegation Matrix, Free Models, Gateway Supervision, Production-Ready Patterns (+4 more)
+
+### Community 20 - "Community 20"
+Cohesion: 0.15
+Nodes (12): 15 — Browser Human-in-the-Loop, How, How Hermes attaches, Resolution, Start sequence (inside `entrypoint.sh`), Usage, Verdict, Verification (+4 more)
+
+### Community 21 - "Community 21"
+Cohesion: 0.17
+Nodes (11): 1. MANDATED SKILLS, 2. Code Quality Rules, 3. Docker/Build Constraints, 4. File Locations (inside container), 5. Security Modes, 6. Verification Commands, 7. Project-Specific Patterns, 8. Agent Capabilities (+3 more)
+
+### Community 22 - "Community 22"
+Cohesion: 0.17
+Nodes (11): 16 — Docker Compose Overrides, docker-compose.ci.yml (CI Port Publishing), docker-compose.override.yml (Cloudflare/Traefik), How, Resolution, Verdict, Verification, What (+3 more)
+
+### Community 23 - "Community 23"
+Cohesion: 0.10
+Nodes (20): 1. Inventory of All Hermes Installation Points, 2. Active Runtime Code Paths, 3. Duplication Assessment, 4. Recommendations, 5. Proposed PRD Updates, 6. Specific Files/Paths to Change, 7. Verified Facts (from running container), Gap Report: Dual Hermes Installation Investigation (+12 more)
+
+### Community 24 - "Community 24"
+Cohesion: 0.15
+Nodes (12): 16 — Agent Installation Architecture, Comparison Table, Image Bloat Mitigation, Installation A — Base Image Venv (Active Runtime), Installation B — Staged Clone (Deps Pipeline), Overview, Propagation Chain, Verdict (+4 more)
 
 ## Knowledge Gaps
-- **14 isolated node(s):** `code`, `document`, `paper`, `image`, `video` (+9 more)
+- **299 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+294 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **2 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **1 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PRD.md — Product Requirements Document` connect `Docker Build & ARM64 Platform` to `Hermes Agent & WebUI Stack`, `Testing & CI Infrastructure`, `Model Discovery & Config Generation`, `Gateway & OpenCode Serve`?**
-  _High betweenness centrality (0.168) - this node is a cross-community bridge._
-- **Why does `docker-compose.yml — Service Definition` connect `Testing & CI Infrastructure` to `Hermes Agent & WebUI Stack`, `Docker Build & ARM64 Platform`, `Gateway & OpenCode Serve`?**
-  _High betweenness centrality (0.075) - this node is a cross-community bridge._
-- **Why does `docs/05-entrypoint-sequence.md — Entrypoint Sequence` connect `Model Discovery & Config Generation` to `Docker Build & ARM64 Platform`, `Plugin System & Security`?**
-  _High betweenness centrality (0.055) - this node is a cross-community bridge._
+- **Why does `PRD.md — Product Requirements Document` connect `Community 3` to `Community 2`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `docker-compose.yml — Service Definition` (e.g. with `hermeswebui User Isolation (UID 1000)` and `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`) actually correct?**
   _`docker-compose.yml — Service Definition` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 2 inferred relationships involving `Hermes WebUI Service (:8787)` (e.g. with `docker-compose.override.yml — Cloudflare Network Override` and `Hermes Gateway Service (:8642)`) actually correct?**
-  _`Hermes WebUI Service (:8787)` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `code`, `document`, `paper` to the rest of the system?**
-  _16 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Graphify Corpus Detection` be split into smaller, more focused modules?**
-  _Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected._
+- **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules` to the rest of the system?**
+  _301 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
+  _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
+- **Should `Community 3` be split into smaller, more focused modules?**
+  _Cohesion score 0.11962833914053426 - nodes in this community are weakly interconnected._
+- **Should `Community 4` be split into smaller, more focused modules?**
+  _Cohesion score 0.07142857142857142 - nodes in this community are weakly interconnected._

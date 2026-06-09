@@ -40,3 +40,42 @@ setup() {
     run grep -i "ACP.*broken\|ACP.*limitation\|ACP.*stdio\|ACP.*does not bind\|acp.*not.*tcp" "$PROJECT_DIR/README.md"
     [ "$status" -eq 0 ]
 }
+
+# --- TT-09: Invalid OPENCODE_API_KEY validation (source-level test) ---
+
+@test "VC6.4: Zen API key validation script exists and contains error handling" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # The validation library must be present at /usr/local/bin/lib/validate-opencode.sh
+    run docker exec "$cid" test -f /usr/local/bin/lib/validate-opencode.sh
+    [ "$status" -eq 0 ]
+
+    # The script must reference 401-style error handling (warns on validation failure)
+    run docker exec "$cid" grep -c "WARNING\|401\|Invalid API key\|validation\|returned an error" /usr/local/bin/lib/validate-opencode.sh
+    [ "$status" -eq 0 ]
+    [ "$output" -ge 1 ]
+}
+
+@test "VC6.5: entrypoint sources the validation library" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run docker exec "$cid" grep "validate-opencode.sh" /usr/local/bin/entrypoint.sh
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -q "source.*validate-opencode"
+}
+
+@test "VC6.6: container logs show key validation output (or skipped message)" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # The entrypoint always calls validate_opencode_zen_key — it either validates
+    # or prints a "not set" / "WARNING" message. Verify one of those appeared.
+    run bash -c "docker logs '$cid' 2>&1 | grep -c 'OPENCODE_API_KEY'"
+    [ "$status" -eq 0 ]
+    [ "$output" -ge 1 ]
+}

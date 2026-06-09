@@ -111,7 +111,7 @@ echo "AC14: Gateway models — OK"
 #!/bin/bash
 set -euo pipefail
 
-BASE="http://localhost:${HERMES_WEBUI_PORT:-18787}"
+BASE="http://localhost:${HERMES_WEBUI_PORT:-8787}"
 CONTAINER=$(docker compose ps -q hermes-opencode)
 
 echo "=== 1. Health Check ==="
@@ -209,7 +209,7 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## What Works
 
-- All 29 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, 70 tests). AC16 and AC23 require `OPENCODE_SERVE_ENABLED=true`. AC0.3 and AC23 use port-based checks (`/dev/tcp`) because curl is blocked by serve auth.
+- All 29 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, ~87 tests). AC16 and AC23 require `OPENCODE_SERVE_ENABLED=true`. AC0.3 and AC23 use port-based checks (`/dev/tcp`) because curl is blocked by serve auth.
 - Health endpoints respond within 50ms for WebUI and Gateway
 - Gateway chat returns valid OpenAI-format responses with correct `usage` stats
 - Session creation, chat, streaming, and cleanup work through the WebUI API
@@ -236,4 +236,4 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## Verdict
 
-The testing coverage is comprehensive. All 29 acceptance criteria are automated in the bats test suite (`tests/run.sh`, 70 tests), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), OpenCode serve health (AC23, requires `OPENCODE_SERVE_ENABLED=true`), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). A negative test verifies port 4096 is NOT listening when serve is disabled. The main gap is AC23 testing only port reachability rather than a full LLM call through OpenCode serve (curl is blocked by serve password auth).
+The testing coverage is comprehensive. All 29 acceptance criteria are automated in the bats test suite (`tests/run.sh`, ~87 tests), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), OpenCode serve health (AC23, requires `OPENCODE_SERVE_ENABLED=true`), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). A negative test verifies port 4096 is NOT listening when serve is disabled. The main gap is AC23 testing only port reachability rather than a full LLM call through OpenCode serve (curl is blocked by serve password auth).

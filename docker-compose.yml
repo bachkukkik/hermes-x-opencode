@@ -16,6 +16,11 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./volumes_hermes_opencode/data/hermes-home:/home/hermeswebui/.hermes
+      # Optional: Mount host wiki directory for llm-wiki skill persistence.
+      # Uncomment and set to your host wiki path (e.g. ~/.hermes/wiki) to share
+      # your personal wiki with the agent inside the container.
+      # Without this mount, wiki data lives inside the hermes-home bind mount.
+      # - ${HERMES_WIKI_VOLUME:-/dev/null}:/home/hermeswebui/.hermes/wiki
       - ${HERMES_WORKSPACE:-./volumes_hermes_opencode/data/workspace}:/workspace
     environment:
       - WANTED_UID=${HOST_UID:-1000}
@@ -43,6 +48,7 @@ services:
       - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD:-}
       - BROWSER_HUMAN_LOOP_ENABLED=${BROWSER_HUMAN_LOOP_ENABLED:-false}
       - BROWSER_VNC_PASSWORD=${BROWSER_VNC_PASSWORD:-}
+      - WIKI_PATH=${WIKI_PATH:-/home/hermeswebui/.hermes/wiki}
     networks:
       default:
         aliases:

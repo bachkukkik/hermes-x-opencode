@@ -16,6 +16,7 @@ source "${LIB_DIR}/validate-opencode.sh"
 source "${LIB_DIR}/service-gateway.sh"
 source "${LIB_DIR}/service-opencode.sh"
 source "${LIB_DIR}/service-browser-vnc.sh"
+source "${LIB_DIR}/wiki-init.sh"
 
 # =============================================================================
 # Main execution sequence
@@ -48,6 +49,7 @@ generate_config
 generate_opencode_config
 validate_opencode_zen_key || true
 ensure_agent
+init_wiki
 
 # --- WebUI ---
 /hermeswebui_init.bash &

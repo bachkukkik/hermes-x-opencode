@@ -32,12 +32,14 @@ All runtime configuration is managed through environment variables defined in `.
 | `HERMES_API_KEY` | No | auto-generated | Bearer token for the Agent API (`:8642`). If empty, a random key is generated and printed to logs. |
 | `HERMES_API_PORT` | No | `8642` | Host port for the Agent API. Container always listens on 8642. |
 | `OPENCODE_SECURITY_MODE` | No | `strict` | Security profile for OpenCode: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). See `13 — Security Hardening`. |
-| `OPENCODE_SERVER_PASSWORD` | No | auto-generated | Password for `opencode serve` authentication. Pass via `-p` flag when attaching or running tasks. Auto-generated and printed to logs if empty. Written to `/tmp/opencode-server-password` for `docker exec` access. |
+| `OPENCODE_SERVER_PASSWORD` | No | auto-generated | Password for `opencode serve` authentication. Pass via `-p` flag when attaching or running tasks. Auto-generated and printed to logs if empty. Written to `/tmp/opencode-server-password` for ephemeral `docker exec` access and to `/home/hermeswebui/.hermes/opencode_server_password` for persistent access across container restarts (bind-mounted). |
 | `OPENCODE_SERVE_PORT` | No | `4096` | Host port for OpenCode serve. Container always listens on 4096. |
 | `HOST_UID` | No | `1000` | Linux UID for container file processes. Match your host user UID. |
 | `HOST_GID` | No | `1000` | Linux GID for container file processes. Match your host group GID. |
 | `HERMES_WORKSPACE` | No | `./volumes_hermes_opencode/data/workspace` | Host path for the workspace volume mount. |
 | `SKIP_SKILL_INSTALL` | No | `0` | Set `1` to skip the runtime Hermes skills staging copy and graphify hermes registration. Does not affect build-time skill installation. |
+| `WIKI_PATH` | No | `/home/hermeswebui/.hermes/wiki` | Container-internal path for the llm-wiki knowledge base. Auto-created on first boot with `SCHEMA.md` backbone. The wiki stores personal knowledge base data: raw source articles, entity pages, concept pages, and cross-references using `[[wikilinks]]`. |
+| `HERMES_WIKI_VOLUME` | No | — | Host path for optional wiki volume mount. When set (and the commented volume line is uncommented in `docker-compose.yml`), the container's wiki directory is backed by the host path. This lets the agent share a personal wiki with the host user. Example: `HERMES_WIKI_VOLUME=/home/username/.hermes/wiki`. |
 
 ### Hardcoded environment (in docker-compose.yml)
 
@@ -124,6 +126,29 @@ Key constraints for the OpenCode config:
 - `models` must be an object `{}`, not an array `[]`. Each key is a model ID, each value is `{}`.
 - `model` (default model) must be a string with provider prefix: `"litellm/MODEL_ID"`.
 - `apiKey` uses OpenCode's `{env:VAR_NAME}` interpolation syntax. Custom providers (`@ai-sdk/openai-compatible`) do not auto-detect env vars.
+
+### Runtime environment detection
+
+The entrypoint sources `lib/runtime-env.sh`, which provides two helpers for adapting to the execution environment:
+
+- **`detect_runtime_env()`** — Determines whether the container is running in Docker or on bare Linux. Precedence: `RUNTIME_ENV` env var > `/.dockerenv` presence > `KUBERNETES_SERVICE_HOST` presence > default `local`. Logs the detected mode and source to stderr.
+- **`normalize_base_url_for_local(url)`** — When running in `local` mode (not Docker), replaces `host.docker.internal` with `localhost` in `OPENAI_BASE_URL`. This allows the same `.env` file to work both inside Docker (where `host.docker.internal` resolves via Docker DNS) and on bare metal (where it does not).
+
+| Mode | `host.docker.internal` handling | Typical use |
+|------|--------------------------------|-------------|
+| `docker` | No substitution | Normal container deployment |
+| `local` | Replaced with `localhost` | Bare-metal / WSL testing with the same `.env` |
+
+### Zen API key validation
+
+At startup, the entrypoint calls `validate_opencode_zen_key()` (sourced from `lib/validate-opencode.sh`), which makes an **outbound HTTP request** to `https://opencode.ai/zen/v1/models` using the `OPENCODE_API_KEY` to verify the key is valid. This call has a 10-second timeout. If the key is empty, the check is skipped with an informational message. If the key is set but validation fails, a warning is logged — the container always continues starting (non-fatal). This validation helps catch invalid keys early instead of discovering 401 errors during first use.
+
+### Startup outbound calls
+
+| Call | URL | Trigger | Timeout | Fatal? |
+|------|-----|---------|---------|--------|
+| Model discovery | `${OPENAI_BASE_URL}/models` | `OPENAI_BASE_URL` is set | 15s | Yes (falls back to single model) |
+| Zen API key validation | `https://opencode.ai/zen/v1/models` | `OPENCODE_API_KEY` is set | 10s | No |
 
 ### Config path resolution
 

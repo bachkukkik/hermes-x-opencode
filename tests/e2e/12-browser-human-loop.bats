@@ -124,3 +124,39 @@ setup() {
         fi
     done
 }
+
+# --- TT-13: Browser disabled negative test ---
+
+@test "BH7: browser processes absent when BROWSER_HUMAN_LOOP_ENABLED!=true" {
+    # This test runs when the browser feature is NOT enabled (the default).
+    # When the feature is enabled, the earlier BH tests cover the positive case.
+    [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" != "true" ] || skip "BROWSER_HUMAN_LOOP_ENABLED=true (covered by BH1.x)"
+
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Chromium should NOT be running
+    run docker exec "$cid" pgrep -f "chromium.*remote-debugging-port"
+    [ "$status" -ne 0 ]
+
+    # Xvfb should NOT be running
+    run docker exec "$cid" pgrep -x Xvfb
+    [ "$status" -ne 0 ]
+
+    # x11vnc should NOT be running
+    run docker exec "$cid" pgrep -x x11vnc
+    [ "$status" -ne 0 ]
+}
+
+@test "BH8: container logs confirm browser disabled message" {
+    [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" != "true" ] || skip "BROWSER_HUMAN_LOOP_ENABLED=true"
+
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run bash -c "docker logs '$cid' 2>&1 | grep -c 'Browser human-in-the-loop disabled'"
+    [ "$status" -eq 0 ]
+    [ "$output" -ge 1 ]
+}

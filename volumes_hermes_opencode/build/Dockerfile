@@ -33,10 +33,18 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
     && cp /root/.local/bin/uvx /usr/local/bin/uvx 2>/dev/null || true \
     && uv --version
 
+# Clone hermes-agent to staging path for:
+# 1) Skills source extraction during install-skills.sh
+# 2) Dependency installation by /hermeswebui_init.bash (uv pip install from staged source)
+# 3) Readiness marker for ensure_agent() at runtime
+# NOTE: This is NOT the active runtime — the WebUI uses /app/venv/ (Installation A).
+# The staged source feeds deps into /app/venv/ via pip install.
 RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} \
     https://github.com/NousResearch/hermes-agent.git \
     /opt/hermes-agent-staging
 
+# Patch CustomProfile User-Agent header. This patch propagates to the active venv through:
+# staging → ensure_agent() → ~/.hermes/hermes-agent/ → /hermeswebui_init.bash rsync → uv pip install → /app/venv/
 RUN sed -i 's/base_url="",/base_url="",\n    default_headers={"User-Agent": "hermes-agent\/1.0"},/' \
     /opt/hermes-agent-staging/plugins/model-providers/custom/__init__.py
 
@@ -55,6 +63,13 @@ RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh /usr/
 RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging \
     OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills \
     install-skills.sh
+
+# Trim non-essential directories from staged clone after skills extraction.
+# install-skills.sh extracts llm-wiki from skills/research/ above.
+RUN rm -rf /opt/hermes-agent-staging/skills \
+           /opt/hermes-agent-staging/docs \
+           /opt/hermes-agent-staging/tests \
+           /opt/hermes-agent-staging/.github
 
 RUN echo "=== Hermes x OpenCode Stack ===" \
     && python3 -c "import sys; print(f'Python: {sys.version}')" \

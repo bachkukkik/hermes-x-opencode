@@ -62,8 +62,8 @@ This copy is near-instant because the data is already in the image layer. The `g
 | Directory | Contents | Persisted via | Installed at |
 |-----------|----------|---------------|-------------|
 | `/home/hermeswebui/.config/opencode/skills` | 15 OpenCode skills (incl. graphify) | Image layer (no volume mount) | Build time |
-| `/opt/hermes-skills-staging` | ~68 Hermes skills (incl. graphify) | Image layer (staging) | Build time |
-| `/home/hermeswebui/.hermes/skills` | ~68 Hermes skills (runtime copy) | Bind mount (`07 — Volume Layout`) | Runtime `cp -a` |
+| `/opt/hermes-skills-staging` | ~68 Hermes skills (incl. graphify; count varies with upstream repos) | Image layer (staging) | Build time |
+| `/home/hermeswebui/.hermes/skills` | ~68 Hermes skills (incl. graphify; count varies with upstream repos) | Bind mount (`07 — Volume Layout`) | Runtime `cp -a` |
 
 ### Skill sources
 

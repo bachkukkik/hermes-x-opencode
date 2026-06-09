@@ -56,6 +56,17 @@ browser:
 "
     fi
 
+    # Built-in optional skills from the agent runtime copy
+    local optional_skills_dir="${HERMES_HOME}/hermes-agent/optional-skills"
+    local skills_block=""
+    if [ -d "$optional_skills_dir" ]; then
+        skills_block="
+skills:
+  external_dirs:
+    - ${optional_skills_dir}
+"
+    fi
+
     cat > "$CONFIG" << YAMLEOF
 model:
   provider: litellm
@@ -77,7 +88,7 @@ platforms:
       port: 8642
       key: "${api_key}"
       cors_origins: "*"
-${browser_block}
+${browser_block}${skills_block}
 YAMLEOF
 
     echo "== Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."
