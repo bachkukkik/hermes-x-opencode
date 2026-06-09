@@ -284,3 +284,32 @@ else:
     done < <(grep -v '^#' "$env_example" | grep -v '^$' | grep '=')
     [ "$missing" -eq 0 ]
 }
+
+@test "D1.5: model discovery includes valid chat models" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" python3 -c "
+import sys, re
+chat_patterns = [
+    r'gpt', r'claude', r'llama', r'mistral', r'gemini',
+    r'qwen', r'deepseek', r'hermes-agent',
+]
+chat_re = [re.compile(p, re.IGNORECASE) for p in chat_patterns]
+found = False
+with open('/home/hermeswebui/.hermes/config.yaml') as f:
+    for line in f:
+        line = line.strip()
+        if line and not line.startswith('#'):
+            if any(p.search(line) for p in chat_re):
+                found = True
+                break
+if found:
+    print('OK')
+else:
+    print('FAIL: no chat models found in config')
+    sys.exit(1)
+"
+    [ "$output" = "OK" ]
+}

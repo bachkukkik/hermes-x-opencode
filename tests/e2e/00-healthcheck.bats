@@ -30,3 +30,15 @@ setup() {
     run docker exec "$cid" bash /usr/local/bin/healthcheck.sh
     [ "$status" -eq 0 ]
 }
+
+@test "ACX: deep health endpoint returns extended status" {
+    local basic deep
+    basic=$(curl -sf --max-time 3 "$(webui_base)/health" 2>/dev/null || echo "")
+    deep=$(curl -sf --max-time 3 "$(webui_base)/health?deep=1" 2>/dev/null || echo "")
+    [ -n "$deep" ]
+    # Deep response should contain strictly more keys than basic
+    local basic_count deep_count
+    basic_count=$(echo "$basic" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo 0)
+    deep_count=$(echo "$deep" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo 0)
+    [ "$deep_count" -gt "$basic_count" ]
+}

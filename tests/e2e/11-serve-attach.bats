@@ -93,3 +93,50 @@ setup() {
         echo "$output" | grep -q "step_start\|step_finish\|tool_use\|text"
     fi
 }
+
+# --- TT-16: Serve password generation properties ---
+
+@test "SA4: serve password file exists with correct properties" {
+    skip_if_no_secrets
+    [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ] || skip "OPENCODE_SERVE_ENABLED!=true"
+
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # 1. Password file must exist at the ephemeral path
+    run docker exec "$cid" test -f /tmp/opencode-server-password
+    [ "$status" -eq 0 ]
+
+    # 2. Password content is non-empty
+    local password
+    password=$(docker exec "$cid" cat /tmp/opencode-server-password 2>/dev/null || echo "")
+    [ -n "$password" ]
+
+    # 3. Password has reasonable length (openssl rand -hex 16 = 32 hex chars)
+    [ "${#password}" -ge 16 ]
+
+    # 4. Password file has restrictive permissions (owned by hermeswebui)
+    run docker exec "$cid" stat -c "%U" /tmp/opencode-server-password
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -q "hermeswebui"
+}
+
+@test "SA5: generated password matches the one passed to opencode serve" {
+    skip_if_no_secrets
+    [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ] || skip "OPENCODE_SERVE_ENABLED!=true"
+
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # The password printed in logs should match the file content
+    local file_pass log_pass
+    file_pass=$(docker exec "$cid" cat /tmp/opencode-server-password 2>/dev/null || echo "")
+    log_pass=$(docker logs "$cid" 2>&1 | grep "Generated random OPENCODE_SERVER_PASSWORD:" | sed 's/.*: //' | tail -1)
+
+    # If a password was auto-generated (not user-supplied), log and file must agree
+    if [ -n "$log_pass" ]; then
+        [ "$file_pass" = "$log_pass" ]
+    fi
+}

@@ -13,7 +13,7 @@ A viewable and interactive Chromium browser running inside the `hermes-opencode`
 
 ## How
 
-The browser stack is started by the entrypoint after the Hermes Gateway is healthy, but before OpenCode Serve. It is controlled by the `BROWSER_HUMAN_LOOP_ENABLED` environment variable (default: `false`).
+The browser stack is started by the entrypoint after the WebUI becomes healthy but before the Hermes Gateway starts. It is controlled by the `BROWSER_HUMAN_LOOP_ENABLED` environment variable (default: `false`).
 
 ```
 Container: hermes-opencode
@@ -106,7 +106,7 @@ docker exec "$CONTAINER" grep -A1 '^browser:' /home/hermeswebui/.hermes/config.y
 
 ## What Works
 
-- Browser stack starts within 5 seconds after the gateway is healthy
+- Browser stack starts within 5 seconds after the WebUI is healthy (before the gateway starts)
 - noVNC web client accessible from any modern browser at `:6901/vnc.html`
 - Chromium CDP endpoint responds on `127.0.0.1:9222` and the agent attaches via `browser.cdp_url`
 - Cookies, localStorage, and login state persist across container restarts via the bind-mounted user-data-dir

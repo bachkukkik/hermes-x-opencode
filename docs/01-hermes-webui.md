@@ -12,7 +12,7 @@ Hermes WebUI is a browser-based chat interface backed by a Python HTTP server (`
 
 ## How
 
-The WebUI runs inside the `hermes-opencode` service as the first background process. The entrypoint starts `/hermeswebui_init.bash`, which sets up UID/GID, installs hermes-agent Python dependencies from the staged agent source, and launches the HTTP server.
+The WebUI runs inside the `hermes-opencode` service as the first background process. The entrypoint starts `/hermeswebui_init.bash`, which sets up UID/GID, installs hermes-agent Python dependencies from the staged agent source, and launches the HTTP server. **Note:** The WebUI imports the agent from the base image's pip-installed package in `/app/venv/` (via `from run_agent import AIAgent`). It does not run code from the staged clone at `~/.hermes/hermes-agent/` — that clone serves only as a dependency source for `uv pip install`. See `16 — Agent Installation Architecture`.
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|

@@ -75,6 +75,61 @@ A Docker Compose stack that runs [Hermes WebUI](https://github.com/nicholasgriff
 | Node.js 22 | nodesource setup script | Required for OpenCode plugin resolution |
 | LLM Provider | External (user-configured) | OpenAI-compatible API endpoint |
 
+### Agent Installation Architecture
+
+The container has two copies of the hermes-agent source, serving different roles. There is ONE active runtime — the duplication is a staging pipeline, not a parallel installation.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  INSTALLATION A — Active Runtime (base image venv)              │
+│  /app/venv/bin/hermes                                           │
+│  /app/venv/lib/python3.12/site-packages/hermes_agent/           │
+│                                                                  │
+│  Used by: WebUI (AIAgent in-process) + Gateway (CLI binary)     │
+│  Source: pip-installed by /hermeswebui_init.bash at boot         │
+└─────────────────────────────────────────────────────────────────┘
+        ▲ uv pip install (from staged source)
+        │
+┌───────┴─────────────────────────────────────────────────────────┐
+│  INSTALLATION B — Staged Source (passive, never executed)       │
+│                                                                  │
+│  Build-time: /opt/hermes-agent-staging/                         │
+│    git clone --depth 1 + sed User-Agent patch                   │
+│    + skills source for install-skills.sh (llm-wiki, etc.)       │
+│                                                                  │
+│  Runtime: ~/.hermes/hermes-agent/ (cp -a from staging)          │
+│    - pyproject.toml: readiness marker for ensure_agent()        │
+│    - agent source: deps source for /hermeswebui_init.bash       │
+│    - plugins/: carries the User-Agent sed patch                  │
+│                                                                  │
+│  Propagation chain:                                              │
+│    Dockerfile sed → staging → ensure_agent() →                  │
+│    ~/.hermes/hermes-agent/ → /hermeswebui_init.bash rsyncs →    │
+│    /tmp/hermes-agent-build/ → uv pip install → /app/venv/       │
+│                                                                  │
+│  NOT used at runtime by: WebUI, Gateway, or any CLI invocation   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+| Dimension | Installation A (Active) | Installation B (Staging) |
+|-----------|------------------------|-------------------------|
+| Location | `/app/venv/` | `/opt/hermes-agent-staging/` + `~/.hermes/hermes-agent/` |
+| Contains | pip-installed agent code | git clone of agent source |
+| Executed | Yes — WebUI + gateway | No — never directly invoked |
+| CLI binary | `/app/venv/bin/hermes` | None |
+| Skills source | No | Yes — extracted during build |
+| Patches | Receives via pip install | Carries sed User-Agent patch |
+| Can remove | No — breaks everything | No — breaks deps install |
+
+**Why both exist:** `/hermeswebui_init.bash` (base image script, not controlled by this repo) searches for the agent source at `~/.hermes/hermes-agent/` and installs its Python dependencies into `/app/venv/` via `uv pip install`. Without the staged clone, the WebUI's in-process agent cannot initialize. The clone also provides skills source material extracted during `install-skills.sh`.
+
+**Image bloat mitigation:** The git clone includes ~200MB of upstream skills, docs, and tests that are not needed for deps installation. The Dockerfile trims these after clone:
+```dockerfile
+RUN rm -rf /opt/hermes-agent-staging/skills \
+           /opt/hermes-agent-staging/docs \
+           /opt/hermes-agent-staging/tests
+```
+
 ## 3. Tech Stack
 
 | Layer | Technology | Version/Source |
@@ -156,9 +211,22 @@ RUN sed -i 's/base_url="",/base_url="",\n    default_headers={"User-Agent": "her
 # Step 6: Copy scripts and set executable
 COPY scripts/install-skills.sh /usr/local/bin/install-skills.sh
 COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh
+COPY scripts/lib/ /usr/local/bin/lib/
+COPY tests/healthcheck.sh /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh
 
-# Step 7: Verification
+# Step 7: Install skills from upstream sources (extracts llm-wiki from staging clone)
+RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging \
+    OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills \
+    install-skills.sh
+
+# Step 8: Trim non-essential dirs from staged clone (after skills extraction)
+RUN rm -rf /opt/hermes-agent-staging/skills \
+           /opt/hermes-agent-staging/docs \
+           /opt/hermes-agent-staging/tests \
+           /opt/hermes-agent-staging/.github
+
+# Step 9: Verification
 RUN echo "=== Hermes x OpenCode Stack ===" \
     && python3 -c "import sys; print(f'Python: {sys.version}')" \
     && opencode --version \
@@ -175,6 +243,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 - Both `install-skills.sh` and `entrypoint.sh` are copied into the image.
 - The verification step at the end catches missing agent, failed patch, or missing OpenCode.
 - `HERMES_AGENT_VERSION` build arg defaults to `main`. Override with `--build-arg HERMES_AGENT_VERSION=v1.2.3`
+- The staged clone is trimmed after skill extraction to reduce image size (~200MB savings). Only `pyproject.toml`, `plugins/`, and agent source remain.
 
 ### 5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`)
 
@@ -435,6 +504,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 | C7 | Both `model.default` and `model.name` must be written to `config.yaml` | The WebUI reads `model.default`; the agent reads `model.name` as fallback |
 | C8 | Agent must be cloned to staging path, not runtime path | Runtime path is a bind mount that starts empty on first boot |
 | C9 | Node.js 22 must be installed in the image | Required for OpenCode's npm-based plugin resolution |
+| C10 | The staged agent clone must be trimmed after `git clone` to exclude non-essential directories (`skills/`, `docs/`, `tests/`, `.github/`) | Reduces image bloat by ~200MB. The WebUI init only needs `pyproject.toml`, `plugins/`, and agent source for deps installation |
 
 ## 9. Usage Patterns
 

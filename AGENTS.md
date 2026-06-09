@@ -56,13 +56,13 @@ Load and use these skills on EVERY task:
 | Path | Purpose |
 |------|---------|
 | `/home/hermeswebui/.hermes/config.yaml` | Agent config (generated) |
-| `/home/hermeswebui/.hermes/hermes-agent/` | Agent runtime (bind mount) |
+| `/home/hermeswebui/.hermes/hermes-agent/` | Agent runtime staging (bind mount). Copied from /opt/hermes-agent-staging/ on first boot. Provides pyproject.toml readiness marker and deps source for /hermeswebui_init.bash. Active code is pip-installed at /app/venv/. |
 | `/home/hermeswebui/.hermes/state.db` | Session history (SQLite) |
 | `/home/hermeswebui/.config/opencode/opencode.jsonc` | OpenCode config (generated, copied to root) |
 | `/root/.config/opencode/opencode.jsonc` | Root's OpenCode config (copy of hermeswebui's, fix #28) |
 | `/root/.local/share/opencode/` | Symlink → hermeswebui's data dir (shared session DB, fix #29) |
 | `/home/hermeswebui/.config/opencode/skills/` | OpenCode skills (ephemeral) |
-| `/opt/hermes-agent-staging/` | Agent source (build-time) |
+| `/opt/hermes-agent-staging/` | Agent source staging (build-time). NOT the active runtime — provides deps for /hermeswebui_init.bash and skills for install-skills.sh. Active code is at /app/venv/. |
 | `/workspace/` | User project workspace (bind mount) |
 
 ### 5. Security Modes
@@ -101,5 +101,15 @@ docker exec $(docker compose ps -q hermes-opencode) python3 -m json.tool /home/h
 
 - **Bash heredoc JSON breaks with 300+ dynamic entries** — use `python3 -c "import json; json.dump(...)"` for config generation
 - **Docker overlayfs on ARM64 may drop new layers** — modifications to existing files survive, new files may vanish. Use inline `command:` in docker-compose as workaround
+- **Agent installation is dual but NOT parallel**: The base image venv (`/app/venv/`) provides the active runtime for both WebUI and gateway. The staged clone (`/opt/hermes-agent-staging/` → `~/.hermes/hermes-agent/`) is a deps pipeline that feeds `uv pip install` into the venv. The User-Agent sed patch propagates through: staging → ensure_agent() → rsync → uv pip install → /app/venv/.
 - **Cloudflare blocks OpenAI SDK default User-Agent** — the CustomProfile patch (`hermes-agent/1.0`) is critical for LLM calls to work
 - **Model discovery filters**: exclude embed, whisper, tts, dall-e, sora, image, realtime, transcrib, moderat, audio, codegen, babbage, davinci, curie, ada, text-, stable, midjourney, flux, /sd/, mj, replicate, resolution, and wildcard patterns ending with `/*`
+
+### 8. Agent Capabilities
+
+| Capability | Details |
+|------------|---------|
+| **graphify** | Installed as a Hermes skill at build time. Run `/graphify` to build a knowledge graph from repo contents. Tested in `test/08-graphify.bats`. |
+| **browser human-loop** | Chromium CDP available for agent-browser cooperation when `BROWSER_HUMAN_LOOP_ENABLED=true`. DISPLAY=`:1` Xvfb session with VNC access. Ports: 6901 (noVNC web), 5901 (raw VNC), 9222 (Chromium DevTools Protocol). |
+| **security modes** | `strict` (default, 31 bash rules — no interpreters, no env dump), `standard` (22 rules — interpreters allowed), `yolo` (unrestricted). Set via `OPENCODE_SECURITY_MODE`. See section 5 for full matrix. |
+| **llm-wiki** | Personal knowledge base at `/home/hermeswebui/.hermes/wiki`. Auto-initialized on first boot with SCHEMA.md, index.md, log.md backbone. Agent ingests sources into `raw/articles/` and creates entity/concept pages with `[[wikilinks]]`. Persists on the hermes-home bind mount. Optional host sharing via `HERMES_WIKI_VOLUME` env var. |
