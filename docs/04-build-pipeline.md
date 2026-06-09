@@ -26,7 +26,8 @@ The Dockerfile is located at `volumes_hermes_opencode/build/Dockerfile`. The bui
 | 5 | `RUN curl -LsSf https://astral.sh/uv/install.sh \|\| sh` | Install uv tool manager for graphify and other Python tool installs |
 | 6 | `RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} ... /opt/hermes-agent-staging` | Clone agent to staging path (not the runtime path) |
 | 7 | `RUN sed -i ... custom/__init__.py` | Apply CustomProfile User-Agent patch (see `08 — Cloudflare UA Fix`) |
-| 8 | `COPY scripts/install-skills.sh scripts/entrypoint.sh tests/healthcheck.sh /usr/local/bin/` | Copy scripts and set executable |
+| 8a | `COPY scripts/entrypoint.sh /usr/local/bin/entrypoint.sh` | Copy entrypoint script |
+| 8b | `COPY scripts/lib/ /usr/local/bin/lib/` | Copy library modules (11 files) |
 | 9 | `RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills install-skills.sh` | Build-time skill installation (14 OpenCode + ~67 Hermes skills), including graphify for both platforms |
 | 10 | `RUN echo "=== Hermes x OpenCode Stack ===" && ...` | Verification: Python version, opencode version, graphify version, agent present, patch applied |
 | 11 | `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]` | Set entrypoint |
