@@ -50,6 +50,7 @@ generate_opencode_config
 validate_opencode_zen_key || true
 ensure_agent
 init_wiki
+append_skills_external_dirs
 
 # --- WebUI ---
 /hermeswebui_init.bash &
