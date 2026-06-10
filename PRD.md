@@ -160,19 +160,21 @@ RUN rm -rf /opt/hermes-agent-staging/skills \
     │   ├── .dockerignore                                 # .git, .env, *.pyc, __pycache__, workspace/
     │   ├── Dockerfile                                    # Multi-step build: base + packages + node + opencode + agent + patch
     │   └── scripts/
-    │       ├── entrypoint.sh                             # Runtime: 78-line orchestrator, sources lib/*.sh modules
+    │       ├── entrypoint.sh                             # Runtime: 81-line orchestrator, sources lib/*.sh modules
+    │       ├── fix20-providers-keyenv.py                  # Build-time patch: replaces API key literals with key_env references
     │       ├── lib/                                      # Library modules sourced by entrypoint.sh
     │       │   ├── constants.sh                          #   Path and user variable declarations (11 lines)
     │       │   ├── runtime-env.sh                        #   Runtime environment detection helpers (41 lines)
     │       │   ├── port-utils.sh                         #   TCP port readiness polling (31 lines)
     │       │   ├── agent-setup.sh                        #   Hermes-agent staging/copy logic (16 lines)
     │       │   ├── model-discovery.sh                    #   Model list discovery from OpenAI-compatible API (100 lines)
-    │       │   ├── config-hermes.sh                      #   Hermes config.yaml generation (84 lines)
+    │       │   ├── config-hermes.sh                      #   Hermes config.yaml generation + skills.external_dirs (116 lines)
     │       │   ├── config-opencode.sh                    #   OpenCode config generation (268 lines)
     │       │   ├── validate-opencode.sh                  #   OpenCode Zen API key validation (38 lines)
-    │       │   ├── service-gateway.sh                    #   Hermes gateway service startup (23 lines)
+    │       │   ├── service-gateway.sh                    #   Hermes gateway service startup (24 lines)
     │       │   ├── service-opencode.sh                   #   OpenCode serve service startup (25 lines)
-    │       │   └── service-browser-vnc.sh                #   Browser/VNC human-in-the-loop stack startup (71 lines)
+    │       │   ├── wiki-init.sh                          #   Wiki directory initialization for llm-wiki skill (84 lines)
+    │       │   └── service-browser-vnc.sh                #   Browser/VNC human-in-the-loop stack startup (73 lines)
     │       └── install-skills.sh                         # Installs skills from 6 upstream sources
     └── data/
         ├── hermes-home/.gitkeep                          # Bind mount: /home/hermeswebui/.hermes
@@ -259,7 +261,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 ### 5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`)
 
-**Purpose:** A thin 78-line orchestrator that sources 11 library modules from `scripts/lib/`, then discovers available models from the LLM provider, generates configuration files for both Hermes and OpenCode, installs skills, copies the staged agent, and starts background services in dependency order. All function logic lives in the lib/ modules; the orchestrator only calls functions and manages the execution sequence.
+**Purpose:** A thin 81-line orchestrator that sources 12 library modules from `scripts/lib/`, then discovers available models from the LLM provider, generates configuration files for both Hermes and OpenCode, installs skills, copies the staged agent, and starts background services in dependency order. All function logic lives in the lib/ modules; the orchestrator only calls functions and manages the execution sequence.
 
 **Requirements:**
 - Must be executable (`chmod +x`)
@@ -292,10 +294,12 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 | `start_gateway()` | `lib/service-gateway.sh` | Starts gateway as `hermeswebui` via `su`. Command: `/app/venv/bin/hermes gateway run --accept-hooks`. Skips if agent not found. |
 | `start_opencode_serve()` | `lib/service-opencode.sh` | Starts OpenCode serve as `hermeswebui` via `su`. Command: `opencode serve --port 4096 --hostname 0.0.0.0`. **No-op when `OPENCODE_SERVE_ENABLED` is not `true`** (default). |
 | `start_browser_vnc()` | `lib/service-browser-vnc.sh` | Starts Browser/VNC human-in-the-loop stack (Xvfb + openbox + x11vnc + websockify + Chromium). Controlled by `BROWSER_HUMAN_LOOP_ENABLED`. |
+| `init_wiki()` | `lib/wiki-init.sh` | Initializes wiki directory at `$WIKI_DIR` with SCHEMA.md backbone, index.md, log.md. Idempotent. |
+| `append_skills_external_dirs()` | `lib/config-hermes.sh` | Appends `skills.external_dirs` to config.yaml after ensure_agent copies optional-skills into place. Enables 94 built-in + 72 custom = 166 total skills. |
 
 **Startup sequence:**
 1. `set -euo pipefail`; resolve `LIB_DIR` relative to script location
-2. Source 11 library modules: `constants.sh`, `runtime-env.sh`, `port-utils.sh`, `agent-setup.sh`, `model-discovery.sh`, `config-hermes.sh`, `config-opencode.sh`, `validate-opencode.sh`, `service-gateway.sh`, `service-opencode.sh`, `service-browser-vnc.sh`
+2. Source 12 library modules: `constants.sh`, `runtime-env.sh`, `port-utils.sh`, `agent-setup.sh`, `model-discovery.sh`, `config-hermes.sh`, `config-opencode.sh`, `validate-opencode.sh`, `service-gateway.sh`, `service-opencode.sh`, `wiki-init.sh`, `service-browser-vnc.sh`
 3. Install skills (`install-skills.sh`) — 6 upstream sources, can skip with `SKIP_SKILL_INSTALL=1`
 4. `detect_runtime_env()` — detect Docker/local; normalize `OPENAI_BASE_URL`
 5. `discover_models()` — discover all chat models from provider

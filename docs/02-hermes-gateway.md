@@ -16,7 +16,7 @@ The gateway runs via `hermes gateway run --accept-hooks` using the hermes CLI fr
 
 ### Restart-loop supervisor
 
-The gateway process is wrapped in a `while true` restart-loop supervisor (see `lib/service-gateway.sh`, lines 14-21). If the gateway exits for any reason, the loop automatically restarts it with a 2-second delay. Each restart event is logged to `${HERMES_HOME}/logs/gateway-restart.log` with the exit code and timestamp. The primary stdout/stderr log goes to `${HERMES_HOME}/logs/gateway.log`. This ensures the gateway recovers from crashes without requiring a full container restart.
+The gateway process is wrapped in a `while true` restart-loop supervisor (see `lib/service-gateway.sh`, lines 14-21). If the gateway exits for any reason, the loop automatically restarts it with a 2-second delay. Each restart event is logged to `${HERMES_HOME}/logs/gateway-restart.log` with the exit code and timestamp. The primary stdout/stderr log goes to `${HERMES_HOME}/logs/gateway-stdout.log` (the shell redirect uses a different filename than Python's RotatingFileHandler on `gateway.log` to avoid conflicts). Before launching, `start_gateway()` creates and chowns the logs directory to `hermeswebui` to prevent `PermissionError` when the gateway writes log files. This ensures the gateway recovers from crashes without requiring a full container restart.
 
 | Parameter | Value | Notes |
 |-----------|-------|-------|

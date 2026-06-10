@@ -84,7 +84,7 @@ nohup su -s /bin/bash "$OPENCODE_USER" -c '
         echo "[$(date)] gateway exited rc=$?, restarting in 2s" >> '"${HERMES_HOME}"'/logs/gateway-restart.log
         sleep 2
     done
-' > /home/hermeswebui/.hermes/logs/gateway.log 2>&1 &
+' >> /home/hermeswebui/.hermes/logs/gateway-stdout.log 2>&1 &
 ```
 
 This ensures the gateway revives automatically after:

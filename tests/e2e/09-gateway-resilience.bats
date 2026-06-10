@@ -127,3 +127,26 @@ setup() {
     echo "$output" | grep -q "gateway exited"
     echo "$output" | grep -q "restarting in 2s"
 }
+
+@test "VC5.6: gateway stdout/stderr log goes to gateway-stdout.log (not gateway.log)" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # The shell redirect in service-gateway.sh writes to gateway-stdout.log
+    run docker exec "$cid" test -f /home/hermeswebui/.hermes/logs/gateway-stdout.log
+    [ "$status" -eq 0 ]
+}
+
+@test "VC5.7: logs directory owned by hermeswebui:hermeswebui" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # start_gateway() does mkdir + chown before launching the process
+    run docker exec "$cid" stat -c '%U:%G' /home/hermeswebui/.hermes/logs
+    [ "$status" -eq 0 ]
+    [ "$output" = "hermeswebui:hermeswebui" ]
+}

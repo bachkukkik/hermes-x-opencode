@@ -59,6 +59,7 @@ The python3 inline filter removes models matching these regex patterns (case-ins
 | `\bmj\b` | Midjourney shorthand |
 | `replicate` | Replicate-hosted models |
 | `resolution` | Resolution-specific variants |
+| `cli-proxy-api` | CLI proxy API models |
 
 ### Wildcard filter
 

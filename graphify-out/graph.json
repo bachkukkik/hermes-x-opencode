@@ -515,7 +515,7 @@
       "label": "5. File Specifications",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L170",
+      "source_location": "L184",
       "id": "prd_5_file_specifications",
       "community": 1,
       "norm_label": "5. file specifications"
@@ -524,7 +524,7 @@
       "label": "5.1 `Dockerfile` (at `volumes_hermes_opencode/build/Dockerfile`)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L172",
+      "source_location": "L186",
       "id": "prd_5_1_dockerfile_at_volumes_hermes_opencode_build_dockerfile",
       "community": 1,
       "norm_label": "5.1 `dockerfile` (at `volumes_hermes_opencode/build/dockerfile`)"
@@ -533,7 +533,7 @@
       "label": "5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L234",
+      "source_location": "L262",
       "id": "prd_5_2_scripts_entrypoint_sh_at_volumes_hermes_opencode_build_scripts_entrypoint_sh",
       "community": 1,
       "norm_label": "5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`)"
@@ -542,7 +542,7 @@
       "label": "5.3 `docker-compose.yml`",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L292",
+      "source_location": "L329",
       "id": "prd_5_3_docker_compose_yml",
       "community": 1,
       "norm_label": "5.3 `docker-compose.yml`"
@@ -551,7 +551,7 @@
       "label": "5.4 `.env.example`",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L355",
+      "source_location": "L392",
       "id": "prd_5_4_env_example",
       "community": 1,
       "norm_label": "5.4 `.env.example`"
@@ -560,7 +560,7 @@
       "label": "5.5 `.gitignore`",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L363",
+      "source_location": "L400",
       "id": "prd_5_5_gitignore",
       "community": 1,
       "norm_label": "5.5 `.gitignore`"
@@ -569,7 +569,7 @@
       "label": "5.6 `.dockerignore`",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L367",
+      "source_location": "L404",
       "id": "prd_5_6_dockerignore",
       "community": 1,
       "norm_label": "5.6 `.dockerignore`"
@@ -578,7 +578,7 @@
       "label": "6. Startup Sequence",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L389",
+      "source_location": "L426",
       "id": "prd_6_startup_sequence",
       "community": 1,
       "norm_label": "6. startup sequence"
@@ -587,7 +587,7 @@
       "label": "First Boot",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L391",
+      "source_location": "L428",
       "id": "prd_first_boot",
       "community": 1,
       "norm_label": "first boot"
@@ -596,7 +596,7 @@
       "label": "Subsequent Boots",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L417",
+      "source_location": "L454",
       "id": "prd_subsequent_boots",
       "community": 1,
       "norm_label": "subsequent boots"
@@ -605,7 +605,7 @@
       "label": "Key Behaviors",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L435",
+      "source_location": "L472",
       "id": "prd_key_behaviors",
       "community": 1,
       "norm_label": "key behaviors"
@@ -614,7 +614,7 @@
       "label": "7. Configuration Reference",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L447",
+      "source_location": "L484",
       "id": "prd_7_configuration_reference",
       "community": 1,
       "norm_label": "7. configuration reference"
@@ -623,7 +623,7 @@
       "label": "Environment Variables",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L449",
+      "source_location": "L486",
       "id": "prd_environment_variables",
       "community": 1,
       "norm_label": "environment variables"
@@ -632,7 +632,7 @@
       "label": "Build Arguments",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L474",
+      "source_location": "L511",
       "id": "prd_build_arguments",
       "community": 1,
       "norm_label": "build arguments"
@@ -641,7 +641,7 @@
       "label": "8. Constraints",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L480",
+      "source_location": "L517",
       "id": "prd_8_constraints",
       "community": 1,
       "norm_label": "8. constraints"
@@ -650,7 +650,7 @@
       "label": "9. Usage Patterns",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L495",
+      "source_location": "L532",
       "id": "prd_9_usage_patterns",
       "community": 1,
       "norm_label": "9. usage patterns"
@@ -659,7 +659,7 @@
       "label": "Pattern Summary Table",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L501",
+      "source_location": "L538",
       "id": "prd_pattern_summary_table",
       "community": 1,
       "norm_label": "pattern summary table"
@@ -668,7 +668,7 @@
       "label": "Pattern 1 \u2014 Direct One-Shot Coding (verified)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L511",
+      "source_location": "L548",
       "id": "prd_pattern_1_direct_one_shot_coding_verified",
       "community": 1,
       "norm_label": "pattern 1 \u2014 direct one-shot coding (verified)"
@@ -677,7 +677,7 @@
       "label": "Pattern 2 \u2014 Plan \u2192 Build Pipeline, Chained One-Shots (verified)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L523",
+      "source_location": "L560",
       "id": "prd_pattern_2_plan_build_pipeline_chained_one_shots_verified",
       "community": 1,
       "norm_label": "pattern 2 \u2014 plan \u2192 build pipeline, chained one-shots (verified)"
@@ -686,7 +686,7 @@
       "label": "Pattern 3 \u2014 Direct Chat via Agent API (verified)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L538",
+      "source_location": "L575",
       "id": "prd_pattern_3_direct_chat_via_agent_api_verified",
       "community": 1,
       "norm_label": "pattern 3 \u2014 direct chat via agent api (verified)"
@@ -695,7 +695,7 @@
       "label": "When to Use What",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L550",
+      "source_location": "L587",
       "id": "prd_when_to_use_what",
       "community": 1,
       "norm_label": "when to use what"
@@ -704,7 +704,7 @@
       "label": "10. Acceptance Criteria",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L561",
+      "source_location": "L598",
       "id": "prd_10_acceptance_criteria",
       "community": 1,
       "norm_label": "10. acceptance criteria"
@@ -1451,7 +1451,7 @@
       "label": "Agent staging",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L34",
+      "source_location": "L35",
       "id": "docs_04_build_pipeline_agent_staging",
       "community": 14,
       "norm_label": "agent staging"
@@ -1460,7 +1460,7 @@
       "label": "Skill staging",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L43",
+      "source_location": "L44",
       "id": "docs_04_build_pipeline_skill_staging",
       "community": 14,
       "norm_label": "skill staging"
@@ -1469,7 +1469,7 @@
       "label": "Build command",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L56",
+      "source_location": "L57",
       "id": "docs_04_build_pipeline_build_command",
       "community": 14,
       "norm_label": "build command"
@@ -1478,7 +1478,7 @@
       "label": "Platform",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L66",
+      "source_location": "L67",
       "id": "docs_04_build_pipeline_platform",
       "community": 14,
       "norm_label": "platform"
@@ -1487,7 +1487,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L70",
+      "source_location": "L71",
       "id": "docs_04_build_pipeline_verification",
       "community": 14,
       "norm_label": "verification"
@@ -1496,7 +1496,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L85",
+      "source_location": "L86",
       "id": "docs_04_build_pipeline_what_works",
       "community": 14,
       "norm_label": "what works"
@@ -1505,7 +1505,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L98",
+      "source_location": "L99",
       "id": "docs_04_build_pipeline_what_fails",
       "community": 14,
       "norm_label": "what fails"
@@ -1514,7 +1514,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L105",
+      "source_location": "L106",
       "id": "docs_04_build_pipeline_resolution",
       "community": 14,
       "norm_label": "resolution"
@@ -1523,7 +1523,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L112",
+      "source_location": "L113",
       "id": "docs_04_build_pipeline_verdict",
       "community": 14,
       "norm_label": "verdict"
@@ -1574,10 +1574,19 @@
       "norm_label": "how"
     },
     {
-      "label": "Key variables",
+      "label": "Modular architecture",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
       "source_location": "L20",
+      "id": "docs_05_entrypoint_sequence_modular_architecture",
+      "community": 12,
+      "norm_label": "modular architecture"
+    },
+    {
+      "label": "Key variables",
+      "file_type": "document",
+      "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "L43",
       "id": "docs_05_entrypoint_sequence_key_variables",
       "community": 12,
       "norm_label": "key variables"
@@ -1586,7 +1595,7 @@
       "label": "Execution sequence",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L31",
+      "source_location": "L56",
       "id": "docs_05_entrypoint_sequence_execution_sequence",
       "community": 12,
       "norm_label": "execution sequence"
@@ -1595,7 +1604,7 @@
       "label": "Functions",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L58",
+      "source_location": "L96",
       "id": "docs_05_entrypoint_sequence_functions",
       "community": 12,
       "norm_label": "functions"
@@ -1604,7 +1613,7 @@
       "label": "Model discovery details",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L72",
+      "source_location": "L114",
       "id": "docs_05_entrypoint_sequence_model_discovery_details",
       "community": 12,
       "norm_label": "model discovery details"
@@ -1613,7 +1622,7 @@
       "label": "Config generation details",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L81",
+      "source_location": "L123",
       "id": "docs_05_entrypoint_sequence_config_generation_details",
       "community": 12,
       "norm_label": "config generation details"
@@ -1622,7 +1631,7 @@
       "label": "Timing",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L106",
+      "source_location": "L148",
       "id": "docs_05_entrypoint_sequence_timing",
       "community": 12,
       "norm_label": "timing"
@@ -1631,7 +1640,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L113",
+      "source_location": "L155",
       "id": "docs_05_entrypoint_sequence_verification",
       "community": 12,
       "norm_label": "verification"
@@ -1640,7 +1649,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L142",
+      "source_location": "L184",
       "id": "docs_05_entrypoint_sequence_what_works",
       "community": 12,
       "norm_label": "what works"
@@ -1649,7 +1658,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L154",
+      "source_location": "L196",
       "id": "docs_05_entrypoint_sequence_what_fails",
       "community": 12,
       "norm_label": "what fails"
@@ -1658,7 +1667,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L163",
+      "source_location": "L205",
       "id": "docs_05_entrypoint_sequence_resolution",
       "community": 12,
       "norm_label": "resolution"
@@ -1667,7 +1676,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/05-entrypoint-sequence.md",
-      "source_location": "L172",
+      "source_location": "L214",
       "id": "docs_05_entrypoint_sequence_verdict",
       "community": 12,
       "norm_label": "verdict"
@@ -2267,10 +2276,28 @@
       "norm_label": "acceptance criteria mapping"
     },
     {
+      "label": "Wiki initialization tests (14-wiki-init.bats)",
+      "file_type": "document",
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "L207",
+      "id": "docs_09_testing_and_verification_wiki_initialization_tests_14_wiki_init_bats",
+      "community": 6,
+      "norm_label": "wiki initialization tests (14-wiki-init.bats)"
+    },
+    {
+      "label": "Agent installation architecture tests (15-agent-installation-architecture.bats)",
+      "file_type": "document",
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "L217",
+      "id": "docs_09_testing_and_verification_agent_installation_architecture_tests_15_agent_installation_architecture_bats",
+      "community": 6,
+      "norm_label": "agent installation architecture tests (15-agent-installation-architecture.bats)"
+    },
+    {
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "L206",
+      "source_location": "L227",
       "id": "docs_09_testing_and_verification_verification",
       "community": 6,
       "norm_label": "verification"
@@ -2279,7 +2306,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "L210",
+      "source_location": "L231",
       "id": "docs_09_testing_and_verification_what_works",
       "community": 6,
       "norm_label": "what works"
@@ -2288,7 +2315,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "L223",
+      "source_location": "L244",
       "id": "docs_09_testing_and_verification_what_fails",
       "community": 6,
       "norm_label": "what fails"
@@ -2297,7 +2324,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "L230",
+      "source_location": "L251",
       "id": "docs_09_testing_and_verification_resolution",
       "community": 6,
       "norm_label": "resolution"
@@ -2306,7 +2333,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/09-testing-and-verification.md",
-      "source_location": "L237",
+      "source_location": "L258",
       "id": "docs_09_testing_and_verification_verdict",
       "community": 6,
       "norm_label": "verdict"
@@ -2378,7 +2405,7 @@
       "label": "Wildcard filter",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L63",
+      "source_location": "L64",
       "id": "docs_10_model_discovery_wildcard_filter",
       "community": 7,
       "norm_label": "wildcard filter"
@@ -2387,7 +2414,7 @@
       "label": "Case-insensitive dedup",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L84",
+      "source_location": "L85",
       "id": "docs_10_model_discovery_case_insensitive_dedup",
       "community": 7,
       "norm_label": "case-insensitive dedup"
@@ -2396,7 +2423,7 @@
       "label": "Fallback behavior",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L88",
+      "source_location": "L89",
       "id": "docs_10_model_discovery_fallback_behavior",
       "community": 7,
       "norm_label": "fallback behavior"
@@ -2405,7 +2432,7 @@
       "label": "Hermes config format",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L98",
+      "source_location": "L99",
       "id": "docs_10_model_discovery_hermes_config_format",
       "community": 7,
       "norm_label": "hermes config format"
@@ -2414,7 +2441,7 @@
       "label": "OpenCode config format",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L121",
+      "source_location": "L122",
       "id": "docs_10_model_discovery_opencode_config_format",
       "community": 7,
       "norm_label": "opencode config format"
@@ -2423,7 +2450,7 @@
       "label": "Model limits",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L149",
+      "source_location": "L150",
       "id": "docs_10_model_discovery_model_limits",
       "community": 7,
       "norm_label": "model limits"
@@ -2432,7 +2459,7 @@
       "label": "Model counts",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L191",
+      "source_location": "L192",
       "id": "docs_10_model_discovery_model_counts",
       "community": 7,
       "norm_label": "model counts"
@@ -2441,7 +2468,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L200",
+      "source_location": "L201",
       "id": "docs_10_model_discovery_verification",
       "community": 7,
       "norm_label": "verification"
@@ -2450,7 +2477,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L216",
+      "source_location": "L217",
       "id": "docs_10_model_discovery_what_works",
       "community": 7,
       "norm_label": "what works"
@@ -2459,7 +2486,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L225",
+      "source_location": "L226",
       "id": "docs_10_model_discovery_what_fails",
       "community": 7,
       "norm_label": "what fails"
@@ -2468,7 +2495,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L233",
+      "source_location": "L234",
       "id": "docs_10_model_discovery_resolution",
       "community": 7,
       "norm_label": "resolution"
@@ -2477,7 +2504,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L241",
+      "source_location": "L242",
       "id": "docs_10_model_discovery_verdict",
       "community": 7,
       "norm_label": "verdict"
@@ -3500,193 +3527,310 @@
       "norm_label": "verdict"
     },
     {
+      "label": "17-wiki-init.md",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L1",
+      "id": "docs_17_wiki_init",
+      "community": 2,
+      "norm_label": "17-wiki-init.md"
+    },
+    {
+      "label": "17. Wiki Initialization (llm-wiki skill)",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L1",
+      "id": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "community": 2,
+      "norm_label": "17. wiki initialization (llm-wiki skill)"
+    },
+    {
+      "label": "Overview",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L3",
+      "id": "docs_17_wiki_init_overview",
+      "community": 2,
+      "norm_label": "overview"
+    },
+    {
+      "label": "When it runs",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L7",
+      "id": "docs_17_wiki_init_when_it_runs",
+      "community": 2,
+      "norm_label": "when it runs"
+    },
+    {
+      "label": "WIKI_DIR",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L17",
+      "id": "docs_17_wiki_init_wiki_dir",
+      "community": 2,
+      "norm_label": "wiki_dir"
+    },
+    {
+      "label": "Initialization",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L28",
+      "id": "docs_17_wiki_init_initialization",
+      "community": 2,
+      "norm_label": "initialization"
+    },
+    {
+      "label": "Directory structure (created on first boot)",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L32",
+      "id": "docs_17_wiki_init_directory_structure_created_on_first_boot",
+      "community": 2,
+      "norm_label": "directory structure (created on first boot)"
+    },
+    {
+      "label": "SCHEMA.md backbone",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L50",
+      "id": "docs_17_wiki_init_schema_md_backbone",
+      "community": 2,
+      "norm_label": "schema.md backbone"
+    },
+    {
+      "label": "Ownership",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L58",
+      "id": "docs_17_wiki_init_ownership",
+      "community": 2,
+      "norm_label": "ownership"
+    },
+    {
+      "label": "Skipping",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L62",
+      "id": "docs_17_wiki_init_skipping",
+      "community": 2,
+      "norm_label": "skipping"
+    },
+    {
+      "label": "Persistence",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L70",
+      "id": "docs_17_wiki_init_persistence",
+      "community": 2,
+      "norm_label": "persistence"
+    },
+    {
+      "label": "Test coverage",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L74",
+      "id": "docs_17_wiki_init_test_coverage",
+      "community": 2,
+      "norm_label": "test coverage"
+    },
+    {
+      "label": "Integration with llm-wiki skill",
+      "file_type": "document",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L80",
+      "id": "docs_17_wiki_init_integration_with_llm_wiki_skill",
+      "community": 2,
+      "norm_label": "integration with llm-wiki skill"
+    },
+    {
       "label": "gap-report-dual-hermes-installation.md",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L1",
-      "id": "docs_gap_report_dual_hermes_installation",
       "community": 23,
-      "norm_label": "gap-report-dual-hermes-installation.md"
+      "norm_label": "gap-report-dual-hermes-installation.md",
+      "id": "docs_gap_report_dual_hermes_installation"
     },
     {
       "label": "Gap Report: Dual Hermes Installation Investigation",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L1",
-      "id": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
       "community": 23,
-      "norm_label": "gap report: dual hermes installation investigation"
+      "norm_label": "gap report: dual hermes installation investigation",
+      "id": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation"
     },
     {
       "label": "1. Inventory of All Hermes Installation Points",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L9",
-      "id": "docs_gap_report_dual_hermes_installation_1_inventory_of_all_hermes_installation_points",
       "community": 23,
-      "norm_label": "1. inventory of all hermes installation points"
+      "norm_label": "1. inventory of all hermes installation points",
+      "id": "docs_gap_report_dual_hermes_installation_1_inventory_of_all_hermes_installation_points"
     },
     {
       "label": "Installation A -- Base Image Venv (ACTIVE at runtime)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L11",
-      "id": "docs_gap_report_dual_hermes_installation_installation_a_base_image_venv_active_at_runtime",
       "community": 23,
-      "norm_label": "installation a -- base image venv (active at runtime)"
+      "norm_label": "installation a -- base image venv (active at runtime)",
+      "id": "docs_gap_report_dual_hermes_installation_installation_a_base_image_venv_active_at_runtime"
     },
     {
       "label": "Installation B -- Staged Clone (PASSIVE staging)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L20",
-      "id": "docs_gap_report_dual_hermes_installation_installation_b_staged_clone_passive_staging",
       "community": 23,
-      "norm_label": "installation b -- staged clone (passive staging)"
+      "norm_label": "installation b -- staged clone (passive staging)",
+      "id": "docs_gap_report_dual_hermes_installation_installation_b_staged_clone_passive_staging"
     },
     {
       "label": "Installation C -- Config + Skills (Runtime State)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L30",
-      "id": "docs_gap_report_dual_hermes_installation_installation_c_config_skills_runtime_state",
       "community": 23,
-      "norm_label": "installation c -- config + skills (runtime state)"
+      "norm_label": "installation c -- config + skills (runtime state)",
+      "id": "docs_gap_report_dual_hermes_installation_installation_c_config_skills_runtime_state"
     },
     {
       "label": "2. Active Runtime Code Paths",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L41",
-      "id": "docs_gap_report_dual_hermes_installation_2_active_runtime_code_paths",
       "community": 23,
-      "norm_label": "2. active runtime code paths"
+      "norm_label": "2. active runtime code paths",
+      "id": "docs_gap_report_dual_hermes_installation_2_active_runtime_code_paths"
     },
     {
       "label": "Path 1: WebUI Chat (Port 8787)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L43",
-      "id": "docs_gap_report_dual_hermes_installation_path_1_webui_chat_port_8787",
       "community": 23,
-      "norm_label": "path 1: webui chat (port 8787)"
+      "norm_label": "path 1: webui chat (port 8787)",
+      "id": "docs_gap_report_dual_hermes_installation_path_1_webui_chat_port_8787"
     },
     {
       "label": "Path 2: Gateway API (Port 8642)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L53",
-      "id": "docs_gap_report_dual_hermes_installation_path_2_gateway_api_port_8642",
       "community": 23,
-      "norm_label": "path 2: gateway api (port 8642)"
+      "norm_label": "path 2: gateway api (port 8642)",
+      "id": "docs_gap_report_dual_hermes_installation_path_2_gateway_api_port_8642"
     },
     {
       "label": "Path 3: Staged Agent \u2192 Deps Pipeline (Installation B)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L62",
-      "id": "docs_gap_report_dual_hermes_installation_path_3_staged_agent_deps_pipeline_installation_b",
       "community": 23,
-      "norm_label": "path 3: staged agent \u2192 deps pipeline (installation b)"
+      "norm_label": "path 3: staged agent \u2192 deps pipeline (installation b)",
+      "id": "docs_gap_report_dual_hermes_installation_path_3_staged_agent_deps_pipeline_installation_b"
     },
     {
       "label": "3. Duplication Assessment",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L80",
-      "id": "docs_gap_report_dual_hermes_installation_3_duplication_assessment",
       "community": 23,
-      "norm_label": "3. duplication assessment"
+      "norm_label": "3. duplication assessment",
+      "id": "docs_gap_report_dual_hermes_installation_3_duplication_assessment"
     },
     {
       "label": "What IS duplicated",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L82",
-      "id": "docs_gap_report_dual_hermes_installation_what_is_duplicated",
       "community": 23,
-      "norm_label": "what is duplicated"
+      "norm_label": "what is duplicated",
+      "id": "docs_gap_report_dual_hermes_installation_what_is_duplicated"
     },
     {
       "label": "What is NOT duplicated",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L89",
-      "id": "docs_gap_report_dual_hermes_installation_what_is_not_duplicated",
       "community": 23,
-      "norm_label": "what is not duplicated"
+      "norm_label": "what is not duplicated",
+      "id": "docs_gap_report_dual_hermes_installation_what_is_not_duplicated"
     },
     {
       "label": "Why the duplication exists",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L95",
-      "id": "docs_gap_report_dual_hermes_installation_why_the_duplication_exists",
       "community": 23,
-      "norm_label": "why the duplication exists"
+      "norm_label": "why the duplication exists",
+      "id": "docs_gap_report_dual_hermes_installation_why_the_duplication_exists"
     },
     {
       "label": "4. Recommendations",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L103",
-      "id": "docs_gap_report_dual_hermes_installation_4_recommendations",
       "community": 23,
-      "norm_label": "4. recommendations"
+      "norm_label": "4. recommendations",
+      "id": "docs_gap_report_dual_hermes_installation_4_recommendations"
     },
     {
       "label": "Option A: Keep Current Architecture (RECOMMENDED)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L105",
-      "id": "docs_gap_report_dual_hermes_installation_option_a_keep_current_architecture_recommended",
       "community": 23,
-      "norm_label": "option a: keep current architecture (recommended)"
+      "norm_label": "option a: keep current architecture (recommended)",
+      "id": "docs_gap_report_dual_hermes_installation_option_a_keep_current_architecture_recommended"
     },
     {
       "label": "Option B: Unify (NOT RECOMMENDED)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L118",
-      "id": "docs_gap_report_dual_hermes_installation_option_b_unify_not_recommended",
       "community": 23,
-      "norm_label": "option b: unify (not recommended)"
+      "norm_label": "option b: unify (not recommended)",
+      "id": "docs_gap_report_dual_hermes_installation_option_b_unify_not_recommended"
     },
     {
       "label": "Option C: Eliminate Staged Agent (NOT RECOMMENDED)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L122",
-      "id": "docs_gap_report_dual_hermes_installation_option_c_eliminate_staged_agent_not_recommended",
       "community": 23,
-      "norm_label": "option c: eliminate staged agent (not recommended)"
+      "norm_label": "option c: eliminate staged agent (not recommended)",
+      "id": "docs_gap_report_dual_hermes_installation_option_c_eliminate_staged_agent_not_recommended"
     },
     {
       "label": "5. Proposed PRD Updates",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L128",
-      "id": "docs_gap_report_dual_hermes_installation_5_proposed_prd_updates",
       "community": 23,
-      "norm_label": "5. proposed prd updates"
+      "norm_label": "5. proposed prd updates",
+      "id": "docs_gap_report_dual_hermes_installation_5_proposed_prd_updates"
     },
     {
       "label": "6. Specific Files/Paths to Change",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L140",
-      "id": "docs_gap_report_dual_hermes_installation_6_specific_files_paths_to_change",
       "community": 23,
-      "norm_label": "6. specific files/paths to change"
+      "norm_label": "6. specific files/paths to change",
+      "id": "docs_gap_report_dual_hermes_installation_6_specific_files_paths_to_change"
     },
     {
       "label": "7. Verified Facts (from running container)",
       "file_type": "document",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L153",
-      "id": "docs_gap_report_dual_hermes_installation_7_verified_facts_from_running_container",
       "community": 23,
-      "norm_label": "7. verified facts (from running container)"
+      "norm_label": "7. verified facts (from running container)",
+      "id": "docs_gap_report_dual_hermes_installation_7_verified_facts_from_running_container"
     },
     {
       "label": "run.sh",
@@ -3866,7 +4010,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "docs/05-entrypoint-sequence.md \u2014 entrypoint sequence",
       "id": "doc_entrypoint_sequence"
     },
@@ -3892,7 +4036,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "docs/10-model-discovery.md \u2014 model discovery & multi-model support",
       "id": "doc_model_discovery"
     },
@@ -3918,7 +4062,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "docs/06-config-and-env.md \u2014 configuration and environment",
       "id": "doc_config_env"
     },
@@ -3944,7 +4088,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "docs/13-security-hardening.md \u2014 security hardening",
       "id": "doc_security_hardening"
     },
@@ -3957,7 +4101,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 2,
+      "community": 3,
       "norm_label": "docs/12-plugin-system.md \u2014 opencode plugin system",
       "id": "doc_plugin_system"
     },
@@ -4039,7 +4183,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Auto-discovers chat models from OPENAI_BASE_URL/models at startup. Filters non-chat (embed, whisper, tts, dall-e, etc.) and wildcard patterns (/*). Falls back to OPENAI_DEFAULT_MODEL on failure.",
-      "community": 2,
+      "community": 3,
       "norm_label": "model discovery mechanism",
       "id": "concept_model_discovery"
     },
@@ -4053,7 +4197,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Filters litellm model-group patterns (anthropic/*, openai/*, deepseek/*, openrouter/*, vertex_ai/*) that resolve to 404 errors when used as actual model IDs.",
-      "community": 2,
+      "community": 3,
       "norm_label": "wildcard model filter (ids ending in /*)",
       "id": "concept_wildcard_filter"
     },
@@ -4067,7 +4211,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Filters models matching: embed, whisper, tts, dall-e, sora, image, realtime, transcrib, moderat, audio, codegen, babbage, davinci, curie, ada, text-, stable, midjourney, flux, /sd/, mj, replicate, resolution.",
-      "community": 2,
+      "community": 3,
       "norm_label": "non-chat model filter",
       "id": "concept_nonchat_filter"
     },
@@ -4081,7 +4225,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Entrypoint regenerates config.yaml and opencode.jsonc from env vars on every boot. Both must write model.default AND model.name to satisfy WebUI's models_cache.json builder and hermes-agent's model resolution.",
-      "community": 2,
+      "community": 3,
       "norm_label": "config generation (config.yaml + opencode.jsonc)",
       "id": "concept_config_generation"
     },
@@ -4123,7 +4267,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Blocks destructive git (reset --hard, push --force, clean -fd) and filesystem (rm -rf /, chmod 777) commands BEFORE OpenCode permission system. Active in all modes including yolo.",
-      "community": 2,
+      "community": 3,
       "norm_label": "cc-safety-net plugin (pretooluse hook)",
       "id": "concept_cc_safety_net"
     },
@@ -4165,7 +4309,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Sequential startup with health gates: skills staging copy \u2192 model discovery \u2192 config gen \u2192 agent copy \u2192 WebUI (:8787) \u2192 wait \u2192 gateway (:8642) \u2192 wait \u2192 opencode serve (:4096, opt-in) \u2192 wait -n.",
-      "community": 2,
+      "community": 3,
       "norm_label": "entrypoint sequence (13-step startup)",
       "id": "concept_entrypoint_sequence"
     },
@@ -4193,7 +4337,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Three plugins: @tarquinen/opencode-dcp (context pruning), @franlol/opencode-md-table-formatter, cc-safety-net. Resolved via Node.js npm at $HOME/.config/opencode/node_modules/. Requires Node.js 22.",
-      "community": 2,
+      "community": 3,
       "norm_label": "opencode plugin system (npm-resolved)",
       "id": "concept_plugin_system"
     },
@@ -4319,7 +4463,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Context transform plugin that prunes low-relevance messages from conversation to reduce token usage. npm spec @tarquinen/opencode-dcp@latest.",
-      "community": 2,
+      "community": 3,
       "norm_label": "@tarquinen/opencode-dcp (context pruner)",
       "id": "concept_opencode_dcp_plugin"
     },
@@ -4333,7 +4477,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Output transform plugin that normalizes markdown tables in tool output for consistent rendering. npm spec @franlol/opencode-md-table-formatter@latest.",
-      "community": 2,
+      "community": 3,
       "norm_label": "@franlol/opencode-md-table-formatter",
       "id": "concept_md_table_formatter"
     },
@@ -4459,7 +4603,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Both keys must be written to config.yaml. WebUI's get_effective_default_model() reads model.default without fallback. hermes-agent reads model.default with fallback to model.name. Missing default \u2192 empty models_cache.json. Constraint C7 in PRD.",
-      "community": 2,
+      "community": 3,
       "norm_label": "model.default and model.name keys",
       "id": "concept_model_default_name_keys"
     },
@@ -4929,9 +5073,9 @@
       "source_file": "PRD.md",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_2_architecture",
-      "target": "prd_agent_installation_architecture",
-      "confidence_score": 1.0
+      "target": "prd_agent_installation_architecture"
     },
     {
       "relation": "contains",
@@ -6107,6 +6251,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/05-entrypoint-sequence.md",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "docs_05_entrypoint_sequence_how",
+      "target": "docs_05_entrypoint_sequence_modular_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/05-entrypoint-sequence.md",
       "source_location": "L106",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -6697,6 +6851,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "L217",
+      "weight": 1.0,
+      "source": "docs_09_testing_and_verification_how",
+      "target": "docs_09_testing_and_verification_agent_installation_architecture_tests_15_agent_installation_architecture_bats",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/09-testing-and-verification.md",
       "source_location": "L54",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -6782,6 +6946,16 @@
       "confidence_score": 1.0,
       "source": "docs_09_testing_and_verification_how",
       "target": "docs_09_testing_and_verification_service_health_checks"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/09-testing-and-verification.md",
+      "source_location": "L207",
+      "weight": 1.0,
+      "source": "docs_09_testing_and_verification_how",
+      "target": "docs_09_testing_and_verification_wiki_initialization_tests_14_wiki_init_bats",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -7799,9 +7973,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_16_agent_installation_architecture"
     },
     {
       "relation": "contains",
@@ -7809,9 +7983,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L108",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_comparison_table",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_comparison_table"
     },
     {
       "relation": "contains",
@@ -7819,9 +7993,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L133",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_image_bloat_mitigation",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_image_bloat_mitigation"
     },
     {
       "relation": "contains",
@@ -7829,9 +8003,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L47",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_installation_a_base_image_venv_active_runtime",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_installation_a_base_image_venv_active_runtime"
     },
     {
       "relation": "contains",
@@ -7839,9 +8013,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L69",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_installation_b_staged_clone_deps_pipeline",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_installation_b_staged_clone_deps_pipeline"
     },
     {
       "relation": "contains",
@@ -7849,9 +8023,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_overview",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_overview"
     },
     {
       "relation": "contains",
@@ -7859,9 +8033,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L172",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_verdict",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_verdict"
     },
     {
       "relation": "contains",
@@ -7869,9 +8043,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L151",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_verification",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_verification"
     },
     {
       "relation": "contains",
@@ -7879,9 +8053,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_what",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_what"
     },
     {
       "relation": "contains",
@@ -7889,9 +8063,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_why",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_why"
     },
     {
       "relation": "contains",
@@ -7899,9 +8073,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L121",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_16_agent_installation_architecture",
-      "target": "docs_16_agent_installation_architecture_why_both_exist",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_why_both_exist"
     },
     {
       "relation": "contains",
@@ -7909,9 +8083,9 @@
       "source_file": "docs/16-agent-installation-architecture.md",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_16_agent_installation_architecture_installation_b_staged_clone_deps_pipeline",
-      "target": "docs_16_agent_installation_architecture_propagation_chain",
-      "confidence_score": 1.0
+      "target": "docs_16_agent_installation_architecture_propagation_chain"
     },
     {
       "relation": "contains",
@@ -8026,12 +8200,132 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init",
+      "target": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L28",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_initialization",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_integration_with_llm_wiki_skill",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_overview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_persistence",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_skipping",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L74",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_test_coverage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_when_it_runs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_17_wiki_initialization_llm_wiki_skill",
+      "target": "docs_17_wiki_init_wiki_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_initialization",
+      "target": "docs_17_wiki_init_directory_structure_created_on_first_boot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_initialization",
+      "target": "docs_17_wiki_init_ownership",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/17-wiki-init.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "docs_17_wiki_init_initialization",
+      "target": "docs_17_wiki_init_schema_md_backbone",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation",
-      "target": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation"
     },
     {
       "relation": "contains",
@@ -8039,9 +8333,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "target": "docs_gap_report_dual_hermes_installation_1_inventory_of_all_hermes_installation_points",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_1_inventory_of_all_hermes_installation_points"
     },
     {
       "relation": "contains",
@@ -8049,9 +8343,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "target": "docs_gap_report_dual_hermes_installation_2_active_runtime_code_paths",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_2_active_runtime_code_paths"
     },
     {
       "relation": "contains",
@@ -8059,9 +8353,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L80",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "target": "docs_gap_report_dual_hermes_installation_3_duplication_assessment",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_3_duplication_assessment"
     },
     {
       "relation": "contains",
@@ -8069,9 +8363,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L103",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "target": "docs_gap_report_dual_hermes_installation_4_recommendations",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_4_recommendations"
     },
     {
       "relation": "contains",
@@ -8079,9 +8373,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L128",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "target": "docs_gap_report_dual_hermes_installation_5_proposed_prd_updates",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_5_proposed_prd_updates"
     },
     {
       "relation": "contains",
@@ -8089,9 +8383,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L140",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "target": "docs_gap_report_dual_hermes_installation_6_specific_files_paths_to_change",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_6_specific_files_paths_to_change"
     },
     {
       "relation": "contains",
@@ -8099,9 +8393,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L153",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_gap_report_dual_hermes_installation_investigation",
-      "target": "docs_gap_report_dual_hermes_installation_7_verified_facts_from_running_container",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_7_verified_facts_from_running_container"
     },
     {
       "relation": "contains",
@@ -8109,9 +8403,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L11",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_1_inventory_of_all_hermes_installation_points",
-      "target": "docs_gap_report_dual_hermes_installation_installation_a_base_image_venv_active_at_runtime",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_installation_a_base_image_venv_active_at_runtime"
     },
     {
       "relation": "contains",
@@ -8119,9 +8413,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_1_inventory_of_all_hermes_installation_points",
-      "target": "docs_gap_report_dual_hermes_installation_installation_b_staged_clone_passive_staging",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_installation_b_staged_clone_passive_staging"
     },
     {
       "relation": "contains",
@@ -8129,9 +8423,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_1_inventory_of_all_hermes_installation_points",
-      "target": "docs_gap_report_dual_hermes_installation_installation_c_config_skills_runtime_state",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_installation_c_config_skills_runtime_state"
     },
     {
       "relation": "contains",
@@ -8139,9 +8433,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_2_active_runtime_code_paths",
-      "target": "docs_gap_report_dual_hermes_installation_path_1_webui_chat_port_8787",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_path_1_webui_chat_port_8787"
     },
     {
       "relation": "contains",
@@ -8149,9 +8443,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_2_active_runtime_code_paths",
-      "target": "docs_gap_report_dual_hermes_installation_path_2_gateway_api_port_8642",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_path_2_gateway_api_port_8642"
     },
     {
       "relation": "contains",
@@ -8159,9 +8453,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L62",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_2_active_runtime_code_paths",
-      "target": "docs_gap_report_dual_hermes_installation_path_3_staged_agent_deps_pipeline_installation_b",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_path_3_staged_agent_deps_pipeline_installation_b"
     },
     {
       "relation": "contains",
@@ -8169,9 +8463,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_3_duplication_assessment",
-      "target": "docs_gap_report_dual_hermes_installation_what_is_duplicated",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_what_is_duplicated"
     },
     {
       "relation": "contains",
@@ -8179,9 +8473,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L89",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_3_duplication_assessment",
-      "target": "docs_gap_report_dual_hermes_installation_what_is_not_duplicated",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_what_is_not_duplicated"
     },
     {
       "relation": "contains",
@@ -8189,9 +8483,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L95",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_3_duplication_assessment",
-      "target": "docs_gap_report_dual_hermes_installation_why_the_duplication_exists",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_why_the_duplication_exists"
     },
     {
       "relation": "contains",
@@ -8199,9 +8493,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L105",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_4_recommendations",
-      "target": "docs_gap_report_dual_hermes_installation_option_a_keep_current_architecture_recommended",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_option_a_keep_current_architecture_recommended"
     },
     {
       "relation": "contains",
@@ -8209,9 +8503,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_4_recommendations",
-      "target": "docs_gap_report_dual_hermes_installation_option_b_unify_not_recommended",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_option_b_unify_not_recommended"
     },
     {
       "relation": "contains",
@@ -8219,9 +8513,9 @@
       "source_file": "docs/gap-report-dual-hermes-installation.md",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_gap_report_dual_hermes_installation_4_recommendations",
-      "target": "docs_gap_report_dual_hermes_installation_option_c_eliminate_staged_agent_not_recommended",
-      "confidence_score": 1.0
+      "target": "docs_gap_report_dual_hermes_installation_option_c_eliminate_staged_agent_not_recommended"
     },
     {
       "relation": "implements",
@@ -9772,5 +10066,5 @@
       "source_file": "AGENTS.md"
     }
   ],
-  "built_at_commit": "09c730d03de0b3d89f8d3e7dbf1c09a8b97a3e36"
+  "built_at_commit": "2bf2f113c123aa21bc07e2b2ce94bce33524530d"
 }
