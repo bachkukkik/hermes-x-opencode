@@ -202,6 +202,27 @@ echo "=== Done ==="
 | AC27 | graphify CLI available | `docker exec $C test -x /usr/local/bin/graphify` |
 | AC28 | graphify Hermes skill registered | `docker exec $C test -f /home/hermeswebui/.hermes/skills/graphify/SKILL.md` |
 | AC29 | graphify OpenCode skill registered | `docker exec $C test -f /home/hermeswebui/.config/opencode/skills/graphify/SKILL.md` |
+| AC30 | Agent clone trimmed | `docker exec $C test ! -d /opt/hermes-agent-staging/skills` (no skills/, docs/, tests/ after Dockerfile trim) |
+
+### Wiki initialization tests (14-wiki-init.bats)
+
+| ID | Test | Command |
+|----|------|---------|
+| WI1 | Wiki dir exists | `docker exec $C test -d /home/hermeswebui/.hermes/wiki` |
+| WI2 | SCHEMA.md exists | `docker exec $C test -f /home/hermeswebui/.hermes/wiki/SCHEMA.md` |
+| WI3 | Subdirs created | `docker exec $C test -d /home/hermeswebui/.hermes/wiki/raw/articles` (+ concepts, entities, comparisons, queries) |
+| WI4 | SCHEMA.md content | `docker exec $C head -5 .../wiki/SCHEMA.md` contains "domain" (case-insensitive) |
+| WI5 | Index and log exist | `docker exec $C test -f .../wiki/index.md && test -f .../wiki/log.md` |
+
+### Agent installation architecture tests (15-agent-installation-architecture.bats)
+
+| ID | Test | Command |
+|----|------|---------|
+| AC26 | Staged clone has pyproject.toml | `docker exec $C test -f /opt/hermes-agent-staging/pyproject.toml` |
+| AC27 | Runtime copy exists | `docker exec $C test -d /home/hermeswebui/.hermes/hermes-agent` |
+| AC28 | Agent not running from staging | `docker exec $C test ! -d /opt/hermes-agent-staging/skills` (trimmed after install-skills.sh) |
+| AC29 | CustomProfile User-Agent patch | `docker exec $C grep -q '"User-Agent".*"hermes-agent' ...custom/__init__.py` |
+| AC30 | Staged clone trimmed | `docker exec $C test ! -d /opt/hermes-agent-staging/docs` |
 
 ## Verification
 
@@ -209,7 +230,7 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## What Works
 
-- All 29 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, ~87 tests). AC16 and AC23 require `OPENCODE_SERVE_ENABLED=true`. AC0.3 and AC23 use port-based checks (`/dev/tcp`) because curl is blocked by serve auth.
+- All 30 acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, ~109 tests). AC16 and AC23 require `OPENCODE_SERVE_ENABLED=true`. AC0.3 and AC23 use port-based checks (`/dev/tcp`) because curl is blocked by serve auth. Wiki initialization verified by 14-wiki-init.bats (WI1-WI5, 17 tests). Agent installation architecture verified by 15-agent-installation-architecture.bats (5 tests).
 - Health endpoints respond within 50ms for WebUI and Gateway
 - Gateway chat returns valid OpenAI-format responses with correct `usage` stats
 - Session creation, chat, streaming, and cleanup work through the WebUI API
@@ -236,4 +257,4 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## Verdict
 
-The testing coverage is comprehensive. All 29 acceptance criteria are automated in the bats test suite (`tests/run.sh`, ~87 tests), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), OpenCode serve health (AC23, requires `OPENCODE_SERVE_ENABLED=true`), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). A negative test verifies port 4096 is NOT listening when serve is disabled. The main gap is AC23 testing only port reachability rather than a full LLM call through OpenCode serve (curl is blocked by serve password auth).
+The testing coverage is comprehensive. All 30 acceptance criteria are automated in the bats test suite (`tests/run.sh`, ~109 tests), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), agent installation architecture (AC26–AC30 in 15-agent-installation-architecture.bats), wiki initialization (WI1–WI5 in 14-wiki-init.bats), OpenCode serve health (AC23, requires `OPENCODE_SERVE_ENABLED=true`), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). A negative test verifies port 4096 is NOT listening when serve is disabled. The main gap is AC23 testing only port reachability rather than a full LLM call through OpenCode serve (curl is blocked by serve password auth).

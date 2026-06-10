@@ -366,3 +366,19 @@ print('OK: {} llama_cpp models checked'.format(len(llama_models)))
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
     [[ "$result" == OK:* ]] || [ "$result" = "SKIP: no llama_cpp models" ]
 }
+
+
+@test "AC31: config.yaml has skills.external_dirs pointing to optional-skills" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # append_skills_external_dirs() adds this after ensure_agent() runs
+    run docker exec "$cid" grep -q 'external_dirs' /home/hermeswebui/.hermes/config.yaml
+    [ "$status" -eq 0 ]
+
+    # Verify the optional-skills directory actually exists (ensure_agent must have run first)
+    run docker exec "$cid" test -d /home/hermeswebui/.hermes/hermes-agent/optional-skills
+    [ "$status" -eq 0 ]
+}
