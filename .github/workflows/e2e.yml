@@ -37,6 +37,7 @@ jobs:
         env:
           SKIP_BUILD: "0"
           SKIP_CLEANUP: "0"
+          BUILDKIT_PROGRESS: plain
 
       - name: Collect logs on failure
         if: failure()

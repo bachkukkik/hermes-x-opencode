@@ -42,7 +42,7 @@ if [ "$SKIP_BUILD" = "1" ]; then
     echo "== Skipping build (SKIP_BUILD=1)"
 else
     echo "== Building image..."
-    docker compose "${COMPOSE_OPTS[@]}" build
+    BUILDKIT_PROGRESS=plain docker compose "${COMPOSE_OPTS[@]}" build
 fi
 
 echo "== Starting stack..."
