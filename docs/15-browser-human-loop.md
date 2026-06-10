@@ -43,7 +43,7 @@ Container: hermes-opencode
 2. `Xvfb :99 -screen 0 1280x720x24 ...` as `hermeswebui` (background)
 3. `export DISPLAY=:99` then brief `sleep 1` for X readiness
 4. `openbox` (background, X window manager — Chromium needs one)
-5. `x11vnc -storepasswd "$BROWSER_VNC_PASSWORD" /tmp/.vnc_passwd` then `chown hermeswebui`
+5. `rm -f /tmp/.vnc_passwd` (removes stale password file from prior container starts that can cause Permission denied), then `x11vnc -storepasswd "$BROWSER_VNC_PASSWORD" /tmp/.vnc_passwd`, then `chown hermeswebui`
 6. `x11vnc -display :99 -rfbport 5900 -rfbauth /tmp/.vnc_passwd -forever -shared` (background)
 7. `websockify 6901 localhost:5900 --web=/usr/share/novnc` (background)
 8. `chromium --remote-debugging-port=9222 --user-data-dir=... --no-sandbox ...` as `hermeswebui` (background)

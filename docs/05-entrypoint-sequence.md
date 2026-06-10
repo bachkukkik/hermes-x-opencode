@@ -19,22 +19,23 @@ The script is located at `volumes_hermes_opencode/build/scripts/entrypoint.sh` a
 
 ### Modular architecture
 
-The entrypoint is a 78-line orchestrator. All logic lives in 11 sourced library modules under `scripts/lib/`:
+The entrypoint is a 81-line orchestrator. All logic lives in 12 sourced library modules under `scripts/lib/`:
 
 ```
-scripts/entrypoint.sh          (78 lines — orchestrator, sources lib/*.sh)
+scripts/entrypoint.sh          (81 lines — orchestrator, sources lib/*.sh)
 scripts/lib/
 ├── constants.sh               (11 lines — path and user variable declarations)
 ├── runtime-env.sh             (41 lines — runtime environment detection helpers)
 ├── port-utils.sh              (31 lines — TCP port readiness polling)
 ├── agent-setup.sh             (16 lines — hermes-agent staging/copy logic)
 ├── model-discovery.sh         (100 lines — model list discovery from OpenAI-compatible API)
-├── config-hermes.sh           (84 lines — hermes config.yaml generation)
+├── config-hermes.sh           (116 lines — hermes config.yaml generation + skills.external_dirs appending)
 ├── config-opencode.sh         (268 lines — OpenCode config generation)
 ├── validate-opencode.sh       (38 lines — OpenCode Zen API key validation)
-├── service-gateway.sh         (23 lines — Hermes gateway service startup)
+├── service-gateway.sh         (24 lines — Hermes gateway service startup)
 ├── service-opencode.sh        (25 lines — OpenCode serve service startup)
-└── service-browser-vnc.sh     (71 lines — Browser/VNC human-in-the-loop stack startup)
+├── wiki-init.sh               (84 lines — wiki directory initialization for llm-wiki skill)
+└── service-browser-vnc.sh     (73 lines — Browser/VNC human-in-the-loop stack startup)
 ```
 
 Modules are sourced in dependency order: constants first (defines paths), then helpers (runtime-env, port-utils, agent-setup), then configuration generators (model-discovery → config-hermes → config-opencode → validate-opencode), then service starters (gateway → opencode → browser-vnc).
