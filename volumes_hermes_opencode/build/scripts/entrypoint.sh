@@ -52,6 +52,13 @@ ensure_agent
 init_wiki
 append_skills_external_dirs
 
+# --- Seed AGENTS.md into /workspace if not already present ---
+if [ -f /usr/local/share/AGENTS.md ] && [ ! -f /workspace/AGENTS.md ]; then
+    cp /usr/local/share/AGENTS.md /workspace/AGENTS.md
+    chown "${OPENCODE_USER}:${OPENCODE_USER}" /workspace/AGENTS.md
+    echo "== Seeded AGENTS.md to /workspace/"
+fi
+
 # --- WebUI ---
 /hermeswebui_init.bash &
 WEBUI_PID=$!
