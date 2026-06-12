@@ -555,7 +555,7 @@ opencode /workspace/project -m opencode/deepseek-v4-flash-free \
   --prompt "Add retry logic to api.py"
 ```
 
-Free models that require no auth: `opencode/deepseek-v4-flash-free`, `opencode/mimo-v2.5-free`.
+Free models that require no auth: `opencode/deepseek-v4-flash-free`, `opencode/mimo-v2.5-free`, `opencode/nemotron-3-ultra-free`, `opencode/north-mini-code-free`, `opencode/big-pickle`.
 
 ### Pattern 2 — Plan → Build Pipeline, Chained One-Shots (verified)
 

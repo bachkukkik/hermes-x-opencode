@@ -69,9 +69,11 @@ These models require no API key and are built into OpenCode:
 |-------|-------|
 | `opencode/deepseek-v4-flash-free` | General-purpose, fast |
 | `opencode/mimo-v2.5-free` | Alternative free tier |
-| `opencode/minimax-m3-free` | Available but less tested |
 | `opencode/nemotron-3-ultra-free` | Available but less tested |
+| `opencode/north-mini-code-free` | Code-focused free tier |
 | `opencode/big-pickle` | Available but less tested |
+
+> Verified against `opencode models opencode` output on OpenCode v1.16.2. The previous `minimax-m3-free` model has been removed; current minimax models (`m2.5`, `m2.7`) are paid.
 
 ## Gateway Supervision
 
