@@ -89,7 +89,7 @@ sm = c.get('small_model', '')
 print(sm)
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
     [ -n "$small_model" ]
-    [[ "$small_model" == litellm/* ]]
+    [[ "$small_model" == litellm/* ]] || [[ "$small_model" == opencode/* ]]
 }
 
 @test "opencode.jsonc small_model matches OPENCODE_SMALL_MODEL, OPENAI_SMALL_MODEL, or defaults to model" {
@@ -110,7 +110,12 @@ print(c.get('model', ''))
     configured_small=$(echo "$small_model" | head -1)
     default_model=$(echo "$small_model" | tail -1)
     [ -n "$configured_small" ]
-    if [ -n "${OPENCODE_SMALL_MODEL:-}" ]; then
+    if [ -n "${OPENCODE_API_KEY:-}" ]; then
+        local zen_small="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}}}"
+        zen_small="${zen_small#opencode/}"
+        zen_small="${zen_small#litellm/}"
+        [ "$configured_small" = "opencode/$zen_small" ]
+    elif [ -n "${OPENCODE_SMALL_MODEL:-}" ]; then
         [ "$configured_small" = "litellm/${OPENCODE_SMALL_MODEL}" ]
     elif [ -n "${OPENAI_SMALL_MODEL:-}" ]; then
         [ "$configured_small" = "litellm/${OPENAI_SMALL_MODEL}" ]
@@ -132,6 +137,9 @@ text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
 text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
 c = json.loads(text)
 models = c.get('provider', {}).get('litellm', {}).get('models', {})
+if not models:
+    print('SKIP: no litellm models (Zen-only mode)')
+    sys.exit(0)
 empty = []
 missing_limit = []
 bad_type = []
@@ -151,7 +159,7 @@ if errors:
     sys.exit(1)
 print('OK: {} models'.format(len(models)))
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
-    [[ "$result" == OK:* ]]
+    [[ "$result" == OK:* ]] || [ "$result" = "SKIP: no litellm models (Zen-only mode)" ]
 }
 
 @test "opencode.jsonc model limits are within sane ranges" {
@@ -167,6 +175,9 @@ text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
 text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
 c = json.loads(text)
 models = c.get('provider', {}).get('litellm', {}).get('models', {})
+if not models:
+    print('SKIP: no litellm models (Zen-only mode)')
+    sys.exit(0)
 bad = []
 for mid, val in models.items():
     lim = val.get('limit', {})
@@ -181,7 +192,7 @@ if bad:
     sys.exit(1)
 print('OK')
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
-    [ "$result" = "OK" ]
+    [ "$result" = "OK" ] || [ "$result" = "SKIP: no litellm models (Zen-only mode)" ]
 }
 
 @test "config.yaml always has at least one model entry (fallback resilience)" {
@@ -221,7 +232,6 @@ print('OK')
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    local expected="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
     local configured_model
     configured_model=$(docker exec "$cid" python3 -c "
 import json, re, sys
@@ -232,7 +242,15 @@ c = json.loads(text)
 print(c.get('model', ''))
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
     [ -n "$configured_model" ]
-    [ "$configured_model" = "litellm/${expected}" ]
+    if [ -n "${OPENCODE_API_KEY:-}" ]; then
+        local zen_expected="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}"
+        zen_expected="${zen_expected#opencode/}"
+        zen_expected="${zen_expected#litellm/}"
+        [ "$configured_model" = "opencode/$zen_expected" ]
+    else
+        local expected="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
+        [ "$configured_model" = "litellm/${expected}" ]
+    fi
 }
 
 @test "FIX #28: root's opencode config matches hermeswebui's" {
@@ -347,6 +365,9 @@ text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
 text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
 c = json.loads(text)
 models = c.get('provider', {}).get('litellm', {}).get('models', {})
+if not models:
+    print('SKIP: no litellm models (Zen-only mode)')
+    sys.exit(0)
 llama_models = {k: v for k, v in models.items() if 'llama_cpp/' in k}
 if not llama_models:
     print('SKIP: no llama_cpp models')
@@ -364,7 +385,7 @@ if bad:
     sys.exit(1)
 print('OK: {} llama_cpp models checked'.format(len(llama_models)))
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
-    [[ "$result" == OK:* ]] || [ "$result" = "SKIP: no llama_cpp models" ]
+    [[ "$result" == OK:* ]] || [ "$result" = "SKIP: no llama_cpp models" ] || [ "$result" = "SKIP: no litellm models (Zen-only mode)" ]
 }
 
 

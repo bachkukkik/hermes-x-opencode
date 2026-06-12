@@ -1,8 +1,8 @@
 services:
   hermes-opencode:
     build:
-      context: ./volumes_hermes_opencode/build
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: volumes_hermes_opencode/build/Dockerfile
     # ports:
     #   - "${HERMES_WEBUI_PORT:-8787}:8787"
     #   - "${HERMES_API_PORT:-8642}:8642"
@@ -48,7 +48,7 @@ services:
       - OPENCODE_SERVER_PASSWORD=${OPENCODE_SERVER_PASSWORD:-}
       - BROWSER_HUMAN_LOOP_ENABLED=${BROWSER_HUMAN_LOOP_ENABLED:-false}
       - BROWSER_VNC_PASSWORD=${BROWSER_VNC_PASSWORD:-}
-      - WIKI_PATH=${WIKI_PATH:-/home/hermeswebui/.hermes/wiki}
+      - WIKI_PATH=/home/hermeswebui/.hermes/wiki
     networks:
       default:
         aliases:

@@ -17,7 +17,8 @@ start_opencode_serve() {
         export OPENCODE_SERVER_PASSWORD="$password"
     fi
     echo "$password" > /tmp/opencode-server-password
-    chown "$OPENCODE_USER":"$OPENCODE_USER" /tmp/opencode-server-password
+    echo "$password" > "${HERMES_HOME}/opencode_server_password"
+    chown "$OPENCODE_USER":"$OPENCODE_USER" /tmp/opencode-server-password "${HERMES_HOME}/opencode_server_password"
     local workdir="${OPENCODE_USER_HOME}"
     echo "== Starting opencode serve on :4096 (workdir: $workdir, user: $OPENCODE_USER)..."
     su -s /bin/bash "$OPENCODE_USER" -c "OPENCODE_SERVER_PASSWORD='$password' opencode serve --port 4096 --hostname 0.0.0.0" &

@@ -1,0 +1,6 @@
+.git
+.env
+*.pyc
+__pycache__
+volumes_hermes_opencode/data/
+node_modules/

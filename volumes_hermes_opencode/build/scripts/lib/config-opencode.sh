@@ -1,19 +1,39 @@
 # lib/config-opencode.sh - OpenCode config generation - sourced by entrypoint.sh
 
+_strip_provider_prefix() {
+    local model="$1"
+    case "$model" in
+        opencode/*) echo "${model#opencode/}" ;;
+        litellm/*) echo "${model#litellm/}" ;;
+        *) echo "$model" ;;
+    esac
+}
+
 generate_opencode_config() {
-    if [ -z "${OPENAI_BASE_URL:-}" ] || [ -z "${OPENAI_API_KEY:-}" ]; then
-        echo "!! Skipping opencode config: missing OPENAI_BASE_URL or OPENAI_API_KEY."
+    local _has_opencode_key=false
+    local _has_openai_creds=false
+    [ -n "${OPENCODE_API_KEY:-}" ] && _has_opencode_key=true
+    [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ] && _has_openai_creds=true
+
+    if ! $_has_opencode_key && ! $_has_openai_creds; then
+        echo "!! Skipping opencode config: missing OPENCODE_API_KEY or (OPENAI_BASE_URL + OPENAI_API_KEY)."
         return
     fi
 
     mkdir -p "$(dirname "$OPENCODE_CONFIG")"
 
-    local default_model="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
-    local small_model="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-$default_model}}"
+    local provider_prefix="litellm"
+    $_has_opencode_key && provider_prefix="opencode"
+
+    local default_model
+    default_model="$(_strip_provider_prefix "${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}")"
+    local small_model
+    small_model="$(_strip_provider_prefix "${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-$default_model}}")"
     local base_url="${OPENAI_BASE_URL%/}"
 
-    local models_json
-    models_json=$(echo "$DISCOVERED_MODELS" | python3 -c "
+    local models_json=""
+    if $_has_openai_creds; then
+        models_json=$(echo "$DISCOVERED_MODELS" | python3 -c "
 import sys, re, json
 
 def get_limits(model_id):
@@ -61,6 +81,7 @@ for line in sys.stdin:
 
 print(','.join(entries))
 " 2>/dev/null)
+    fi
 
     local security_mode="${OPENCODE_SECURITY_MODE:-strict}"
     local permission_block
@@ -210,15 +231,9 @@ PERMEOF
             ;;
     esac
 
-    cat > "$OPENCODE_CONFIG" << JSONEOF
-{
-  "\$schema": "https://opencode.ai/config.json",
-  "plugin": [
-    "@tarquinen/opencode-dcp@latest",
-    "@franlol/opencode-md-table-formatter@latest",
-    "cc-safety-net"
-  ],
-${permission_block}
+    local provider_block
+    if $_has_openai_creds; then
+        provider_block=$(cat << PROVEOF
   "provider": {
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
@@ -230,12 +245,30 @@ ${permission_block}
       }
     }
   },
-  "model": "litellm/${default_model}",
-  "small_model": "litellm/${small_model}"
+PROVEOF
+)
+    else
+        provider_block='  "provider": {},'
+    fi
+
+    cat > "$OPENCODE_CONFIG" << JSONEOF
+{
+  "\$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "@tarquinen/opencode-dcp@latest",
+    "@franlol/opencode-md-table-formatter@latest",
+    "cc-safety-net"
+  ],
+${permission_block}
+${provider_block}
+  "model": "${provider_prefix}/${default_model}",
+  "small_model": "${provider_prefix}/${small_model}"
 }
 JSONEOF
 
-    echo "== Wrote opencode.jsonc with $(echo "$DISCOVERED_MODELS" | wc -l) models (security: ${security_mode})."
+    local _model_count=0
+    $_has_openai_creds && _model_count=$(echo "$DISCOVERED_MODELS" | wc -l)
+    echo "== Wrote opencode.jsonc with ${_model_count} models, provider: ${provider_prefix} (security: ${security_mode})."
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
 
