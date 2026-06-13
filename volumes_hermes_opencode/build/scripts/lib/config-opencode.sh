@@ -330,26 +330,35 @@ JSONEOF
     fi
     echo "== Copied opencode.jsonc to ${root_opencode_config_dir}/opencode.jsonc (root config)."
 
-    # --- Seed auth.json as fallback for opencode provider ---
-    # {env:OPENCODE_API_KEY} requires the env var at runtime; auth.json is
-    # OpenCode's native credential store, seeded here as a fallback.
-    if $_has_opencode_key; then
+    # --- Seed auth.json as fallback credential store ---
+    # {env:VAR} in opencode.jsonc requires the env var at runtime; auth.json is
+    # OpenCode's native credential store, seeded here as a fallback for both
+    # the opencode (Zen) and litellm (proxy) providers.
+    if $_has_opencode_key || $_has_openai_creds; then
         local user_auth_dir="${OPENCODE_USER_HOME}/.local/share/opencode"
         local user_auth="${user_auth_dir}/auth.json"
         local root_auth="/root/.local/share/opencode/auth.json"
         mkdir -p "$user_auth_dir"
+        local _openai_key="${OPENAI_API_KEY:-}"
         python3 -c "
 import json, sys
+auth = {}
+oc_key = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else ''
+ai_key = sys.argv[3] if len(sys.argv) > 3 and sys.argv[3] else ''
+if oc_key:
+    auth['opencode'] = {'apiKey': oc_key}
+if ai_key:
+    auth['litellm'] = {'apiKey': ai_key}
 with open(sys.argv[1], 'w') as f:
-    json.dump({'opencode': {'apiKey': sys.argv[2]}}, f)
-" "$user_auth" "$OPENCODE_API_KEY"
+    json.dump(auth, f)
+" "$user_auth" "$OPENCODE_API_KEY" "$_openai_key"
         chmod 600 "$user_auth"
         chown "${OPENCODE_USER}:${OPENCODE_USER}" "$user_auth"
         mkdir -p "$(dirname "$root_auth")"
         if [ "$(readlink -f "$user_auth")" != "$(readlink -f "$root_auth")" ]; then
             cp "$user_auth" "$root_auth"
         fi
-        echo "== Seeded auth.json (opencode provider fallback)."
+        echo "== Seeded auth.json (opencode + litellm provider fallbacks)."
     fi
 
     # --- Fix #29: Symlink root's opencode data dir to hermeswebui's ---

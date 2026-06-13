@@ -24,7 +24,17 @@ start_opencode_serve() {
     mkdir -p "${OPENCODE_USER_HOME}/.local/state"
     chown "${OPENCODE_USER}:${OPENCODE_USER}" "${OPENCODE_USER_HOME}/.local/state"
     local opencode_key="${OPENCODE_API_KEY:-}"
+    local openai_key="${OPENAI_API_KEY:-}"
+    local openai_url="${OPENAI_BASE_URL:-}"
     echo "== Starting opencode serve on :4096 (workdir: $workdir, user: $OPENCODE_USER)..."
-    su -s /bin/bash "$OPENCODE_USER" -c "OPENCODE_SERVER_PASSWORD='$password' OPENCODE_API_KEY='$opencode_key' opencode serve --port 4096 --hostname 0.0.0.0" &
+    # Pass all provider env vars through su — {env:VAR} in opencode.jsonc
+    # resolves at runtime from the process environment. Without these,
+    # the litellm provider gets an empty apiKey (401 "no key passed in").
+    su -s /bin/bash "$OPENCODE_USER" -c \
+      "OPENCODE_SERVER_PASSWORD='$password' \
+       OPENCODE_API_KEY='$opencode_key' \
+       OPENAI_API_KEY='$openai_key' \
+       OPENAI_BASE_URL='$openai_url' \
+       opencode serve --port 4096 --hostname 0.0.0.0" &
     echo "== OpenCode serve started (PID: $!)"
 }

@@ -696,3 +696,39 @@ print('OK')
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
     [ "$result" = "OK" ]
 }
+
+@test "ZEN: auth.json includes litellm provider key when OPENAI_API_KEY set" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    local openai_key
+    openai_key=$(docker exec "$cid" printenv OPENAI_API_KEY 2>/dev/null)
+    [ -n "$openai_key" ] || skip 'OPENAI_API_KEY not set'
+
+    # auth.json must have litellm.apiKey
+    local result
+    result=$(docker exec "$cid" python3 -c "
+import json, sys
+c = json.load(open(sys.argv[1]))
+api_key = c.get('litellm', {}).get('apiKey', '')
+if not api_key:
+    print('FAIL: empty litellm.apiKey')
+    sys.exit(1)
+print('OK')
+" /home/hermeswebui/.local/share/opencode/auth.json 2>/dev/null)
+    [ "$result" = "OK" ]
+}
+
+@test "LITELLM: service-opencode.sh passes OPENAI_API_KEY through su" {
+    # Verify the service script includes OPENAI_API_KEY in the su command
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run docker exec "$cid" grep -c 'OPENAI_API_KEY' /usr/local/bin/lib/service-opencode.sh 2>/dev/null || true
+    # The script must reference OPENAI_API_KEY at least twice (local var + su passthrough)
+    [ "$status" -eq 0 ]
+    [ "$output" -ge 2 ]
+}
