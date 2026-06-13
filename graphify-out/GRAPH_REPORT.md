@@ -1,64 +1,64 @@
 # Graph Report - .  (2026-06-13)
 
 ## Corpus Check
-- 23 files · ~33,190 words
+- 28 files · ~33,272 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 597 nodes · 646 edges · 51 communities (32 shown, 19 thin omitted)
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 44 edges (avg confidence: 0.81)
-- Token cost: 0 input · 0 output
+- 619 nodes · 672 edges · 51 communities (33 shown, 18 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
+- Token cost: 19,907 input · 3,875 output
 
 ## Community Hubs (Navigation)
-- [[_COMMUNITY_Build Pipeline & Acceptance Criteria|Build Pipeline & Acceptance Criteria]]
-- [[_COMMUNITY_Quick Start & README|Quick Start & README]]
+- [[_COMMUNITY_Acceptance Criteria & Build Pipeline|Acceptance Criteria & Build Pipeline]]
+- [[_COMMUNITY_README & Quick Start|README & Quick Start]]
 - [[_COMMUNITY_PRD & Product Overview|PRD & Product Overview]]
-- [[_COMMUNITY_Dual Installation Architecture|Dual Installation Architecture]]
+- [[_COMMUNITY_Agent Installation Architecture|Agent Installation Architecture]]
 - [[_COMMUNITY_Skill Installation|Skill Installation]]
-- [[_COMMUNITY_Provider Routing & Zen Auth|Provider Routing & Zen Auth]]
+- [[_COMMUNITY_Provider Auth & CI Testing|Provider Auth & CI Testing]]
+- [[_COMMUNITY_OpenCode Provider Routing|OpenCode Provider Routing]]
 - [[_COMMUNITY_Testing & Verification|Testing & Verification]]
-- [[_COMMUNITY_Security Rules & Patterns|Security Rules & Patterns]]
-- [[_COMMUNITY_Gap Report Dual Installation|Gap Report: Dual Installation]]
+- [[_COMMUNITY_Container Security & Graphify|Container Security & Graphify]]
+- [[_COMMUNITY_Dual Installation Gap Report|Dual Installation Gap Report]]
 - [[_COMMUNITY_Model Discovery|Model Discovery]]
 - [[_COMMUNITY_Security Hardening|Security Hardening]]
-- [[_COMMUNITY_Docker Health & Build Verification|Docker Health & Build Verification]]
+- [[_COMMUNITY_Dockerfile & Build Health|Dockerfile & Build Health]]
 - [[_COMMUNITY_Config & Environment|Config & Environment]]
-- [[_COMMUNITY_Volume Layout|Volume Layout]]
+- [[_COMMUNITY_Volume Layout & Dockerignore|Volume Layout & Dockerignore]]
 - [[_COMMUNITY_Entrypoint Sequence|Entrypoint Sequence]]
 - [[_COMMUNITY_Hermes Gateway|Hermes Gateway]]
-- [[_COMMUNITY_Build Pipeline Steps|Build Pipeline Steps]]
+- [[_COMMUNITY_Build Pipeline|Build Pipeline]]
 - [[_COMMUNITY_Cloudflare UA Fix|Cloudflare UA Fix]]
 - [[_COMMUNITY_Plugin System|Plugin System]]
 - [[_COMMUNITY_Hermes WebUI|Hermes WebUI]]
 - [[_COMMUNITY_OpenCode Serve|OpenCode Serve]]
-- [[_COMMUNITY_Delegation Matrix|Delegation Matrix]]
+- [[_COMMUNITY_Delegation Pattern Matrix|Delegation Pattern Matrix]]
 - [[_COMMUNITY_Browser Human-in-the-Loop|Browser Human-in-the-Loop]]
-- [[_COMMUNITY_Agent Installation Architecture|Agent Installation Architecture]]
+- [[_COMMUNITY_Agent Installation Comparison|Agent Installation Comparison]]
 - [[_COMMUNITY_Wiki Initialization|Wiki Initialization]]
 - [[_COMMUNITY_AGENTS.md Standing Orders|AGENTS.md Standing Orders]]
 - [[_COMMUNITY_Docker Compose Overrides|Docker Compose Overrides]]
-- [[_COMMUNITY_Test Helper (common.bash)|Test Helper (common.bash)]]
-- [[_COMMUNITY_Config Patterns & Interpolation|Config Patterns & Interpolation]]
-- [[_COMMUNITY_CI Workflow & Mock LLM|CI Workflow & Mock LLM]]
-- [[_COMMUNITY_Test Runner (run.sh)|Test Runner (run.sh)]]
-- [[_COMMUNITY_Model Filters|Model Filters]]
-- [[_COMMUNITY_VNC & Chromium CDP Stack|VNC & Chromium CDP Stack]]
-- [[_COMMUNITY_Mock LLM Server Script|Mock LLM Server Script]]
-- [[_COMMUNITY_Quick Start Models|Quick Start Models]]
-- [[_COMMUNITY_Chat Flow & SSE Streaming|Chat Flow & SSE Streaming]]
-- [[_COMMUNITY_ARM64 Platform|ARM64 Platform]]
-- [[_COMMUNITY_Bash Heredoc JSON Rule|Bash Heredoc JSON Rule]]
+- [[_COMMUNITY_Test Helper Utilities|Test Helper Utilities]]
+- [[_COMMUNITY_Config Generation Patterns|Config Generation Patterns]]
+- [[_COMMUNITY_E2E CI Workflow & Mock LLM|E2E CI Workflow & Mock LLM]]
+- [[_COMMUNITY_Test Runner Script|Test Runner Script]]
+- [[_COMMUNITY_Model Discovery Filters|Model Discovery Filters]]
+- [[_COMMUNITY_Chromium CDP & VNC|Chromium CDP & VNC]]
+- [[_COMMUNITY_Model Discovery & Quick Start|Model Discovery & Quick Start]]
+- [[_COMMUNITY_Async Chat & SSE Streaming|Async Chat & SSE Streaming]]
+- [[_COMMUNITY_ARM64 Target Platform|ARM64 Target Platform]]
+- [[_COMMUNITY_Heredoc JSON Pattern|Heredoc JSON Pattern]]
 - [[_COMMUNITY_Mandated Skills Policy|Mandated Skills Policy]]
 - [[_COMMUNITY_No Hardcoded Secrets Rule|No Hardcoded Secrets Rule]]
 - [[_COMMUNITY_No shell=True Rule|No shell=True Rule]]
-- [[_COMMUNITY_Build Arg Agent Version|Build Arg: Agent Version]]
-- [[_COMMUNITY_Zen Key Validation|Zen Key Validation]]
+- [[_COMMUNITY_Agent Version Build Arg|Agent Version Build Arg]]
+- [[_COMMUNITY_Zen API Key Validation|Zen API Key Validation]]
 - [[_COMMUNITY_Hermes Subagent Delegation|Hermes Subagent Delegation]]
-- [[_COMMUNITY_Delegation Matrix Reference|Delegation Matrix Reference]]
+- [[_COMMUNITY_Delegation Pattern Matrix Doc|Delegation Pattern Matrix Doc]]
 - [[_COMMUNITY_Model Discovery Fallback|Model Discovery Fallback]]
-- [[_COMMUNITY_validate_opencode_zen_key|validate_opencode_zen_key]]
-- [[_COMMUNITY_Session Continuity|Session Continuity]]
-- [[_COMMUNITY_Data Flow Pipeline|Data Flow Pipeline]]
+- [[_COMMUNITY_Zen Key Validator Function|Zen Key Validator Function]]
+- [[_COMMUNITY_Session Continuity Header|Session Continuity Header]]
+- [[_COMMUNITY_Data Flow Architecture|Data Flow Architecture]]
 - [[_COMMUNITY_Wiki Init Tests|Wiki Init Tests]]
 - [[_COMMUNITY_HMAC Cookie Auth|HMAC Cookie Auth]]
 
@@ -103,13 +103,13 @@
 - **Dual Installation Architecture** — agent_install_a_detail, agent_install_b_detail, agent_propagation_chain, agent_why_both_exist [EXTRACTED 0.95]
 - **Wiki Initialization Pipeline** — wiki_init_function, wiki_schema_backbone, wiki_dir_structure [EXTRACTED 0.90]
 
-## Communities (51 total, 19 thin omitted)
+## Communities (51 total, 18 thin omitted)
 
-### Community 0 - "Build Pipeline & Acceptance Criteria"
+### Community 0 - "Acceptance Criteria & Build Pipeline"
 Cohesion: 0.09
 Nodes (57): Acceptance Criteria (AC1-AC29), Linux ARM64 Target Platform, Multi-Step Docker Build Pipeline, cc-safety-net Plugin (PreToolUse Hook), portainer-cloudflare-traefik_default Network, Cloudflare UA Patch (CustomProfile sed), Config Generation (config.yaml + opencode.jsonc), Bats E2E Test Suite (+49 more)
 
-### Community 1 - "Quick Start & README"
+### Community 1 - "README & Quick Start"
 Cohesion: 0.06
 Nodes (34): 1. Clone this repo, 2. Configure environment, 3. Build and start, 4. Use it, 5. Verify OpenCode works, Agent Version, Architecture, config.yaml has expanded API key instead of literal string (+26 more)
 
@@ -117,7 +117,7 @@ Nodes (34): 1. Clone this repo, 2. Configure environment, 3. Build and start, 4.
 Cohesion: 0.07
 Nodes (29): 10. Acceptance Criteria, 1. Product Overview, 2. Architecture, 3. Tech Stack, 4. File Inventory, 5.1 `Dockerfile` (at `volumes_hermes_opencode/build/Dockerfile`), 5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`), 5.3 `docker-compose.yml` (+21 more)
 
-### Community 3 - "Dual Installation Architecture"
+### Community 3 - "Agent Installation Architecture"
 Cohesion: 0.08
 Nodes (27): Image Bloat Mitigation Detail, Installation A — Active Runtime Detail, Installation B — Staged Clone Detail, User-Agent Patch Propagation Chain, Why Both Installations Exist (Rationale), Browser Human-in-the-Loop Capability, Dual Installation Architecture, Agent Source Goes to Staging Path (+19 more)
 
@@ -125,133 +125,137 @@ Nodes (27): Image Bloat Mitigation Detail, Installation A — Active Runtime Det
 Cohesion: 0.07
 Nodes (27): 11 — Skill Installation, Build phase, How, Platform skill discovery, Resolution, Runtime phase, Skill directories, Skill sources (+19 more)
 
-### Community 5 - "Provider Routing & Zen Auth"
+### Community 5 - "Provider Auth & CI Testing"
+Cohesion: 0.10
+Nodes (24): auth.json Seeding (opencode + litellm providers), Bats Testing Framework, Collect Docker Compose Logs on Failure, config-opencode.sh (opencode.jsonc generator), Hermes x OpenCode Docker Compose Stack, E2E Tests CI Workflow, Create .env from Secrets Step, Env Var Conditional (_HAS_OPENAI_KEY) (+16 more)
+
+### Community 6 - "OpenCode Provider Routing"
 Cohesion: 0.10
 Nodes (22): OpenCode Provider Block (issue #46), Per-Model Provider Routing (issue #46), auth.json Credential Store Seeding, Explicit opencode Provider Block, Per-Model Provider Routing Decision Table, Free Models Require OPENCODE_API_KEY, opencode run with litellm/ BROKEN, Serve + Attach Pattern (RECOMMENDED) (+14 more)
 
-### Community 6 - "Testing & Verification"
+### Community 7 - "Testing & Verification"
 Cohesion: 0.09
 Nodes (21): 09 — Testing and Verification, Acceptance criteria mapping, Agent installation architecture tests (15-agent-installation-architecture.bats), Agent source and patch, Full smoke test script, Gateway chat test, Gateway models endpoint, How (+13 more)
 
-### Community 7 - "Security Rules & Patterns"
+### Community 8 - "Container Security & Graphify"
 Cohesion: 0.10
 Nodes (21): CustomProfile User-Agent Header Rule, Graphify Skill, Container: hermes-opencode, host.docker.internal extra_hosts Fix, Docker overlayfs ARM64 Issue, Security Modes (strict/standard/yolo), Graphify Build-Time Registration, Skill Staging (Two-Phase) (+13 more)
 
-### Community 8 - "Gap Report: Dual Installation"
+### Community 9 - "Dual Installation Gap Report"
 Cohesion: 0.10
 Nodes (20): 1. Inventory of All Hermes Installation Points, 2. Active Runtime Code Paths, 3. Duplication Assessment, 4. Recommendations, 5. Proposed PRD Updates, 6. Specific Files/Paths to Change, 7. Verified Facts (from running container), Gap Report: Dual Hermes Installation Investigation (+12 more)
 
-### Community 9 - "Model Discovery"
+### Community 10 - "Model Discovery"
 Cohesion: 0.11
 Nodes (18): 10 — Model Discovery and Multi-Model Support, Case-insensitive dedup, Discovery flow, Fallback behavior, Hermes config format, How, Model counts, Model limits (+10 more)
 
-### Community 10 - "Security Hardening"
+### Community 11 - "Security Hardening"
 Cohesion: 0.11
 Nodes (18): 13 — Security Hardening, Attack testing results, Configuration, File access rules, How, Known remaining gaps, Layer 1: User isolation, Layer 2: cc-safety-net plugin (+10 more)
 
-### Community 11 - "Docker Health & Build Verification"
+### Community 12 - "Dockerfile & Build Health"
 Cohesion: 0.11
 Nodes (18): LLM-Wiki Capability, Dockerfile (Multi-Step Build), Build-Time Verification Step, Docker Healthcheck (healthcheck.sh), hermes-opencode Docker Compose Service, Optional Wiki Volume Mount, Library Modules (scripts/lib/), entrypoint.sh (Thin Orchestrator) (+10 more)
 
-### Community 12 - "Config & Environment"
+### Community 13 - "Config & Environment"
 Cohesion: 0.11
 Nodes (17): 06 — Config and Env, Config path resolution, config.yaml (Hermes), Environment variables, Hardcoded environment (in docker-compose.yml), How, opencode.jsonc (OpenCode), Resolution (+9 more)
 
-### Community 13 - "Volume Layout"
+### Community 14 - "Volume Layout & Dockerignore"
 Cohesion: 0.11
 Nodes (17): 07 — Volume Layout, Bind mounts, Directory structure, .dockerignore (volumes_hermes_opencode/), .dockerignore (volumes_hermes_opencode/build/), First-start agent copy, .gitignore (root), .gitignore (volumes_hermes_opencode/) (+9 more)
 
-### Community 14 - "Entrypoint Sequence"
+### Community 15 - "Entrypoint Sequence"
 Cohesion: 0.12
 Nodes (16): 05 — Entrypoint Sequence, Config generation details, Execution sequence, Functions, How, Key variables, Model discovery details, Modular architecture (+8 more)
 
-### Community 15 - "Hermes Gateway"
+### Community 16 - "Hermes Gateway"
 Cohesion: 0.13
 Nodes (14): 02 — Hermes Gateway, API key auto-generation, HERMES_HOME resolution, How, Key endpoints, Resolution, Restart-loop supervisor, Usage example (+6 more)
 
-### Community 16 - "Build Pipeline Steps"
+### Community 17 - "Build Pipeline"
 Cohesion: 0.13
 Nodes (14): 04 — Build Pipeline, Agent staging, Build command, Build steps (in order), How, Platform, Resolution, Skill staging (+6 more)
 
-### Community 17 - "Cloudflare UA Fix"
+### Community 18 - "Cloudflare UA Fix"
 Cohesion: 0.13
 Nodes (14): 08 — Cloudflare UA Fix, Affected file, Build-time vs runtime, How, Patch command, Resolution, Verdict, Verification (+6 more)
 
-### Community 18 - "Plugin System"
+### Community 19 - "Plugin System"
 Cohesion: 0.13
 Nodes (14): 12 — Plugin System, cc-safety-net architecture, How, Interaction with permission system, Plugin failure behavior, Plugin inventory, Plugin resolution, Resolution (+6 more)
 
-### Community 19 - "Hermes WebUI"
+### Community 20 - "Hermes WebUI"
 Cohesion: 0.15
 Nodes (12): 01 — Hermes WebUI, Chat flow, How, Key endpoints, Resolution, Session management, Verdict, Verification (+4 more)
 
-### Community 20 - "OpenCode Serve"
+### Community 21 - "OpenCode Serve"
 Cohesion: 0.15
 Nodes (12): 03 — OpenCode Serve, Authentication, Connect from a remote machine, Connect from another container on the same network, How, Resolution, Verdict, Verification (+4 more)
 
-### Community 21 - "Delegation Matrix"
+### Community 22 - "Delegation Pattern Matrix"
 Cohesion: 0.15
 Nodes (12): 14 — Delegation Pattern Matrix, Architecture: Serve + Attach (Recommended), Broken Patterns (Do Not Use), Conditionally Working Patterns, Delegation Matrix, Free Models, Gateway Supervision, Production-Ready Patterns (+4 more)
 
-### Community 22 - "Browser Human-in-the-Loop"
+### Community 23 - "Browser Human-in-the-Loop"
 Cohesion: 0.15
 Nodes (12): 15 — Browser Human-in-the-Loop, How, How Hermes attaches, Resolution, Start sequence (inside `entrypoint.sh`), Usage, Verdict, Verification (+4 more)
 
-### Community 23 - "Agent Installation Architecture"
+### Community 24 - "Agent Installation Comparison"
 Cohesion: 0.15
 Nodes (12): 16 — Agent Installation Architecture, Comparison Table, Image Bloat Mitigation, Installation A — Base Image Venv (Active Runtime), Installation B — Staged Clone (Deps Pipeline), Overview, Propagation Chain, Verdict (+4 more)
 
-### Community 24 - "Wiki Initialization"
+### Community 25 - "Wiki Initialization"
 Cohesion: 0.15
 Nodes (12): 17. Wiki Initialization (llm-wiki skill), Directory structure (created on first boot), Initialization, Integration with llm-wiki skill, Overview, Ownership, Persistence, SCHEMA.md backbone (+4 more)
 
-### Community 25 - "AGENTS.md Standing Orders"
+### Community 26 - "AGENTS.md Standing Orders"
 Cohesion: 0.17
 Nodes (11): 1. MANDATED SKILLS, 2. Code Quality Rules, 3. Docker/Build Constraints, 4. File Locations (inside container), 5. Security Modes, 6. Verification Commands, 7. Project-Specific Patterns, 8. Agent Capabilities (+3 more)
 
-### Community 26 - "Docker Compose Overrides"
+### Community 27 - "Docker Compose Overrides"
 Cohesion: 0.17
 Nodes (11): 16 — Docker Compose Overrides, docker-compose.ci.yml (CI Port Publishing), docker-compose.override.yml (Cloudflare/Traefik), How, Resolution, Verdict, Verification, What (+3 more)
 
-### Community 27 - "Test Helper (common.bash)"
+### Community 28 - "Test Helper Utilities"
 Cohesion: 0.31
 Nodes (8): common.bash script, gateway_base(), get_api_key(), get_container(), opencode_base(), skip_if_no_secrets(), wait_for_healthy(), webui_base()
 
-### Community 28 - "Config Patterns & Interpolation"
+### Community 29 - "Config Generation Patterns"
 Cohesion: 0.25
 Nodes (8): Both model.default and model.name Rule, browser.cdp_url Config Injection, Env-Driven Configuration Pattern, Cosmetic has_key:false Issue, OpenCode {env:VAR} Key Interpolation, Dual Config Model List Sync, generate_config() Function, Empty default_model in models_cache.json
 
-### Community 29 - "CI Workflow & Mock LLM"
+### Community 30 - "E2E CI Workflow & Mock LLM"
 Cohesion: 0.33
 Nodes (7): .env Seeding from GitHub Secrets, Collect Logs on Failure, Mock LLM Server for CI, E2E Test Workflow (GitHub Actions), 30 Acceptance Criteria (AC1-AC30), Bats E2E Test Suite (~109 tests), Mock LLM Server Detail (tests/mock-llm-server.sh)
 
-### Community 31 - "Model Filters"
+### Community 32 - "Model Discovery Filters"
 Cohesion: 0.40
 Nodes (5): No Wildcard Model Patterns Rule, Case-Insensitive Model Dedup, Non-Chat Model Filter, Wildcard/Model-Group Filter, discover_models() Function
 
-### Community 32 - "VNC & Chromium CDP Stack"
+### Community 33 - "Chromium CDP & VNC"
 Cohesion: 0.50
 Nodes (4): Chromium CDP Endpoint (:9222), noVNC + websockify (:6901), Chromium User Data Persistence, Xvfb Virtual Display (:99)
 
 ## Knowledge Gaps
-- **333 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+328 more)
+- **344 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+339 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **18 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `OpenCode Serve (Headless HTTP Server)` connect `Provider Routing & Zen Auth` to `Dual Installation Architecture`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **Why does `Sequential Startup with Health Gates` connect `Dual Installation Architecture` to `Provider Routing & Zen Auth`?**
+- **Why does `OpenCode Serve (Headless HTTP Server)` connect `OpenCode Provider Routing` to `Agent Installation Architecture`?**
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+- **Why does `Sequential Startup with Health Gates` connect `Agent Installation Architecture` to `OpenCode Provider Routing`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `docker-compose.yml — Service Definition` (e.g. with `hermeswebui User Isolation (UID 1000)` and `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`) actually correct?**
   _`docker-compose.yml — Service Definition` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules` to the rest of the system?**
-  _384 weakly-connected nodes found - possible documentation gaps or missing edges._
-- **Should `Build Pipeline & Acceptance Criteria` be split into smaller, more focused modules?**
+  _395 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Acceptance Criteria & Build Pipeline` be split into smaller, more focused modules?**
   _Cohesion score 0.08709273182957393 - nodes in this community are weakly interconnected._
-- **Should `Quick Start & README` be split into smaller, more focused modules?**
+- **Should `README & Quick Start` be split into smaller, more focused modules?**
   _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
 - **Should `PRD & Product Overview` be split into smaller, more focused modules?**
   _Cohesion score 0.06666666666666667 - nodes in this community are weakly interconnected._
