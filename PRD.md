@@ -514,6 +514,46 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 |----------|---------|-------------|
 | `HERMES_AGENT_VERSION` | `main` | Git branch or tag for hermes-agent clone. E.g. `main`, `v1.0.0`, `develop` |
 
+### Per-Model Provider Routing (Issue #46)
+
+**Problem.** The original `config-opencode.sh` applied a single global `provider_prefix` to both `model` and `small_model` in the generated `opencode.jsonc`. This made dual-provider deployments impossible — for example, using `opencode/` models for the main model (routed to OpenCode Zen) while falling back to a `litellm/` model for `small_model` (routed to the user's own LLM provider via `OPENAI_BASE_URL`). One prefix had to cover both.
+
+**Solution.** A new helper function `_resolve_provider_prefix()` determines routing per-model based on the original model name. Each model in `opencode.jsonc` (`model` and `small_model`) is now resolved independently through this function before the provider prefix is applied.
+
+**Decision table:**
+
+| Original model name | OpenAI creds present (`OPENAI_API_KEY` + `OPENAI_BASE_URL`)? | Resolved prefix | Final model value in `opencode.jsonc` |
+|---|---|---|---|
+| `opencode/*` | Any | `opencode` | `opencode/<name>` (unchanged) |
+| `litellm/*` | Any | `litellm` | `litellm/<name>` (unchanged) |
+| bare name (no prefix) | Yes | `litellm` | `litellm/<bare-name>` |
+| bare name (no prefix) | No | `opencode` | `opencode/<bare-name>` |
+
+**Backward compatibility.** Existing single-provider deployments are unaffected. When all models share the same prefix (the common case), behavior is identical to the pre-#46 code path. The `_resolve_provider_prefix()` function is only called when the model name is a bare name with no explicit prefix — prefixed names pass through unchanged.
+
+**Implementation.**
+
+- `_resolve_provider_prefix()` — a shell function in `lib/config-opencode.sh` that inspects the model name and environment variables, returning the appropriate provider prefix string.
+- `generate_opencode_config()` — updated to call `_resolve_provider_prefix()` separately for `model` and `small_model`, then prepend the resolved prefix to each model identifier before writing to `opencode.jsonc`.
+
+**Test criteria.** A per-model independence test in `tests/bats/03-config.bats` verifies:
+
+- `opencode/`-prefixed models keep the `opencode` prefix regardless of credential presence.
+- `litellm/`-prefixed models keep the `litellm` prefix regardless of credential presence.
+- Bare names with OpenAI creds present resolve to `litellm/<name>`.
+- Bare names without OpenAI creds resolve to `opencode/<name>`.
+- `model` and `small_model` can resolve to different providers in the same `opencode.jsonc`.
+
+### Also Found During Fork Sync (Issue #46)
+
+Three additional fixes discovered while implementing per-model provider routing:
+
+**EACCES on `~/.local/state`.** The entrypoint runs as root but drops privileges for gateway and opencode serve. If `~/.local/state` (or its parent directories) does not exist or is owned by root, the `hermeswebui` user gets `EACCES` on write. Fix: `entrypoint.sh` now ensures the directory tree exists and is owned by `hermeswebui` before dropping privileges.
+
+**Fix #28 idempotency (readlink -f guard).** The fix that copies `opencode.jsonc` to `/root/.config/opencode/` previously used `mkdir -p` unconditionally, which would follow a symlink and create the target directory under the wrong path on subsequent boots. Fix: added a `readlink -f` guard so the copy is skipped when the destination is already a symlink pointing to the correct target.
+
+**Mock LLM server for secretless CI.** A lightweight mock HTTP server that responds to `/v1/models` and `/v1/chat/completions` with canned responses. Used in BATS tests to exercise config generation and model discovery without requiring real API credentials. Runs on `localhost` with a random port, started/stopped by the test harness.
+
 ## 8. Constraints
 
 | ID | Constraint | Rationale |

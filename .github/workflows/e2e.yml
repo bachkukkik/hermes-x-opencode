@@ -17,13 +17,20 @@ jobs:
       - name: Install bats
         run: sudo apt-get update && sudo apt-get install -y bats
 
+      - name: Start mock LLM server (when no real secrets)
+        if: ${{ !secrets.OPENAI_API_KEY }}
+        run: |
+          bash tests/mock-llm-server.sh &
+          sleep 2
+          curl -sf http://localhost:4000/health
+
       - name: Create .env from secrets
         run: |
           cat > .env << EOF
-          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
-          OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}
-          OPENAI_DEFAULT_MODEL=${{ secrets.OPENAI_DEFAULT_MODEL }}
-          OPENCODE_API_KEY=${{ secrets.OPENCODE_API_KEY }}
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY || 'mock-key' }}
+          OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL || 'http://localhost:4000' }}
+          OPENAI_DEFAULT_MODEL=${{ secrets.OPENAI_DEFAULT_MODEL || 'mock-model' }}
+          OPENCODE_API_KEY=${{ secrets.OPENCODE_API_KEY || 'mock' }}
           HERMES_WEBUI_SKIP_ONBOARDING=true
           HERMES_WEBUI_PASSWORD=
           HERMES_API_KEY=

@@ -169,6 +169,31 @@ curl -s -X POST "$BASE/api/session/delete" \
 echo "=== Done ==="
 ```
 
+### Mock LLM server (CI)
+
+`tests/mock-llm-server.sh` is a lightweight Python-stdlib HTTP server that mimics an OpenAI-compatible API. It enables CI to run the full test suite without real LLM provider secrets.
+
+**What it is:** A single-file bash script that embeds a Python `http.server.HTTPServer` using only the standard library (no pip dependencies). Listens on `0.0.0.0:${PORT:-4000}`.
+
+**How CI uses it:** The e2e workflow (`.github/workflows/e2e.yml`) conditionally starts the mock server when no real `OPENAI_API_KEY` secret is available. Fallback values are substituted for all secrets (`OPENAI_API_KEY=mock-key`, `OPENAI_BASE_URL=http://localhost:4000`, `OPENAI_DEFAULT_MODEL=mock-model`, `OPENCODE_API_KEY=mock`), so the container starts against the mock server and all model discovery / config generation proceeds normally.
+
+**Endpoints:**
+
+| Method | Path | Response |
+|--------|------|----------|
+| GET | `/health` | `{"status": "OK"}` |
+| GET | `/v1/models` | `{"object": "list", "data": [{"id": "mock-model", ...}]}` |
+| POST | `/v1/chat/completions` | Full OpenAI-format response (supports both streaming SSE and non-streaming) |
+| * | Any other path | `{"error": "not found"}` (404) |
+
+**Usage:**
+
+```bash
+bash tests/mock-llm-server.sh &    # start in background
+curl -sf http://localhost:4000/health  # verify it is up
+kill %1                              # stop it
+```
+
 ### Acceptance criteria mapping
 
 | AC | Test | Command |

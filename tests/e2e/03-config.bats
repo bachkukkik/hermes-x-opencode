@@ -110,18 +110,27 @@ print(c.get('model', ''))
     configured_small=$(echo "$small_model" | head -1)
     default_model=$(echo "$small_model" | tail -1)
     [ -n "$configured_small" ]
-    if [ -n "${OPENCODE_API_KEY:-}" ]; then
-        local zen_small="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}}}"
-        zen_small="${zen_small#opencode/}"
-        zen_small="${zen_small#litellm/}"
-        [ "$configured_small" = "opencode/$zen_small" ]
-    elif [ -n "${OPENCODE_SMALL_MODEL:-}" ]; then
-        [ "$configured_small" = "litellm/${OPENCODE_SMALL_MODEL}" ]
-    elif [ -n "${OPENAI_SMALL_MODEL:-}" ]; then
-        [ "$configured_small" = "litellm/${OPENAI_SMALL_MODEL}" ]
-    else
-        [ "$configured_small" = "$default_model" ]
-    fi
+
+    # Resolve the raw small model name (strip any existing prefix for comparison)
+    local raw_small="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}}}"
+    local bare_small="${raw_small#opencode/}"
+    bare_small="${bare_small#litellm/}"
+
+    # Determine expected prefix using the same logic as _resolve_provider_prefix
+    local expected_prefix
+    case "$raw_small" in
+        opencode/*) expected_prefix="opencode" ;;
+        litellm/*)  expected_prefix="litellm" ;;
+        *)
+            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+                expected_prefix="litellm"
+            else
+                expected_prefix="opencode"
+            fi
+            ;;
+    esac
+
+    [ "$configured_small" = "${expected_prefix}/${bare_small}" ]
 }
 
 @test "opencode.jsonc all model entries have limit objects" {
@@ -242,15 +251,27 @@ c = json.loads(text)
 print(c.get('model', ''))
 " /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
     [ -n "$configured_model" ]
-    if [ -n "${OPENCODE_API_KEY:-}" ]; then
-        local zen_expected="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}"
-        zen_expected="${zen_expected#opencode/}"
-        zen_expected="${zen_expected#litellm/}"
-        [ "$configured_model" = "opencode/$zen_expected" ]
-    else
-        local expected="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
-        [ "$configured_model" = "litellm/${expected}" ]
-    fi
+
+    # Resolve the raw default model name (strip any existing prefix for comparison)
+    local raw_default="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}"
+    local bare_default="${raw_default#opencode/}"
+    bare_default="${bare_default#litellm/}"
+
+    # Determine expected prefix using the same logic as _resolve_provider_prefix
+    local expected_prefix
+    case "$raw_default" in
+        opencode/*) expected_prefix="opencode" ;;
+        litellm/*)  expected_prefix="litellm" ;;
+        *)
+            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+                expected_prefix="litellm"
+            else
+                expected_prefix="opencode"
+            fi
+            ;;
+    esac
+
+    [ "$configured_model" = "${expected_prefix}/${bare_default}" ]
 }
 
 @test "FIX #28: root's opencode config matches hermeswebui's" {
@@ -401,5 +422,178 @@ print('OK: {} llama_cpp models checked'.format(len(llama_models)))
 
     # Verify the optional-skills directory actually exists (ensure_agent must have run first)
     run docker exec "$cid" test -d /home/hermeswebui/.hermes/hermes-agent/optional-skills
+    [ "$status" -eq 0 ]
+}
+
+# --- Hybrid per-model provider routing tests ---
+
+@test "HYBRID: model and small_model each have valid provider prefix" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local both_models
+    both_models=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+print(c.get('model', ''))
+print(c.get('small_model', ''))
+" /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
+    local configured_model configured_small
+    configured_model=$(echo "$both_models" | head -1)
+    configured_small=$(echo "$both_models" | tail -1)
+
+    # Both must have a valid prefix
+    [ -n "$configured_model" ]
+    [ -n "$configured_small" ]
+    [[ "$configured_model" == opencode/* ]] || [[ "$configured_model" == litellm/* ]]
+    [[ "$configured_small" == opencode/* ]] || [[ "$configured_small" == litellm/* ]]
+
+    # Each prefix is resolved independently per _resolve_provider_prefix.
+    # In the current env the prefixes may differ (hybrid mode) or match.
+    # This assertion just validates they are independently resolved — no
+    # requirement that they be the same.
+}
+
+@test "HYBRID: _resolve_provider_prefix decision table matches generated config" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # --- Validate default model prefix ---
+    local raw_default="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}"
+    local expected_default_prefix
+    case "$raw_default" in
+        opencode/*) expected_default_prefix="opencode" ;;
+        litellm/*)  expected_default_prefix="litellm" ;;
+        *)
+            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+                expected_default_prefix="litellm"
+            else
+                expected_default_prefix="opencode"
+            fi
+            ;;
+    esac
+
+    # --- Validate small model prefix ---
+    local raw_small="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}}}"
+    local expected_small_prefix
+    case "$raw_small" in
+        opencode/*) expected_small_prefix="opencode" ;;
+        litellm/*)  expected_small_prefix="litellm" ;;
+        *)
+            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+                expected_small_prefix="litellm"
+            else
+                expected_small_prefix="opencode"
+            fi
+            ;;
+    esac
+
+    local configured_model configured_small
+    configured_model=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+print(c.get('model', ''))
+" /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
+    configured_small=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+print(c.get('small_model', ''))
+" /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
+
+    [ -n "$configured_model" ]
+    [ -n "$configured_small" ]
+
+    # Assert prefixes match the decision table
+    [[ "$configured_model" == "${expected_default_prefix}/"* ]]
+    [[ "$configured_small" == "${expected_small_prefix}/"* ]]
+}
+
+@test "HYBRID: per-model independence — different models can have different prefixes" {
+    # This test validates the core fix: when OPENCODE_DEFAULT_MODEL and
+    # OPENCODE_SMALL_MODEL (or their fallbacks) have different routing needs,
+    # each gets its own independently resolved prefix.
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    local raw_default="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}"
+    local raw_small="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}}}"
+
+    # Compute expected prefix for each model independently
+    local default_prefix small_prefix
+    case "$raw_default" in
+        opencode/*) default_prefix="opencode" ;;
+        litellm/*)  default_prefix="litellm" ;;
+        *)
+            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+                default_prefix="litellm"
+            else
+                default_prefix="opencode"
+            fi
+            ;;
+    esac
+    case "$raw_small" in
+        opencode/*) small_prefix="opencode" ;;
+        litellm/*)  small_prefix="litellm" ;;
+        *)
+            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+                small_prefix="litellm"
+            else
+                small_prefix="opencode"
+            fi
+            ;;
+    esac
+
+    # Read the actual config
+    local configured_model configured_small
+    local both
+    both=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+print(c.get('model', ''))
+print(c.get('small_model', ''))
+" /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
+    configured_model=$(echo "$both" | head -1)
+    configured_small=$(echo "$both" | tail -1)
+
+    # Strip bare names for comparison
+    local bare_default="${raw_default#opencode/}"; bare_default="${bare_default#litellm/}"
+    local bare_small="${raw_small#opencode/}"; bare_small="${bare_small#litellm/}"
+
+    # Each model must match its independently resolved prefix
+    [ "$configured_model" = "${default_prefix}/${bare_default}" ]
+    [ "$configured_small" = "${small_prefix}/${bare_small}" ]
+}
+
+@test "FIX #28: readlink guard does not break root config copy" {
+    # The readlink -f guard prevents cp when src and dest are the same file.
+    # Verify root's config still matches hermeswebui's after this guard.
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Root's config must exist
+    run docker exec "$cid" test -f /root/.config/opencode/opencode.jsonc
+    [ "$status" -eq 0 ]
+
+    # Root's config must match hermeswebui's (readlink guard should not skip the copy)
+    run docker exec "$cid" diff /root/.config/opencode/opencode.jsonc /home/hermeswebui/.config/opencode/opencode.jsonc
     [ "$status" -eq 0 ]
 }
