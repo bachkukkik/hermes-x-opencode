@@ -9,6 +9,23 @@ generate_config() {
         echo "== Generated random HERMES_API_KEY: $api_key"
     fi
 
+    local yolo_mode="${HERMES_YOLO_MODE:-1}"
+    local approvals_block=""
+    case "$yolo_mode" in
+        1|true|yes|on)
+            approvals_block="
+approvals:
+  mode: off
+"
+            ;;
+    esac
+
+    local max_iter="${HERMES_DELEGATION_MAX_ITERATIONS:-50}"
+    local delegation_block="
+delegation:
+  max_iterations: ${max_iter}
+"
+
     if [ -z "${OPENAI_BASE_URL:-}" ]; then
         echo "!! No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
         cat > "$CONFIG" << YAMLEOF
@@ -33,6 +50,7 @@ platforms:
       port: 8642
       key: "${api_key}"
       cors_origins: "*"
+${approvals_block}${delegation_block}
 YAMLEOF
         echo "== Wrote minimal config.yaml."
         return
@@ -88,7 +106,7 @@ platforms:
       port: 8642
       key: "${api_key}"
       cors_origins: "*"
-${browser_block}${skills_block}
+${browser_block}${skills_block}${approvals_block}${delegation_block}
 YAMLEOF
 
     echo "== Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."
