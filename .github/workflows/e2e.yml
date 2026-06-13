@@ -10,6 +10,10 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # secrets context is not available in step if: conditions;
+      # copy to env var so the conditional can reference env.* instead
+      _HAS_OPENAI_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - uses: actions/checkout@v4
@@ -18,7 +22,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y bats
 
       - name: Start mock LLM server (when no real secrets)
-        if: ${{ !secrets.OPENAI_API_KEY }}
+        if: ${{ env._HAS_OPENAI_KEY == '' }}
         run: |
           bash tests/mock-llm-server.sh &
           sleep 2
