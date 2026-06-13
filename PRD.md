@@ -12,6 +12,10 @@ A Docker Compose stack that runs [Hermes WebUI](https://github.com/nicholasgriff
 
 **Data flow:** User → Browser/WebUI OR API client → Hermes Agent → OpenCode CLI (terminal tool) → LLM Provider (external)
 
+### Related Repositories
+
+Host-level (bare-metal) configuration generation — system packages, shell setup, dotfiles, and anything that runs directly on the host rather than in a container — has been split into a separate repository: [`hermes-x-opencode--host-machine`](https://github.com/bachkukkik/hermes-x-opencode--host-machine). This Docker stack repo is container-only and does not source or import the host-machine repo; the two are independent, linked by README cross-reference only.
+
 ## 2. Architecture
 
 ```
