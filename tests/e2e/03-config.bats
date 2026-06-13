@@ -597,3 +597,102 @@ print(c.get('small_model', ''))
     run docker exec "$cid" diff /root/.config/opencode/opencode.jsonc /home/hermeswebui/.config/opencode/opencode.jsonc
     [ "$status" -eq 0 ]
 }
+
+@test "ZEN: opencode provider block present when OPENCODE_API_KEY set" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Skip if opencode credentials are not configured in the container
+    local api_key_env
+    api_key_env=$(docker exec "$cid" printenv OPENCODE_API_KEY 2>/dev/null)
+    [ -n "$api_key_env" ] || skip 'OPENCODE_API_KEY not set'
+
+    # The opencode provider block must reference the key via the {env:...} indirection
+    local result
+    result=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+prov = c.get('provider', {}).get('opencode', {})
+if not prov:
+    print('FAIL: no opencode provider block')
+    sys.exit(1)
+api_key = prov.get('options', {}).get('apiKey', '')
+if api_key != '{env:OPENCODE_API_KEY}':
+    print('FAIL: apiKey=' + api_key)
+    sys.exit(1)
+print('OK')
+" /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
+    [ "$result" = "OK" ]
+}
+
+@test "ZEN: auth.json seeded with opencode provider credentials" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    local api_key_env
+    api_key_env=$(docker exec "$cid" printenv OPENCODE_API_KEY 2>/dev/null)
+    [ -n "$api_key_env" ] || skip 'OPENCODE_API_KEY not set'
+
+    # auth.json must exist
+    run docker exec "$cid" test -f /home/hermeswebui/.local/share/opencode/auth.json
+    [ "$status" -eq 0 ]
+
+    # opencode.apiKey field must be present and non-empty
+    local result
+    result=$(docker exec "$cid" python3 -c "
+import json, sys
+c = json.load(open(sys.argv[1]))
+api_key = c.get('opencode', {}).get('apiKey', '')
+if not api_key:
+    print('FAIL: empty opencode.apiKey')
+    sys.exit(1)
+print('OK')
+" /home/hermeswebui/.local/share/opencode/auth.json 2>/dev/null)
+    [ "$result" = "OK" ]
+
+    # Credentials file must be private (owner read/write only)
+    local perms
+    perms=$(docker exec "$cid" stat -c '%a' /home/hermeswebui/.local/share/opencode/auth.json 2>/dev/null)
+    [ "$perms" = "600" ]
+}
+
+@test "ZEN: opencode provider entry coexists with litellm in hybrid mode" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Hybrid mode requires both the opencode and litellm (openai) credentials
+    local opencode_key litellm_base
+    opencode_key=$(docker exec "$cid" printenv OPENCODE_API_KEY 2>/dev/null)
+    litellm_base=$(docker exec "$cid" printenv OPENAI_BASE_URL 2>/dev/null)
+    if [ -z "$opencode_key" ] || [ -z "$litellm_base" ]; then
+        skip 'hybrid mode requires both OPENCODE_API_KEY and OPENAI_BASE_URL'
+    fi
+
+    # Both providers must appear in the generated config
+    local result
+    result=$(docker exec "$cid" python3 -c "
+import json, re, sys
+text = open(sys.argv[1]).read()
+text = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', text)
+text = re.sub(r'/\*.*?\*/', '', text, flags=re.DOTALL)
+c = json.loads(text)
+providers = c.get('provider', {})
+if 'opencode' not in providers:
+    print('FAIL: opencode provider missing')
+    sys.exit(1)
+if 'litellm' not in providers:
+    print('FAIL: litellm provider missing')
+    sys.exit(1)
+print('OK')
+" /home/hermeswebui/.config/opencode/opencode.jsonc 2>/dev/null)
+    [ "$result" = "OK" ]
+}

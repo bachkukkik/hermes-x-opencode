@@ -531,6 +531,8 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 
 **Backward compatibility.** Existing single-provider deployments are unaffected. When all models share the same prefix (the common case), behavior is identical to the pre-#46 code path. The `_resolve_provider_prefix()` function is only called when the model name is a bare name with no explicit prefix — prefixed names pass through unchanged.
 
+**OpenCode provider block (companion fix).** When `OPENCODE_API_KEY` is set, an explicit `opencode` provider entry is generated in `opencode.jsonc` with `apiKey: {env:OPENCODE_API_KEY}`. This ensures built-in `opencode/` models (like `deepseek-v4-flash-free`) have proper authentication mapping. Additionally, `auth.json` is seeded as a fallback credential store, and `OPENCODE_API_KEY` is explicitly passed through `su` in `service-opencode.sh`.
+
 **Implementation.**
 
 - `_resolve_provider_prefix()` — a shell function in `lib/config-opencode.sh` that inspects the model name and environment variables, returning the appropriate provider prefix string.
