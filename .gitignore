@@ -221,6 +221,7 @@ __marimo__/
 
 # Volume runtime data (databases, sessions, cache, agent state, workspace files)
 !volumes_hermes_opencode/build/scripts/lib/
+!host-install/lib/
 volumes_hermes_opencode/data/hermes-home/*
 !volumes_hermes_opencode/data/hermes-home/.gitkeep
 volumes_hermes_opencode/data/workspace/*

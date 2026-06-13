@@ -15,7 +15,7 @@ discover_models() {
     echo "== Discovering models from $base_url ..."
     local response
     response=$(curl -sf --max-time 15 \
-        -H "Authorization: Bearer $api_key" \
+        -H "Authorization: Bearer ${api_key}" \
         "${base_url}/models" 2>/dev/null || echo "")
 
     if [ -z "$response" ]; then
