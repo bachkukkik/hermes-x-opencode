@@ -727,7 +727,7 @@ print('OK')
     cid=$(get_container)
     [ -n "$cid" ]
 
-    run docker exec "$cid" grep -c 'OPENAI_API_KEY' /opt/hermes-opencode/scripts/lib/service-opencode.sh 2>/dev/null || true
+    run docker exec "$cid" grep -c 'OPENAI_API_KEY' /usr/local/bin/lib/service-opencode.sh 2>/dev/null || true
     # The script must reference OPENAI_API_KEY at least twice (local var + su passthrough)
     [ "$status" -eq 0 ]
     [ "$output" -ge 2 ]
