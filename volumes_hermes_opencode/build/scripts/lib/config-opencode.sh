@@ -1,5 +1,20 @@
 # lib/config-opencode.sh - OpenCode config generation - sourced by entrypoint.sh
 
+_resolve_provider_prefix() {
+    local model="$1"
+    case "$model" in
+        opencode/*) echo "opencode" ;;
+        litellm/*)  echo "litellm" ;;
+        *)
+            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+                echo "litellm"
+            else
+                echo "opencode"
+            fi
+            ;;
+    esac
+}
+
 _strip_provider_prefix() {
     local model="$1"
     case "$model" in
@@ -22,13 +37,18 @@ generate_opencode_config() {
 
     mkdir -p "$(dirname "$OPENCODE_CONFIG")"
 
-    local provider_prefix="litellm"
-    $_has_opencode_key && provider_prefix="opencode"
+    local _raw_default_model="${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}"
+    local _raw_small_model="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-$_raw_default_model}}"
 
     local default_model
-    default_model="$(_strip_provider_prefix "${OPENCODE_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-deepseek-v4-flash-free}}")"
+    default_model="$(_strip_provider_prefix "$_raw_default_model")"
     local small_model
-    small_model="$(_strip_provider_prefix "${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-$default_model}}")"
+    small_model="$(_strip_provider_prefix "$_raw_small_model")"
+
+    local default_prefix
+    default_prefix=$(_resolve_provider_prefix "$_raw_default_model")
+    local small_prefix
+    small_prefix=$(_resolve_provider_prefix "$_raw_small_model")
     local base_url="${OPENAI_BASE_URL%/}"
 
     local models_json=""
@@ -261,14 +281,14 @@ PROVEOF
   ],
 ${permission_block}
 ${provider_block}
-  "model": "${provider_prefix}/${default_model}",
-  "small_model": "${provider_prefix}/${small_model}"
+  "model": "${default_prefix}/${default_model}",
+  "small_model": "${small_prefix}/${small_model}"
 }
 JSONEOF
 
     local _model_count=0
     $_has_openai_creds && _model_count=$(echo "$DISCOVERED_MODELS" | wc -l)
-    echo "== Wrote opencode.jsonc with ${_model_count} models, provider: ${provider_prefix} (security: ${security_mode})."
+    echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_prefix}/${default_model}, small: ${small_prefix}/${small_model} (security: ${security_mode})."
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
 
@@ -277,7 +297,9 @@ JSONEOF
     # Without this, root has an empty config and custom providers are invisible.
     local root_opencode_config_dir="/root/.config/opencode"
     mkdir -p "$root_opencode_config_dir"
-    cp "$OPENCODE_CONFIG" "${root_opencode_config_dir}/opencode.jsonc"
+    if [ "$(readlink -f "$OPENCODE_CONFIG")" != "$(readlink -f "${root_opencode_config_dir}/opencode.jsonc")" ]; then
+        cp "$OPENCODE_CONFIG" "${root_opencode_config_dir}/opencode.jsonc"
+    fi
     echo "== Copied opencode.jsonc to ${root_opencode_config_dir}/opencode.jsonc (root config)."
 
     # --- Fix #29: Symlink root's opencode data dir to hermeswebui's ---

@@ -20,6 +20,9 @@ start_opencode_serve() {
     echo "$password" > "${HERMES_HOME}/opencode_server_password"
     chown "$OPENCODE_USER":"$OPENCODE_USER" /tmp/opencode-server-password "${HERMES_HOME}/opencode_server_password"
     local workdir="${OPENCODE_USER_HOME}"
+    # Ensure ~/.local/state exists and is owned by the user (opencode serve writes state here)
+    mkdir -p "${OPENCODE_USER_HOME}/.local/state"
+    chown "${OPENCODE_USER}:${OPENCODE_USER}" "${OPENCODE_USER_HOME}/.local/state"
     echo "== Starting opencode serve on :4096 (workdir: $workdir, user: $OPENCODE_USER)..."
     su -s /bin/bash "$OPENCODE_USER" -c "OPENCODE_SERVER_PASSWORD='$password' opencode serve --port 4096 --hostname 0.0.0.0" &
     echo "== OpenCode serve started (PID: $!)"
