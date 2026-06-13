@@ -228,3 +228,5 @@ volumes_hermes_opencode/data/workspace/*
 graphify-out/cache/*
 !graphify-out/cache/.gitkeep
 .graphify*
+# Only root-level graphify-out is tracked; test artifacts are ephemeral
+tests/**/graphify-out/
