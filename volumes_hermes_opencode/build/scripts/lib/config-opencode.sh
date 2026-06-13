@@ -251,10 +251,22 @@ PERMEOF
             ;;
     esac
 
-    local provider_block
+    # Build provider entries: opencode (built-in models) then litellm (proxy)
+    local _oc_entry=""
+    if $_has_opencode_key; then
+        _oc_entry=$(cat << 'OCEOF'
+    "opencode": {
+      "options": {
+        "apiKey": "{env:OPENCODE_API_KEY}"
+      }
+    }
+OCEOF
+)
+    fi
+
+    local _ll_entry=""
     if $_has_openai_creds; then
-        provider_block=$(cat << PROVEOF
-  "provider": {
+        _ll_entry=$(cat << PROVEOF
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
@@ -264,12 +276,26 @@ PERMEOF
       "models": {${models_json}
       }
     }
-  },
 PROVEOF
 )
-    else
-        provider_block='  "provider": {},'
     fi
+
+    # Join entries (comma-separated), wrap in provider block
+    local _entries=""
+    if [ -n "$_oc_entry" ] && [ -n "$_ll_entry" ]; then
+        _entries="${_oc_entry},
+${_ll_entry}"
+    else
+        _entries="${_oc_entry}${_ll_entry}"
+    fi
+
+    local provider_block
+    provider_block=$(cat << PEMEOF
+  "provider": {
+${_entries}
+  },
+PEMEOF
+)
 
     cat > "$OPENCODE_CONFIG" << JSONEOF
 {
@@ -288,7 +314,9 @@ JSONEOF
 
     local _model_count=0
     $_has_openai_creds && _model_count=$(echo "$DISCOVERED_MODELS" | wc -l)
-    echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_prefix}/${default_model}, small: ${small_prefix}/${small_model} (security: ${security_mode})."
+    local _zen_status="disabled"
+    $_has_opencode_key && _zen_status="enabled"
+    echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_prefix}/${default_model}, small: ${small_prefix}/${small_model} (security: ${security_mode}, opencode_zen: ${_zen_status})."
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
 
@@ -301,6 +329,28 @@ JSONEOF
         cp "$OPENCODE_CONFIG" "${root_opencode_config_dir}/opencode.jsonc"
     fi
     echo "== Copied opencode.jsonc to ${root_opencode_config_dir}/opencode.jsonc (root config)."
+
+    # --- Seed auth.json as fallback for opencode provider ---
+    # {env:OPENCODE_API_KEY} requires the env var at runtime; auth.json is
+    # OpenCode's native credential store, seeded here as a fallback.
+    if $_has_opencode_key; then
+        local user_auth_dir="${OPENCODE_USER_HOME}/.local/share/opencode"
+        local user_auth="${user_auth_dir}/auth.json"
+        local root_auth="/root/.local/share/opencode/auth.json"
+        mkdir -p "$user_auth_dir"
+        python3 -c "
+import json, sys
+with open(sys.argv[1], 'w') as f:
+    json.dump({'opencode': {'apiKey': sys.argv[2]}}, f)
+" "$user_auth" "$OPENCODE_API_KEY"
+        chmod 600 "$user_auth"
+        chown "${OPENCODE_USER}:${OPENCODE_USER}" "$user_auth"
+        mkdir -p "$(dirname "$root_auth")"
+        if [ "$(readlink -f "$user_auth")" != "$(readlink -f "$root_auth")" ]; then
+            cp "$user_auth" "$root_auth"
+        fi
+        echo "== Seeded auth.json (opencode provider fallback)."
+    fi
 
     # --- Fix #29: Symlink root's opencode data dir to hermeswebui's ---
     # opencode serve runs as hermeswebui, so sessions live in hermeswebui's DB.

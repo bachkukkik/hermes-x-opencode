@@ -105,6 +105,7 @@ docker exec $(docker compose ps -q hermes-opencode) python3 -m json.tool /home/h
 - **Cloudflare blocks OpenAI SDK default User-Agent** — the CustomProfile patch (`hermes-agent/1.0`) is critical for LLM calls to work
 - **Model discovery filters**: exclude embed, whisper, tts, dall-e, sora, image, realtime, transcrib, moderat, audio, codegen, babbage, davinci, curie, ada, text-, stable, midjourney, flux, /sd/, mj, replicate, resolution, and wildcard patterns ending with `/*`
 - **Per-model provider routing** (issue #46): `_resolve_provider_prefix()` in `config-opencode.sh` determines `opencode/` vs `litellm/` prefix independently per model based on the raw model name and available credentials. Supports hybrid deployments where `model` routes through LiteLLM and `small_model` routes through Zen (or vice versa).
+- **OpenCode provider block** (issue #46): When `OPENCODE_API_KEY` is set, an explicit `opencode` provider entry with `apiKey: {env:OPENCODE_API_KEY}` is generated in `opencode.jsonc`. Also seeds `auth.json` as fallback credential store and passes `OPENCODE_API_KEY` explicitly through `su` in `service-opencode.sh`. Required for built-in `opencode/` models (e.g. `deepseek-v4-flash-free`) to authenticate.
 - **Mock LLM server for CI**: `tests/mock-llm-server.sh` provides a Python stdlib HTTP server on port 4000 for secretless CI. Started conditionally when `OPENAI_BASE_URL=http://localhost:4000`.
 
 ### 8. Agent Capabilities

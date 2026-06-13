@@ -150,6 +150,28 @@ Key constraints for the OpenCode config:
 
 The only behavioral change is in dual-provider mode. Previously, both `model` and `small_model` always received the `litellm` prefix, causing 401 errors when the small model was a Zen-only model (e.g. `deepseek-v4-flash-free`). With per-model routing, each model's prefix is resolved independently based on its name.
 
+**OpenCode provider block.** When `OPENCODE_API_KEY` is set, an explicit `opencode` provider entry is generated in `opencode.jsonc` alongside the `litellm` provider (if OpenAI credentials are also present). This ensures built-in `opencode/` models (like `deepseek-v4-flash-free`) have an explicit API key mapping rather than relying on implicit resolution:
+
+```jsonc
+"provider": {
+  "opencode": {
+    "options": {
+      "apiKey": "{env:OPENCODE_API_KEY}"
+    }
+  },
+  "litellm": {
+    "npm": "@ai-sdk/openai-compatible",
+    "options": {
+      "apiKey": "{env:OPENAI_API_KEY}",
+      "baseURL": "https://litellm-sw.example.com/v1"
+    },
+    "models": { ... }
+  }
+}
+```
+
+As a fallback credential store, `auth.json` is also seeded with the `OPENCODE_API_KEY` at `~/.local/share/opencode/auth.json`. This covers code paths that read credentials from the auth store rather than the config provider block. Additionally, `OPENCODE_API_KEY` is passed explicitly through `su` in `service-opencode.sh` so that the environment variable is available to the `hermeswebui` user when `opencode serve` starts.
+
 ### Runtime environment detection
 
 The entrypoint sources `lib/runtime-env.sh`, which provides two helpers for adapting to the execution environment:

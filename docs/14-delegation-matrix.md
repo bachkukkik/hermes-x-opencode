@@ -63,7 +63,7 @@ Multiple delegation patterns exist, but not all work reliably. This matrix preve
 
 ## Free Models
 
-These models require no API key and are built into OpenCode:
+These models are built into OpenCode (no manual provider registration needed), **but they do require `OPENCODE_API_KEY` for authentication** — even the "free" tier models. Set `OPENCODE_API_KEY` in `.env` (see `.env.example`); obtain a key at `https://opencode.ai/auth`.
 
 | Model | Notes |
 |-------|-------|
@@ -74,6 +74,8 @@ These models require no API key and are built into OpenCode:
 | `opencode/big-pickle` | Available but less tested |
 
 > Verified against `opencode models opencode` output on OpenCode v1.16.2. The previous `minimax-m3-free` model has been removed; current minimax models (`m2.5`, `m2.7`) are paid.
+
+**Config generation note:** When `OPENCODE_API_KEY` is set, config generation creates an explicit `opencode` provider block in `opencode.jsonc` with `apiKey: {env:OPENCODE_API_KEY}`, ensuring these built-in models have proper authentication mapping. As a fallback, `auth.json` is also seeded with the key as a credential store.
 
 ## Gateway Supervision
 
