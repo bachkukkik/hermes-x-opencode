@@ -425,6 +425,49 @@ print('OK: {} llama_cpp models checked'.format(len(llama_models)))
     [ "$status" -eq 0 ]
 }
 
+@test "AC32: config.yaml approvals block reflects HERMES_YOLO_MODE" {
+    # config-hermes.sh writes `approvals:` with `mode: off` when HERMES_YOLO_MODE
+    # is unset or truthy (default 1). When explicitly falsy, the block is omitted.
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local yolo_mode="${HERMES_YOLO_MODE:-1}"
+    case "$yolo_mode" in
+        1|true|yes|on)
+            run docker exec "$cid" grep -q '^approvals:' /home/hermeswebui/.hermes/config.yaml
+            [ "$status" -eq 0 ]
+            run docker exec "$cid" grep -q 'mode: off' /home/hermeswebui/.hermes/config.yaml
+            [ "$status" -eq 0 ]
+            ;;
+        0|false|no|off)
+            run docker exec "$cid" grep -q '^approvals:' /home/hermeswebui/.hermes/config.yaml
+            [ "$status" -ne 0 ]
+            ;;
+        *)
+            # Unknown values fall back to the default (YOLO on)
+            run docker exec "$cid" grep -q '^approvals:' /home/hermeswebui/.hermes/config.yaml
+            [ "$status" -eq 0 ]
+            run docker exec "$cid" grep -q 'mode: off' /home/hermeswebui/.hermes/config.yaml
+            [ "$status" -eq 0 ]
+            ;;
+    esac
+}
+
+@test "AC33: config.yaml delegation block has max_iterations from HERMES_DELEGATION_MAX_ITERATIONS" {
+    # config-hermes.sh always writes a `delegation:` block with
+    # `max_iterations: N`, where N defaults to 50 (HERMES_DELEGATION_MAX_ITERATIONS).
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    local max_iter="${HERMES_DELEGATION_MAX_ITERATIONS:-50}"
+    run docker exec "$cid" grep -q '^delegation:' /home/hermeswebui/.hermes/config.yaml
+    [ "$status" -eq 0 ]
+    run docker exec "$cid" grep -q "max_iterations: ${max_iter}" /home/hermeswebui/.hermes/config.yaml
+    [ "$status" -eq 0 ]
+}
+
 # --- Hybrid per-model provider routing tests ---
 
 @test "HYBRID: model and small_model each have valid provider prefix" {
