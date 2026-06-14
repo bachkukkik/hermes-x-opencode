@@ -61,8 +61,13 @@ YAMLEOF
     local models_yaml=""
     while IFS= read -r model_id; do
         [ -z "$model_id" ] && continue
+        if echo "$model_id" | grep -q 'glm-5.2'; then
+            ctx_len=1048576
+        else
+            ctx_len=200000
+        fi
         models_yaml="${models_yaml}      ${model_id}:
-        context_length: 200000
+        context_length: ${ctx_len}
 "
     done <<< "$DISCOVERED_MODELS"
 

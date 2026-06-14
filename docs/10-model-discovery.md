@@ -103,8 +103,8 @@ Models are written as a dict under `custom_providers[0].models`. The `model` sec
 ```yaml
 model:
   provider: litellm
-  default: zai/glm-5.1
-  name: zai/glm-5.1
+  default: z.ai/glm-5.2
+  name: z.ai/glm-5.2
 
 custom_providers:
   - name: litellm
@@ -138,7 +138,7 @@ Models are written as an object dict under `provider.litellm.models`:
       }
     }
   },
-  "model": "litellm/zai/glm-5.1"
+  "model": "litellm/z.ai/glm-5.2"
 }
 ```
 
@@ -183,6 +183,7 @@ Limit assignment follows model name pattern matching (case-insensitive, checked 
 | `claude-3` (other) | 200000 | 4096 | `anthropic/claude-3-haiku` |
 | `deepseek` | 128000 | 8192 | `deepseek/deepseek-chat` |
 | `glm` | 128000 | 8192 | `zai/glm-5.1`, `zai/glm-4` |
+| `glm-5.2` | 1048576 | 131072 | `z.ai/glm-5.2` |
 | `llama_cpp` | 200000 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` |
 | `gemini` | 1048576 | 65536 | `google/gemini-2.5-pro` |
 | default (no match) | 128000 | 8192 | Any unmatched model ID |
