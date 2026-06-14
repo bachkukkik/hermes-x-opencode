@@ -62,8 +62,8 @@ The entrypoint generates `config.yaml` at `/home/hermeswebui/.hermes/config.yaml
 ```yaml
 model:
   provider: litellm
-  default: zai/glm-5.1
-  name: zai/glm-5.1
+  default: z.ai/glm-5.2
+  name: z.ai/glm-5.2
 
 custom_providers:
   - name: litellm
@@ -73,7 +73,7 @@ custom_providers:
         context_length: 200000
       openai/gpt-4o:
         context_length: 200000
-      zai/glm-5.1:
+      z.ai/glm-5.2:
         context_length: 200000
       # ... all discovered models
     key_env: OPENAI_API_KEY
@@ -119,11 +119,11 @@ The entrypoint generates `opencode.jsonc` at `/home/hermeswebui/.config/opencode
       "models": {
         "anthropic/claude-opus-4-6": {},
         "openai/gpt-4o": {},
-        "zai/glm-5.1": {}
+        "z.ai/glm-5.2": {}
       }
     }
   },
-  "model": "litellm/zai/glm-5.1",
+  "model": "litellm/z.ai/glm-5.2",
   "small_model": "opencode/deepseek-v4-flash-free"
 }
 ```
