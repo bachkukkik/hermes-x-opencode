@@ -223,6 +223,40 @@ print('OK')
     [ "$count" -ge 1 ]
 }
 
+@test "dynamic context window: glm-5.2 pinned to 1048576 and unknown models omitted" {
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # ASSERT A: when glm-5.2 is discovered it MUST be pinned to 1048576 (the
+    # agent's "glm" catch-all misreports it as 202752). Guarded so the test
+    # passes trivially when glm-5.2 is absent from this deployment.
+    if docker exec "$cid" grep -q 'glm-5.2:' /home/hermeswebui/.hermes/config.yaml; then
+        docker exec "$cid" grep -A1 'glm-5.2:' /home/hermeswebui/.hermes/config.yaml | grep -q 'context_length: 1048576'
+    fi
+
+    # ASSERT B (hybrid omission): unknown-family models are emitted as an empty
+    # mapping `: {}` so the hermes-agent self-resolves the context length at
+    # runtime. With a single model the default-model fallback always writes an
+    # explicit context_length, so only assert when >=2 model entries exist.
+    local model_count
+    model_count=$(docker exec "$cid" grep -E '^      [^ ].*:$' /home/hermeswebui/.hermes/config.yaml | wc -l)
+    if [ "$model_count" -ge 2 ]; then
+        local omitted_count
+        omitted_count=$(docker exec "$cid" grep -c ': {}' /home/hermeswebui/.hermes/config.yaml)
+        [ "$omitted_count" -ge 1 ]
+    fi
+}
+
+@test "goal budget: config.yaml has goals.max_turns from HERMES_GOAL_MAX_TURNS (default 50)" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    # goals block must be present
+    docker exec "$cid" grep -A1 '^goals:' /home/hermeswebui/.hermes/config.yaml | grep -q 'max_turns:'
+}
+
 @test "config.yaml model.default and model.name match HERMES_DEFAULT_MODEL or OPENAI_DEFAULT_MODEL" {
     skip_if_no_secrets
     local cid

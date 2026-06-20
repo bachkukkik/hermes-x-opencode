@@ -3,7 +3,7 @@
 discover_models() {
     local base_url="${OPENAI_BASE_URL:-}"
     local api_key="${OPENAI_API_KEY:-}"
-    local default_model="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
+    local default_model="${HERMES_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
     DISCOVERED_MODELS=""
 
     if [ -z "$base_url" ] || [ -z "$api_key" ]; then

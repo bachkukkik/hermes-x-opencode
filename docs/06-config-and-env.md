@@ -34,6 +34,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `HERMES_API_PORT` | No | `8642` | Host port for the Agent API. Container always listens on 8642. |
 | `HERMES_YOLO_MODE` | No | `1` | Enables Hermes YOLO mode — writes `approvals.mode: off` to `config.yaml`, skipping dangerous-command approval prompts (equivalent to `hermes --yolo`). Set to `0` to restore manual approval prompts. |
 | `HERMES_DELEGATION_MAX_ITERATIONS` | No | `50` | Sets `delegation.max_iterations` in `config.yaml` — the default max tool-calling turns for `delegate_task` subagents. |
+| `HERMES_GOAL_MAX_TURNS` | No | `50` | Sets `goals.max_turns` in `config.yaml` — the cross-turn budget for the `/goal` command. Previously this was hardcapped at 20 turns inside the agent; raising this env var (e.g. to 50) lets long-running goals persist across more turns. |
 | `OPENCODE_SECURITY_MODE` | No | `strict` | Security profile for OpenCode: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). See `13 — Security Hardening`. |
 | `OPENCODE_SERVER_PASSWORD` | No | auto-generated | Password for `opencode serve` authentication. Pass via `-p` flag when attaching or running tasks. Auto-generated and printed to logs if empty. Written to `/tmp/opencode-server-password` for ephemeral `docker exec` access and to `/home/hermeswebui/.hermes/opencode_server_password` for persistent access across container restarts (bind-mounted). |
 | `OPENCODE_SERVE_PORT` | No | `4096` | Host port for OpenCode serve. Container always listens on 4096. |
@@ -71,11 +72,12 @@ custom_providers:
     base_url: https://litellm-sw.example.com/v1
     models:
       anthropic/claude-opus-4-6:
-        context_length: 200000
+        context_length: 1000000
       openai/gpt-4o:
-        context_length: 200000
+        context_length: 128000
       z.ai/glm-5.2:
-        context_length: 200000
+        context_length: 1048576
+      some/unknown-model: {}    # unknown family -> agent self-resolves
       # ... all discovered models
     key_env: OPENAI_API_KEY
 

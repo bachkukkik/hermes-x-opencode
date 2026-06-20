@@ -111,9 +111,12 @@ custom_providers:
     base_url: https://litellm-sw.example.com/v1
     models:
       anthropic/claude-opus-4-6:
-        context_length: 200000
+        context_length: 1000000
       openai/gpt-4o:
-        context_length: 200000
+        context_length: 128000
+      z.ai/glm-5.2:
+        context_length: 1048576
+      some/unknown-model: {}    # unknown family -> agent self-resolves
     key_env: OPENAI_API_KEY
 ```
 

@@ -8,6 +8,15 @@ services:
     #   - "${HERMES_API_PORT:-8642}:8642"
     #   - "${OPENCODE_SERVE_PORT:-4096}:4096"
     #   - "${BROWSER_VNC_PORT:-6901}:6901"
+    #   - "${HERMES_DASHBOARD_PORT:-9119}:9119"
+    # Internal-only: exposed within the docker network (not published to host).
+    # Uncomment the `ports:` block above to publish these to the host instead.
+    expose:
+      - "8787"
+      - "8642"
+      - "4096"
+      - "6901"
+      - "9119"
     # Optional: Uncomment to allow container to reach host services.
     # Required on Linux when OPENAI_BASE_URL points to a host-side proxy.
     # Fix #31: host.docker.internal does not resolve on vanilla Linux Docker.
@@ -45,6 +54,10 @@ services:
       - SKIP_SKILL_INSTALL=${SKIP_SKILL_INSTALL:-}
       - HERMES_YOLO_MODE=${HERMES_YOLO_MODE:-1}
       - HERMES_DELEGATION_MAX_ITERATIONS=${HERMES_DELEGATION_MAX_ITERATIONS:-50}
+      - HERMES_GOAL_MAX_TURNS=${HERMES_GOAL_MAX_TURNS:-50}
+      - HERMES_DASHBOARD_ENABLED=${HERMES_DASHBOARD_ENABLED:-false}
+      - HERMES_DASHBOARD_PORT=${HERMES_DASHBOARD_PORT:-9119}
+      - HERMES_DASHBOARD_HOST=${HERMES_DASHBOARD_HOST:-0.0.0.0}
       - OPENCODE_SECURITY_MODE=${OPENCODE_SECURITY_MODE:-strict}
       - OPENCODE_SERVE_ENABLED=${OPENCODE_SERVE_ENABLED:-false}
       - OPENCODE_SERVE_BOOT_TIMEOUT=${OPENCODE_SERVE_BOOT_TIMEOUT:-30}

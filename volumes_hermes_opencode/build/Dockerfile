@@ -48,6 +48,18 @@ RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} \
 RUN sed -i 's/base_url="",/base_url="",\n    default_headers={"User-Agent": "hermes-agent\/1.0"},/' \
     /opt/hermes-agent-staging/plugins/model-providers/custom/__init__.py
 
+# Build the Hermes web dashboard dist (npm) and stage it at a stable image path.
+# Do NOT place it under /app/venv here — /app/venv is created at RUNTIME by the
+# WebUI init (uv venv), and pre-creating any part of it breaks that init. The
+# runtime dashboard service copies this staged dist into the live venv on start.
+# vite.config.ts outDir is "../hermes_cli/web_dist" relative to web/.
+RUN cd /opt/hermes-agent-staging \
+    && npm install --workspace web \
+    && npm run build -w web \
+    && cp -r /opt/hermes-agent-staging/hermes_cli/web_dist /opt/hermes_cli_web_dist \
+    && rm -rf /opt/hermes-agent-staging/web/node_modules \
+    && echo "== Dashboard web_dist built and staged at /opt/hermes_cli_web_dist"
+
 # Fix #20: WebUI providers.py ignores key_env for provider status display.
 # Upstream: https://github.com/nesquena/hermes-webui (not yet fixed as of v0.51.340)
 # The runtime's _resolve_key() already handles key_env; this brings the display in sync.

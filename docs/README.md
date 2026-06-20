@@ -24,3 +24,5 @@ Architecture deep-dives for the Hermes x OpenCode Docker stack. Each doc follows
 | 18 | [18 — Docker Compose Overrides](18-docker-compose-overrides.md) | Deployment |
 | 19 | [19 — Security Doctrine](19-doctrine.md) | Security |
 | 20 | [20 — OpenCode Runtime Model Fallback](20-opencode-runtime-fallback.md) | Model Fallback |
+| 21 | [21 — Hermes Web Dashboard](21-dashboard.md) | Dashboard |
+| 22 | [22 — Profiles and the Righthand-Man Orchestrator](22-profiles.md) | Profiles |
