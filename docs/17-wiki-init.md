@@ -1,4 +1,4 @@
-# 17. Wiki Initialization (llm-wiki skill)
+# 17 — Wiki Initialization (llm-wiki skill)
 
 ## Overview
 

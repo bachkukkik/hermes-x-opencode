@@ -49,6 +49,14 @@ generate_opencode_config() {
     default_prefix=$(_resolve_provider_prefix "$_raw_default_model")
     local small_prefix
     small_prefix=$(_resolve_provider_prefix "$_raw_small_model")
+
+    local _raw_fallback_model="${OPENCODE_FALLBACK_MODEL:-}"
+    local fallback_model fallback_prefix
+    if [ -n "$_raw_fallback_model" ]; then
+        fallback_model="$(_strip_provider_prefix "$_raw_fallback_model")"
+        fallback_prefix="$(_resolve_provider_prefix "$_raw_fallback_model")"
+    fi
+
     local base_url="${OPENAI_BASE_URL%/}"
 
     local models_json=""
@@ -299,13 +307,20 @@ ${_entries}
 PEMEOF
 )
 
+    local _plugins
+    _plugins='    "@tarquinen/opencode-dcp@latest",
+    "@franlol/opencode-md-table-formatter@latest",
+    "cc-safety-net"'
+    if [ -n "$_raw_fallback_model" ]; then
+        _plugins="${_plugins},
+    \"opencode-runtime-fallback\""
+    fi
+
     cat > "$OPENCODE_CONFIG" << JSONEOF
 {
   "\$schema": "https://opencode.ai/config.json",
   "plugin": [
-    "@tarquinen/opencode-dcp@latest",
-    "@franlol/opencode-md-table-formatter@latest",
-    "cc-safety-net"
+${_plugins}
   ],
 ${permission_block}
 ${provider_block}
@@ -318,7 +333,9 @@ JSONEOF
     $_has_openai_creds && _model_count=$(echo "$DISCOVERED_MODELS" | wc -l)
     local _zen_status="disabled"
     $_has_opencode_key && _zen_status="enabled"
-    echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_prefix}/${default_model}, small: ${small_prefix}/${small_model} (security: ${security_mode}, opencode_zen: ${_zen_status})."
+    local _fallback_status="none"
+    [ -n "$_raw_fallback_model" ] && _fallback_status="${fallback_prefix}/${fallback_model}"
+    echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_prefix}/${default_model}, small: ${small_prefix}/${small_model}, fallback: ${_fallback_status} (security: ${security_mode}, opencode_zen: ${_zen_status})."
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
 
@@ -361,6 +378,28 @@ with open(sys.argv[1], 'w') as f:
             cp "$user_auth" "$root_auth"
         fi
         echo "== Seeded auth.json (opencode + litellm provider fallbacks)."
+    fi
+
+    # --- Seed opencode-fallback.jsonc when OPENCODE_FALLBACK_MODEL is set ---
+    # The opencode-runtime-fallback plugin reads a global fallback chain from
+    # ~/.config/opencode/opencode-fallback.jsonc (mirrors the auth.json seeding
+    # pattern above, including the root copy). Only written when non-empty.
+    if [ -n "$_raw_fallback_model" ]; then
+        local _fallback_dir
+        _fallback_dir="$(dirname "$OPENCODE_CONFIG")"
+        local user_fallback="${_fallback_dir}/opencode-fallback.jsonc"
+        local root_fallback="/root/.config/opencode/opencode-fallback.jsonc"
+        cat > "$user_fallback" << FBEOF
+{
+  "fallback_models": ["${fallback_prefix}/${fallback_model}"]
+}
+FBEOF
+        chown "${OPENCODE_USER}:${OPENCODE_USER}" "$user_fallback"
+        mkdir -p "$(dirname "$root_fallback")"
+        if [ "$(readlink -f "$user_fallback")" != "$(readlink -f "$root_fallback")" ]; then
+            cp "$user_fallback" "$root_fallback"
+        fi
+        echo "== Seeded opencode-fallback.jsonc (fallback: ${fallback_prefix}/${fallback_model})."
     fi
 
     # --- Fix #29: Symlink root's opencode data dir to hermeswebui's ---

@@ -670,3 +670,54 @@ For the full CEO-OpenCode multi-agent delegation workflow (Hermes decomposes, Op
 | AC23 | OpenCode serve healthy (when enabled) | `/global/health` returns `{"healthy":true}` | `OPENCODE_SERVE_ENABLED=true` set, then `curl -sf http://localhost:${OPENCODE_SERVE_PORT:-4096}/global/health` |
 | AC24 | Hermes skills present | More than 0 SKILL.md files under hermes skills dir | `docker exec $C find /home/hermeswebui/.hermes/skills -name "SKILL.md" \| wc -l` returns >0 |
 | AC25 | Skills baked in Docker image | More than 0 SKILL.md files in staging dir | `docker run --rm --entrypoint bash $IMAGE -c 'find /opt/hermes-skills-staging -name "SKILL.md" \| wc -l'` returns >0 |
+
+## 11. OpenCode Model Fallback (Runtime Failover)
+
+### Requirement
+When the primary OpenCode model call fails (rate limit, quota exhausted, 5xx, timeout, overloaded, model-not-found), OpenCode transparently retries with a configured fallback model and replays the request — no manual intervention.
+
+### Configuration (env-driven)
+| Var | Required | Default | Purpose |
+|-----|----------|---------|---------|
+| `OPENCODE_DEFAULT_MODEL` | No | `opencode/deepseek-v4-flash-free` | Primary model for OpenCode agents |
+| `OPENCODE_SMALL_MODEL` | No | = `OPENCODE_DEFAULT_MODEL` | Small/title model |
+| `OPENCODE_FALLBACK_MODEL` | No | (unset) | Model id retried when primary fails. Cross-provider supported (e.g. primary `opencode/...`, fallback `litellm/...` or a bare `llama_cpp/...` id that resolves via `_resolve_provider_prefix`) |
+
+### Architecture
+Plugin approach via the `opencode-runtime-fallback` plugin (no new container):
+1. `config-opencode.sh` appends `"opencode-runtime-fallback"` to the `"plugin"` array when `OPENCODE_FALLBACK_MODEL` is set.
+2. `config-opencode.sh` emits an `agent` block carrying `fallback_models` (the resolved fallback id) for the active agent, mirroring the existing per-model `model`/`small_model` resolution.
+3. The plugin auto-installs from npm on first `opencode` run; it detects retryable failures and switches + replays, with cooldown and auto-recovery back to the primary.
+
+### Constraints
+- The fallback target (e.g. a llama.cpp server exposing `qwen3.6-27b-q4_k_m` at `OPENAI_BASE_URL`) must be reachable at runtime, or the fallback is inert.
+- No new service/container. The Hermes gateway fallback is a separate concern (AIAgent `fallback_model` param) and out of scope for this change.
+
+## 12. Documentation & Test Hygiene
+
+### Gaps (from intended-vs-implemented audit)
+| ID | Pri | Gap | Resolution |
+|----|-----|-----|------------|
+| G-01 | P0 | Doc number conflict: two `16-` files | Renumber `docs/16-docker-compose-overrides.md` -> `docs/18-docker-compose-overrides.md` (next free; 17 taken); fix its title line |
+| G-02 | P0 | `docs/17-wiki-init.md` title uses `# 17.` not `# 17 —` | Fix title to em-dash format |
+| G-03 | P1 | `doctrine` (17 tests) has zero doc coverage | New `docs/19-doctrine.md` documenting the OpenCode security doctrine (AGENTS.md-driven permission system) |
+| G-04 | P1 | No `docs/README.md` index | Create index table of all docs 01-19 |
+| G-05 | P2 | `graphify-out/` stale (predates YOLO commit #53) | Regen via graphify after docs land |
+
+### Non-gaps (verified, no action)
+- `.env` extra vars (`HERMES_DEFAULT_MODEL`, `OPENCODE_DEFAULT_MODEL`, `OPENCODE_SMALL_MODEL`) are documented as commented entries in `.env.example`.
+- No stale line-number references in docs.
+- All 16 test files (00-15) are in the runner glob; no silently excluded tests.
+- CI heredoc indentation is handled by YAML block-scalar stripping.
+
+## 13. Additional Acceptance Criteria
+
+| # | Test | Expected Result | How to Verify |
+|---|------|-----------------|---------------|
+| AC26 | Fallback plugin registered | `opencode.jsonc` lists the fallback plugin when `OPENCODE_FALLBACK_MODEL` set | `docker exec $C python3 -c "import json;c=json.load(open('.../opencode.jsonc'));print('opencode-runtime-fallback' in c.get('plugin',[]))"` -> True |
+| AC27 | Fallback absent when unset | No fallback plugin/agent block when `OPENCODE_FALLBACK_MODEL` empty | grep `opencode-runtime-fallback` opencode.jsonc -> none |
+| AC28 | Agent fallback_models set | agent block carries the resolved fallback id | parse opencode.jsonc agent block -> fallback_models non-empty |
+| AC29 | Doc numbers unique | No two docs share a number | `ls docs/*.md` shows distinct 01-19 prefixes |
+| AC30 | Doctrine doc present | `docs/19-doctrine.md` exists and mentions the permission system | `test -f docs/19-doctrine.md && grep -qi permission docs/19-doctrine.md` |
+| AC31 | Docs index present | `docs/README.md` lists every doc | `test -f docs/README.md` && row count matches doc count |
+| AC32 | graphify regenerated | `graphify-out/graph.json` mtime newer than latest commit | `test graphify-out/graph.json -nt volumes_hermes_opencode/build/scripts/lib/config-hermes.sh` |

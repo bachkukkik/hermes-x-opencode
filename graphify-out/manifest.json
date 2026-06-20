@@ -1,13 +1,13 @@
 {
   "tests/run.sh": {
-    "mtime": 1780926379.6641495,
+    "mtime": 1781272897.0568268,
     "ast_hash": "be60fcd80c32224f7334d9de21e15bbc",
-    "semantic_hash": ""
+    "semantic_hash": "be60fcd80c32224f7334d9de21e15bbc"
   },
   "tests/e2e/test_helper/common.bash": {
     "mtime": 1780943300.7046196,
     "ast_hash": "391cd241cc96ebf5a29c31b0dd0d89d4",
-    "semantic_hash": ""
+    "semantic_hash": "391cd241cc96ebf5a29c31b0dd0d89d4"
   },
   "docker-compose.override.yml": {
     "mtime": 1780926112.2576723,
@@ -15,49 +15,49 @@
     "semantic_hash": "2578f65282089ec0af6236c0b9baaf51"
   },
   "README.md": {
-    "mtime": 1781012584.706636,
-    "ast_hash": "258f44b8e353260bd39af71b56e03523",
-    "semantic_hash": ""
+    "mtime": 1781273102.4341097,
+    "ast_hash": "f5e11ec5c1e198b01d43fe9468f47ed8",
+    "semantic_hash": "f5e11ec5c1e198b01d43fe9468f47ed8"
   },
   "docker-compose.yml": {
-    "mtime": 1781029800.5494456,
-    "ast_hash": "78d415132bf7fce845c78e6935466544",
+    "mtime": 1781952139.763149,
+    "ast_hash": "2c73e379016bd0c465513f1535fc4915",
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1781029800.5454454,
-    "ast_hash": "3564d54f1b83dd3ff30fb5fb7a2ec129",
+    "mtime": 1781357122.0777671,
+    "ast_hash": "e1473be149ca88dc79e11e7228ea8d90",
     "semantic_hash": ""
   },
   "PRD.md": {
-    "mtime": 1781031024.3010814,
-    "ast_hash": "686e7ff5abda3c759b83feba141e0c4c",
+    "mtime": 1781952780.778522,
+    "ast_hash": "12eca350023ffb48f028767feb168f80",
     "semantic_hash": ""
   },
   "docs/04-build-pipeline.md": {
-    "mtime": 1781029800.5494456,
+    "mtime": 1781272897.9928508,
     "ast_hash": "e89a94ceeca2f54ac3a36f38fe861ad6",
-    "semantic_hash": ""
+    "semantic_hash": "e89a94ceeca2f54ac3a36f38fe861ad6"
   },
   "docs/11-skill-installation.md": {
-    "mtime": 1781029800.5494456,
+    "mtime": 1781272897.9928508,
     "ast_hash": "8e0c263d8bed117d1e60313abc8afd2a",
-    "semantic_hash": ""
+    "semantic_hash": "8e0c263d8bed117d1e60313abc8afd2a"
   },
   "docs/01-hermes-webui.md": {
-    "mtime": 1781029800.5494456,
+    "mtime": 1781272897.9928508,
     "ast_hash": "47481d03742934eb942e1db8597b4ca6",
-    "semantic_hash": ""
+    "semantic_hash": "47481d03742934eb942e1db8597b4ca6"
   },
   "docs/03-opencode-serve.md": {
     "mtime": 1780942326.2291749,
     "ast_hash": "5b95e86cdfd65fb39245aa6e1e3d602b",
-    "semantic_hash": ""
+    "semantic_hash": "5b95e86cdfd65fb39245aa6e1e3d602b"
   },
   "docs/05-entrypoint-sequence.md": {
-    "mtime": 1781030946.2951581,
-    "ast_hash": "4a99e0963009c98a830562c9466037a9",
-    "semantic_hash": ""
+    "mtime": 1781339164.1788812,
+    "ast_hash": "d8ae959bd00854187440171475d9c457",
+    "semantic_hash": "d8ae959bd00854187440171475d9c457"
   },
   "docs/08-cloudflare-ua-fix.md": {
     "mtime": 1779983847.2381947,
@@ -65,24 +65,24 @@
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
   "docs/10-model-discovery.md": {
-    "mtime": 1781030986.5321507,
-    "ast_hash": "146f36efcc84147dd8bbd7ce4c812cc4",
+    "mtime": 1781953709.0041506,
+    "ast_hash": "b67ad571a70d7c58c2e64f9246097ae7",
     "semantic_hash": ""
   },
   "docs/09-testing-and-verification.md": {
-    "mtime": 1781030981.2800214,
-    "ast_hash": "6ceb76a5ed66cfc699b1cdae60d57a65",
-    "semantic_hash": ""
+    "mtime": 1781331873.9767265,
+    "ast_hash": "ec93549288ef22c5aefccec5c0d41c6a",
+    "semantic_hash": "ec93549288ef22c5aefccec5c0d41c6a"
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1781029800.5494456,
-    "ast_hash": "8ffe5f1cad6c60ad93a48376984b817a",
+    "mtime": 1781953709.0081508,
+    "ast_hash": "5880c07dcddd9f1ae489032271295968",
     "semantic_hash": ""
   },
   "docs/02-hermes-gateway.md": {
-    "mtime": 1781030912.8023307,
+    "mtime": 1781272897.9928508,
     "ast_hash": "84c4955ddb59ed5fbc920c40f7cce97c",
-    "semantic_hash": ""
+    "semantic_hash": "84c4955ddb59ed5fbc920c40f7cce97c"
   },
   "docs/13-security-hardening.md": {
     "mtime": 1779983847.2381947,
@@ -100,153 +100,53 @@
     "semantic_hash": "7733f45e3b10e9bba30b383dadb33ab9"
   },
   ".github/workflows/e2e.yml": {
-    "mtime": 1780926379.6641495,
-    "ast_hash": "f4c94e569efbef75f9eb58d32830eb6b",
+    "mtime": 1781342133.8776917,
+    "ast_hash": "d5505825bfe9d7d23faa988c0dc700e7",
     "semantic_hash": ""
   },
   "docs/14-delegation-matrix.md": {
-    "mtime": 1781030919.7825034,
-    "ast_hash": "10ee5a982b63992fd83d9747b3ffe709",
-    "semantic_hash": ""
-  },
-  "docker-compose.ci.yml": {
-    "mtime": 1781012584.706636,
-    "ast_hash": "ef2a59e4397263b643ee1e1ca18b3f87",
-    "semantic_hash": ""
-  },
-  "docs/15-browser-human-loop.md": {
-    "mtime": 1781030952.603314,
-    "ast_hash": "d733eb435ba1d164966d81abb81cd778",
-    "semantic_hash": ""
-  },
-  "docs/16-docker-compose-overrides.md": {
-    "mtime": 1781029800.5494456,
-    "ast_hash": "3e422c58915eaf505f4e3b3af4e60c40",
-    "semantic_hash": ""
-  },
-  "docs/16-agent-installation-architecture.md": {
-    "mtime": 1781029800.5494456,
-    "ast_hash": "367c9c0c71a7559a9d84b5e3c7b61e22",
-    "semantic_hash": ""
-  },
-  "docs/17-wiki-init.md": {
-    "mtime": 1781031099.5669327,
-    "ast_hash": "59ab2599d639e0ae77261ddd568df148",
-    "semantic_hash": ""
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/tests/e2e/test_helper/common.bash": {
-    "mtime": 1780943300.7046196,
-    "ast_hash": "391cd241cc96ebf5a29c31b0dd0d89d4",
-    "semantic_hash": "391cd241cc96ebf5a29c31b0dd0d89d4"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/tests/mock-llm-server.sh": {
-    "mtime": 1781331873.9767265,
-    "ast_hash": "d73e7a7781d11371506b40e893ef9bcc",
-    "semantic_hash": "d73e7a7781d11371506b40e893ef9bcc"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/tests/run.sh": {
-    "mtime": 1781272897.0568268,
-    "ast_hash": "be60fcd80c32224f7334d9de21e15bbc",
-    "semantic_hash": "be60fcd80c32224f7334d9de21e15bbc"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/.github/workflows/e2e.yml": {
-    "mtime": 1781331873.9767265,
-    "ast_hash": "c4b92f858db91fd4fbcc08d4d683e316",
-    "semantic_hash": "c4b92f858db91fd4fbcc08d4d683e316"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/AGENTS.md": {
-    "mtime": 1781339164.1788812,
-    "ast_hash": "90fcb3059a0221da26815536ddcc6058",
-    "semantic_hash": "90fcb3059a0221da26815536ddcc6058"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/PRD.md": {
-    "mtime": 1781339164.1788812,
-    "ast_hash": "c25c8c2e8101f091a5875519c2d64aad",
-    "semantic_hash": "c25c8c2e8101f091a5875519c2d64aad"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/README.md": {
-    "mtime": 1781273102.4341097,
-    "ast_hash": "f5e11ec5c1e198b01d43fe9468f47ed8",
-    "semantic_hash": "f5e11ec5c1e198b01d43fe9468f47ed8"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docker-compose.ci.yml": {
-    "mtime": 1781012584.706636,
-    "ast_hash": "ef2a59e4397263b643ee1e1ca18b3f87",
-    "semantic_hash": "ef2a59e4397263b643ee1e1ca18b3f87"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docker-compose.yml": {
-    "mtime": 1781283104.248902,
-    "ast_hash": "1b177df1cf4029be40a60b0242ad19e2",
-    "semantic_hash": "1b177df1cf4029be40a60b0242ad19e2"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/01-hermes-webui.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "47481d03742934eb942e1db8597b4ca6",
-    "semantic_hash": "47481d03742934eb942e1db8597b4ca6"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/02-hermes-gateway.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "84c4955ddb59ed5fbc920c40f7cce97c",
-    "semantic_hash": "84c4955ddb59ed5fbc920c40f7cce97c"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/03-opencode-serve.md": {
-    "mtime": 1780942326.2291749,
-    "ast_hash": "5b95e86cdfd65fb39245aa6e1e3d602b",
-    "semantic_hash": "5b95e86cdfd65fb39245aa6e1e3d602b"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/04-build-pipeline.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "e89a94ceeca2f54ac3a36f38fe861ad6",
-    "semantic_hash": "e89a94ceeca2f54ac3a36f38fe861ad6"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/05-entrypoint-sequence.md": {
-    "mtime": 1781339164.1788812,
-    "ast_hash": "d8ae959bd00854187440171475d9c457",
-    "semantic_hash": "d8ae959bd00854187440171475d9c457"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/06-config-and-env.md": {
-    "mtime": 1781339164.1788812,
-    "ast_hash": "50c980e61a255865534c9e1a0e99c03e",
-    "semantic_hash": "50c980e61a255865534c9e1a0e99c03e"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/09-testing-and-verification.md": {
-    "mtime": 1781331873.9767265,
-    "ast_hash": "ec93549288ef22c5aefccec5c0d41c6a",
-    "semantic_hash": "ec93549288ef22c5aefccec5c0d41c6a"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/10-model-discovery.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "146f36efcc84147dd8bbd7ce4c812cc4",
-    "semantic_hash": "146f36efcc84147dd8bbd7ce4c812cc4"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/11-skill-installation.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "8e0c263d8bed117d1e60313abc8afd2a",
-    "semantic_hash": "8e0c263d8bed117d1e60313abc8afd2a"
-  },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/14-delegation-matrix.md": {
     "mtime": 1781339164.1788812,
     "ast_hash": "e1caad6c4bd04864d594ebed590b3bab",
     "semantic_hash": "e1caad6c4bd04864d594ebed590b3bab"
   },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/15-browser-human-loop.md": {
+  "docker-compose.ci.yml": {
+    "mtime": 1781012584.706636,
+    "ast_hash": "ef2a59e4397263b643ee1e1ca18b3f87",
+    "semantic_hash": "ef2a59e4397263b643ee1e1ca18b3f87"
+  },
+  "docs/15-browser-human-loop.md": {
     "mtime": 1781272897.9928508,
     "ast_hash": "d733eb435ba1d164966d81abb81cd778",
     "semantic_hash": "d733eb435ba1d164966d81abb81cd778"
   },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/16-agent-installation-architecture.md": {
+  "docs/16-agent-installation-architecture.md": {
     "mtime": 1781272897.9928508,
     "ast_hash": "367c9c0c71a7559a9d84b5e3c7b61e22",
     "semantic_hash": "367c9c0c71a7559a9d84b5e3c7b61e22"
   },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/16-docker-compose-overrides.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "3e422c58915eaf505f4e3b3af4e60c40",
-    "semantic_hash": "3e422c58915eaf505f4e3b3af4e60c40"
+  "docs/17-wiki-init.md": {
+    "mtime": 1781952968.838936,
+    "ast_hash": "9ed7eba73b0aa2bc43453e0926821aca",
+    "semantic_hash": ""
   },
-  "/home/bachkukkik/Archives/GitHub_Repo/sandbox/hermes-x-opencode/docs/17-wiki-init.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "59ab2599d639e0ae77261ddd568df148",
-    "semantic_hash": "59ab2599d639e0ae77261ddd568df148"
+  "tests/mock-llm-server.sh": {
+    "mtime": 1781331873.9767265,
+    "ast_hash": "d73e7a7781d11371506b40e893ef9bcc",
+    "semantic_hash": "d73e7a7781d11371506b40e893ef9bcc"
+  },
+  "docs/18-docker-compose-overrides.md": {
+    "mtime": 1781952972.3750188,
+    "ast_hash": "15a763a07174ec166bc3801a65883051",
+    "semantic_hash": ""
+  },
+  "docs/19-doctrine.md": {
+    "mtime": 1781953019.704126,
+    "ast_hash": "ca8ac287df7a3bc1fa8d3e2453940a9b",
+    "semantic_hash": ""
+  },
+  "docs/README.md": {
+    "mtime": 1781953040.760618,
+    "ast_hash": "70e9baee7a6a1d4111b5ca1516f6ecb6",
+    "semantic_hash": ""
   }
 }
