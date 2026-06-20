@@ -6,7 +6,7 @@ The runtime's _resolve_key() already handles key_env; this brings the display in
 
 Patches two functions:
 1. _provider_has_key() - add key_env check after providers.<id>.api_key check
-2. get_providers() custom_providers scan - add key_env check after cp_has_key
+2. get_providers() custom_providers scan - add key_env check before providers.append
 """
 import os
 import sys
@@ -41,17 +41,28 @@ if p1_old in src:
 else:
     print('!! Fix #20 patch 1 SKIPPED (pattern not found)')
 
-# Patch 2: get_providers() custom provider scan - add key_env check after cp_has_key
+# Patch 2: get_providers() custom provider scan - add key_env check before providers.append
+# Anchor updated for upstream refactor (cp_api_key->cp_key, added credential-pool fallback).
 p2_old = (
-    '            if cp_api_key.startswith("${") and cp_api_key.endswith("}"):\n'
-    '                env_var = cp_api_key[2:-1]\n'
-    '                cp_has_key = bool(os.getenv(env_var, "").strip())\n'
+    '            # Fallback: check credential pool (key added via hermes auth add)\n'
+    '            if not cp_has_key:\n'
+    '                try:\n'
+    '                    from api.config import _has_explicit_pool_credentials\n'
+    '                    if _has_explicit_pool_credentials(cp_id):\n'
+    '                        cp_has_key = True\n'
+    '                except ImportError:\n'
+    '                    pass\n'
     '            providers.append({'
 )
 p2_new = (
-    '            if cp_api_key.startswith("${") and cp_api_key.endswith("}"):\n'
-    '                env_var = cp_api_key[2:-1]\n'
-    '                cp_has_key = bool(os.getenv(env_var, "").strip())\n'
+    '            # Fallback: check credential pool (key added via hermes auth add)\n'
+    '            if not cp_has_key:\n'
+    '                try:\n'
+    '                    from api.config import _has_explicit_pool_credentials\n'
+    '                    if _has_explicit_pool_credentials(cp_id):\n'
+    '                        cp_has_key = True\n'
+    '                except ImportError:\n'
+    '                    pass\n'
     '            if not cp_has_key:\n'
     '                key_env = str(cp.get("key_env") or "").strip()\n'
     '                if key_env:\n'
