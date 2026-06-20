@@ -8,6 +8,13 @@ services:
     #   - "${HERMES_API_PORT:-8642}:8642"
     #   - "${OPENCODE_SERVE_PORT:-4096}:4096"
     #   - "${BROWSER_VNC_PORT:-6901}:6901"
+    # Internal-only: exposed within the docker network (not published to host).
+    # Uncomment the `ports:` block above to publish these to the host instead.
+    expose:
+      - "8787"
+      - "8642"
+      - "4096"
+      - "6901"
     # Optional: Uncomment to allow container to reach host services.
     # Required on Linux when OPENAI_BASE_URL points to a host-side proxy.
     # Fix #31: host.docker.internal does not resolve on vanilla Linux Docker.
