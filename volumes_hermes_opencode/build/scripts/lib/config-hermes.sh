@@ -60,6 +60,11 @@ approvals:
 delegation:
   max_iterations: ${max_iter}
 "
+    local goal_max_turns="${HERMES_GOAL_MAX_TURNS:-50}"
+    local goals_block="
+goals:
+  max_turns: ${goal_max_turns}
+"
 
     if [ -z "${OPENAI_BASE_URL:-}" ]; then
         echo "!! No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
@@ -161,7 +166,7 @@ platforms:
       port: 8642
       key: "${api_key}"
       cors_origins: "*"
-${browser_block}${skills_block}${approvals_block}${delegation_block}
+${browser_block}${skills_block}${approvals_block}${goals_block}${delegation_block}
 YAMLEOF
 
     echo "== Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."

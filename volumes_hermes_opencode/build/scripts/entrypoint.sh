@@ -15,6 +15,8 @@ source "${LIB_DIR}/config-opencode.sh"
 source "${LIB_DIR}/validate-opencode.sh"
 source "${LIB_DIR}/service-gateway.sh"
 source "${LIB_DIR}/service-opencode.sh"
+source "${LIB_DIR}/service-dashboard.sh"
+source "${LIB_DIR}/profile-righthand-man.sh"
 source "${LIB_DIR}/service-browser-vnc.sh"
 source "${LIB_DIR}/wiki-init.sh"
 
@@ -66,6 +68,9 @@ echo "== WebUI init started (PID: $WEBUI_PID)"
 
 wait_for_port 8787 300 "webui"
 
+# --- Seed the righthand-man orchestrator profile (idempotent, needs the venv from WebUI init) ---
+seed_righthand_man
+
 # --- Browser human-in-the-loop ---
 start_browser_vnc
 
@@ -80,6 +85,14 @@ if [ "${OPENCODE_SERVE_ENABLED:-false}" = "true" ]; then
     # Boot-time readiness probe for opencode serve. Non-fatal: a timeout only logs.
     wait_for_port 4096 "${OPENCODE_SERVE_BOOT_TIMEOUT:-30}" "opencode serve" || \
         echo "!! opencode serve did not become ready within ${OPENCODE_SERVE_BOOT_TIMEOUT:-30}s; continuing."
+fi
+
+# --- Hermes web dashboard ---
+start_dashboard
+if [ "${HERMES_DASHBOARD_ENABLED:-false}" = "true" ]; then
+    # Boot-time readiness probe for hermes dashboard. Non-fatal: a timeout only logs.
+    wait_for_port "${HERMES_DASHBOARD_PORT:-9119}" "${HERMES_DASHBOARD_BOOT_TIMEOUT:-30}" "hermes dashboard" || \
+        echo "!! hermes dashboard did not become ready within ${HERMES_DASHBOARD_BOOT_TIMEOUT:-30}s; continuing."
 fi
 
 # --- Keep container alive ---

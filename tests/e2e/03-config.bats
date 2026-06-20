@@ -249,6 +249,14 @@ print('OK')
     fi
 }
 
+@test "goal budget: config.yaml has goals.max_turns from HERMES_GOAL_MAX_TURNS (default 50)" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    # goals block must be present
+    docker exec "$cid" grep -A1 '^goals:' /home/hermeswebui/.hermes/config.yaml | grep -q 'max_turns:'
+}
+
 @test "config.yaml model.default and model.name match HERMES_DEFAULT_MODEL or OPENAI_DEFAULT_MODEL" {
     skip_if_no_secrets
     local cid
