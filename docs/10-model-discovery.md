@@ -199,6 +199,10 @@ These limits are used by the OpenCode serve's token budget calculation and are v
 | Wildcard patterns filtered | 5 (`anthropic/*`, `openai/*`, `deepseek/*`, `openrouter/*`, `vertex_ai/*`) |
 | Final chat models in config | ~297 |
 
+### Runtime fallback
+
+When `OPENCODE_FALLBACK_MODEL` is set, `config-opencode.sh` adds the `opencode-runtime-fallback` plugin to `opencode.jsonc` and seeds a global fallback chain at `~/.config/opencode/opencode-fallback.jsonc` (plus a root copy at `/root/.config/opencode/opencode-fallback.jsonc`). The fallback id is resolved with the same `_resolve_provider_prefix`/`_strip_provider_prefix` logic as the primary model, so a cross-provider chain works — for example a primary `opencode/deepseek-v4-flash-free` with a fallback of `litellm/llama_cpp/qwen3.6-27b-q4_k_m`. When unset, no fallback plugin is wired and failed calls surface normally. See acceptance criteria AC26–AC28 for the verification tests.
+
 ## Verification
 
 ```bash
