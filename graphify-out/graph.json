@@ -1460,10 +1460,37 @@
       "norm_label": "how"
     },
     {
-      "label": "Connect from a remote machine",
+      "label": "Module: service-opencode.sh",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
       "source_location": "L30",
+      "id": "docs_03_opencode_serve_module_service_opencode_sh",
+      "community": 21,
+      "norm_label": "module: service-opencode.sh"
+    },
+    {
+      "label": "start_opencode_serve()",
+      "file_type": "document",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "L34",
+      "id": "docs_03_opencode_serve_start_opencode_serve",
+      "community": 21,
+      "norm_label": "start_opencode_serve()"
+    },
+    {
+      "label": "Entrypoint integration",
+      "file_type": "document",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "L48",
+      "id": "docs_03_opencode_serve_entrypoint_integration",
+      "community": 21,
+      "norm_label": "entrypoint integration"
+    },
+    {
+      "label": "Connect from a remote machine",
+      "file_type": "document",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "L61",
       "id": "docs_03_opencode_serve_connect_from_a_remote_machine",
       "community": 21,
       "norm_label": "connect from a remote machine"
@@ -1472,7 +1499,7 @@
       "label": "Connect from another container on the same network",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
-      "source_location": "L38",
+      "source_location": "L69",
       "id": "docs_03_opencode_serve_connect_from_another_container_on_the_same_network",
       "community": 21,
       "norm_label": "connect from another container on the same network"
@@ -1481,7 +1508,7 @@
       "label": "Authentication",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
-      "source_location": "L42",
+      "source_location": "L73",
       "id": "docs_03_opencode_serve_authentication",
       "community": 21,
       "norm_label": "authentication"
@@ -1490,7 +1517,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
-      "source_location": "L53",
+      "source_location": "L84",
       "id": "docs_03_opencode_serve_verification",
       "community": 21,
       "norm_label": "verification"
@@ -1499,7 +1526,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
-      "source_location": "L64",
+      "source_location": "L95",
       "id": "docs_03_opencode_serve_what_works",
       "community": 21,
       "norm_label": "what works"
@@ -1508,7 +1535,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
-      "source_location": "L73",
+      "source_location": "L104",
       "id": "docs_03_opencode_serve_what_fails",
       "community": 21,
       "norm_label": "what fails"
@@ -1517,7 +1544,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
-      "source_location": "L80",
+      "source_location": "L111",
       "id": "docs_03_opencode_serve_resolution",
       "community": 21,
       "norm_label": "resolution"
@@ -1526,7 +1553,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/03-opencode-serve.md",
-      "source_location": "L85",
+      "source_location": "L116",
       "id": "docs_03_opencode_serve_verdict",
       "community": 21,
       "norm_label": "verdict"
@@ -3407,7 +3434,7 @@
       "label": "How Hermes attaches",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L53",
+      "source_location": "L54",
       "id": "docs_15_browser_human_loop_how_hermes_attaches",
       "community": 23,
       "norm_label": "how hermes attaches"
@@ -3416,7 +3443,7 @@
       "label": "Usage",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L64",
+      "source_location": "L65",
       "id": "docs_15_browser_human_loop_usage",
       "community": 23,
       "norm_label": "usage"
@@ -3425,16 +3452,52 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L89",
+      "source_location": "L90",
       "id": "docs_15_browser_human_loop_verification",
       "community": 23,
       "norm_label": "verification"
     },
     {
+      "label": "Troubleshooting",
+      "file_type": "document",
+      "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L108",
+      "id": "docs_15_browser_human_loop_troubleshooting",
+      "community": 23,
+      "norm_label": "troubleshooting"
+    },
+    {
+      "label": "CDP connection refused",
+      "file_type": "document",
+      "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L110",
+      "id": "docs_15_browser_human_loop_cdp_connection_refused",
+      "community": 23,
+      "norm_label": "cdp connection refused"
+    },
+    {
+      "label": "Container marked unhealthy due to CDP failure",
+      "file_type": "document",
+      "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L145",
+      "id": "docs_15_browser_human_loop_container_marked_unhealthy_due_to_cdp_failure",
+      "community": 23,
+      "norm_label": "container marked unhealthy due to cdp failure"
+    },
+    {
+      "label": "Chromium startup timeout (30-second wait exceeded)",
+      "file_type": "document",
+      "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L178",
+      "id": "docs_15_browser_human_loop_chromium_startup_timeout_30_second_wait_exceeded",
+      "community": 23,
+      "norm_label": "chromium startup timeout (30-second wait exceeded)"
+    },
+    {
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L107",
+      "source_location": "L194",
       "id": "docs_15_browser_human_loop_what_works",
       "community": 23,
       "norm_label": "what works"
@@ -3443,7 +3506,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L116",
+      "source_location": "L205",
       "id": "docs_15_browser_human_loop_what_fails",
       "community": 23,
       "norm_label": "what fails"
@@ -3452,7 +3515,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L124",
+      "source_location": "L213",
       "id": "docs_15_browser_human_loop_resolution",
       "community": 23,
       "norm_label": "resolution"
@@ -3461,7 +3524,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L131",
+      "source_location": "L220",
       "id": "docs_15_browser_human_loop_verdict",
       "community": 23,
       "norm_label": "verdict"
@@ -8969,6 +9032,36 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "docs_03_opencode_serve_how",
+      "target": "docs_03_opencode_serve_module_service_opencode_sh",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "docs_03_opencode_serve_module_service_opencode_sh",
+      "target": "docs_03_opencode_serve_entrypoint_integration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/03-opencode-serve.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "docs_03_opencode_serve_module_service_opencode_sh",
+      "target": "docs_03_opencode_serve_start_opencode_serve",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "docs/04-build-pipeline.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -10910,6 +11003,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L108",
+      "weight": 1.0,
+      "source": "docs_15_browser_human_loop_15_browser_human_in_the_loop",
+      "target": "docs_15_browser_human_loop_troubleshooting",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/15-browser-human-loop.md",
       "source_location": "L64",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -10995,6 +11098,36 @@
       "confidence_score": 1.0,
       "source": "docs_15_browser_human_loop_how",
       "target": "docs_15_browser_human_loop_start_sequence_inside_entrypoint_sh"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L110",
+      "weight": 1.0,
+      "source": "docs_15_browser_human_loop_troubleshooting",
+      "target": "docs_15_browser_human_loop_cdp_connection_refused",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L178",
+      "weight": 1.0,
+      "source": "docs_15_browser_human_loop_troubleshooting",
+      "target": "docs_15_browser_human_loop_chromium_startup_timeout_30_second_wait_exceeded",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/15-browser-human-loop.md",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "docs_15_browser_human_loop_troubleshooting",
+      "target": "docs_15_browser_human_loop_container_marked_unhealthy_due_to_cdp_failure",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -11482,9 +11615,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback",
-      "target": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback"
     },
     {
       "relation": "contains",
@@ -11492,9 +11625,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_how",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_how"
     },
     {
       "relation": "contains",
@@ -11502,9 +11635,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L152",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_resolution",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_resolution"
     },
     {
       "relation": "contains",
@@ -11512,9 +11645,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L159",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_verdict",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_verdict"
     },
     {
       "relation": "contains",
@@ -11522,9 +11655,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L99",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_verification",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_verification"
     },
     {
       "relation": "contains",
@@ -11532,9 +11665,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_what",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_what"
     },
     {
       "relation": "contains",
@@ -11542,9 +11675,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L145",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_what_fails",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_what_fails"
     },
     {
       "relation": "contains",
@@ -11552,9 +11685,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L136",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_what_works",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_what_works"
     },
     {
       "relation": "contains",
@@ -11562,9 +11695,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
-      "target": "docs_20_opencode_runtime_fallback_why",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_why"
     },
     {
       "relation": "contains",
@@ -11572,9 +11705,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_how",
-      "target": "docs_20_opencode_runtime_fallback_config_generation",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_config_generation"
     },
     {
       "relation": "contains",
@@ -11582,9 +11715,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_how",
-      "target": "docs_20_opencode_runtime_fallback_configuration",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_configuration"
     },
     {
       "relation": "contains",
@@ -11592,9 +11725,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_how",
-      "target": "docs_20_opencode_runtime_fallback_cross_provider_example",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_cross_provider_example"
     },
     {
       "relation": "contains",
@@ -11602,9 +11735,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L51",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_how",
-      "target": "docs_20_opencode_runtime_fallback_fallback_id_resolution",
-      "confidence_score": 1.0
+      "target": "docs_20_opencode_runtime_fallback_fallback_id_resolution"
     },
     {
       "relation": "contains",
@@ -11612,9 +11745,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard",
-      "target": "docs_21_dashboard_21_hermes_web_dashboard",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_21_hermes_web_dashboard"
     },
     {
       "relation": "contains",
@@ -11622,9 +11755,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_how",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_how"
     },
     {
       "relation": "contains",
@@ -11632,9 +11765,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_resolution",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_resolution"
     },
     {
       "relation": "contains",
@@ -11642,9 +11775,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L83",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_the_web_dist_prerequisite_important",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_the_web_dist_prerequisite_important"
     },
     {
       "relation": "contains",
@@ -11652,9 +11785,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L115",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_verdict",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_verdict"
     },
     {
       "relation": "contains",
@@ -11662,9 +11795,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L68",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_verification",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_verification"
     },
     {
       "relation": "contains",
@@ -11672,9 +11805,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_what",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_what"
     },
     {
       "relation": "contains",
@@ -11682,9 +11815,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_what_fails",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_what_fails"
     },
     {
       "relation": "contains",
@@ -11692,9 +11825,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L93",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_what_works",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_what_works"
     },
     {
       "relation": "contains",
@@ -11702,9 +11835,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_21_hermes_web_dashboard",
-      "target": "docs_21_dashboard_why",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_why"
     },
     {
       "relation": "contains",
@@ -11712,9 +11845,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L54",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_how",
-      "target": "docs_21_dashboard_boot_time_readiness_probe",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_boot_time_readiness_probe"
     },
     {
       "relation": "contains",
@@ -11722,9 +11855,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L33",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_how",
-      "target": "docs_21_dashboard_configuration",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_configuration"
     },
     {
       "relation": "contains",
@@ -11732,9 +11865,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L19",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_how",
-      "target": "docs_21_dashboard_launch_flags",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_launch_flags"
     },
     {
       "relation": "contains",
@@ -11742,9 +11875,9 @@
       "source_file": "docs/21-dashboard.md",
       "source_location": "L29",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_21_dashboard_how",
-      "target": "docs_21_dashboard_restart_loop_supervisor",
-      "confidence_score": 1.0
+      "target": "docs_21_dashboard_restart_loop_supervisor"
     },
     {
       "relation": "contains",
@@ -11752,9 +11885,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles",
-      "target": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator"
     },
     {
       "relation": "contains",
@@ -11762,9 +11895,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_how",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_how"
     },
     {
       "relation": "contains",
@@ -11772,9 +11905,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L43",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_how_to_use_it",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_how_to_use_it"
     },
     {
       "relation": "contains",
@@ -11782,9 +11915,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_the_four_skill_routing_table",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_the_four_skill_routing_table"
     },
     {
       "relation": "contains",
@@ -11792,9 +11925,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L78",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_the_goal_format",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_the_goal_format"
     },
     {
       "relation": "contains",
@@ -11802,9 +11935,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L118",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_verdict",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_verdict"
     },
     {
       "relation": "contains",
@@ -11812,9 +11945,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_verification",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_verification"
     },
     {
       "relation": "contains",
@@ -11822,9 +11955,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_what",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_what"
     },
     {
       "relation": "contains",
@@ -11832,9 +11965,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L109",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_what_works",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_what_works"
     },
     {
       "relation": "contains",
@@ -11842,9 +11975,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_why",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_why"
     },
     {
       "relation": "contains",
@@ -11852,9 +11985,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L17",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_how",
-      "target": "docs_22_profiles_first_boot_seeding_in_the_container",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_first_boot_seeding_in_the_container"
     },
     {
       "relation": "contains",
@@ -11862,9 +11995,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L35",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_how",
-      "target": "docs_22_profiles_host_side_profile",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_host_side_profile"
     },
     {
       "relation": "contains",
@@ -11872,9 +12005,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L39",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_how",
-      "target": "docs_22_profiles_the_soul_md_mechanism",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_the_soul_md_mechanism"
     },
     {
       "relation": "contains",
@@ -11882,9 +12015,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L45",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_how_to_use_it",
-      "target": "docs_22_profiles_cli",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_cli"
     },
     {
       "relation": "contains",
@@ -11892,9 +12025,9 @@
       "source_file": "docs/22-profiles.md",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_22_profiles_how_to_use_it",
-      "target": "docs_22_profiles_webui",
-      "confidence_score": 1.0
+      "target": "docs_22_profiles_webui"
     },
     {
       "relation": "contains",
@@ -15137,5 +15270,5 @@
       "source_file": "docs/17-wiki-init.md"
     }
   ],
-  "built_at_commit": "83a734363ecc7581beb54b7865f545b429e11692"
+  "built_at_commit": "3497a3747088b1c5d1828e22ba6fb891b48ffa09"
 }

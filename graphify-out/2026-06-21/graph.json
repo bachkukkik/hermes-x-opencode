@@ -1877,7 +1877,7 @@
       "label": "Hardcoded environment (in docker-compose.yml)",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L47",
+      "source_location": "L48",
       "id": "docs_06_config_and_env_hardcoded_environment_in_docker_compose_yml",
       "community": 13,
       "norm_label": "hardcoded environment (in docker-compose.yml)"
@@ -1886,7 +1886,7 @@
       "label": "config.yaml (Hermes)",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L59",
+      "source_location": "L60",
       "id": "docs_06_config_and_env_config_yaml_hermes",
       "community": 13,
       "norm_label": "config.yaml (hermes)"
@@ -1895,7 +1895,7 @@
       "label": "opencode.jsonc (OpenCode)",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L98",
+      "source_location": "L100",
       "id": "docs_06_config_and_env_opencode_jsonc_opencode",
       "community": 13,
       "norm_label": "opencode.jsonc (opencode)"
@@ -1904,7 +1904,7 @@
       "label": "Per-model provider routing",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L139",
+      "source_location": "L141",
       "id": "docs_06_config_and_env_per_model_provider_routing",
       "community": 13,
       "norm_label": "per-model provider routing"
@@ -1913,7 +1913,7 @@
       "label": "Runtime environment detection",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L184",
+      "source_location": "L186",
       "id": "docs_06_config_and_env_runtime_environment_detection",
       "community": 13,
       "norm_label": "runtime environment detection"
@@ -1922,7 +1922,7 @@
       "label": "Zen API key validation",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L196",
+      "source_location": "L198",
       "id": "docs_06_config_and_env_zen_api_key_validation",
       "community": 13,
       "norm_label": "zen api key validation"
@@ -1931,7 +1931,7 @@
       "label": "Startup outbound calls",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L200",
+      "source_location": "L202",
       "id": "docs_06_config_and_env_startup_outbound_calls",
       "community": 13,
       "norm_label": "startup outbound calls"
@@ -1940,7 +1940,7 @@
       "label": "Config path resolution",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L207",
+      "source_location": "L209",
       "id": "docs_06_config_and_env_config_path_resolution",
       "community": 13,
       "norm_label": "config path resolution"
@@ -1949,7 +1949,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L217",
+      "source_location": "L219",
       "id": "docs_06_config_and_env_verification",
       "community": 13,
       "norm_label": "verification"
@@ -1958,7 +1958,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L226",
+      "source_location": "L228",
       "id": "docs_06_config_and_env_what_works",
       "community": 13,
       "norm_label": "what works"
@@ -1967,7 +1967,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L235",
+      "source_location": "L237",
       "id": "docs_06_config_and_env_what_fails",
       "community": 13,
       "norm_label": "what fails"
@@ -1976,7 +1976,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L243",
+      "source_location": "L245",
       "id": "docs_06_config_and_env_resolution",
       "community": 13,
       "norm_label": "resolution"
@@ -1985,7 +1985,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/06-config-and-env.md",
-      "source_location": "L251",
+      "source_location": "L253",
       "id": "docs_06_config_and_env_verdict",
       "community": 13,
       "norm_label": "verdict"
@@ -2597,7 +2597,7 @@
       "label": "OpenCode config format",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L122",
+      "source_location": "L125",
       "id": "docs_10_model_discovery_opencode_config_format",
       "community": 10,
       "norm_label": "opencode config format"
@@ -2606,7 +2606,7 @@
       "label": "Model limits",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L150",
+      "source_location": "L153",
       "id": "docs_10_model_discovery_model_limits",
       "community": 10,
       "norm_label": "model limits"
@@ -2615,7 +2615,7 @@
       "label": "Model counts",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L193",
+      "source_location": "L196",
       "id": "docs_10_model_discovery_model_counts",
       "community": 10,
       "norm_label": "model counts"
@@ -2624,7 +2624,7 @@
       "label": "Runtime fallback",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L202",
+      "source_location": "L205",
       "id": "docs_10_model_discovery_runtime_fallback",
       "community": 10,
       "norm_label": "runtime fallback"
@@ -2633,7 +2633,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L206",
+      "source_location": "L209",
       "id": "docs_10_model_discovery_verification",
       "community": 10,
       "norm_label": "verification"
@@ -2642,7 +2642,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L222",
+      "source_location": "L225",
       "id": "docs_10_model_discovery_what_works",
       "community": 10,
       "norm_label": "what works"
@@ -2651,7 +2651,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L231",
+      "source_location": "L234",
       "id": "docs_10_model_discovery_what_fails",
       "community": 10,
       "norm_label": "what fails"
@@ -2660,7 +2660,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L239",
+      "source_location": "L242",
       "id": "docs_10_model_discovery_resolution",
       "community": 10,
       "norm_label": "resolution"
@@ -2669,7 +2669,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/10-model-discovery.md",
-      "source_location": "L247",
+      "source_location": "L250",
       "id": "docs_10_model_discovery_verdict",
       "community": 10,
       "norm_label": "verdict"
@@ -3932,6 +3932,411 @@
       "source_location": "L123",
       "id": "docs_19_doctrine_verdict",
       "community": 51,
+      "norm_label": "verdict"
+    },
+    {
+      "label": "20-opencode-runtime-fallback.md",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L1",
+      "id": "docs_20_opencode_runtime_fallback",
+      "community": 56,
+      "norm_label": "20-opencode-runtime-fallback.md"
+    },
+    {
+      "label": "20 \u2014 OpenCode Runtime Model Fallback",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L1",
+      "id": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "community": 56,
+      "norm_label": "20 \u2014 opencode runtime model fallback"
+    },
+    {
+      "label": "What",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L3",
+      "id": "docs_20_opencode_runtime_fallback_what",
+      "community": 56,
+      "norm_label": "what"
+    },
+    {
+      "label": "Why",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L7",
+      "id": "docs_20_opencode_runtime_fallback_why",
+      "community": 56,
+      "norm_label": "why"
+    },
+    {
+      "label": "How",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L13",
+      "id": "docs_20_opencode_runtime_fallback_how",
+      "community": 56,
+      "norm_label": "how"
+    },
+    {
+      "label": "Config generation",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L17",
+      "id": "docs_20_opencode_runtime_fallback_config_generation",
+      "community": 56,
+      "norm_label": "config generation"
+    },
+    {
+      "label": "Fallback id resolution",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L51",
+      "id": "docs_20_opencode_runtime_fallback_fallback_id_resolution",
+      "community": 56,
+      "norm_label": "fallback id resolution"
+    },
+    {
+      "label": "Cross-provider example",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L64",
+      "id": "docs_20_opencode_runtime_fallback_cross_provider_example",
+      "community": 56,
+      "norm_label": "cross-provider example"
+    },
+    {
+      "label": "Configuration",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L91",
+      "id": "docs_20_opencode_runtime_fallback_configuration",
+      "community": 56,
+      "norm_label": "configuration"
+    },
+    {
+      "label": "Verification",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L99",
+      "id": "docs_20_opencode_runtime_fallback_verification",
+      "community": 56,
+      "norm_label": "verification"
+    },
+    {
+      "label": "What Works",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L136",
+      "id": "docs_20_opencode_runtime_fallback_what_works",
+      "community": 56,
+      "norm_label": "what works"
+    },
+    {
+      "label": "What Fails",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L145",
+      "id": "docs_20_opencode_runtime_fallback_what_fails",
+      "community": 56,
+      "norm_label": "what fails"
+    },
+    {
+      "label": "Resolution",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L152",
+      "id": "docs_20_opencode_runtime_fallback_resolution",
+      "community": 56,
+      "norm_label": "resolution"
+    },
+    {
+      "label": "Verdict",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L159",
+      "id": "docs_20_opencode_runtime_fallback_verdict",
+      "community": 56,
+      "norm_label": "verdict"
+    },
+    {
+      "label": "21-dashboard.md",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L1",
+      "id": "docs_21_dashboard",
+      "community": 55,
+      "norm_label": "21-dashboard.md"
+    },
+    {
+      "label": "21 \u2014 Hermes Web Dashboard",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L1",
+      "id": "docs_21_dashboard_21_hermes_web_dashboard",
+      "community": 55,
+      "norm_label": "21 \u2014 hermes web dashboard"
+    },
+    {
+      "label": "What",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L3",
+      "id": "docs_21_dashboard_what",
+      "community": 55,
+      "norm_label": "what"
+    },
+    {
+      "label": "Why",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L9",
+      "id": "docs_21_dashboard_why",
+      "community": 55,
+      "norm_label": "why"
+    },
+    {
+      "label": "How",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L15",
+      "id": "docs_21_dashboard_how",
+      "community": 55,
+      "norm_label": "how"
+    },
+    {
+      "label": "Launch flags",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L19",
+      "id": "docs_21_dashboard_launch_flags",
+      "community": 55,
+      "norm_label": "launch flags"
+    },
+    {
+      "label": "Restart-loop supervisor",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L29",
+      "id": "docs_21_dashboard_restart_loop_supervisor",
+      "community": 55,
+      "norm_label": "restart-loop supervisor"
+    },
+    {
+      "label": "Configuration",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L33",
+      "id": "docs_21_dashboard_configuration",
+      "community": 55,
+      "norm_label": "configuration"
+    },
+    {
+      "label": "Boot-time readiness probe",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L54",
+      "id": "docs_21_dashboard_boot_time_readiness_probe",
+      "community": 55,
+      "norm_label": "boot-time readiness probe"
+    },
+    {
+      "label": "Verification",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L68",
+      "id": "docs_21_dashboard_verification",
+      "community": 55,
+      "norm_label": "verification"
+    },
+    {
+      "label": "The web `dist/` prerequisite (IMPORTANT)",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L83",
+      "id": "docs_21_dashboard_the_web_dist_prerequisite_important",
+      "community": 55,
+      "norm_label": "the web `dist/` prerequisite (important)"
+    },
+    {
+      "label": "What Works",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L93",
+      "id": "docs_21_dashboard_what_works",
+      "community": 55,
+      "norm_label": "what works"
+    },
+    {
+      "label": "What Fails",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L102",
+      "id": "docs_21_dashboard_what_fails",
+      "community": 55,
+      "norm_label": "what fails"
+    },
+    {
+      "label": "Resolution",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L109",
+      "id": "docs_21_dashboard_resolution",
+      "community": 55,
+      "norm_label": "resolution"
+    },
+    {
+      "label": "Verdict",
+      "file_type": "document",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L115",
+      "id": "docs_21_dashboard_verdict",
+      "community": 55,
+      "norm_label": "verdict"
+    },
+    {
+      "label": "22-profiles.md",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L1",
+      "id": "docs_22_profiles",
+      "community": 54,
+      "norm_label": "22-profiles.md"
+    },
+    {
+      "label": "22 \u2014 Profiles and the Righthand-Man Orchestrator",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L1",
+      "id": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "community": 54,
+      "norm_label": "22 \u2014 profiles and the righthand-man orchestrator"
+    },
+    {
+      "label": "What",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L3",
+      "id": "docs_22_profiles_what",
+      "community": 54,
+      "norm_label": "what"
+    },
+    {
+      "label": "Why",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L9",
+      "id": "docs_22_profiles_why",
+      "community": 54,
+      "norm_label": "why"
+    },
+    {
+      "label": "How",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L15",
+      "id": "docs_22_profiles_how",
+      "community": 54,
+      "norm_label": "how"
+    },
+    {
+      "label": "First-boot seeding in the container",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L17",
+      "id": "docs_22_profiles_first_boot_seeding_in_the_container",
+      "community": 54,
+      "norm_label": "first-boot seeding in the container"
+    },
+    {
+      "label": "Host-side profile",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L35",
+      "id": "docs_22_profiles_host_side_profile",
+      "community": 54,
+      "norm_label": "host-side profile"
+    },
+    {
+      "label": "The `SOUL.md` mechanism",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L39",
+      "id": "docs_22_profiles_the_soul_md_mechanism",
+      "community": 54,
+      "norm_label": "the `soul.md` mechanism"
+    },
+    {
+      "label": "How to use it",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L43",
+      "id": "docs_22_profiles_how_to_use_it",
+      "community": 54,
+      "norm_label": "how to use it"
+    },
+    {
+      "label": "CLI",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L45",
+      "id": "docs_22_profiles_cli",
+      "community": 54,
+      "norm_label": "cli"
+    },
+    {
+      "label": "WebUI",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L61",
+      "id": "docs_22_profiles_webui",
+      "community": 54,
+      "norm_label": "webui"
+    },
+    {
+      "label": "The four-skill routing table",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L65",
+      "id": "docs_22_profiles_the_four_skill_routing_table",
+      "community": 54,
+      "norm_label": "the four-skill routing table"
+    },
+    {
+      "label": "The `/goal` format",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L78",
+      "id": "docs_22_profiles_the_goal_format",
+      "community": 54,
+      "norm_label": "the `/goal` format"
+    },
+    {
+      "label": "Verification",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L91",
+      "id": "docs_22_profiles_verification",
+      "community": 54,
+      "norm_label": "verification"
+    },
+    {
+      "label": "What Works",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L109",
+      "id": "docs_22_profiles_what_works",
+      "community": 54,
+      "norm_label": "what works"
+    },
+    {
+      "label": "Verdict",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L118",
+      "id": "docs_22_profiles_verdict",
+      "community": 54,
       "norm_label": "verdict"
     },
     {
@@ -7267,9 +7672,9 @@
       "source_file": "tests/mock-llm-server.sh",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "tests_mock_llm_server",
-      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_mock_llm_server_sh__entry",
-      "confidence_score": 1.0
+      "target": "home_bachkukkik_archives_github_repo_sandbox_hermes_x_opencode_tests_mock_llm_server_sh__entry"
     },
     {
       "relation": "contains",
@@ -7457,9 +7862,9 @@
       "source_file": "PRD.md",
       "source_location": "L674",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_11_opencode_model_fallback_runtime_failover",
-      "confidence_score": 1.0
+      "target": "prd_11_opencode_model_fallback_runtime_failover"
     },
     {
       "relation": "contains",
@@ -7467,9 +7872,9 @@
       "source_file": "PRD.md",
       "source_location": "L696",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_12_documentation_test_hygiene",
-      "confidence_score": 1.0
+      "target": "prd_12_documentation_test_hygiene"
     },
     {
       "relation": "contains",
@@ -7477,9 +7882,9 @@
       "source_file": "PRD.md",
       "source_location": "L713",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_13_additional_acceptance_criteria",
-      "confidence_score": 1.0
+      "target": "prd_13_additional_acceptance_criteria"
     },
     {
       "relation": "contains",
@@ -7577,9 +7982,9 @@
       "source_file": "PRD.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_1_product_overview",
-      "target": "prd_related_repositories",
-      "confidence_score": 1.0
+      "target": "prd_related_repositories"
     },
     {
       "relation": "contains",
@@ -7697,9 +8102,9 @@
       "source_file": "PRD.md",
       "source_location": "L553",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_7_configuration_reference",
-      "target": "prd_also_found_during_fork_sync_issue_46",
-      "confidence_score": 1.0
+      "target": "prd_also_found_during_fork_sync_issue_46"
     },
     {
       "relation": "contains",
@@ -7727,9 +8132,9 @@
       "source_file": "PRD.md",
       "source_location": "L521",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_7_configuration_reference",
-      "target": "prd_per_model_provider_routing_issue_46",
-      "confidence_score": 1.0
+      "target": "prd_per_model_provider_routing_issue_46"
     },
     {
       "relation": "contains",
@@ -7787,9 +8192,9 @@
       "source_file": "PRD.md",
       "source_location": "L686",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_11_opencode_model_fallback_runtime_failover",
-      "target": "prd_architecture",
-      "confidence_score": 1.0
+      "target": "prd_architecture"
     },
     {
       "relation": "contains",
@@ -7797,9 +8202,9 @@
       "source_file": "PRD.md",
       "source_location": "L679",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_11_opencode_model_fallback_runtime_failover",
-      "target": "prd_configuration_env_driven",
-      "confidence_score": 1.0
+      "target": "prd_configuration_env_driven"
     },
     {
       "relation": "contains",
@@ -7807,9 +8212,9 @@
       "source_file": "PRD.md",
       "source_location": "L692",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_11_opencode_model_fallback_runtime_failover",
-      "target": "prd_constraints",
-      "confidence_score": 1.0
+      "target": "prd_constraints"
     },
     {
       "relation": "contains",
@@ -7817,9 +8222,9 @@
       "source_file": "PRD.md",
       "source_location": "L676",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_11_opencode_model_fallback_runtime_failover",
-      "target": "prd_requirement",
-      "confidence_score": 1.0
+      "target": "prd_requirement"
     },
     {
       "relation": "contains",
@@ -7827,9 +8232,9 @@
       "source_file": "PRD.md",
       "source_location": "L698",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_12_documentation_test_hygiene",
-      "target": "prd_gaps_from_intended_vs_implemented_audit",
-      "confidence_score": 1.0
+      "target": "prd_gaps_from_intended_vs_implemented_audit"
     },
     {
       "relation": "contains",
@@ -7837,9 +8242,9 @@
       "source_file": "PRD.md",
       "source_location": "L707",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_12_documentation_test_hygiene",
-      "target": "prd_non_gaps_verified_no_action",
-      "confidence_score": 1.0
+      "target": "prd_non_gaps_verified_no_action"
     },
     {
       "relation": "contains",
@@ -9007,9 +9412,9 @@
       "source_file": "docs/06-config-and-env.md",
       "source_location": "L139",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_06_config_and_env_how",
-      "target": "docs_06_config_and_env_per_model_provider_routing",
-      "confidence_score": 1.0
+      "target": "docs_06_config_and_env_per_model_provider_routing"
     },
     {
       "relation": "contains",
@@ -9507,9 +9912,9 @@
       "source_file": "docs/09-testing-and-verification.md",
       "source_location": "L172",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_09_testing_and_verification_how",
-      "target": "docs_09_testing_and_verification_mock_llm_server_ci",
-      "confidence_score": 1.0
+      "target": "docs_09_testing_and_verification_mock_llm_server_ci"
     },
     {
       "relation": "contains",
@@ -9747,9 +10152,9 @@
       "source_file": "docs/10-model-discovery.md",
       "source_location": "L202",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_10_model_discovery_how",
-      "target": "docs_10_model_discovery_runtime_fallback",
-      "confidence_score": 1.0
+      "target": "docs_10_model_discovery_runtime_fallback"
     },
     {
       "relation": "contains",
@@ -10837,9 +11242,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_18_docker_compose_overrides"
     },
     {
       "relation": "contains",
@@ -10847,9 +11252,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L13",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_how",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_how"
     },
     {
       "relation": "contains",
@@ -10857,9 +11262,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L96",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_resolution",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_resolution"
     },
     {
       "relation": "contains",
@@ -10867,9 +11272,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L101",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_verdict",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_verdict"
     },
     {
       "relation": "contains",
@@ -10877,9 +11282,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L75",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_verification",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_verification"
     },
     {
       "relation": "contains",
@@ -10887,9 +11292,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_what",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_what"
     },
     {
       "relation": "contains",
@@ -10897,9 +11302,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L91",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_what_fails",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_what_fails"
     },
     {
       "relation": "contains",
@@ -10907,9 +11312,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_what_works",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_what_works"
     },
     {
       "relation": "contains",
@@ -10917,9 +11322,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_18_docker_compose_overrides",
-      "target": "docs_18_docker_compose_overrides_why",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_why"
     },
     {
       "relation": "contains",
@@ -10927,9 +11332,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_how",
-      "target": "docs_18_docker_compose_overrides_docker_compose_ci_yml_ci_port_publishing",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_docker_compose_ci_yml_ci_port_publishing"
     },
     {
       "relation": "contains",
@@ -10937,9 +11342,9 @@
       "source_file": "docs/18-docker-compose-overrides.md",
       "source_location": "L15",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_18_docker_compose_overrides_how",
-      "target": "docs_18_docker_compose_overrides_docker_compose_override_yml_cloudflare_traefik",
-      "confidence_score": 1.0
+      "target": "docs_18_docker_compose_overrides_docker_compose_override_yml_cloudflare_traefik"
     },
     {
       "relation": "contains",
@@ -10947,9 +11352,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine",
-      "target": "docs_19_doctrine_19_security_doctrine",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_19_security_doctrine"
     },
     {
       "relation": "contains",
@@ -10957,9 +11362,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L16",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_how",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_how"
     },
     {
       "relation": "contains",
@@ -10967,9 +11372,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L117",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_resolution",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_resolution"
     },
     {
       "relation": "contains",
@@ -10977,9 +11382,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L123",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_verdict",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_verdict"
     },
     {
       "relation": "contains",
@@ -10987,9 +11392,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L67",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_verification",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_verification"
     },
     {
       "relation": "contains",
@@ -10997,9 +11402,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L3",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_what",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_what"
     },
     {
       "relation": "contains",
@@ -11007,9 +11412,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L110",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_what_fails",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_what_fails"
     },
     {
       "relation": "contains",
@@ -11017,9 +11422,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_what_works",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_what_works"
     },
     {
       "relation": "contains",
@@ -11027,9 +11432,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L9",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_19_security_doctrine",
-      "target": "docs_19_doctrine_why",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_why"
     },
     {
       "relation": "contains",
@@ -11037,9 +11442,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L41",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_how",
-      "target": "docs_19_doctrine_permission_block_generation",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_permission_block_generation"
     },
     {
       "relation": "contains",
@@ -11047,9 +11452,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L25",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_how",
-      "target": "docs_19_doctrine_security_modes",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_security_modes"
     },
     {
       "relation": "contains",
@@ -11057,9 +11462,9 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L18",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_how",
-      "target": "docs_19_doctrine_the_two_halves",
-      "confidence_score": 1.0
+      "target": "docs_19_doctrine_the_two_halves"
     },
     {
       "relation": "contains",
@@ -11067,8 +11472,428 @@
       "source_file": "docs/19-doctrine.md",
       "source_location": "L53",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_19_doctrine_how",
-      "target": "docs_19_doctrine_what_07_doctrine_bats_asserts",
+      "target": "docs_19_doctrine_what_07_doctrine_bats_asserts"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback",
+      "target": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_how",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L152",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_resolution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L159",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_verdict",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L99",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_verification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_what",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_what_fails",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_what_works",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_20_opencode_runtime_model_fallback",
+      "target": "docs_20_opencode_runtime_fallback_why",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_how",
+      "target": "docs_20_opencode_runtime_fallback_config_generation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_how",
+      "target": "docs_20_opencode_runtime_fallback_configuration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_how",
+      "target": "docs_20_opencode_runtime_fallback_cross_provider_example",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_how",
+      "target": "docs_20_opencode_runtime_fallback_fallback_id_resolution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_21_dashboard",
+      "target": "docs_21_dashboard_21_hermes_web_dashboard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_how",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_resolution",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_the_web_dist_prerequisite_important",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L115",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_verdict",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_verification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_what",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L102",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_what_fails",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_what_works",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_21_hermes_web_dashboard",
+      "target": "docs_21_dashboard_why",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_how",
+      "target": "docs_21_dashboard_boot_time_readiness_probe",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_how",
+      "target": "docs_21_dashboard_configuration",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_how",
+      "target": "docs_21_dashboard_launch_flags",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/21-dashboard.md",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "docs_21_dashboard_how",
+      "target": "docs_21_dashboard_restart_loop_supervisor",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_22_profiles",
+      "target": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_how",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L43",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_how_to_use_it",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_the_four_skill_routing_table",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_the_goal_format",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L118",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_verdict",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_verification",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_what",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_what_works",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_why",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "docs_22_profiles_how",
+      "target": "docs_22_profiles_first_boot_seeding_in_the_container",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "docs_22_profiles_how",
+      "target": "docs_22_profiles_host_side_profile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "docs_22_profiles_how",
+      "target": "docs_22_profiles_the_soul_md_mechanism",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "docs_22_profiles_how_to_use_it",
+      "target": "docs_22_profiles_cli",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "docs_22_profiles_how_to_use_it",
+      "target": "docs_22_profiles_webui",
       "confidence_score": 1.0
     },
     {
@@ -11077,9 +11902,9 @@
       "source_file": "docs/README.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_readme",
-      "target": "docs_readme_documentation_index",
-      "confidence_score": 1.0
+      "target": "docs_readme_documentation_index"
     },
     {
       "relation": "contains",
@@ -14312,5 +15137,5 @@
       "source_file": "docs/17-wiki-init.md"
     }
   ],
-  "built_at_commit": "84e2ce3aa66d6c6fd53f175a2685171292d715ce"
+  "built_at_commit": "83a734363ecc7581beb54b7865f545b429e11692"
 }

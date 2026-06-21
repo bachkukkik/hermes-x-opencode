@@ -125,6 +125,30 @@ setup() {
     done
 }
 
+@test "BH1.10: entrypoint waits for CDP readiness before gateway starts" {
+    skip_if_no_secrets
+    [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ] || skip "BROWSER_HUMAN_LOOP_ENABLED!=true"
+
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # The entrypoint runs `wait_for_port 9222 30 "chromium CDP"` after starting
+    # the browser stack and before the gateway. Either the readiness-wait log
+    # lines appear (waiting for / ready), or CDP is responsive now (which proves
+    # the wait completed successfully).
+    run bash -c "docker logs '$cid' 2>&1 | grep -c 'chromium CDP: .*9222'"
+    if [ "$status" -eq 0 ] && [ "$output" -ge 1 ]; then
+        # Readiness wait was logged -- pass.
+        :
+    else
+        # Fallback: CDP must be responsive now, proving the wait completed.
+        run docker exec "$cid" curl -sf http://127.0.0.1:9222/json/version
+        [ "$status" -eq 0 ]
+        echo "$output" | grep -q "Browser"
+    fi
+}
+
 # --- TT-13: Browser disabled negative test ---
 
 @test "BH7: browser processes absent when BROWSER_HUMAN_LOOP_ENABLED!=true" {

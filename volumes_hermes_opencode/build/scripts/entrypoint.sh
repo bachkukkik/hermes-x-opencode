@@ -74,6 +74,12 @@ seed_righthand_man
 # --- Browser human-in-the-loop ---
 start_browser_vnc
 
+if [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ]; then
+    # Wait for Chromium CDP endpoint (port 9222). Non-fatal: a timeout only logs.
+    wait_for_port 9222 30 "chromium CDP" || \
+        echo "!! chromium CDP did not become ready within 30s; continuing."
+fi
+
 # --- Hermes gateway ---
 start_gateway
 wait_for_port 8642 60 "hermes gateway"
