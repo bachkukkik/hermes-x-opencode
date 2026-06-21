@@ -1,16 +1,16 @@
 # Graph Report - hermes-x-opencode  (2026-06-21)
 
 ## Corpus Check
-- 29 files · ~40,207 words
+- 30 files · ~41,378 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 713 nodes · 760 edges · 57 communities (38 shown, 19 thin omitted)
+- 727 nodes · 773 edges · 58 communities (39 shown, 19 thin omitted)
 - Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3497a374`
+- Built from commit: `d1a579d9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -72,6 +72,7 @@
 - [[_COMMUNITY_Community 54|Community 54]]
 - [[_COMMUNITY_Community 55|Community 55]]
 - [[_COMMUNITY_Community 56|Community 56]]
+- [[_COMMUNITY_Community 57|Community 57]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `How` - 19 edges
@@ -114,7 +115,7 @@
 - **Dual Installation Architecture** — agent_install_a_detail, agent_install_b_detail, agent_propagation_chain, agent_why_both_exist [EXTRACTED 0.95]
 - **Wiki Initialization Pipeline** — wiki_init_function, wiki_schema_backbone, wiki_dir_structure [EXTRACTED 0.90]
 
-## Communities (57 total, 19 thin omitted)
+## Communities (58 total, 19 thin omitted)
 
 ### Community 0 - "Build Pipeline & Acceptance Criteria"
 Cohesion: 0.09
@@ -265,11 +266,15 @@ Cohesion: 0.13
 Nodes (14): 21 — Hermes Web Dashboard, Boot-time readiness probe, Configuration, How, Launch flags, Resolution, Restart-loop supervisor, The web `dist/` prerequisite (IMPORTANT) (+6 more)
 
 ### Community 56 - "Community 56"
-Cohesion: 0.14
-Nodes (13): 20 — OpenCode Runtime Model Fallback, Config generation, Configuration, Cross-provider example, Fallback id resolution, How, Resolution, Verdict (+5 more)
+Cohesion: 0.13
+Nodes (14): 20 — OpenCode Runtime Model Fallback, Config generation, Configuration, Cross-provider example, Fallback id resolution, How, Multi-model ordered chain, Resolution (+6 more)
+
+### Community 57 - "Community 57"
+Cohesion: 0.15
+Nodes (12): Assumptions (surfaced), Feature (the fix), Goal (from /goal), Live state (confirmed in running container), Out of scope (explicit), Plan — Ordered Multi-Model Fallback Chain for OpenCode, Root-cause analysis (investigated directly — karpathy domain), Subsequent prompts (pre-queued by user) (+4 more)
 
 ## Knowledge Gaps
-- **415 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+410 more)
+- **426 isolated node(s):** `Goal (from /goal)`, `Live state (confirmed in running container)`, `Why GPU shows utilization`, `The gap (documented in doc 20, line 150)`, `Assumptions (surfaced)` (+421 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -279,11 +284,11 @@ _Questions this graph is uniquely positioned to answer:_
 - **Why does `OpenCode Serve (Headless HTTP Server)` connect `Testing & Verification` to `Dual Installation Architecture`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `Sequential Startup with Health Gates` connect `Dual Installation Architecture` to `Testing & Verification`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `docker-compose.yml — Service Definition` (e.g. with `hermeswebui User Isolation (UID 1000)` and `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`) actually correct?**
   _`docker-compose.yml — Service Definition` has 2 INFERRED edges - model-reasoned connections that need verification._
-- **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules` to the rest of the system?**
-  _466 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **What connects `Goal (from /goal)`, `Live state (confirmed in running container)`, `Why GPU shows utilization` to the rest of the system?**
+  _477 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Build Pipeline & Acceptance Criteria` be split into smaller, more focused modules?**
   _Cohesion score 0.08709273182957393 - nodes in this community are weakly interconnected._
 - **Should `Quick Start & README` be split into smaller, more focused modules?**

@@ -51,10 +51,30 @@ generate_opencode_config() {
     small_prefix=$(_resolve_provider_prefix "$_raw_small_model")
 
     local _raw_fallback_model="${OPENCODE_FALLBACK_MODEL:-}"
-    local fallback_model fallback_prefix
+    # OPENCODE_FALLBACK_MODEL accepts a comma-separated ORDERED list. Each entry
+    # is independently prefix-resolved (opencode/..., litellm/..., or bare ->
+    # litellm when OpenAI creds are present, else opencode Zen), preserving the
+    # declared order. The opencode-runtime-fallback plugin tries them in array
+    # order after the primary fails. Single value = 1-element list (backward
+    # compatible). Empty/whitespace entries are skipped.
+    local _fallback_chain=""   # newline-joined resolved "prefix/model" ids
+    local _fallback_count=0
     if [ -n "$_raw_fallback_model" ]; then
-        fallback_model="$(_strip_provider_prefix "$_raw_fallback_model")"
-        fallback_prefix="$(_resolve_provider_prefix "$_raw_fallback_model")"
+        local _fb_entry _fb_stripped _fb_prefix
+        while IFS= read -r _fb_entry; do
+            # trim leading/trailing whitespace
+            _fb_entry="${_fb_entry#"${_fb_entry%%[![:space:]]*}"}"
+            _fb_entry="${_fb_entry%"${_fb_entry##*[![:space:]]}"}"
+            [ -z "$_fb_entry" ] && continue
+            _fb_stripped="$(_strip_provider_prefix "$_fb_entry")"
+            _fb_prefix="$(_resolve_provider_prefix "$_fb_entry")"
+            if [ -n "$_fallback_chain" ]; then
+                _fallback_chain="${_fallback_chain}"$'\n'"${_fb_prefix}/${_fb_stripped}"
+            else
+                _fallback_chain="${_fb_prefix}/${_fb_stripped}"
+            fi
+            _fallback_count=$((_fallback_count + 1))
+        done < <(printf '%s\n' "$_raw_fallback_model" | tr ',' '\n')
     fi
 
     local base_url="${OPENAI_BASE_URL%/}"
@@ -311,7 +331,7 @@ PEMEOF
     _plugins='    "@tarquinen/opencode-dcp@latest",
     "@franlol/opencode-md-table-formatter@latest",
     "cc-safety-net"'
-    if [ -n "$_raw_fallback_model" ]; then
+    if [ "$_fallback_count" -gt 0 ]; then
         _plugins="${_plugins},
     \"opencode-runtime-fallback\""
     fi
@@ -334,7 +354,9 @@ JSONEOF
     local _zen_status="disabled"
     $_has_opencode_key && _zen_status="enabled"
     local _fallback_status="none"
-    [ -n "$_raw_fallback_model" ] && _fallback_status="${fallback_prefix}/${fallback_model}"
+    if [ "$_fallback_count" -gt 0 ]; then
+        _fallback_status=$(printf '%s' "$_fallback_chain" | tr '\n' ',' | sed 's/,$//')
+    fi
     echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_prefix}/${default_model}, small: ${small_prefix}/${small_model}, fallback: ${_fallback_status} (security: ${security_mode}, opencode_zen: ${_zen_status})."
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
@@ -384,22 +406,20 @@ with open(sys.argv[1], 'w') as f:
     # The opencode-runtime-fallback plugin reads a global fallback chain from
     # ~/.config/opencode/opencode-fallback.jsonc (mirrors the auth.json seeding
     # pattern above, including the root copy). Only written when non-empty.
-    if [ -n "$_raw_fallback_model" ]; then
+    if [ "$_fallback_count" -gt 0 ]; then
         local _fallback_dir
         _fallback_dir="$(dirname "$OPENCODE_CONFIG")"
         local user_fallback="${_fallback_dir}/opencode-fallback.jsonc"
         local root_fallback="/root/.config/opencode/opencode-fallback.jsonc"
-        cat > "$user_fallback" << FBEOF
-{
-  "fallback_models": ["${fallback_prefix}/${fallback_model}"]
-}
-FBEOF
-        chown "${OPENCODE_USER}:${OPENCODE_USER}" "$user_fallback"
+        local _fb_json_arr
+        _fb_json_arr=$(printf '%s' "$_fallback_chain" | python3 -c 'import sys,json; print(json.dumps([l.strip() for l in sys.stdin if l.strip()]))')
+        printf '{\n  "fallback_models": %s\n}\n' "$_fb_json_arr" > "$user_fallback"
+        chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$user_fallback"
         mkdir -p "$(dirname "$root_fallback")"
         if [ "$(readlink -f "$user_fallback")" != "$(readlink -f "$root_fallback")" ]; then
             cp "$user_fallback" "$root_fallback"
         fi
-        echo "== Seeded opencode-fallback.jsonc (fallback: ${fallback_prefix}/${fallback_model})."
+        echo "== Seeded opencode-fallback.jsonc (chain: $(printf '%s' "$_fallback_chain" | tr '\n' ',' | sed 's/,$//'))."
     fi
 
     # --- Fix #29: Symlink root's opencode data dir to hermeswebui's ---

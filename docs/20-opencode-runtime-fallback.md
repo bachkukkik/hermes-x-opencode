@@ -29,7 +29,7 @@ When `OPENCODE_FALLBACK_MODEL` is non-empty, `generate_opencode_config()` perfor
    ]
    ```
 
-2. **Seeds a global fallback chain.** It writes `opencode-fallback.jsonc` into the user's OpenCode config directory (`dirname($OPENCODE_CONFIG)` → `~/.config/opencode/opencode-fallback.jsonc`) containing a single resolved fallback id, then mirrors a copy at `/root/.config/opencode/opencode-fallback.jsonc`. The root copy mirrors the existing `auth.json` dual-location seeding so that root `docker exec` sessions (Hermes `terminal()` calls run as root) read the same chain as the `hermeswebui` `opencode serve` process:
+2. **Seeds a global fallback chain.** It writes `opencode-fallback.jsonc` into the user's OpenCode config directory (`dirname($OPENCODE_CONFIG)` → `~/.config/opencode/opencode-fallback.jsonc`) containing the resolved `fallback_models` array — one entry per comma-separated id in `OPENCODE_FALLBACK_MODEL` — then mirrors a copy at `/root/.config/opencode/opencode-fallback.jsonc`. The root copy mirrors the existing `auth.json` dual-location seeding so that root `docker exec` sessions (Hermes `terminal()` calls run as root) read the same chain as the `hermeswebui` `opencode serve` process:
 
    ```jsonc
    {
@@ -43,10 +43,10 @@ The generator emits two log lines summarizing the result:
 
 ```
 == Wrote opencode.jsonc with N models, default: <prefix>/<model>, small: <prefix>/<model>, fallback: <status> (security: <mode>, opencode_zen: <enabled|disabled>).
-== Seeded opencode-fallback.jsonc (fallback: <prefix>/<model>).
+== Seeded opencode-fallback.jsonc (fallback: <comma-joined chain>).
 ```
 
-The `fallback:` field is `none` when the var is unset, otherwise the resolved `<prefix>/<model>`. The second line is only emitted when a fallback is seeded.
+The `fallback:` field is `none` when the var is unset; otherwise it reports the **full ordered chain** as a comma-joined list of resolved `<prefix>/<id>` entries (for example `litellm/z.ai/glm-5.2,litellm/llama_cpp/qwen3.6-27b-q4_k_m`), not a single id. The second line is only emitted when a fallback is seeded.
 
 ### Fallback id resolution
 
@@ -88,11 +88,48 @@ The seeded `~/.config/opencode/opencode-fallback.jsonc` (and its `/root` mirror)
 }
 ```
 
+### Multi-model ordered chain
+
+`OPENCODE_FALLBACK_MODEL` accepts a **comma-separated ordered list** of model ids, not just a single value. `config-opencode.sh` splits the value on commas, resolves each entry independently, and writes the full ordered `fallback_models` array into `opencode-fallback.jsonc` (and its `/root` mirror). The `opencode-runtime-fallback` plugin (v0.2.4) then walks the array **in declared order** after the primary model fails (rate-limit 429, 5xx, quota, timeout, overloaded).
+
+| Aspect | Behavior |
+|--------|----------|
+| Ordering | Entries are tried in the exact order they appear in `OPENCODE_FALLBACK_MODEL`; the first entry is the first retry target, the last entry is the last resort. |
+| Per-entry resolution | Each id is independently passed through `_resolve_provider_prefix` / `_strip_provider_prefix` — an explicit `opencode/...` prefix routes to OpenCode Zen, an explicit `litellm/...` prefix routes to the LiteLLM proxy, and a bare id routes to litellm when `OPENAI_BASE_URL` + `OPENAI_API_KEY` are set, else to opencode Zen. |
+| Backward compatibility | A single value produces a 1-element `fallback_models` array — identical to the prior behavior. |
+| Cooldown & recovery | A model that fails enters a 60-second cooldown and is skipped on subsequent retries. Once the cooldown expires the plugin auto-recovers to the primary model, so the fallback chain only engages during active outages. |
+| Empty / unset | No plugin is wired and no `opencode-fallback.jsonc` is written. |
+
+**Worked example — two-entry chain.** With a free primary on OpenCode Zen and a cloud-tier-then-GPU fallback pair behind a LiteLLM proxy:
+
+```dotenv
+OPENCODE_DEFAULT_MODEL=opencode/deepseek-v4-flash-free
+OPENCODE_FALLBACK_MODEL=z.ai/glm-5.2,llama_cpp/qwen3.6-27b-q4_k_m
+OPENAI_BASE_URL=https://litellm-sw.example.com/v1
+OPENAI_API_KEY=sk-litellm-...
+```
+
+Because both `OPENAI_BASE_URL` and `OPENAI_API_KEY` are set, the two bare fallback ids resolve to the `litellm` provider, yielding:
+
+```jsonc
+{
+  "fallback_models": ["litellm/z.ai/glm-5.2", "litellm/llama_cpp/qwen3.6-27b-q4_k_m"]
+}
+```
+
+The resulting runtime chain:
+
+| Slot | Resolved id | Provider |
+|------|-------------|----------|
+| Primary | `opencode/deepseek-v4-flash-free` | OpenCode Zen |
+| Fallback 1 | `litellm/z.ai/glm-5.2` | LiteLLM proxy (cloud tier) |
+| Fallback 2 | `litellm/llama_cpp/qwen3.6-27b-q4_k_m` | LiteLLM proxy → local llama.cpp (GPU last resort) |
+
 ### Configuration
 
 | Variable | File | Default | Values |
 |----------|------|---------|--------|
-| `OPENCODE_FALLBACK_MODEL` | `.env` | (unset — no fallback) | Any resolvable model id, optionally provider-prefixed (`opencode/...`, `litellm/...`, or bare) |
+| `OPENCODE_FALLBACK_MODEL` | `.env` | (unset — no fallback) | A single resolvable model id OR a comma-separated ordered list; each entry optionally provider-prefixed (`opencode/...`, `litellm/...`, or bare) |
 
 Changes require a container restart: `docker compose up -d`.
 
@@ -131,12 +168,14 @@ print(','.join(c.get('fallback_models', [])))
 # expected: litellm/llama_cpp/qwen3.6-27b-q4_k_m
 ```
 
-The full assertions live in `tests/e2e/16-model-fallback.bats` (AC26–AC28). Each test runs `generate_opencode_config()` in the live container with a controlled `OPENCODE_FALLBACK_MODEL`, backing up and restoring the root `opencode.jsonc` in `teardown()` so the live config is left untouched.
+The full assertions live in `tests/e2e/16-model-fallback.bats` (AC26–AC32). AC26–AC28 cover the single-value behavior (plugin present/absent, provider-prefixed id); AC29–AC32 cover the ordered multi-model chain (comma-separated list builds an ordered 2-element array, whitespace/trailing-comma tolerance, hybrid cross-provider resolution, single-value backward compatibility). Each test runs `generate_opencode_config()` in the live container with a controlled `OPENCODE_FALLBACK_MODEL`, backing up and restoring the root `opencode.jsonc` in `teardown()` so the live config is left untouched.
 
 ## What Works
 
 - Transparent retry of failed OpenCode LLM calls (rate-limit, quota, 5xx, timeout, overloaded) against a configured fallback model
 - Cross-provider chains: primary on OpenCode Zen, fallback on a LiteLLM-served local model, because prefix resolution is independent per model
+- Multi-hop ordered fallback chains: `OPENCODE_FALLBACK_MODEL` accepts a comma-separated list tried in declared order, with each entry independently provider-prefix-resolved
+- Per-model 60-second cooldown on failure, with automatic recovery back to the primary model once the cooldown expires
 - Per-model prefix resolution identical to the primary, so the fallback id is unambiguous
 - Dual-location seeding (`hermeswebui` + root) so both `opencode serve` and root `docker exec` sessions read the same chain
 - Fully opt-in: zero plugins, zero files, and zero runtime overhead when `OPENCODE_FALLBACK_MODEL` is unset
@@ -147,13 +186,12 @@ The full assertions live in `tests/e2e/16-model-fallback.bats` (AC26–AC28). Ea
 - **Fallback target unreachable at runtime:** the configured fallback model must be served at request time (e.g. a `llama.cpp` server reachable at `OPENAI_BASE_URL`). If it is down, the fallback is inert — the original error surfaces after the plugin's retry also fails.
 - **Plugin auto-install needs network at boot:** `opencode-runtime-fallback` is fetched from npm on OpenCode's first run. An air-gapped or offline boot leaves the plugin uninstalled, so fallback silently does not engage.
 - **Not a Hermes gateway fallback:** this is OpenCode-side only. The Hermes Gateway's own fallback (the `AIAgent` `fallback_model` parameter) is a separate, independent concern and is out of scope here.
-- **Single-model chain:** the seeded `opencode-fallback.jsonc` contains exactly one `fallback_models` entry. There is no multi-hop chain generation in this config step; extending the array requires editing the file after seeding.
 
 ## Resolution
 
 - Run the fallback model on a host/provider independent of the primary so correlated outages are unlikely. A local `llama.cpp` GGUF behind a LiteLLM proxy is the intended pattern.
 - Ensure outbound npm access (or a local npm cache) at container boot so the plugin installs; if offline operation is required, pre-install the plugin into the image.
-- To customize the chain beyond a single model, edit `~/.config/opencode/opencode-fallback.jsonc` (and the `/root` mirror) after `generate_opencode_config()` runs. Note both are regenerated on container restart.
+- The fallback chain is configured as a comma-separated ordered list in `OPENCODE_FALLBACK_MODEL`: list multiple ids (e.g. `z.ai/glm-5.2,llama_cpp/qwen3.6-27b-q4_k_m`) and `config-opencode.sh` seeds the full ordered `fallback_models` array. Both `~/.config/opencode/opencode-fallback.jsonc` and its `/root` mirror are regenerated from the env var on every container restart, so edit `.env` — not the generated files — to change the chain.
 - For gateway-level resilience, configure the Hermes Gateway's `fallback_model` separately — the two fallback mechanisms are orthogonal and can coexist.
 
 ## Verdict

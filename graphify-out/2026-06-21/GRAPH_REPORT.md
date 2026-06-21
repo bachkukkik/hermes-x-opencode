@@ -1,16 +1,16 @@
 # Graph Report - hermes-x-opencode  (2026-06-21)
 
 ## Corpus Check
-- 29 files · ~39,386 words
+- 29 files · ~40,207 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 706 nodes · 753 edges · 57 communities (38 shown, 19 thin omitted)
-- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
+- 713 nodes · 760 edges · 57 communities (38 shown, 19 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `83a73436`
+- Built from commit: `3497a374`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -81,8 +81,8 @@
 5. `docker-compose.yml — Service Definition` - 12 edges
 6. `Hermes x OpenCode` - 11 edges
 7. `How` - 11 edges
-8. `16 — Agent Installation Architecture` - 11 edges
-9. `How` - 10 edges
+8. `15 — Browser Human-in-the-Loop` - 11 edges
+9. `16 — Agent Installation Architecture` - 11 edges
 10. `How` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
@@ -201,16 +201,16 @@ Cohesion: 0.15
 Nodes (12): 01 — Hermes WebUI, Chat flow, How, Key endpoints, Resolution, Session management, Verdict, Verification (+4 more)
 
 ### Community 21 - "Delegation Matrix"
-Cohesion: 0.15
-Nodes (12): 03 — OpenCode Serve, Authentication, Connect from a remote machine, Connect from another container on the same network, How, Resolution, Verdict, Verification (+4 more)
+Cohesion: 0.12
+Nodes (14): 03 — OpenCode Serve, Authentication, Connect from a remote machine, Connect from another container on the same network, Entrypoint integration, How, Module: service-opencode.sh, Resolution (+6 more)
 
 ### Community 22 - "Browser Human-in-the-Loop"
 Cohesion: 0.15
 Nodes (12): 14 — Delegation Pattern Matrix, Architecture: Serve + Attach (Recommended), Broken Patterns (Do Not Use), Conditionally Working Patterns, Delegation Matrix, Free Models, Gateway Supervision, Production-Ready Patterns (+4 more)
 
 ### Community 23 - "Agent Installation Architecture"
-Cohesion: 0.15
-Nodes (12): 15 — Browser Human-in-the-Loop, How, How Hermes attaches, Resolution, Start sequence (inside `entrypoint.sh`), Usage, Verdict, Verification (+4 more)
+Cohesion: 0.12
+Nodes (16): 15 — Browser Human-in-the-Loop, CDP connection refused, Chromium startup timeout (30-second wait exceeded), Container marked unhealthy due to CDP failure, How, How Hermes attaches, Resolution, Start sequence (inside `entrypoint.sh`) (+8 more)
 
 ### Community 24 - "Wiki Initialization"
 Cohesion: 0.15
@@ -269,7 +269,7 @@ Cohesion: 0.14
 Nodes (13): 20 — OpenCode Runtime Model Fallback, Config generation, Configuration, Cross-provider example, Fallback id resolution, How, Resolution, Verdict (+5 more)
 
 ## Knowledge Gaps
-- **411 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+406 more)
+- **415 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+410 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -283,7 +283,7 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 2 inferred relationships involving `docker-compose.yml — Service Definition` (e.g. with `hermeswebui User Isolation (UID 1000)` and `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`) actually correct?**
   _`docker-compose.yml — Service Definition` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules` to the rest of the system?**
-  _462 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _466 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Build Pipeline & Acceptance Criteria` be split into smaller, more focused modules?**
   _Cohesion score 0.08709273182957393 - nodes in this community are weakly interconnected._
 - **Should `Quick Start & README` be split into smaller, more focused modules?**
