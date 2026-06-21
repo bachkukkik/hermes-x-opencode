@@ -122,3 +122,79 @@ print(','.join(c.get('fallback_models', [])))
 " /tmp/fbtest-set/opencode-fallback.jsonc 2>/dev/null)
     [ "$result" = "$expected" ]
 }
+
+@test "AC29: comma-separated list builds ordered 2-element fallback chain" {
+    skip_if_no_secrets
+    [ -n "$CID" ]
+    docker exec "$CID" cp /root/.config/opencode/opencode.jsonc /tmp/.fb-backup.jsonc
+
+    _run_gen "$CID" /tmp/fbtest-set "z.ai/glm-5.2,llama_cpp/qwen3.6-27b-q4_k_m"
+
+    # OpenAI creds present (skip_if_no_secrets) => both bare entries resolve to
+    # the litellm provider. Order must match the DECLARED order exactly.
+    docker exec "$CID" python3 -c '
+import json, sys
+c = json.load(open(sys.argv[1]))
+arr = c.get("fallback_models", [])
+assert len(arr) == 2, f"expected 2 entries, got {len(arr)}: {arr}"
+assert arr[0] == "litellm/z.ai/glm-5.2", f"index 0 wrong: {arr[0]}"
+assert arr[1] == "litellm/llama_cpp/qwen3.6-27b-q4_k_m", f"index 1 wrong: {arr[1]}"
+' /tmp/fbtest-set/opencode-fallback.jsonc
+}
+
+@test "AC30: whitespace tolerance and trailing comma yield same chain" {
+    skip_if_no_secrets
+    [ -n "$CID" ]
+    docker exec "$CID" cp /root/.config/opencode/opencode.jsonc /tmp/.fb-backup.jsonc
+
+    # Leading space after the comma, trailing comma -> empty trailing entry
+    # skipped, surrounding whitespace trimmed. Must collapse to the same 2-entry
+    # chain as AC29.
+    _run_gen "$CID" /tmp/fbtest-set "z.ai/glm-5.2, llama_cpp/qwen3.6-27b-q4_k_m,"
+
+    docker exec "$CID" python3 -c '
+import json, sys
+c = json.load(open(sys.argv[1]))
+arr = c.get("fallback_models", [])
+assert len(arr) == 2, f"expected 2 entries, got {len(arr)}: {arr}"
+assert arr[0] == "litellm/z.ai/glm-5.2", f"index 0 wrong: {arr[0]}"
+assert arr[1] == "litellm/llama_cpp/qwen3.6-27b-q4_k_m", f"index 1 wrong: {arr[1]}"
+' /tmp/fbtest-set/opencode-fallback.jsonc
+}
+
+@test "AC31: hybrid cross-provider chain preserves per-entry prefix resolution" {
+    skip_if_no_secrets
+    [ -n "$CID" ]
+    docker exec "$CID" cp /root/.config/opencode/opencode.jsonc /tmp/.fb-backup.jsonc
+
+    # First entry is explicitly opencode/ -> keeps the opencode provider prefix.
+    # Second entry is bare -> routes to litellm (OpenAI creds present).
+    _run_gen "$CID" /tmp/fbtest-set "opencode/deepseek-v4-flash-free,llama_cpp/qwen3.6-27b-q4_k_m"
+
+    docker exec "$CID" python3 -c '
+import json, sys
+c = json.load(open(sys.argv[1]))
+arr = c.get("fallback_models", [])
+assert len(arr) == 2, f"expected 2 entries, got {len(arr)}: {arr}"
+assert arr[0] == "opencode/deepseek-v4-flash-free", f"index 0 wrong: {arr[0]}"
+assert arr[1] == "litellm/llama_cpp/qwen3.6-27b-q4_k_m", f"index 1 wrong: {arr[1]}"
+' /tmp/fbtest-set/opencode-fallback.jsonc
+}
+
+@test "AC32: single value backward-compatible 1-element chain" {
+    skip_if_no_secrets
+    [ -n "$CID" ]
+    docker exec "$CID" cp /root/.config/opencode/opencode.jsonc /tmp/.fb-backup.jsonc
+
+    # A single (non-comma) value must produce exactly a 1-element array,
+    # identical to the pre-change behavior verified by AC28.
+    _run_gen "$CID" /tmp/fbtest-set "llama_cpp/qwen3.6-27b-q4_k_m"
+
+    docker exec "$CID" python3 -c '
+import json, sys
+c = json.load(open(sys.argv[1]))
+arr = c.get("fallback_models", [])
+assert len(arr) == 1, f"expected 1 entry, got {len(arr)}: {arr}"
+assert arr[0] == "litellm/llama_cpp/qwen3.6-27b-q4_k_m", f"index 0 wrong: {arr[0]}"
+' /tmp/fbtest-set/opencode-fallback.jsonc
+}

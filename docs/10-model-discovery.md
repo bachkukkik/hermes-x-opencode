@@ -204,7 +204,7 @@ These limits are used by the OpenCode serve's token budget calculation and are v
 
 ### Runtime fallback
 
-When `OPENCODE_FALLBACK_MODEL` is set, `config-opencode.sh` adds the `opencode-runtime-fallback` plugin to `opencode.jsonc` and seeds a global fallback chain at `~/.config/opencode/opencode-fallback.jsonc` (plus a root copy at `/root/.config/opencode/opencode-fallback.jsonc`). The fallback id is resolved with the same `_resolve_provider_prefix`/`_strip_provider_prefix` logic as the primary model, so a cross-provider chain works — for example a primary `opencode/deepseek-v4-flash-free` with a fallback of `litellm/llama_cpp/qwen3.6-27b-q4_k_m`. When unset, no fallback plugin is wired and failed calls surface normally. See acceptance criteria AC26–AC28 for the verification tests.
+When `OPENCODE_FALLBACK_MODEL` is set, `config-opencode.sh` adds the `opencode-runtime-fallback` plugin to `opencode.jsonc` and seeds a global fallback chain at `~/.config/opencode/opencode-fallback.jsonc` (plus a root copy at `/root/.config/opencode/opencode-fallback.jsonc`). The fallback chain accepts a comma-separated ORDERED list; each id is independently prefix-resolved with the same `_resolve_provider_prefix`/`_strip_provider_prefix` logic as the primary model, so a cross-provider chain works — for example a primary `opencode/deepseek-v4-flash-free` with a fallback chain `litellm/z.ai/glm-5.2`, `litellm/llama_cpp/qwen3.6-27b-q4_k_m` (cloud tier first, GPU last resort). The `opencode-runtime-fallback` plugin tries the array in declared order after the primary fails. When unset, no fallback plugin is wired and failed calls surface normally. See acceptance criteria AC26–AC28 and AC29–AC32 for the verification tests.
 
 ## Verification
 

@@ -362,6 +362,123 @@
       "norm_label": "cleanup()"
     },
     {
+      "label": "model-order-priority-chain.md",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L1",
+      "id": "plans_model_order_priority_chain",
+      "community": 57,
+      "norm_label": "model-order-priority-chain.md"
+    },
+    {
+      "label": "Plan \u2014 Ordered Multi-Model Fallback Chain for OpenCode",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L1",
+      "id": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "community": 57,
+      "norm_label": "plan \u2014 ordered multi-model fallback chain for opencode"
+    },
+    {
+      "label": "Goal (from /goal)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L3",
+      "id": "plans_model_order_priority_chain_goal_from_goal",
+      "community": 57,
+      "norm_label": "goal (from /goal)"
+    },
+    {
+      "label": "Root-cause analysis (investigated directly \u2014 karpathy domain)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L6",
+      "id": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "community": 57,
+      "norm_label": "root-cause analysis (investigated directly \u2014 karpathy domain)"
+    },
+    {
+      "label": "Live state (confirmed in running container)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L8",
+      "id": "plans_model_order_priority_chain_live_state_confirmed_in_running_container",
+      "community": 57,
+      "norm_label": "live state (confirmed in running container)"
+    },
+    {
+      "label": "Why GPU shows utilization",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L13",
+      "id": "plans_model_order_priority_chain_why_gpu_shows_utilization",
+      "community": 57,
+      "norm_label": "why gpu shows utilization"
+    },
+    {
+      "label": "The gap (documented in doc 20, line 150)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L19",
+      "id": "plans_model_order_priority_chain_the_gap_documented_in_doc_20_line_150",
+      "community": 57,
+      "norm_label": "the gap (documented in doc 20, line 150)"
+    },
+    {
+      "label": "Assumptions (surfaced)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L31",
+      "id": "plans_model_order_priority_chain_assumptions_surfaced",
+      "community": 57,
+      "norm_label": "assumptions (surfaced)"
+    },
+    {
+      "label": "Feature (the fix)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L40",
+      "id": "plans_model_order_priority_chain_feature_the_fix",
+      "community": 57,
+      "norm_label": "feature (the fix)"
+    },
+    {
+      "label": "Surgical change surface",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L61",
+      "id": "plans_model_order_priority_chain_surgical_change_surface",
+      "community": 57,
+      "norm_label": "surgical change surface"
+    },
+    {
+      "label": "Verification policy (PM domain)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L71",
+      "id": "plans_model_order_priority_chain_verification_policy_pm_domain",
+      "community": 57,
+      "norm_label": "verification policy (pm domain)"
+    },
+    {
+      "label": "Out of scope (explicit)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L82",
+      "id": "plans_model_order_priority_chain_out_of_scope_explicit",
+      "community": 57,
+      "norm_label": "out of scope (explicit)"
+    },
+    {
+      "label": "Subsequent prompts (pre-queued by user)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L88",
+      "id": "plans_model_order_priority_chain_subsequent_prompts_pre_queued_by_user",
+      "community": 57,
+      "norm_label": "subsequent prompts (pre-queued by user)"
+    },
+    {
       "label": "AGENTS.md",
       "file_type": "document",
       "source_file": "AGENTS.md",
@@ -4070,10 +4187,19 @@
       "norm_label": "cross-provider example"
     },
     {
-      "label": "Configuration",
+      "label": "Multi-model ordered chain",
       "file_type": "document",
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L91",
+      "id": "docs_20_opencode_runtime_fallback_multi_model_ordered_chain",
+      "community": 56,
+      "norm_label": "multi-model ordered chain"
+    },
+    {
+      "label": "Configuration",
+      "file_type": "document",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L128",
       "id": "docs_20_opencode_runtime_fallback_configuration",
       "community": 56,
       "norm_label": "configuration"
@@ -4082,7 +4208,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/20-opencode-runtime-fallback.md",
-      "source_location": "L99",
+      "source_location": "L136",
       "id": "docs_20_opencode_runtime_fallback_verification",
       "community": 56,
       "norm_label": "verification"
@@ -4091,7 +4217,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/20-opencode-runtime-fallback.md",
-      "source_location": "L136",
+      "source_location": "L173",
       "id": "docs_20_opencode_runtime_fallback_what_works",
       "community": 56,
       "norm_label": "what works"
@@ -4100,7 +4226,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/20-opencode-runtime-fallback.md",
-      "source_location": "L145",
+      "source_location": "L184",
       "id": "docs_20_opencode_runtime_fallback_what_fails",
       "community": 56,
       "norm_label": "what fails"
@@ -4109,7 +4235,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/20-opencode-runtime-fallback.md",
-      "source_location": "L152",
+      "source_location": "L190",
       "id": "docs_20_opencode_runtime_fallback_resolution",
       "community": 56,
       "norm_label": "resolution"
@@ -4118,7 +4244,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/20-opencode-runtime-fallback.md",
-      "source_location": "L159",
+      "source_location": "L197",
       "id": "docs_20_opencode_runtime_fallback_verdict",
       "community": 56,
       "norm_label": "verdict"
@@ -7792,6 +7918,126 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain",
+      "target": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_feature_the_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_goal_from_goal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_out_of_scope_explicit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_subsequent_prompts_pre_queued_by_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_surgical_change_surface",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_verification_policy_pm_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_assumptions_surfaced",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_live_state_confirmed_in_running_container",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_the_gap_documented_in_doc_20_line_150",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_why_gpu_shows_utilization",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -9035,9 +9281,9 @@
       "source_file": "docs/03-opencode-serve.md",
       "source_location": "L30",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_03_opencode_serve_how",
-      "target": "docs_03_opencode_serve_module_service_opencode_sh",
-      "confidence_score": 1.0
+      "target": "docs_03_opencode_serve_module_service_opencode_sh"
     },
     {
       "relation": "contains",
@@ -9045,9 +9291,9 @@
       "source_file": "docs/03-opencode-serve.md",
       "source_location": "L48",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_03_opencode_serve_module_service_opencode_sh",
-      "target": "docs_03_opencode_serve_entrypoint_integration",
-      "confidence_score": 1.0
+      "target": "docs_03_opencode_serve_entrypoint_integration"
     },
     {
       "relation": "contains",
@@ -9055,9 +9301,9 @@
       "source_file": "docs/03-opencode-serve.md",
       "source_location": "L34",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_03_opencode_serve_module_service_opencode_sh",
-      "target": "docs_03_opencode_serve_start_opencode_serve",
-      "confidence_score": 1.0
+      "target": "docs_03_opencode_serve_start_opencode_serve"
     },
     {
       "relation": "contains",
@@ -11005,9 +11251,9 @@
       "source_file": "docs/15-browser-human-loop.md",
       "source_location": "L108",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_15_browser_human_loop_15_browser_human_in_the_loop",
-      "target": "docs_15_browser_human_loop_troubleshooting",
-      "confidence_score": 1.0
+      "target": "docs_15_browser_human_loop_troubleshooting"
     },
     {
       "relation": "contains",
@@ -11105,9 +11351,9 @@
       "source_file": "docs/15-browser-human-loop.md",
       "source_location": "L110",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_15_browser_human_loop_troubleshooting",
-      "target": "docs_15_browser_human_loop_cdp_connection_refused",
-      "confidence_score": 1.0
+      "target": "docs_15_browser_human_loop_cdp_connection_refused"
     },
     {
       "relation": "contains",
@@ -11115,9 +11361,9 @@
       "source_file": "docs/15-browser-human-loop.md",
       "source_location": "L178",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_15_browser_human_loop_troubleshooting",
-      "target": "docs_15_browser_human_loop_chromium_startup_timeout_30_second_wait_exceeded",
-      "confidence_score": 1.0
+      "target": "docs_15_browser_human_loop_chromium_startup_timeout_30_second_wait_exceeded"
     },
     {
       "relation": "contains",
@@ -11125,9 +11371,9 @@
       "source_file": "docs/15-browser-human-loop.md",
       "source_location": "L145",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "docs_15_browser_human_loop_troubleshooting",
-      "target": "docs_15_browser_human_loop_container_marked_unhealthy_due_to_cdp_failure",
-      "confidence_score": 1.0
+      "target": "docs_15_browser_human_loop_container_marked_unhealthy_due_to_cdp_failure"
     },
     {
       "relation": "contains",
@@ -11738,6 +11984,16 @@
       "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_how",
       "target": "docs_20_opencode_runtime_fallback_fallback_id_resolution"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/20-opencode-runtime-fallback.md",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "docs_20_opencode_runtime_fallback_how",
+      "target": "docs_20_opencode_runtime_fallback_multi_model_ordered_chain",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -15270,5 +15526,5 @@
       "source_file": "docs/17-wiki-init.md"
     }
   ],
-  "built_at_commit": "3497a3747088b1c5d1828e22ba6fb891b48ffa09"
+  "built_at_commit": "d1a579d963eaa1cfdbd66a715c1109160ba03cad"
 }
