@@ -20,8 +20,8 @@
     "semantic_hash": "f5e11ec5c1e198b01d43fe9468f47ed8"
   },
   "docker-compose.yml": {
-    "mtime": 1781952139.763149,
-    "ast_hash": "2c73e379016bd0c465513f1535fc4915",
+    "mtime": 1781973676.3402038,
+    "ast_hash": "e0ce594e0513c5be19686ddf99ed4f28",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -30,7 +30,7 @@
     "semantic_hash": ""
   },
   "PRD.md": {
-    "mtime": 1781952780.778522,
+    "mtime": 1781961029.403651,
     "ast_hash": "12eca350023ffb48f028767feb168f80",
     "semantic_hash": ""
   },
@@ -55,9 +55,9 @@
     "semantic_hash": "5b95e86cdfd65fb39245aa6e1e3d602b"
   },
   "docs/05-entrypoint-sequence.md": {
-    "mtime": 1781339164.1788812,
-    "ast_hash": "d8ae959bd00854187440171475d9c457",
-    "semantic_hash": "d8ae959bd00854187440171475d9c457"
+    "mtime": 1781972139.7906666,
+    "ast_hash": "04a52a3e9122bbb0128c2c90943b4233",
+    "semantic_hash": ""
   },
   "docs/08-cloudflare-ua-fix.md": {
     "mtime": 1779983847.2381947,
@@ -65,8 +65,8 @@
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
   "docs/10-model-discovery.md": {
-    "mtime": 1781953709.0041506,
-    "ast_hash": "b67ad571a70d7c58c2e64f9246097ae7",
+    "mtime": 1781972134.6385467,
+    "ast_hash": "4074ae22a781138ba434581b5b80ddf2",
     "semantic_hash": ""
   },
   "docs/09-testing-and-verification.md": {
@@ -75,8 +75,8 @@
     "semantic_hash": "ec93549288ef22c5aefccec5c0d41c6a"
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1781953709.0081508,
-    "ast_hash": "5880c07dcddd9f1ae489032271295968",
+    "mtime": 1781973551.4849415,
+    "ast_hash": "8c1ca9c11dc5c7eff4d159a4b25b7c51",
     "semantic_hash": ""
   },
   "docs/02-hermes-gateway.md": {
@@ -125,7 +125,7 @@
     "semantic_hash": "367c9c0c71a7559a9d84b5e3c7b61e22"
   },
   "docs/17-wiki-init.md": {
-    "mtime": 1781952968.838936,
+    "mtime": 1781961029.407651,
     "ast_hash": "9ed7eba73b0aa2bc43453e0926821aca",
     "semantic_hash": ""
   },
@@ -135,18 +135,33 @@
     "semantic_hash": "d73e7a7781d11371506b40e893ef9bcc"
   },
   "docs/18-docker-compose-overrides.md": {
-    "mtime": 1781952972.3750188,
+    "mtime": 1781961029.407651,
     "ast_hash": "15a763a07174ec166bc3801a65883051",
     "semantic_hash": ""
   },
   "docs/19-doctrine.md": {
-    "mtime": 1781953019.704126,
+    "mtime": 1781961029.407651,
     "ast_hash": "ca8ac287df7a3bc1fa8d3e2453940a9b",
     "semantic_hash": ""
   },
   "docs/README.md": {
-    "mtime": 1781953040.760618,
-    "ast_hash": "70e9baee7a6a1d4111b5ca1516f6ecb6",
+    "mtime": 1781974348.8732986,
+    "ast_hash": "893ca30a69c0ded49deff75d4e2adaee",
+    "semantic_hash": ""
+  },
+  "docs/20-opencode-runtime-fallback.md": {
+    "mtime": 1781961029.407651,
+    "ast_hash": "3e5e3b2bb0ebb862c67f217b570fdd0f",
+    "semantic_hash": ""
+  },
+  "docs/21-dashboard.md": {
+    "mtime": 1781974020.6490283,
+    "ast_hash": "603c639a365e9f11639b266d1714a221",
+    "semantic_hash": ""
+  },
+  "docs/22-profiles.md": {
+    "mtime": 1781974343.1491554,
+    "ast_hash": "cecc591b409c7d6f2acf7674d6476dee",
     "semantic_hash": ""
   }
 }

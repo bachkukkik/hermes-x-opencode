@@ -42,3 +42,21 @@ setup() {
     deep_count=$(echo "$deep" | python3 -c "import sys,json; print(len(json.load(sys.stdin)))" 2>/dev/null || echo 0)
     [ "$deep_count" -gt "$basic_count" ]
 }
+
+@test "healthcheck.sh validates Browser CDP when enabled" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Run healthcheck.sh inside the container. It may exit non-zero if some
+    # service is unhealthy; we only assert the Browser CDP check line is present.
+    run docker exec "$cid" bash /usr/local/bin/healthcheck.sh
+    if [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ]; then
+        # When enabled, healthcheck emits "OK  Browser CDP ..." or
+        # "FAIL  Browser CDP ...". Either way the line must mention Browser CDP.
+        echo "$output" | grep -q "Browser CDP"
+    else
+        # When disabled, healthcheck emits "SKIP  Browser CDP (...)".
+        echo "$output" | grep -q "SKIP  Browser CDP"
+    fi
+}

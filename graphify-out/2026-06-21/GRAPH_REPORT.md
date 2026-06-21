@@ -1,16 +1,16 @@
-# Graph Report - hermes-x-opencode  (2026-06-20)
+# Graph Report - hermes-x-opencode  (2026-06-21)
 
 ## Corpus Check
-- 26 files · ~35,562 words
+- 29 files · ~39,386 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 661 nodes · 711 edges · 54 communities (35 shown, 19 thin omitted)
+- 706 nodes · 753 edges · 57 communities (38 shown, 19 thin omitted)
 - Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `84e2ce3a`
+- Built from commit: `83a73436`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -69,6 +69,9 @@
 - [[_COMMUNITY_Community 51|Community 51]]
 - [[_COMMUNITY_Community 52|Community 52]]
 - [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 55|Community 55]]
+- [[_COMMUNITY_Community 56|Community 56]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `How` - 19 edges
@@ -111,7 +114,7 @@
 - **Dual Installation Architecture** — agent_install_a_detail, agent_install_b_detail, agent_propagation_chain, agent_why_both_exist [EXTRACTED 0.95]
 - **Wiki Initialization Pipeline** — wiki_init_function, wiki_schema_backbone, wiki_dir_structure [EXTRACTED 0.90]
 
-## Communities (54 total, 19 thin omitted)
+## Communities (57 total, 19 thin omitted)
 
 ### Community 0 - "Build Pipeline & Acceptance Criteria"
 Cohesion: 0.09
@@ -253,8 +256,20 @@ Nodes (13): 19 — Security Doctrine, How, Permission block generation, Resoluti
 Cohesion: 0.17
 Nodes (11): 18 — Docker Compose Overrides, docker-compose.ci.yml (CI Port Publishing), docker-compose.override.yml (Cloudflare/Traefik), How, Resolution, Verdict, Verification, What (+3 more)
 
+### Community 54 - "Community 54"
+Cohesion: 0.12
+Nodes (15): 22 — Profiles and the Righthand-Man Orchestrator, CLI, First-boot seeding in the container, Host-side profile, How, How to use it, The four-skill routing table, The `/goal` format (+7 more)
+
+### Community 55 - "Community 55"
+Cohesion: 0.13
+Nodes (14): 21 — Hermes Web Dashboard, Boot-time readiness probe, Configuration, How, Launch flags, Resolution, Restart-loop supervisor, The web `dist/` prerequisite (IMPORTANT) (+6 more)
+
+### Community 56 - "Community 56"
+Cohesion: 0.14
+Nodes (13): 20 — OpenCode Runtime Model Fallback, Config generation, Configuration, Cross-provider example, Fallback id resolution, How, Resolution, Verdict (+5 more)
+
 ## Knowledge Gaps
-- **376 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+371 more)
+- **411 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules`, `3. Docker/Build Constraints`, `4. File Locations (inside container)` (+406 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -262,13 +277,13 @@ Nodes (11): 18 — Docker Compose Overrides, docker-compose.ci.yml (CI Port Publ
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `OpenCode Serve (Headless HTTP Server)` connect `Testing & Verification` to `Dual Installation Architecture`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `Sequential Startup with Health Gates` connect `Dual Installation Architecture` to `Testing & Verification`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `docker-compose.yml — Service Definition` (e.g. with `hermeswebui User Isolation (UID 1000)` and `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`) actually correct?**
   _`docker-compose.yml — Service Definition` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Code Quality Rules` to the rest of the system?**
-  _427 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _462 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Build Pipeline & Acceptance Criteria` be split into smaller, more focused modules?**
   _Cohesion score 0.08709273182957393 - nodes in this community are weakly interconnected._
 - **Should `Quick Start & README` be split into smaller, more focused modules?**

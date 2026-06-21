@@ -26,6 +26,17 @@ else
     echo "SKIP  OpenCode Serve (OPENCODE_SERVE_ENABLED!=true)"
 fi
 
+if [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ]; then
+    if curl -sf --max-time 3 http://127.0.0.1:9222/json/version >/dev/null 2>&1; then
+        echo "OK  Browser CDP (port 9222)"
+    else
+        echo "FAIL  Browser CDP (port 9222)"
+        failed=$((failed + 1))
+    fi
+else
+    echo "SKIP  Browser CDP (BROWSER_HUMAN_LOOP_ENABLED!=true)"
+fi
+
 if [ "$failed" -ne 0 ]; then
     echo "$failed service(s) unhealthy"
     exit 1

@@ -20,7 +20,7 @@
     "semantic_hash": "f5e11ec5c1e198b01d43fe9468f47ed8"
   },
   "docker-compose.yml": {
-    "mtime": 1781973676.3402038,
+    "mtime": 1781978930.1303718,
     "ast_hash": "e0ce594e0513c5be19686ddf99ed4f28",
     "semantic_hash": ""
   },
@@ -50,12 +50,12 @@
     "semantic_hash": "47481d03742934eb942e1db8597b4ca6"
   },
   "docs/03-opencode-serve.md": {
-    "mtime": 1780942326.2291749,
-    "ast_hash": "5b95e86cdfd65fb39245aa6e1e3d602b",
-    "semantic_hash": "5b95e86cdfd65fb39245aa6e1e3d602b"
+    "mtime": 1782050125.7446585,
+    "ast_hash": "4ae2c05b353ac81fdf40a1ae604ebd60",
+    "semantic_hash": ""
   },
   "docs/05-entrypoint-sequence.md": {
-    "mtime": 1781972139.7906666,
+    "mtime": 1781978930.1303718,
     "ast_hash": "04a52a3e9122bbb0128c2c90943b4233",
     "semantic_hash": ""
   },
@@ -65,7 +65,7 @@
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
   "docs/10-model-discovery.md": {
-    "mtime": 1781972134.6385467,
+    "mtime": 1781978930.1303718,
     "ast_hash": "4074ae22a781138ba434581b5b80ddf2",
     "semantic_hash": ""
   },
@@ -75,7 +75,7 @@
     "semantic_hash": "ec93549288ef22c5aefccec5c0d41c6a"
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1781973551.4849415,
+    "mtime": 1781978930.1303718,
     "ast_hash": "8c1ca9c11dc5c7eff4d159a4b25b7c51",
     "semantic_hash": ""
   },
@@ -115,9 +115,9 @@
     "semantic_hash": "ef2a59e4397263b643ee1e1ca18b3f87"
   },
   "docs/15-browser-human-loop.md": {
-    "mtime": 1781272897.9928508,
-    "ast_hash": "d733eb435ba1d164966d81abb81cd778",
-    "semantic_hash": "d733eb435ba1d164966d81abb81cd778"
+    "mtime": 1782050125.7446585,
+    "ast_hash": "9d106cb8c2d0ae7ea67b6179a46888c1",
+    "semantic_hash": ""
   },
   "docs/16-agent-installation-architecture.md": {
     "mtime": 1781272897.9928508,
@@ -145,7 +145,7 @@
     "semantic_hash": ""
   },
   "docs/README.md": {
-    "mtime": 1781974348.8732986,
+    "mtime": 1781978930.1303718,
     "ast_hash": "893ca30a69c0ded49deff75d4e2adaee",
     "semantic_hash": ""
   },
@@ -155,12 +155,12 @@
     "semantic_hash": ""
   },
   "docs/21-dashboard.md": {
-    "mtime": 1781974020.6490283,
+    "mtime": 1781978930.1303718,
     "ast_hash": "603c639a365e9f11639b266d1714a221",
     "semantic_hash": ""
   },
   "docs/22-profiles.md": {
-    "mtime": 1781974343.1491554,
+    "mtime": 1781978930.1303718,
     "ast_hash": "cecc591b409c7d6f2acf7674d6476dee",
     "semantic_hash": ""
   }

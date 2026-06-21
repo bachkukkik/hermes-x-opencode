@@ -47,6 +47,7 @@ Container: hermes-opencode
 6. `x11vnc -display :99 -rfbport 5900 -rfbauth /tmp/.vnc_passwd -forever -shared` (background)
 7. `websockify 6901 localhost:5900 --web=/usr/share/novnc` (background)
 8. `chromium --remote-debugging-port=9222 --user-data-dir=... --no-sandbox ...` as `hermeswebui` (background)
+9. `wait_for_port 9222 30 "chromium CDP"` — blocks until CDP endpoint responds (30s timeout, non-fatal; logs warning if timeout, then proceeds)
 
 Process logs land in `/home/hermeswebui/.hermes/logs/` (`xvfb.log`, `openbox.log`, `x11vnc.log`, `websockify.log`, `chromium.log`).
 
@@ -104,9 +105,97 @@ docker exec "$CONTAINER" curl -sf http://127.0.0.1:9222/json/version | python3 -
 docker exec "$CONTAINER" grep -A1 '^browser:' /home/hermeswebui/.hermes/config.yaml
 ```
 
+## Troubleshooting
+
+### CDP connection refused
+
+**Symptom:** The agent logs `All CDP discovery methods failed for 127.0.0.1:9222` (or similar "connection refused" errors).
+
+**What it means:** Hermes tried to attach to Chromium's DevTools endpoint before Chromium finished initializing, or Chromium never started at all.
+
+**How to diagnose:**
+1. Check that the flag is actually set:
+
+   ```bash
+   docker exec hermes-opencode env | grep BROWSER_HUMAN_LOOP_ENABLED
+   ```
+
+   If the output is missing or shows `false`, the browser stack never launched.
+
+2. Check whether Chromium is running:
+
+   ```bash
+   docker exec hermes-opencode ps aux | grep chromium
+   ```
+
+   If nothing shows up, Chromium crashed — inspect `/home/hermeswebui/.hermes/logs/chromium.log`.
+
+3. Check whether the CDP endpoint is listening:
+
+   ```bash
+   docker exec hermes-opencode curl -sf http://127.0.0.1:9222/json/version
+   ```
+
+   A JSON response with a `Browser` field means CDP is up. A connection error means it is not.
+
+**Boot-time race (most common):** Before the readiness-wait fix, this error appeared intermittently on fast-start containers because Chromium needs ~3–10 seconds to spin up its CDP server after the process launches. The entrypoint now blocks on `wait_for_port 9222 30` after starting Chromium, so the gateway does not start until CDP responds.
+
+---
+
+### Container marked unhealthy due to CDP failure
+
+**Symptom:** `docker compose ps` shows `unhealthy` for `hermes-opencode`.
+
+**What it means:** When `BROWSER_HUMAN_LOOP_ENABLED=true`, the healthcheck runs:
+
+```bash
+curl -sf --max-time 3 http://127.0.0.1:9222/json/version
+```
+
+If this fails (Chromium exited, crashed, or is stuck), the container is marked unhealthy. This detects situations where the browser stack silently dies after boot — e.g., a segfault, OOM kill, or sandbox crash.
+
+**How to diagnose:**
+1. Check the healthcheck logs:
+
+   ```bash
+   docker inspect --format='{{json .State.Health}}' hermes-opencode | python3 -m json.tool
+   ```
+
+2. Look at Chromium's crash log:
+
+   ```bash
+   docker exec hermes-opencode tail -50 /home/hermeswebui/.hermes/logs/chromium.log
+   ```
+
+3. Check system-level reasons (OOM, disk full, etc.):
+
+   ```bash
+   docker exec hermes-opencode dmesg | tail -20
+   ```
+
+---
+
+### Chromium startup timeout (30-second wait exceeded)
+
+**Symptom:** Entrypoint log shows `WARN: chromium CDP port 9222 not ready after 30s` but the container still starts.
+
+**What it means:** The `wait_for_port` probe did not see CDP respond within 30 seconds. This is **non-fatal** — the entrypoint logs the warning and proceeds to start the gateway anyway. The agent will attempt its own CDP connection retry loop after boot.
+
+**When this happens:**
+- Cold start on slow disk (Chrome user-data-dir first-time setup, profile creation, etc.)
+- Resource-constrained hosts (low CPU/RAM, heavy Docker overhead)
+- Chromium stuck on an update or profile migration
+
+**What to do:**
+- Check `chromium.log` for startup errors or long stalls.
+- If this is a one-off on first boot, ignore it — subsequent boots are typically much faster once the profile is warm.
+- If it persists, consider increasing the timeout by modifying the `wait_for_port` call in `scripts/entrypoint.sh` (change `30` to a larger value).
+
 ## What Works
 
 - Browser stack starts within 5 seconds after the WebUI is healthy (before the gateway starts)
+- Boot-time CDP readiness wait (`wait_for_port 9222 30`) ensures the agent never tries to connect before Chromium is ready
+- Healthcheck validates CDP endpoint — container marked unhealthy if Chromium crashes after boot
 - noVNC web client accessible from any modern browser at `:6901/vnc.html`
 - Chromium CDP endpoint responds on `127.0.0.1:9222` and the agent attaches via `browser.cdp_url`
 - Cookies, localStorage, and login state persist across container restarts via the bind-mounted user-data-dir

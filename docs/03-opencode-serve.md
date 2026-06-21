@@ -27,6 +27,37 @@ OpenCode Serve is started by the entrypoint as the third background process, aft
 | Working directory | `/home/hermeswebui` | `HOME=/home/hermeswebui` for the hermeswebui user |
 | Config path | `/home/hermeswebui/.config/opencode/opencode.jsonc` | Owned by hermeswebui |
 
+### Module: service-opencode.sh
+
+The serve startup logic lives in `volumes_hermes_opencode/build/scripts/lib/service-opencode.sh`, which is sourced by the entrypoint. It exports a single function: `start_opencode_serve()`.
+
+#### start_opencode_serve()
+
+The function performs these steps in order:
+
+1. **Toggle check** — Reads `OPENCODE_SERVE_ENABLED` (default: `false`). Returns immediately if not `"true"`.
+2. **Binary check** — Runs `command -v opencode` to confirm the binary is present. Skips startup if missing.
+3. **Password handling** — Reads `OPENCODE_SERVER_PASSWORD` from the environment. If empty, generates a random 32-character hex string via `openssl rand -hex 16`, exports it, and writes it to two locations:
+   - `/tmp/opencode-server-password` — accessible via `docker exec` for reading the password
+   - `${HERMES_HOME}/opencode_server_password` — persisted alongside other Hermes state files
+   Both files are `chown`ed to the `OPENCODE_USER` (hermeswebui).
+4. **State directory** — Creates `${OPENCODE_USER_HOME}/.local/state` and `chown`s it, since opencode serve writes runtime state there.
+5. **API key passthrough** — Reads `OPENCODE_API_KEY`, `OPENAI_API_KEY`, and `OPENAI_BASE_URL` from the entrypoint environment and passes them explicitly into the `su` command. Without this, the `{env:VAR}` placeholders in `opencode.jsonc` resolve to empty strings inside the dropped-privilege process, causing 401 errors from the litellm provider.
+6. **Launch** — Starts `opencode serve --port 4096 --hostname 0.0.0.0` in the background under the `OPENCODE_USER` via `su -s /bin/bash`. Prints the child PID to logs.
+
+#### Entrypoint integration
+
+The entrypoint sources `service-opencode.sh` and calls `start_opencode_serve()` as the third background service, after the WebUI and Gateway are healthy. The call sequence is:
+
+```
+start_webui()          → background, wait for WebUI port
+wait_for_port 8642     → block until Gateway is healthy
+start_opencode_serve() → conditional: only if OPENCODE_SERVE_ENABLED=true
+wait_for_port 4096     → conditional wait (only if serve was started)
+```
+
+The `OPENCODE_SERVE_BOOT_TIMEOUT` variable (default: `30`) controls how long the entrypoint waits for port 4096 to become available after `start_opencode_serve()` returns. If the timeout expires, the entrypoint logs a warning but does not abort — the serve process may still start after the entrypoint continues.
+
 ### Connect from a remote machine
 
 ```bash
