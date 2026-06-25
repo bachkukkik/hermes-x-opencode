@@ -34,3 +34,18 @@ sessions = data.get('sessions')
 assert isinstance(sessions, int), f'expected int sessions, got {type(sessions).__name__}'
 "
 }
+
+# ------------------------------------------------------------------
+# WebUI Health API - uptime (TT-04)
+# ------------------------------------------------------------------
+
+@test "AC17c: WebUI health response includes uptime_seconds as number" {
+    run curl -sf --max-time 5 "$(webui_base)/health"
+    [ "$status" -eq 0 ]
+    echo "$output" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+val = data.get('uptime_seconds')
+assert isinstance(val, (int, float)), f'expected number uptime_seconds, got {type(val).__name__}'
+"
+}
