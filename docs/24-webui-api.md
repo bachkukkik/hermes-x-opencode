@@ -1,4 +1,4 @@
-# 23 — WebUI API
+# 24 — WebUI API
 
 The Hermes WebUI exposes a REST API on port 8787 for health checks,
 session management, and agent interaction.

@@ -9,6 +9,7 @@ A viewable and interactive Chromium browser running inside the `hermes-opencode`
 - Lets the agent browse authenticated / JS-heavy / CAPTCHA-protected pages that pure HTTP fetching cannot reach
 - Lets a human complete logins, solve CAPTCHAs, and inspect the agent's browsing session live through a web browser
 - Keeps cookies, localStorage, and login state across container restarts via the existing `/home/hermeswebui/.hermes` bind mount
+- See [23 — Browser State Persistence](23-browser-persistence.md) for the full persistence architecture, verification steps, and troubleshooting
 - Zero host-side installation: open a URL in any browser, type the VNC password, and you're driving the same Chromium the agent drives
 
 ## How
@@ -85,7 +86,7 @@ The Hermes Agent reads `browser.cdp_url` at runtime and connects to Chromium's D
 
 4. Enter the VNC password when prompted. You'll see Chromium running on the Xvfb display.
 
-5. Use Chromium normally. Logins, cookies, and CAPTCHAs persist in `/home/hermeswebui/.hermes/chrome-debug/` across container restarts.
+5. Use Chromium normally. Logins, cookies, and CAPTCHAs persist in `/home/hermeswebui/.hermes/chrome-debug/` across container restarts. See [23 — Browser State Persistence](23-browser-persistence.md) for verification steps and troubleshooting.
 
 ## Verification
 

@@ -30,7 +30,8 @@ The Dockerfile is located at `volumes_hermes_opencode/build/Dockerfile`. The bui
 | 8b | `COPY scripts/lib/ /usr/local/bin/lib/` | Copy library modules (11 files) |
 | 9 | `RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills install-skills.sh` | Build-time skill installation (14 OpenCode + ~67 Hermes skills), including graphify for both platforms |
 | 10 | `RUN echo "=== Hermes x OpenCode Stack ===" && ...` | Verification: Python version, opencode version, graphify version, agent present, patch applied |
-| 11 | `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]` | Set entrypoint |
+| 11 | `RUN create-stub-skills.sh /opt/hermes-skills-staging` | Create AGENTS.md-mandated stub skills (security-best-practices, webapp-testing) in Hermes skills staging |
+| 12 | `ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]` | Set entrypoint |
 
 ### Agent staging
 

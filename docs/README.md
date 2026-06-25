@@ -26,4 +26,5 @@ Architecture deep-dives for the Hermes x OpenCode Docker stack. Each doc follows
 | 20 | [20 — OpenCode Runtime Model Fallback](20-opencode-runtime-fallback.md) | Model Fallback |
 | 21 | [21 — Hermes Web Dashboard](21-dashboard.md) | Dashboard |
 | 22 | [22 — Profiles and the Righthand-Man Orchestrator](22-profiles.md) | Profiles |
-| 23 | [23 — WebUI API](23-webui-api.md) | WebUI API |
+| 23 | [23 — Browser Persistence](23-browser-persistence.md) | Browser/VNC |
+| 24 | [24 — WebUI API](24-webui-api.md) | WebUI API |

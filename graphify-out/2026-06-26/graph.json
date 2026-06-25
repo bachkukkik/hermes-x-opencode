@@ -362,6 +362,123 @@
       "norm_label": "cleanup()"
     },
     {
+      "label": "model-order-priority-chain.md",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L1",
+      "id": "plans_model_order_priority_chain",
+      "community": 57,
+      "norm_label": "model-order-priority-chain.md"
+    },
+    {
+      "label": "Plan \u2014 Ordered Multi-Model Fallback Chain for OpenCode",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L1",
+      "id": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "community": 57,
+      "norm_label": "plan \u2014 ordered multi-model fallback chain for opencode"
+    },
+    {
+      "label": "Goal (from /goal)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L3",
+      "id": "plans_model_order_priority_chain_goal_from_goal",
+      "community": 57,
+      "norm_label": "goal (from /goal)"
+    },
+    {
+      "label": "Root-cause analysis (investigated directly \u2014 karpathy domain)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L6",
+      "id": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "community": 57,
+      "norm_label": "root-cause analysis (investigated directly \u2014 karpathy domain)"
+    },
+    {
+      "label": "Live state (confirmed in running container)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L8",
+      "id": "plans_model_order_priority_chain_live_state_confirmed_in_running_container",
+      "community": 57,
+      "norm_label": "live state (confirmed in running container)"
+    },
+    {
+      "label": "Why GPU shows utilization",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L13",
+      "id": "plans_model_order_priority_chain_why_gpu_shows_utilization",
+      "community": 57,
+      "norm_label": "why gpu shows utilization"
+    },
+    {
+      "label": "The gap (documented in doc 20, line 150)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L19",
+      "id": "plans_model_order_priority_chain_the_gap_documented_in_doc_20_line_150",
+      "community": 57,
+      "norm_label": "the gap (documented in doc 20, line 150)"
+    },
+    {
+      "label": "Assumptions (surfaced)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L31",
+      "id": "plans_model_order_priority_chain_assumptions_surfaced",
+      "community": 57,
+      "norm_label": "assumptions (surfaced)"
+    },
+    {
+      "label": "Feature (the fix)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L40",
+      "id": "plans_model_order_priority_chain_feature_the_fix",
+      "community": 57,
+      "norm_label": "feature (the fix)"
+    },
+    {
+      "label": "Surgical change surface",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L61",
+      "id": "plans_model_order_priority_chain_surgical_change_surface",
+      "community": 57,
+      "norm_label": "surgical change surface"
+    },
+    {
+      "label": "Verification policy (PM domain)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L71",
+      "id": "plans_model_order_priority_chain_verification_policy_pm_domain",
+      "community": 57,
+      "norm_label": "verification policy (pm domain)"
+    },
+    {
+      "label": "Out of scope (explicit)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L82",
+      "id": "plans_model_order_priority_chain_out_of_scope_explicit",
+      "community": 57,
+      "norm_label": "out of scope (explicit)"
+    },
+    {
+      "label": "Subsequent prompts (pre-queued by user)",
+      "file_type": "document",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L88",
+      "id": "plans_model_order_priority_chain_subsequent_prompts_pre_queued_by_user",
+      "community": 57,
+      "norm_label": "subsequent prompts (pre-queued by user)"
+    },
+    {
       "label": "AGENTS.md",
       "file_type": "document",
       "source_file": "AGENTS.md",
@@ -407,76 +524,67 @@
       "norm_label": "1. mandated skills"
     },
     {
-      "label": "2. Kanban Delegation Rules (coding discipline)",
+      "label": "2. Code Quality Rules",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L36",
-      "id": "agents_2_kanban_delegation_rules_coding_discipline",
+      "source_location": "L35",
+      "id": "agents_2_code_quality_rules",
       "community": 26,
-      "norm_label": "2. kanban delegation rules (coding discipline)"
+      "norm_label": "2. code quality rules"
     },
     {
-      "label": "3. Code Quality Rules",
+      "label": "3. Docker/Build Constraints",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L42",
-      "id": "agents_3_code_quality_rules",
+      "source_location": "L44",
+      "id": "agents_3_docker_build_constraints",
       "community": 26,
-      "norm_label": "3. code quality rules"
+      "norm_label": "3. docker/build constraints"
     },
     {
-      "label": "4. Docker/Build Constraints",
+      "label": "4. File Locations (inside container)",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L51",
-      "id": "agents_4_docker_build_constraints",
+      "source_location": "L54",
+      "id": "agents_4_file_locations_inside_container",
       "community": 26,
-      "norm_label": "4. docker/build constraints"
+      "norm_label": "4. file locations (inside container)"
     },
     {
-      "label": "5. File Locations (inside container)",
+      "label": "5. Security Modes",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L61",
-      "id": "agents_5_file_locations_inside_container",
+      "source_location": "L68",
+      "id": "agents_5_security_modes",
       "community": 26,
-      "norm_label": "5. file locations (inside container)"
+      "norm_label": "5. security modes"
     },
     {
-      "label": "6. Security Modes",
+      "label": "6. Verification Commands",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L75",
-      "id": "agents_6_security_modes",
+      "source_location": "L76",
+      "id": "agents_6_verification_commands",
       "community": 26,
-      "norm_label": "6. security modes"
+      "norm_label": "6. verification commands"
     },
     {
-      "label": "7. Verification Commands",
+      "label": "7. Project-Specific Patterns",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L83",
-      "id": "agents_7_verification_commands",
+      "source_location": "L100",
+      "id": "agents_7_project_specific_patterns",
       "community": 26,
-      "norm_label": "7. verification commands"
+      "norm_label": "7. project-specific patterns"
     },
     {
-      "label": "8. Project-Specific Patterns",
+      "label": "8. Agent Capabilities",
       "file_type": "document",
       "source_file": "AGENTS.md",
-      "source_location": "L107",
-      "id": "agents_8_project_specific_patterns",
+      "source_location": "L112",
+      "id": "agents_8_agent_capabilities",
       "community": 26,
-      "norm_label": "8. project-specific patterns"
-    },
-    {
-      "label": "9. Agent Capabilities",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L119",
-      "id": "agents_9_agent_capabilities",
-      "community": 26,
-      "norm_label": "9. agent capabilities"
+      "norm_label": "8. agent capabilities"
     },
     {
       "label": "PRD.md",
@@ -520,7 +628,7 @@
       "source_file": "PRD.md",
       "source_location": "L19",
       "id": "prd_2_architecture",
-      "community": 67,
+      "community": 2,
       "norm_label": "2. architecture"
     },
     {
@@ -529,7 +637,7 @@
       "source_file": "PRD.md",
       "source_location": "L70",
       "id": "prd_component_roles",
-      "community": 67,
+      "community": 2,
       "norm_label": "component roles"
     },
     {
@@ -538,7 +646,7 @@
       "source_file": "PRD.md",
       "source_location": "L82",
       "id": "prd_agent_installation_architecture",
-      "community": 67,
+      "community": 2,
       "norm_label": "agent installation architecture"
     },
     {
@@ -565,7 +673,7 @@
       "source_file": "PRD.md",
       "source_location": "L188",
       "id": "prd_5_file_specifications",
-      "community": 58,
+      "community": 2,
       "norm_label": "5. file specifications"
     },
     {
@@ -574,7 +682,7 @@
       "source_file": "PRD.md",
       "source_location": "L190",
       "id": "prd_5_1_dockerfile_at_volumes_hermes_opencode_build_dockerfile",
-      "community": 58,
+      "community": 2,
       "norm_label": "5.1 `dockerfile` (at `volumes_hermes_opencode/build/dockerfile`)"
     },
     {
@@ -583,7 +691,7 @@
       "source_file": "PRD.md",
       "source_location": "L266",
       "id": "prd_5_2_scripts_entrypoint_sh_at_volumes_hermes_opencode_build_scripts_entrypoint_sh",
-      "community": 58,
+      "community": 2,
       "norm_label": "5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`)"
     },
     {
@@ -592,7 +700,7 @@
       "source_file": "PRD.md",
       "source_location": "L333",
       "id": "prd_5_3_docker_compose_yml",
-      "community": 58,
+      "community": 2,
       "norm_label": "5.3 `docker-compose.yml`"
     },
     {
@@ -601,7 +709,7 @@
       "source_file": "PRD.md",
       "source_location": "L396",
       "id": "prd_5_4_env_example",
-      "community": 58,
+      "community": 2,
       "norm_label": "5.4 `.env.example`"
     },
     {
@@ -610,7 +718,7 @@
       "source_file": "PRD.md",
       "source_location": "L404",
       "id": "prd_5_5_gitignore",
-      "community": 58,
+      "community": 2,
       "norm_label": "5.5 `.gitignore`"
     },
     {
@@ -619,7 +727,7 @@
       "source_file": "PRD.md",
       "source_location": "L408",
       "id": "prd_5_6_dockerignore",
-      "community": 58,
+      "community": 2,
       "norm_label": "5.6 `.dockerignore`"
     },
     {
@@ -628,7 +736,7 @@
       "source_file": "PRD.md",
       "source_location": "L430",
       "id": "prd_6_startup_sequence",
-      "community": 65,
+      "community": 2,
       "norm_label": "6. startup sequence"
     },
     {
@@ -637,7 +745,7 @@
       "source_file": "PRD.md",
       "source_location": "L432",
       "id": "prd_first_boot",
-      "community": 65,
+      "community": 2,
       "norm_label": "first boot"
     },
     {
@@ -646,7 +754,7 @@
       "source_file": "PRD.md",
       "source_location": "L458",
       "id": "prd_subsequent_boots",
-      "community": 65,
+      "community": 2,
       "norm_label": "subsequent boots"
     },
     {
@@ -655,7 +763,7 @@
       "source_file": "PRD.md",
       "source_location": "L476",
       "id": "prd_key_behaviors",
-      "community": 65,
+      "community": 2,
       "norm_label": "key behaviors"
     },
     {
@@ -664,7 +772,7 @@
       "source_file": "PRD.md",
       "source_location": "L488",
       "id": "prd_7_configuration_reference",
-      "community": 64,
+      "community": 2,
       "norm_label": "7. configuration reference"
     },
     {
@@ -673,7 +781,7 @@
       "source_file": "PRD.md",
       "source_location": "L490",
       "id": "prd_environment_variables",
-      "community": 64,
+      "community": 2,
       "norm_label": "environment variables"
     },
     {
@@ -682,7 +790,7 @@
       "source_file": "PRD.md",
       "source_location": "L515",
       "id": "prd_build_arguments",
-      "community": 64,
+      "community": 2,
       "norm_label": "build arguments"
     },
     {
@@ -691,7 +799,7 @@
       "source_file": "PRD.md",
       "source_location": "L521",
       "id": "prd_per_model_provider_routing_issue_46",
-      "community": 64,
+      "community": 2,
       "norm_label": "per-model provider routing (issue #46)"
     },
     {
@@ -700,7 +808,7 @@
       "source_file": "PRD.md",
       "source_location": "L553",
       "id": "prd_also_found_during_fork_sync_issue_46",
-      "community": 64,
+      "community": 2,
       "norm_label": "also found during fork sync (issue #46)"
     },
     {
@@ -718,7 +826,7 @@
       "source_file": "PRD.md",
       "source_location": "L578",
       "id": "prd_9_usage_patterns",
-      "community": 61,
+      "community": 2,
       "norm_label": "9. usage patterns"
     },
     {
@@ -727,7 +835,7 @@
       "source_file": "PRD.md",
       "source_location": "L584",
       "id": "prd_pattern_summary_table",
-      "community": 61,
+      "community": 2,
       "norm_label": "pattern summary table"
     },
     {
@@ -736,7 +844,7 @@
       "source_file": "PRD.md",
       "source_location": "L594",
       "id": "prd_pattern_1_direct_one_shot_coding_verified",
-      "community": 61,
+      "community": 2,
       "norm_label": "pattern 1 \u2014 direct one-shot coding (verified)"
     },
     {
@@ -745,7 +853,7 @@
       "source_file": "PRD.md",
       "source_location": "L606",
       "id": "prd_pattern_2_plan_build_pipeline_chained_one_shots_verified",
-      "community": 61,
+      "community": 2,
       "norm_label": "pattern 2 \u2014 plan \u2192 build pipeline, chained one-shots (verified)"
     },
     {
@@ -754,7 +862,7 @@
       "source_file": "PRD.md",
       "source_location": "L621",
       "id": "prd_pattern_3_direct_chat_via_agent_api_verified",
-      "community": 61,
+      "community": 2,
       "norm_label": "pattern 3 \u2014 direct chat via agent api (verified)"
     },
     {
@@ -763,7 +871,7 @@
       "source_file": "PRD.md",
       "source_location": "L633",
       "id": "prd_when_to_use_what",
-      "community": 61,
+      "community": 2,
       "norm_label": "when to use what"
     },
     {
@@ -781,7 +889,7 @@
       "source_file": "PRD.md",
       "source_location": "L674",
       "id": "prd_11_opencode_model_fallback_runtime_failover",
-      "community": 63,
+      "community": 2,
       "norm_label": "11. opencode model fallback (runtime failover)"
     },
     {
@@ -790,7 +898,7 @@
       "source_file": "PRD.md",
       "source_location": "L676",
       "id": "prd_requirement",
-      "community": 63,
+      "community": 2,
       "norm_label": "requirement"
     },
     {
@@ -799,7 +907,7 @@
       "source_file": "PRD.md",
       "source_location": "L679",
       "id": "prd_configuration_env_driven",
-      "community": 63,
+      "community": 2,
       "norm_label": "configuration (env-driven)"
     },
     {
@@ -808,7 +916,7 @@
       "source_file": "PRD.md",
       "source_location": "L686",
       "id": "prd_architecture",
-      "community": 63,
+      "community": 2,
       "norm_label": "architecture"
     },
     {
@@ -817,7 +925,7 @@
       "source_file": "PRD.md",
       "source_location": "L692",
       "id": "prd_constraints",
-      "community": 63,
+      "community": 2,
       "norm_label": "constraints"
     },
     {
@@ -826,7 +934,7 @@
       "source_file": "PRD.md",
       "source_location": "L696",
       "id": "prd_12_documentation_test_hygiene",
-      "community": 66,
+      "community": 2,
       "norm_label": "12. documentation & test hygiene"
     },
     {
@@ -835,7 +943,7 @@
       "source_file": "PRD.md",
       "source_location": "L698",
       "id": "prd_gaps_from_intended_vs_implemented_audit",
-      "community": 66,
+      "community": 2,
       "norm_label": "gaps (from intended-vs-implemented audit)"
     },
     {
@@ -844,7 +952,7 @@
       "source_file": "PRD.md",
       "source_location": "L707",
       "id": "prd_non_gaps_verified_no_action",
-      "community": 66,
+      "community": 2,
       "norm_label": "non-gaps (verified, no action)"
     },
     {
@@ -855,114 +963,6 @@
       "id": "prd_13_additional_acceptance_criteria",
       "community": 2,
       "norm_label": "13. additional acceptance criteria"
-    },
-    {
-      "label": "14. Profile Skills Parity (righthand-man \u2190 default)",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L725",
-      "id": "prd_14_profile_skills_parity_righthand_man_default",
-      "community": 59,
-      "norm_label": "14. profile skills parity (righthand-man \u2190 default)"
-    },
-    {
-      "label": "Problem",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L727",
-      "id": "prd_problem",
-      "community": 59,
-      "norm_label": "problem"
-    },
-    {
-      "label": "Root causes",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L733",
-      "id": "prd_root_causes",
-      "community": 59,
-      "norm_label": "root causes"
-    },
-    {
-      "label": "Success criteria",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L739",
-      "id": "prd_success_criteria",
-      "community": 59,
-      "norm_label": "success criteria"
-    },
-    {
-      "label": "Changes",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L749",
-      "id": "prd_changes",
-      "community": 59,
-      "norm_label": "changes"
-    },
-    {
-      "label": "Assumptions",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L757",
-      "id": "prd_assumptions",
-      "community": 59,
-      "norm_label": "assumptions"
-    },
-    {
-      "label": "15. Browser State Persistence",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L764",
-      "id": "prd_15_browser_state_persistence",
-      "community": 60,
-      "norm_label": "15. browser state persistence"
-    },
-    {
-      "label": "Problem",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L766",
-      "id": "prd_problem_766",
-      "community": 60,
-      "norm_label": "problem"
-    },
-    {
-      "label": "Root causes",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L770",
-      "id": "prd_root_causes_770",
-      "community": 60,
-      "norm_label": "root causes"
-    },
-    {
-      "label": "Success criteria",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L776",
-      "id": "prd_success_criteria_776",
-      "community": 60,
-      "norm_label": "success criteria"
-    },
-    {
-      "label": "Changes",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L786",
-      "id": "prd_changes_786",
-      "community": 60,
-      "norm_label": "changes"
-    },
-    {
-      "label": "Assumptions",
-      "file_type": "document",
-      "source_file": "PRD.md",
-      "source_location": "L792",
-      "id": "prd_assumptions_792",
-      "community": 60,
-      "norm_label": "assumptions"
     },
     {
       "label": "README.md",
@@ -1733,7 +1733,7 @@
       "label": "Agent staging",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L36",
+      "source_location": "L35",
       "id": "docs_04_build_pipeline_agent_staging",
       "community": 17,
       "norm_label": "agent staging"
@@ -1742,7 +1742,7 @@
       "label": "Skill staging",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L45",
+      "source_location": "L44",
       "id": "docs_04_build_pipeline_skill_staging",
       "community": 17,
       "norm_label": "skill staging"
@@ -1751,7 +1751,7 @@
       "label": "Build command",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L58",
+      "source_location": "L57",
       "id": "docs_04_build_pipeline_build_command",
       "community": 17,
       "norm_label": "build command"
@@ -1760,7 +1760,7 @@
       "label": "Platform",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L68",
+      "source_location": "L67",
       "id": "docs_04_build_pipeline_platform",
       "community": 17,
       "norm_label": "platform"
@@ -1769,7 +1769,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L72",
+      "source_location": "L71",
       "id": "docs_04_build_pipeline_verification",
       "community": 17,
       "norm_label": "verification"
@@ -1778,7 +1778,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L87",
+      "source_location": "L86",
       "id": "docs_04_build_pipeline_what_works",
       "community": 17,
       "norm_label": "what works"
@@ -1787,7 +1787,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L100",
+      "source_location": "L99",
       "id": "docs_04_build_pipeline_what_fails",
       "community": 17,
       "norm_label": "what fails"
@@ -1796,7 +1796,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L107",
+      "source_location": "L106",
       "id": "docs_04_build_pipeline_resolution",
       "community": 17,
       "norm_label": "resolution"
@@ -1805,7 +1805,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/04-build-pipeline.md",
-      "source_location": "L114",
+      "source_location": "L113",
       "id": "docs_04_build_pipeline_verdict",
       "community": 17,
       "norm_label": "verdict"
@@ -3533,7 +3533,7 @@
       "label": "How",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L15",
+      "source_location": "L14",
       "id": "docs_15_browser_human_loop_how",
       "community": 23,
       "norm_label": "how"
@@ -3542,7 +3542,7 @@
       "label": "Start sequence (inside `entrypoint.sh`)",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L41",
+      "source_location": "L40",
       "id": "docs_15_browser_human_loop_start_sequence_inside_entrypoint_sh",
       "community": 23,
       "norm_label": "start sequence (inside `entrypoint.sh`)"
@@ -3551,7 +3551,7 @@
       "label": "How Hermes attaches",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L55",
+      "source_location": "L54",
       "id": "docs_15_browser_human_loop_how_hermes_attaches",
       "community": 23,
       "norm_label": "how hermes attaches"
@@ -3560,7 +3560,7 @@
       "label": "Usage",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L66",
+      "source_location": "L65",
       "id": "docs_15_browser_human_loop_usage",
       "community": 23,
       "norm_label": "usage"
@@ -3569,7 +3569,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L91",
+      "source_location": "L90",
       "id": "docs_15_browser_human_loop_verification",
       "community": 23,
       "norm_label": "verification"
@@ -3578,7 +3578,7 @@
       "label": "Troubleshooting",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L109",
+      "source_location": "L108",
       "id": "docs_15_browser_human_loop_troubleshooting",
       "community": 23,
       "norm_label": "troubleshooting"
@@ -3587,7 +3587,7 @@
       "label": "CDP connection refused",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L111",
+      "source_location": "L110",
       "id": "docs_15_browser_human_loop_cdp_connection_refused",
       "community": 23,
       "norm_label": "cdp connection refused"
@@ -3596,7 +3596,7 @@
       "label": "Container marked unhealthy due to CDP failure",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L146",
+      "source_location": "L145",
       "id": "docs_15_browser_human_loop_container_marked_unhealthy_due_to_cdp_failure",
       "community": 23,
       "norm_label": "container marked unhealthy due to cdp failure"
@@ -3605,7 +3605,7 @@
       "label": "Chromium startup timeout (30-second wait exceeded)",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L179",
+      "source_location": "L178",
       "id": "docs_15_browser_human_loop_chromium_startup_timeout_30_second_wait_exceeded",
       "community": 23,
       "norm_label": "chromium startup timeout (30-second wait exceeded)"
@@ -3614,7 +3614,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L195",
+      "source_location": "L194",
       "id": "docs_15_browser_human_loop_what_works",
       "community": 23,
       "norm_label": "what works"
@@ -3623,7 +3623,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L206",
+      "source_location": "L205",
       "id": "docs_15_browser_human_loop_what_fails",
       "community": 23,
       "norm_label": "what fails"
@@ -3632,7 +3632,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L214",
+      "source_location": "L213",
       "id": "docs_15_browser_human_loop_resolution",
       "community": 23,
       "norm_label": "resolution"
@@ -3641,7 +3641,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/15-browser-human-loop.md",
-      "source_location": "L221",
+      "source_location": "L220",
       "id": "docs_15_browser_human_loop_verdict",
       "community": 23,
       "norm_label": "verdict"
@@ -4484,19 +4484,19 @@
       "norm_label": "webui"
     },
     {
-      "label": "The six-skill routing table",
+      "label": "The four-skill routing table",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
       "source_location": "L65",
-      "id": "docs_22_profiles_the_six_skill_routing_table",
+      "id": "docs_22_profiles_the_four_skill_routing_table",
       "community": 54,
-      "norm_label": "the six-skill routing table"
+      "norm_label": "the four-skill routing table"
     },
     {
       "label": "The `/goal` format",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L82",
+      "source_location": "L78",
       "id": "docs_22_profiles_the_goal_format",
       "community": 54,
       "norm_label": "the `/goal` format"
@@ -4505,7 +4505,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L95",
+      "source_location": "L91",
       "id": "docs_22_profiles_verification",
       "community": 54,
       "norm_label": "verification"
@@ -4514,7 +4514,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L113",
+      "source_location": "L109",
       "id": "docs_22_profiles_what_works",
       "community": 54,
       "norm_label": "what works"
@@ -4523,235 +4523,10 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L122",
+      "source_location": "L118",
       "id": "docs_22_profiles_verdict",
       "community": 54,
       "norm_label": "verdict"
-    },
-    {
-      "label": "23-browser-persistence.md",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L1",
-      "id": "docs_23_browser_persistence",
-      "community": 12,
-      "norm_label": "23-browser-persistence.md"
-    },
-    {
-      "label": "23 \u2014 Browser State Persistence",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L1",
-      "id": "docs_23_browser_persistence_23_browser_state_persistence",
-      "community": 12,
-      "norm_label": "23 \u2014 browser state persistence"
-    },
-    {
-      "label": "What",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L3",
-      "id": "docs_23_browser_persistence_what",
-      "community": 12,
-      "norm_label": "what"
-    },
-    {
-      "label": "Why",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L7",
-      "id": "docs_23_browser_persistence_why",
-      "community": 12,
-      "norm_label": "why"
-    },
-    {
-      "label": "How",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L11",
-      "id": "docs_23_browser_persistence_how",
-      "community": 12,
-      "norm_label": "how"
-    },
-    {
-      "label": "What survives",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L43",
-      "id": "docs_23_browser_persistence_what_survives",
-      "community": 12,
-      "norm_label": "what survives"
-    },
-    {
-      "label": "Lockfile cleanup",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L56",
-      "id": "docs_23_browser_persistence_lockfile_cleanup",
-      "community": 12,
-      "norm_label": "lockfile cleanup"
-    },
-    {
-      "label": "Security note",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L68",
-      "id": "docs_23_browser_persistence_security_note",
-      "community": 12,
-      "norm_label": "security note"
-    },
-    {
-      "label": "Verification steps",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L72",
-      "id": "docs_23_browser_persistence_verification_steps",
-      "community": 12,
-      "norm_label": "verification steps"
-    },
-    {
-      "label": "1. Confirm the user-data-dir is on the bind mount",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L74",
-      "id": "docs_23_browser_persistence_1_confirm_the_user_data_dir_is_on_the_bind_mount",
-      "community": 12,
-      "norm_label": "1. confirm the user-data-dir is on the bind mount"
-    },
-    {
-      "label": "2. Verify Cookies file exists (pre-restart)",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L87",
-      "id": "docs_23_browser_persistence_2_verify_cookies_file_exists_pre_restart",
-      "community": 12,
-      "norm_label": "2. verify cookies file exists (pre-restart)"
-    },
-    {
-      "label": "3. Restart the container and verify Cookies survive",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L93",
-      "id": "docs_23_browser_persistence_3_restart_the_container_and_verify_cookies_survive",
-      "community": 12,
-      "norm_label": "3. restart the container and verify cookies survive"
-    },
-    {
-      "label": "4. Confirm lockfiles are cleaned up on start",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L111",
-      "id": "docs_23_browser_persistence_4_confirm_lockfiles_are_cleaned_up_on_start",
-      "community": 12,
-      "norm_label": "4. confirm lockfiles are cleaned up on start"
-    },
-    {
-      "label": "5. Check that Local Storage directory is intact",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L119",
-      "id": "docs_23_browser_persistence_5_check_that_local_storage_directory_is_intact",
-      "community": 12,
-      "norm_label": "5. check that local storage directory is intact"
-    },
-    {
-      "label": "Troubleshooting",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L125",
-      "id": "docs_23_browser_persistence_troubleshooting",
-      "community": 12,
-      "norm_label": "troubleshooting"
-    },
-    {
-      "label": "Corrupted profile (Chromium crashes on start, blank windows, or \"Profile error\" dialogs)",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L127",
-      "id": "docs_23_browser_persistence_corrupted_profile_chromium_crashes_on_start_blank_windows_or_profile_error_dialogs",
-      "community": 12,
-      "norm_label": "corrupted profile (chromium crashes on start, blank windows, or \"profile error\" dialogs)"
-    },
-    {
-      "label": "Clearing state deliberately",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L143",
-      "id": "docs_23_browser_persistence_clearing_state_deliberately",
-      "community": 12,
-      "norm_label": "clearing state deliberately"
-    },
-    {
-      "label": "SingletonLock prevents Chromium from starting",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L162",
-      "id": "docs_23_browser_persistence_singletonlock_prevents_chromium_from_starting",
-      "community": 12,
-      "norm_label": "singletonlock prevents chromium from starting"
-    },
-    {
-      "label": "\"Permission denied\" when writing to chrome-debug/",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L180",
-      "id": "docs_23_browser_persistence_permission_denied_when_writing_to_chrome_debug",
-      "community": 12,
-      "norm_label": "\"permission denied\" when writing to chrome-debug/"
-    },
-    {
-      "label": "See also",
-      "file_type": "document",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L192",
-      "id": "docs_23_browser_persistence_see_also",
-      "community": 12,
-      "norm_label": "see also"
-    },
-    {
-      "label": "24-webui-api.md",
-      "file_type": "document",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L1",
-      "id": "docs_24_webui_api",
-      "community": 62,
-      "norm_label": "24-webui-api.md"
-    },
-    {
-      "label": "24 \u2014 WebUI API",
-      "file_type": "document",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L1",
-      "id": "docs_24_webui_api_24_webui_api",
-      "community": 62,
-      "norm_label": "24 \u2014 webui api"
-    },
-    {
-      "label": "Endpoints",
-      "file_type": "document",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L6",
-      "id": "docs_24_webui_api_endpoints",
-      "community": 62,
-      "norm_label": "endpoints"
-    },
-    {
-      "label": "`GET /health`",
-      "file_type": "document",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L8",
-      "id": "docs_24_webui_api_get_health",
-      "community": 62,
-      "norm_label": "`get /health`"
-    },
-    {
-      "label": "Related Docs",
-      "file_type": "document",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L15",
-      "id": "docs_24_webui_api_related_docs",
-      "community": 62,
-      "norm_label": "related docs"
     },
     {
       "label": "README.md",
@@ -4770,195 +4545,6 @@
       "id": "docs_readme_documentation_index",
       "community": 53,
       "norm_label": "documentation index"
-    },
-    {
-      "label": "model-order-priority-chain.md",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L1",
-      "community": 57,
-      "norm_label": "model-order-priority-chain.md",
-      "id": "plans_model_order_priority_chain"
-    },
-    {
-      "label": "Plan \u2014 Ordered Multi-Model Fallback Chain for OpenCode",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L1",
-      "community": 57,
-      "norm_label": "plan \u2014 ordered multi-model fallback chain for opencode",
-      "id": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode"
-    },
-    {
-      "label": "Goal (from /goal)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L3",
-      "community": 57,
-      "norm_label": "goal (from /goal)",
-      "id": "plans_model_order_priority_chain_goal_from_goal"
-    },
-    {
-      "label": "Root-cause analysis (investigated directly \u2014 karpathy domain)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L6",
-      "community": 57,
-      "norm_label": "root-cause analysis (investigated directly \u2014 karpathy domain)",
-      "id": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain"
-    },
-    {
-      "label": "Live state (confirmed in running container)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L8",
-      "community": 57,
-      "norm_label": "live state (confirmed in running container)",
-      "id": "plans_model_order_priority_chain_live_state_confirmed_in_running_container"
-    },
-    {
-      "label": "Why GPU shows utilization",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L13",
-      "community": 57,
-      "norm_label": "why gpu shows utilization",
-      "id": "plans_model_order_priority_chain_why_gpu_shows_utilization"
-    },
-    {
-      "label": "The gap (documented in doc 20, line 150)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L19",
-      "community": 57,
-      "norm_label": "the gap (documented in doc 20, line 150)",
-      "id": "plans_model_order_priority_chain_the_gap_documented_in_doc_20_line_150"
-    },
-    {
-      "label": "Assumptions (surfaced)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L31",
-      "community": 57,
-      "norm_label": "assumptions (surfaced)",
-      "id": "plans_model_order_priority_chain_assumptions_surfaced"
-    },
-    {
-      "label": "Feature (the fix)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L40",
-      "community": 57,
-      "norm_label": "feature (the fix)",
-      "id": "plans_model_order_priority_chain_feature_the_fix"
-    },
-    {
-      "label": "Surgical change surface",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L61",
-      "community": 57,
-      "norm_label": "surgical change surface",
-      "id": "plans_model_order_priority_chain_surgical_change_surface"
-    },
-    {
-      "label": "Verification policy (PM domain)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L71",
-      "community": 57,
-      "norm_label": "verification policy (pm domain)",
-      "id": "plans_model_order_priority_chain_verification_policy_pm_domain"
-    },
-    {
-      "label": "Out of scope (explicit)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L82",
-      "community": 57,
-      "norm_label": "out of scope (explicit)",
-      "id": "plans_model_order_priority_chain_out_of_scope_explicit"
-    },
-    {
-      "label": "Subsequent prompts (pre-queued by user)",
-      "file_type": "document",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L88",
-      "community": 57,
-      "norm_label": "subsequent prompts (pre-queued by user)",
-      "id": "plans_model_order_priority_chain_subsequent_prompts_pre_queued_by_user"
-    },
-    {
-      "label": "2. Code Quality Rules",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L35",
-      "community": 26,
-      "norm_label": "2. code quality rules",
-      "id": "agents_2_code_quality_rules"
-    },
-    {
-      "label": "3. Docker/Build Constraints",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L44",
-      "community": 26,
-      "norm_label": "3. docker/build constraints",
-      "id": "agents_3_docker_build_constraints"
-    },
-    {
-      "label": "4. File Locations (inside container)",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L54",
-      "community": 26,
-      "norm_label": "4. file locations (inside container)",
-      "id": "agents_4_file_locations_inside_container"
-    },
-    {
-      "label": "5. Security Modes",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L68",
-      "community": 26,
-      "norm_label": "5. security modes",
-      "id": "agents_5_security_modes"
-    },
-    {
-      "label": "6. Verification Commands",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L76",
-      "community": 26,
-      "norm_label": "6. verification commands",
-      "id": "agents_6_verification_commands"
-    },
-    {
-      "label": "7. Project-Specific Patterns",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L100",
-      "community": 26,
-      "norm_label": "7. project-specific patterns",
-      "id": "agents_7_project_specific_patterns"
-    },
-    {
-      "label": "8. Agent Capabilities",
-      "file_type": "document",
-      "source_file": "AGENTS.md",
-      "source_location": "L112",
-      "community": 26,
-      "norm_label": "8. agent capabilities",
-      "id": "agents_8_agent_capabilities"
-    },
-    {
-      "label": "The four-skill routing table",
-      "file_type": "document",
-      "source_file": "docs/22-profiles.md",
-      "source_location": "L65",
-      "community": 54,
-      "norm_label": "the four-skill routing table",
-      "id": "docs_22_profiles_the_four_skill_routing_table"
     },
     {
       "label": "16-docker-compose-overrides.md",
@@ -6391,7 +5977,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Personal knowledge base at ~/.hermes/wiki with [[wikilinks]]. Persists on bind mount.",
-      "community": 6,
+      "community": 12,
       "norm_label": "llm-wiki capability",
       "id": "agents_llm_wiki"
     },
@@ -6405,7 +5991,7 @@
       "author": null,
       "contributor": null,
       "rationale": "A Docker Compose stack running Hermes WebUI + Hermes Agent + OpenCode CLI in a single container with three exposed services.",
-      "community": 6,
+      "community": 12,
       "norm_label": "hermes x opencode docker stack (product)",
       "id": "prd_product"
     },
@@ -6629,7 +6215,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Single service definition with bind mounts, environment, healthcheck. Build context points to volumes_hermes_opencode/build/Dockerfile.",
-      "community": 6,
+      "community": 12,
       "norm_label": "hermes-opencode docker compose service",
       "id": "compose_service"
     },
@@ -6657,7 +6243,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Uses bash /usr/local/bin/healthcheck.sh instead of simple curl. start_period 120s for first boot dependency installation.",
-      "community": 6,
+      "community": 12,
       "norm_label": "docker healthcheck (healthcheck.sh)",
       "id": "compose_healthcheck"
     },
@@ -6685,7 +6271,7 @@
       "author": null,
       "contributor": null,
       "rationale": "HERMES_WIKI_VOLUME allows mounting host wiki directory for llm-wiki skill persistence and sharing personal wiki with agent.",
-      "community": 6,
+      "community": 12,
       "norm_label": "optional wiki volume mount",
       "id": "compose_wiki_volume"
     },
@@ -6755,7 +6341,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Sessions stored in SQLite at /home/hermeswebui/.hermes/state.db. Persisted via bind mount across restarts.",
-      "community": 6,
+      "community": 12,
       "norm_label": "session storage (sqlite state.db)",
       "id": "webui_session_sqlite"
     },
@@ -6811,7 +6397,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Entrypoint runs as root (HOME=/root) but config.yaml is at /home/hermeswebui/.hermes. HERMES_HOME must be explicitly exported. Set in entrypoint.sh AND docker-compose.yml environment block.",
-      "community": 6,
+      "community": 12,
       "norm_label": "hermes_home resolution",
       "id": "gateway_hermes_home_resolution"
     },
@@ -6923,7 +6509,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Builds single image with WebUI base + system packages + Node.js + OpenCode CLI + staged agent source + UA patch + skills.",
-      "community": 6,
+      "community": 12,
       "norm_label": "dockerfile (multi-step build)",
       "id": "build_dockerfile"
     },
@@ -6993,7 +6579,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Final RUN step checks Python version, opencode version, agent present, patch applied. Catches missing agent, failed sed, or missing OpenCode before image is usable.",
-      "community": 6,
+      "community": 12,
       "norm_label": "build-time verification step",
       "id": "build_verification_step"
     },
@@ -7007,7 +6593,7 @@
       "author": null,
       "contributor": null,
       "rationale": "78-81 line orchestrator that sources 12 library modules from scripts/lib/. All function logic lives in lib/ modules. Only calls functions and manages execution sequence.",
-      "community": 6,
+      "community": 12,
       "norm_label": "entrypoint.sh (thin orchestrator)",
       "id": "entrypoint_orchestrator"
     },
@@ -7021,7 +6607,7 @@
       "author": null,
       "contributor": null,
       "rationale": "12 sourced modules: constants.sh, runtime-env.sh, port-utils.sh, agent-setup.sh, model-discovery.sh, config-hermes.sh, config-opencode.sh, validate-opencode.sh, service-gateway.sh, service-opencode.sh, wiki-init.sh, service-browser-vnc.sh. Sourced in dependency order.",
-      "community": 6,
+      "community": 12,
       "norm_label": "library modules (scripts/lib/)",
       "id": "entrypoint_lib_modules"
     },
@@ -7805,7 +7391,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Auto-loaded by docker compose up. Attaches container to external Cloudflare/Traefik reverse proxy network (portainer-cloudflare-traefik_default). DNS alias vanilla-hermes-opencode for Traefik routing.",
-      "community": 6,
+      "community": 12,
       "norm_label": "docker-compose.override.yml (cloudflare/traefik)",
       "id": "override_traefik"
     },
@@ -7847,7 +7433,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Running docker compose up on dev machine without Traefik fails because external network doesn't exist. Use docker compose -f docker-compose.yml up to skip override.",
-      "community": 6,
+      "community": 12,
       "norm_label": "auto-loading override surprise (local dev)",
       "id": "override_autoload_surprise"
     },
@@ -7861,7 +7447,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Creates personal knowledge base directory structure at container startup. Idempotent \u2014 skips if SCHEMA.md exists. Runs between ensure_agent() and WebUI start. 84 lines.",
-      "community": 6,
+      "community": 12,
       "norm_label": "init_wiki() function (lib/wiki-init.sh)",
       "id": "wiki_init_function"
     },
@@ -7875,7 +7461,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Defines domain, conventions (lowercase hyphenated filenames, YAML frontmatter, [[wikilinks]]), frontmatter spec, tag taxonomy. Ensures consistent wiki structure across boots.",
-      "community": 6,
+      "community": 12,
       "norm_label": "schema.md backbone",
       "id": "wiki_schema_backbone"
     },
@@ -7889,7 +7475,7 @@
       "author": null,
       "contributor": null,
       "rationale": "raw/articles, raw/papers, raw/transcripts, raw/assets, entities/, concepts/, comparisons/, queries/ + index.md, log.md. Structured for llm-wiki skill ingestion.",
-      "community": 6,
+      "community": 12,
       "norm_label": "wiki directory structure",
       "id": "wiki_dir_structure"
     },
@@ -7903,7 +7489,7 @@
       "author": null,
       "contributor": null,
       "rationale": "Wiki directory lives on Hermes home bind mount. All content persists across container restarts. Optional host sharing via HERMES_WIKI_VOLUME env var.",
-      "community": 6,
+      "community": 12,
       "norm_label": "wiki persistence via bind mount",
       "id": "wiki_persistence_bind"
     },
@@ -7917,7 +7503,7 @@
       "author": null,
       "contributor": null,
       "rationale": "llm-wiki skill reads WIKI_PATH from environment. Ingests sources into raw/articles/, creates entity/concept pages with [[wikilinks]], maintains index.md, appends to log.md. Sources from skills/research/. Zero network cost \u2014 reuses staging clone.",
-      "community": 6,
+      "community": 12,
       "norm_label": "llm-wiki skill integration",
       "id": "wiki_llm_wiki_integration"
     },
@@ -8332,6 +7918,126 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain",
+      "target": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_feature_the_fix",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_goal_from_goal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L82",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_out_of_scope_explicit",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L88",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_subsequent_prompts_pre_queued_by_user",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_surgical_change_surface",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
+      "target": "plans_model_order_priority_chain_verification_policy_pm_domain",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_assumptions_surfaced",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_live_state_confirmed_in_running_container",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_the_gap_documented_in_doc_20_line_150",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".hermes/plans/model-order-priority-chain.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
+      "target": "plans_model_order_priority_chain_why_gpu_shows_utilization",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -8383,41 +8089,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
-      "source_location": "L36",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_2_kanban_delegation_rules_coding_discipline",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
-      "source_location": "L42",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_3_code_quality_rules",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
       "source_location": "L44",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "agents_standing_orders_always_apply",
       "target": "agents_3_docker_build_constraints"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
-      "source_location": "L51",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_4_docker_build_constraints",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8433,31 +8109,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
-      "source_location": "L61",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_5_file_locations_inside_container",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
       "source_location": "L68",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "agents_standing_orders_always_apply",
       "target": "agents_5_security_modes"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
-      "source_location": "L75",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_6_security_modes",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8483,41 +8139,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
-      "source_location": "L83",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_7_verification_commands",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
       "source_location": "L107",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "agents_standing_orders_always_apply",
       "target": "agents_8_agent_capabilities"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
-      "source_location": "L107",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_8_project_specific_patterns",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "AGENTS.md",
-      "source_location": "L119",
-      "weight": 1.0,
-      "source": "agents_standing_orders_always_apply",
-      "target": "agents_9_agent_capabilities",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8568,26 +8194,6 @@
       "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
       "target": "prd_13_additional_acceptance_criteria"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L725",
-      "weight": 1.0,
-      "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_14_profile_skills_parity_righthand_man_default",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L764",
-      "weight": 1.0,
-      "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_15_browser_state_persistence",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -8948,106 +8554,6 @@
       "confidence_score": 1.0,
       "source": "prd_12_documentation_test_hygiene",
       "target": "prd_non_gaps_verified_no_action"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L757",
-      "weight": 1.0,
-      "source": "prd_14_profile_skills_parity_righthand_man_default",
-      "target": "prd_assumptions",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L749",
-      "weight": 1.0,
-      "source": "prd_14_profile_skills_parity_righthand_man_default",
-      "target": "prd_changes",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L727",
-      "weight": 1.0,
-      "source": "prd_14_profile_skills_parity_righthand_man_default",
-      "target": "prd_problem",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L733",
-      "weight": 1.0,
-      "source": "prd_14_profile_skills_parity_righthand_man_default",
-      "target": "prd_root_causes",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L739",
-      "weight": 1.0,
-      "source": "prd_14_profile_skills_parity_righthand_man_default",
-      "target": "prd_success_criteria",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L792",
-      "weight": 1.0,
-      "source": "prd_15_browser_state_persistence",
-      "target": "prd_assumptions_792",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L786",
-      "weight": 1.0,
-      "source": "prd_15_browser_state_persistence",
-      "target": "prd_changes_786",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L766",
-      "weight": 1.0,
-      "source": "prd_15_browser_state_persistence",
-      "target": "prd_problem_766",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L770",
-      "weight": 1.0,
-      "source": "prd_15_browser_state_persistence",
-      "target": "prd_root_causes_770",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "PRD.md",
-      "source_location": "L776",
-      "weight": 1.0,
-      "source": "prd_15_browser_state_persistence",
-      "target": "prd_success_criteria_776",
-      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12485,9 +11991,9 @@
       "source_file": "docs/20-opencode-runtime-fallback.md",
       "source_location": "L91",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "docs_20_opencode_runtime_fallback_how",
-      "target": "docs_20_opencode_runtime_fallback_multi_model_ordered_chain"
+      "target": "docs_20_opencode_runtime_fallback_multi_model_ordered_chain",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12683,16 +12189,6 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L65",
-      "weight": 1.0,
-      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
-      "target": "docs_22_profiles_the_six_skill_routing_table",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/22-profiles.md",
       "source_location": "L118",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -12792,362 +12288,12 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence",
-      "target": "docs_23_browser_persistence_23_browser_state_persistence",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L11",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_how",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L56",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_lockfile_cleanup",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L68",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_security_note",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L192",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_see_also",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L125",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_troubleshooting",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L72",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_verification_steps",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L3",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_what",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L43",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_what_survives",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L7",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_23_browser_state_persistence",
-      "target": "docs_23_browser_persistence_why",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L74",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_verification_steps",
-      "target": "docs_23_browser_persistence_1_confirm_the_user_data_dir_is_on_the_bind_mount",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L87",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_verification_steps",
-      "target": "docs_23_browser_persistence_2_verify_cookies_file_exists_pre_restart",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L93",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_verification_steps",
-      "target": "docs_23_browser_persistence_3_restart_the_container_and_verify_cookies_survive",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L111",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_verification_steps",
-      "target": "docs_23_browser_persistence_4_confirm_lockfiles_are_cleaned_up_on_start",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L119",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_verification_steps",
-      "target": "docs_23_browser_persistence_5_check_that_local_storage_directory_is_intact",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L143",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_troubleshooting",
-      "target": "docs_23_browser_persistence_clearing_state_deliberately",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L127",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_troubleshooting",
-      "target": "docs_23_browser_persistence_corrupted_profile_chromium_crashes_on_start_blank_windows_or_profile_error_dialogs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L180",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_troubleshooting",
-      "target": "docs_23_browser_persistence_permission_denied_when_writing_to_chrome_debug",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/23-browser-persistence.md",
-      "source_location": "L162",
-      "weight": 1.0,
-      "source": "docs_23_browser_persistence_troubleshooting",
-      "target": "docs_23_browser_persistence_singletonlock_prevents_chromium_from_starting",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "source": "docs_24_webui_api",
-      "target": "docs_24_webui_api_24_webui_api",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L6",
-      "weight": 1.0,
-      "source": "docs_24_webui_api_24_webui_api",
-      "target": "docs_24_webui_api_endpoints",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L15",
-      "weight": 1.0,
-      "source": "docs_24_webui_api_24_webui_api",
-      "target": "docs_24_webui_api_related_docs",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "docs/24-webui-api.md",
-      "source_location": "L8",
-      "weight": 1.0,
-      "source": "docs_24_webui_api_endpoints",
-      "target": "docs_24_webui_api_get_health",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
       "source_file": "docs/README.md",
       "source_location": "L1",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "docs_readme",
       "target": "docs_readme_documentation_index"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L1",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain",
-      "target": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L40",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
-      "target": "plans_model_order_priority_chain_feature_the_fix"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L3",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
-      "target": "plans_model_order_priority_chain_goal_from_goal"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L82",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
-      "target": "plans_model_order_priority_chain_out_of_scope_explicit"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L6",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
-      "target": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L88",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
-      "target": "plans_model_order_priority_chain_subsequent_prompts_pre_queued_by_user"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L61",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
-      "target": "plans_model_order_priority_chain_surgical_change_surface"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L71",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_plan_ordered_multi_model_fallback_chain_for_opencode",
-      "target": "plans_model_order_priority_chain_verification_policy_pm_domain"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L31",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
-      "target": "plans_model_order_priority_chain_assumptions_surfaced"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L8",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
-      "target": "plans_model_order_priority_chain_live_state_confirmed_in_running_container"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L19",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
-      "target": "plans_model_order_priority_chain_the_gap_documented_in_doc_20_line_150"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": ".hermes/plans/model-order-priority-chain.md",
-      "source_location": "L13",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "plans_model_order_priority_chain_root_cause_analysis_investigated_directly_karpathy_domain",
-      "target": "plans_model_order_priority_chain_why_gpu_shows_utilization"
     },
     {
       "relation": "contains",
@@ -16380,5 +15526,5 @@
       "source_file": "docs/17-wiki-init.md"
     }
   ],
-  "built_at_commit": "1aa88e95c450cabd42f7de4d5d4fc467d51dd87b"
+  "built_at_commit": "d1a579d963eaa1cfdbd66a715c1109160ba03cad"
 }

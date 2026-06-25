@@ -4,12 +4,12 @@
 
 A **profile** is a named Hermes persona + configuration bundle. Each profile lives under `${HERMES_HOME}/profiles/<name>/` and carries its own `config.yaml`, `.env`, `SOUL.md` (persona), `skills/`, and related state. Switching profiles swaps the persona, skills, and settings Hermes runs with — without touching the default configuration.
 
-The **`righthand-man`** profile is a pre-seeded **orchestrator persona**. Its `SOUL.md` installs a strict operating doctrine that guarantees the `/goal` four-skill routing format: every request is decomposed into a numbered goal list, and work is routed through a fixed division of labor across four skills. The orchestrator never codes directly — it plans, investigates, defines success criteria, delegates all code edits to subagents, and verifies results against real output.
+The **`righthand-man`** profile is a pre-seeded **orchestrator persona**. Its `SOUL.md` installs a strict operating doctrine that guarantees the `/goal` six-skill routing format: every request is decomposed into a numbered goal list, and work is routed through a fixed division of labor across six skills. The orchestrator never codes directly — it plans, investigates, defines success criteria, delegates all code edits to subagents, and verifies results against real output.
 
 ## Why
 
 - **Reproducible orchestrator across rebuilds.** The profile is seeded on first boot by the container entrypoint, so a fresh `docker compose build` / `up` always yields a selectable `righthand-man` profile. It does not have to be hand-created after each rebuild.
-- **Guaranteed operating doctrine.** Because `SOUL.md` is injected fresh into every system prompt, loading the `righthand-man` profile deterministically activates the `/goal` decomposition habit and the four-skill routing — the persona is enforced per-message, not just at session start.
+- **Guaranteed operating doctrine.** Because `SOUL.md` is injected fresh into every system prompt, loading the `righthand-man` profile deterministically activates the `/goal` decomposition habit and the six-skill routing — the persona is enforced per-message, not just at session start.
 - **Separation of "doer" vs "orchestrator".** The default profile is a general-purpose agent. `righthand-man` is the disciplined senior orchestrator: it plans, delegates, and verifies rather than charging past the fog of war. Keeping these as distinct profiles lets the operator choose the right behavior for the job.
 
 ## How
@@ -18,11 +18,11 @@ The **`righthand-man`** profile is a pre-seeded **orchestrator persona**. Its `S
 
 The profile is provisioned by `lib/profile-righthand-man.sh` (`seed_righthand_man()`), sourced and called early in `entrypoint.sh` — after config/agent setup, before the WebUI and gateway start, so the profile is selectable by the time services are up.
 
-The seed is **idempotent**: if `${HERMES_HOME}/profiles/righthand-man/SOUL.md` already exists, it skips with a log line and returns. This makes it safe across container restarts and rebuilds.
+The **clone** is idempotent — if the profile directory already exists with a valid `config.yaml`, the clone step skips to avoid overwriting local config customizations. However, the **SOUL.md overwrite** and **skill sync** now run on **every boot**, not just the first seed. Starting from the 2026-06-26 update, the SOUL.md is overwritten and skills are synced on every boot — not just the first seed — so doctrine updates and new skills propagate across rebuilds without manual intervention.
 
 The seeding logic:
 
-1. **Idempotency check** — if the profile's `SOUL.md` is present, skip (already seeded).
+1. **Clone guard (idempotent)** — if the profile directory already exists with a valid `config.yaml`, the clone step is skipped. The SOUL.md overwrite and skill sync (steps 4–5) still execute every boot.
 2. **CLI guard** — if `/app/venv/bin/hermes` does not exist (the venv binary isn't on PATH), warn and defer to the next boot.
 3. **Clone** — `hermes profile create righthand-man --clone --no-alias` run as `hermeswebui` so ownership is correct. `--clone` copies `config.yaml`, `.env`, `SOUL.md`, and `skills/` from the active (default) profile. `--no-alias` avoids interactive wrapper-script prompts. A clone failure is non-fatal: it logs and retries on the next boot.
 4. **Overwrite `SOUL.md`** — the cloned persona is replaced with the curated orchestrator doctrine via an embedded heredoc. This is the key step: the clone only copies the *default* persona; the curated doctrine is what makes this an orchestrator profile.
@@ -62,16 +62,20 @@ docker exec -it <container> su -s /bin/bash hermeswebui -c '/app/venv/bin/hermes
 
 Use the **profile switcher** in the Hermes WebUI (`:8787`) to select `righthand-man` for a chat session. Because the profile is seeded before the WebUI starts, it appears in the switcher on first boot.
 
-## The four-skill routing table
+## The six-skill routing table
 
-This is the core of the `righthand-man` doctrine. Every task is routed to exactly one of four skills, with a strict division of labor:
+This is the core of the `righthand-man` doctrine. Every task is routed to exactly one of six skills, with a strict division of labor:
 
-| Skill | Owns | Does NOT do |
-|-------|------|-------------|
-| **PM** (`create-prd`, `test-scenarios`, `intended-vs-implemented`) | PRD authoring, problem triage, success-criteria definition, verification policy | Implementation, task sequencing |
-| **karpathy-guidelines** | Codebase investigation, resource analysis, surfacing assumptions | Writing/editing code, making decisions |
-| **kanban-orchestrator** | Task delegation, wave decomposition, reconciliation | Executing the delegated tasks |
-| **opencode-plan-build-orchestrator** | **ALL coding tasks** — every code edit goes to subagents | Planning, PRD, verification policy |
+| Skill | Owns |
+|-------|------|
+| **PM** (`create-prd`, `test-scenarios`, `intended-vs-implemented`) | PRD authoring, problem triage, success-criteria definition, verification policy |
+| **karpathy-guidelines** | Codebase investigation, resource analysis, surfacing assumptions |
+| **kanban-orchestrator** | Task delegation, wave decomposition, reconciliation |
+| **opencode-plan-build-orchestrator** | **ALL coding tasks** — every code edit goes to subagents |
+| **security-best-practices** | security review of all code changes |
+| **webapp-testing** | comprehensive test authoring and execution |
+| **coding-agents-docs-guideline** | document all changes in the repo |
+| **yeet** | all git commit/push/branch operations |
 
 The orchestrator (`righthand-man`) itself performs investigation, planning, PRD, and file-ops directly, but **delegates every code change** to subagents via `opencode-plan-build-orchestrator`. It defines verifiable success criteria *before* delegating and verifies against real tool output *after*.
 
@@ -108,7 +112,7 @@ docker exec <container> head -1 /home/hermeswebui/.hermes/profiles/righthand-man
 
 ## What Works
 
-- Idempotent first-boot provisioning: safe across rebuilds and restarts; skips cleanly once seeded
+- Clone is idempotent (skips if profile dir exists with valid `config.yaml`); SOUL.md overwrite and skill sync run on every boot, propagating doctrine updates and new skills without manual intervention
 - Self-contained seed: no runtime dependency on the build tree (doctrine embedded via heredoc)
 - Correct ownership: cloned and chowned as `hermeswebui`
 - Non-fatal on failure: a missing CLI or a failed clone logs and retries next boot; it never blocks container startup
@@ -117,4 +121,4 @@ docker exec <container> head -1 /home/hermeswebui/.hermes/profiles/righthand-man
 
 ## Verdict
 
-The `righthand-man` profile gives the stack a reproducible, doctrine-enforced orchestrator persona. Because it is seeded at container build/boot time (not hand-created), it survives rebuilds; because its `SOUL.md` is re-injected every message, the four-skill routing and `/goal` decomposition are reliably enforced rather than hoped for. Use it when you want disciplined decomposition and delegation; use the default profile for general-purpose direct execution.
+The `righthand-man` profile gives the stack a reproducible, doctrine-enforced orchestrator persona. Because it is seeded at container build/boot time (not hand-created), it survives rebuilds; because its `SOUL.md` is re-injected every message, the six-skill routing and `/goal` decomposition are reliably enforced rather than hoped for. Use it when you want disciplined decomposition and delegation; use the default profile for general-purpose direct execution.
