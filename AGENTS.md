@@ -31,8 +31,15 @@ Load and use these skills on EVERY task:
 | `webapp-testing` | Testing | Write and run comprehensive tests |
 | `coding-agents-docs-guideline` | Docs | Document all changes in the repo |
 | `yeet` | Git ops | All commit/push/branch operations |
+| `opencode-plan-build-orchestrator` | Coding via kanban/delegate | All coding tasks MUST route through this skill's plan→build→verify pipeline. Loaded by the orchestrator for decomposition rules AND passed via `skills=[...]` to every kanban worker / delegate_task subagent that writes code. |
 
-### 2. Code Quality Rules
+### 2. Kanban Delegation Rules (coding discipline)
+
+- **Every kanban card that involves code changes MUST include `skills=["opencode-plan-build-orchestrator", "karpathy-guidelines"]`** in the `kanban_create` call. Without this the worker sees only KANBAN_GUIDANCE (lifecycle, no coding discipline) and edits code directly instead of routing through plan→build→verify.
+- **Every `delegate_task` call for coding work MUST include `"opencode-plan-build-orchestrator"` and `"karpathy-guidelines"`** in the subagent's goal context (e.g., "load opencode-plan-build-orchestrator and karpathy-guidelines; follow the 6-phase pipeline"). The orchestrator parent NEVER writes repo-tracked files directly — all code edits go to subagents.
+- If you forget this, the worker's first instinct will be to `patch`/`write_file` directly and the plan→build→verify pipeline is bypassed.
+
+### 3. Code Quality Rules
 
 - **No `shell=True`** in subprocess calls
 - **No hardcoded secrets** — use env vars or `key_env` references
@@ -41,7 +48,7 @@ Load and use these skills on EVERY task:
 - **CustomProfile must have `User-Agent: hermes-agent/1.0`** header — verify after any agent update
 - **Agent source goes to staging path** (`/opt/hermes-agent-staging`), not runtime path
 
-### 3. Docker/Build Constraints
+### 4. Docker/Build Constraints
 
 - Target platform: **Linux ARM64** (Raspberry Pi)
 - **No interactive setup** — everything must be unattended from `docker compose up -d`
@@ -51,7 +58,7 @@ Load and use these skills on EVERY task:
 - Hermes skills persist in the bind mount
 - **`host.docker.internal`** resolves inside the container via `extra_hosts` in `docker-compose.yml` (maps to `host-gateway`) — fixes DNS resolution on bare Linux hosts (#27, #31)
 
-### 4. File Locations (inside container)
+### 5. File Locations (inside container)
 
 | Path | Purpose |
 |------|---------|
@@ -65,7 +72,7 @@ Load and use these skills on EVERY task:
 | `/opt/hermes-agent-staging/` | Agent source staging (build-time). NOT the active runtime — provides deps for /hermeswebui_init.bash and skills for install-skills.sh. Active code is at /app/venv/. |
 | `/workspace/` | User project workspace (bind mount) |
 
-### 5. Security Modes
+### 6. Security Modes
 
 | Mode | Bash Rules | Interpreters | .env | Use Case |
 |------|-----------|-------------|------|----------|
@@ -73,7 +80,7 @@ Load and use these skills on EVERY task:
 | `standard` | 22 | ALLOWED | DENIED | Development |
 | `yolo` | 0 (allow all) | ALLOWED | ALLOWED | Trusted sandbox |
 
-### 6. Verification Commands
+### 7. Verification Commands
 
 After any change to build/entrypoint/config:
 
@@ -97,7 +104,7 @@ docker exec $(docker compose ps -q hermes-opencode) opencode --version
 docker exec $(docker compose ps -q hermes-opencode) python3 -m json.tool /home/hermeswebui/.config/opencode/opencode.jsonc
 ```
 
-### 7. Project-Specific Patterns
+### 8. Project-Specific Patterns
 
 - **Bash heredoc JSON breaks with 300+ dynamic entries** — use `python3 -c "import json; json.dump(...)"` for config generation
 - **Docker overlayfs on ARM64 may drop new layers** — modifications to existing files survive, new files may vanish. Use inline `command:` in docker-compose as workaround
@@ -109,11 +116,11 @@ docker exec $(docker compose ps -q hermes-opencode) python3 -m json.tool /home/h
 - **LiteLLM provider auth** (issue #50): `service-opencode.sh` must pass ALL provider env vars through `su` — not just `OPENCODE_API_KEY`. Previously `OPENAI_API_KEY` and `OPENAI_BASE_URL` were stripped, causing `{env:OPENAI_API_KEY}` in the litellm provider block to resolve to empty (401 "no key passed in"). `auth.json` now seeds both `opencode` and `litellm` provider keys as fallback credentials.
 - **Mock LLM server for CI**: `tests/mock-llm-server.sh` provides a Python stdlib HTTP server on port 4000 for secretless CI. Started conditionally when `OPENAI_BASE_URL=http://localhost:4000`.
 
-### 8. Agent Capabilities
+### 9. Agent Capabilities
 
 | Capability | Details |
 |------------|---------|
 | **graphify** | Installed as a Hermes skill at build time. Run `/graphify` to build a knowledge graph from repo contents. Tested in `test/08-graphify.bats`. |
 | **browser human-loop** | Chromium CDP available for agent-browser cooperation when `BROWSER_HUMAN_LOOP_ENABLED=true`. DISPLAY=`:1` Xvfb session with VNC access. Ports: 6901 (noVNC web), 5901 (raw VNC), 9222 (Chromium DevTools Protocol). |
-| **security modes** | `strict` (default, 31 bash rules — no interpreters, no env dump), `standard` (22 rules — interpreters allowed), `yolo` (unrestricted). Set via `OPENCODE_SECURITY_MODE`. See section 5 for full matrix. |
+| **security modes** | `strict` (default, 31 bash rules — no interpreters, no env dump), `standard` (22 rules — interpreters allowed), `yolo` (unrestricted). Set via `OPENCODE_SECURITY_MODE`. See section 6 for full matrix. |
 | **llm-wiki** | Personal knowledge base at `/home/hermeswebui/.hermes/wiki`. Auto-initialized on first boot with SCHEMA.md, index.md, log.md backbone. Agent ingests sources into `raw/articles/` and creates entity/concept pages with `[[wikilinks]]`. Persists on the hermes-home bind mount. Optional host sharing via `HERMES_WIKI_VOLUME` env var. |
