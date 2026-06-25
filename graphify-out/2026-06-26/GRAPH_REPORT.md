@@ -1,16 +1,16 @@
-# Graph Report - hermes-x-opencode  (2026-06-26)
+# Graph Report - hermes-x-opencode  (2026-06-21)
 
 ## Corpus Check
-- 31 files · ~42,958 words
+- 30 files · ~41,378 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 773 nodes · 817 edges · 68 communities (49 shown, 19 thin omitted)
+- 727 nodes · 773 edges · 58 communities (39 shown, 19 thin omitted)
 - Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1aa88e95`
+- Built from commit: `d1a579d9`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -73,28 +73,18 @@
 - [[_COMMUNITY_Community 55|Community 55]]
 - [[_COMMUNITY_Community 56|Community 56]]
 - [[_COMMUNITY_Community 57|Community 57]]
-- [[_COMMUNITY_Community 58|Community 58]]
-- [[_COMMUNITY_Community 59|Community 59]]
-- [[_COMMUNITY_Community 60|Community 60]]
-- [[_COMMUNITY_Community 61|Community 61]]
-- [[_COMMUNITY_Community 62|Community 62]]
-- [[_COMMUNITY_Community 63|Community 63]]
-- [[_COMMUNITY_Community 64|Community 64]]
-- [[_COMMUNITY_Community 65|Community 65]]
-- [[_COMMUNITY_Community 66|Community 66]]
-- [[_COMMUNITY_Community 67|Community 67]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `How` - 19 edges
 2. `PRD.md — Product Requirements Document` - 19 edges
-3. `Standing Orders (ALWAYS apply)` - 17 edges
-4. `PRD: Hermes x OpenCode Docker Stack` - 16 edges
-5. `How` - 14 edges
-6. `docker-compose.yml — Service Definition` - 12 edges
-7. `Hermes x OpenCode` - 11 edges
-8. `How` - 11 edges
-9. `15 — Browser Human-in-the-Loop` - 11 edges
-10. `16 — Agent Installation Architecture` - 11 edges
+3. `PRD: Hermes x OpenCode Docker Stack` - 14 edges
+4. `How` - 14 edges
+5. `docker-compose.yml — Service Definition` - 12 edges
+6. `Hermes x OpenCode` - 11 edges
+7. `How` - 11 edges
+8. `15 — Browser Human-in-the-Loop` - 11 edges
+9. `16 — Agent Installation Architecture` - 11 edges
+10. `How` - 10 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `tests/run.sh — E2E Test Orchestrator` --conceptually_related_to--> `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`  [INFERRED]
@@ -125,7 +115,7 @@
 - **Dual Installation Architecture** — agent_install_a_detail, agent_install_b_detail, agent_propagation_chain, agent_why_both_exist [EXTRACTED 0.95]
 - **Wiki Initialization Pipeline** — wiki_init_function, wiki_schema_backbone, wiki_dir_structure [EXTRACTED 0.90]
 
-## Communities (68 total, 19 thin omitted)
+## Communities (58 total, 19 thin omitted)
 
 ### Community 0 - "Build Pipeline & Acceptance Criteria"
 Cohesion: 0.09
@@ -136,8 +126,8 @@ Cohesion: 0.06
 Nodes (34): 1. Clone this repo, 2. Configure environment, 3. Build and start, 4. Use it, 5. Verify OpenCode works, Agent Version, Architecture, config.yaml has expanded API key instead of literal string (+26 more)
 
 ### Community 2 - "PRD & Product Overview"
-Cohesion: 0.22
-Nodes (8): 10. Acceptance Criteria, 13. Additional Acceptance Criteria, 1. Product Overview, 3. Tech Stack, 4. File Inventory, 8. Constraints, PRD: Hermes x OpenCode Docker Stack, Related Repositories
+Cohesion: 0.05
+Nodes (41): 10. Acceptance Criteria, 11. OpenCode Model Fallback (Runtime Failover), 12. Documentation & Test Hygiene, 13. Additional Acceptance Criteria, 1. Product Overview, 2. Architecture, 3. Tech Stack, 4. File Inventory (+33 more)
 
 ### Community 3 - "Dual Installation Architecture"
 Cohesion: 0.08
@@ -152,8 +142,8 @@ Cohesion: 0.09
 Nodes (24): auth.json Seeding (opencode + litellm providers), Bats Testing Framework, Collect Docker Compose Logs on Failure, config-opencode.sh (opencode.jsonc generator), Hermes x OpenCode Docker Compose Stack, E2E Tests CI Workflow, Create .env from Secrets Step, Env Var Conditional (_HAS_OPENAI_KEY) (+16 more)
 
 ### Community 6 - "Testing & Verification"
-Cohesion: 0.05
-Nodes (40): LLM-Wiki Capability, OpenCode Provider Block (issue #46), Per-Model Provider Routing (issue #46), Dockerfile (Multi-Step Build), Build-Time Verification Step, Docker Healthcheck (healthcheck.sh), hermes-opencode Docker Compose Service, Optional Wiki Volume Mount (+32 more)
+Cohesion: 0.10
+Nodes (22): OpenCode Provider Block (issue #46), Per-Model Provider Routing (issue #46), auth.json Credential Store Seeding, Explicit opencode Provider Block, Per-Model Provider Routing Decision Table, Free Models Require OPENCODE_API_KEY, opencode run with litellm/ BROKEN, Serve + Attach Pattern (RECOMMENDED) (+14 more)
 
 ### Community 7 - "Security Rules & Patterns"
 Cohesion: 0.09
@@ -176,8 +166,8 @@ Cohesion: 0.11
 Nodes (18): 13 — Security Hardening, Attack testing results, Configuration, File access rules, How, Known remaining gaps, Layer 1: User isolation, Layer 2: cc-safety-net plugin (+10 more)
 
 ### Community 12 - "Config & Environment"
-Cohesion: 0.10
-Nodes (19): 1. Confirm the user-data-dir is on the bind mount, 23 — Browser State Persistence, 2. Verify Cookies file exists (pre-restart), 3. Restart the container and verify Cookies survive, 4. Confirm lockfiles are cleaned up on start, 5. Check that Local Storage directory is intact, Clearing state deliberately, Corrupted profile (Chromium crashes on start, blank windows, or "Profile error" dialogs) (+11 more)
+Cohesion: 0.11
+Nodes (18): LLM-Wiki Capability, Dockerfile (Multi-Step Build), Build-Time Verification Step, Docker Healthcheck (healthcheck.sh), hermes-opencode Docker Compose Service, Optional Wiki Volume Mount, Library Modules (scripts/lib/), entrypoint.sh (Thin Orchestrator) (+10 more)
 
 ### Community 13 - "Volume Layout"
 Cohesion: 0.11
@@ -232,8 +222,8 @@ Cohesion: 0.15
 Nodes (12): 17 — Wiki Initialization (llm-wiki skill), Directory structure (created on first boot), Initialization, Integration with llm-wiki skill, Overview, Ownership, Persistence, SCHEMA.md backbone (+4 more)
 
 ### Community 26 - "Docker Compose Overrides"
-Cohesion: 0.10
-Nodes (19): 1. MANDATED SKILLS, 2. Code Quality Rules, 2. Kanban Delegation Rules (coding discipline), 3. Code Quality Rules, 3. Docker/Build Constraints, 4. Docker/Build Constraints, 4. File Locations (inside container), 5. File Locations (inside container) (+11 more)
+Cohesion: 0.17
+Nodes (11): 1. MANDATED SKILLS, 2. Code Quality Rules, 3. Docker/Build Constraints, 4. File Locations (inside container), 5. Security Modes, 6. Verification Commands, 7. Project-Specific Patterns, 8. Agent Capabilities (+3 more)
 
 ### Community 27 - "Test Helper (common.bash)"
 Cohesion: 0.17
@@ -269,7 +259,7 @@ Nodes (11): 18 — Docker Compose Overrides, docker-compose.ci.yml (CI Port Publ
 
 ### Community 54 - "Community 54"
 Cohesion: 0.12
-Nodes (16): 22 — Profiles and the Righthand-Man Orchestrator, CLI, First-boot seeding in the container, Host-side profile, How, How to use it, The four-skill routing table, The `/goal` format (+8 more)
+Nodes (15): 22 — Profiles and the Righthand-Man Orchestrator, CLI, First-boot seeding in the container, Host-side profile, How, How to use it, The four-skill routing table, The `/goal` format (+7 more)
 
 ### Community 55 - "Community 55"
 Cohesion: 0.13
@@ -283,48 +273,8 @@ Nodes (14): 20 — OpenCode Runtime Model Fallback, Config generation, Configura
 Cohesion: 0.15
 Nodes (12): Assumptions (surfaced), Feature (the fix), Goal (from /goal), Live state (confirmed in running container), Out of scope (explicit), Plan — Ordered Multi-Model Fallback Chain for OpenCode, Root-cause analysis (investigated directly — karpathy domain), Subsequent prompts (pre-queued by user) (+4 more)
 
-### Community 58 - "Community 58"
-Cohesion: 0.29
-Nodes (7): 5.1 `Dockerfile` (at `volumes_hermes_opencode/build/Dockerfile`), 5.2 `scripts/entrypoint.sh` (at `volumes_hermes_opencode/build/scripts/entrypoint.sh`), 5.3 `docker-compose.yml`, 5.4 `.env.example`, 5.5 `.gitignore`, 5.6 `.dockerignore`, 5. File Specifications
-
-### Community 59 - "Community 59"
-Cohesion: 0.33
-Nodes (6): 14. Profile Skills Parity (righthand-man ← default), Assumptions, Changes, Problem, Root causes, Success criteria
-
-### Community 60 - "Community 60"
-Cohesion: 0.33
-Nodes (6): 15. Browser State Persistence, Assumptions, Changes, Problem, Root causes, Success criteria
-
-### Community 61 - "Community 61"
-Cohesion: 0.33
-Nodes (6): 9. Usage Patterns, Pattern 1 — Direct One-Shot Coding (verified), Pattern 2 — Plan → Build Pipeline, Chained One-Shots (verified), Pattern 3 — Direct Chat via Agent API (verified), Pattern Summary Table, When to Use What
-
-### Community 62 - "Community 62"
-Cohesion: 0.40
-Nodes (4): 24 — WebUI API, Endpoints, `GET /health`, Related Docs
-
-### Community 63 - "Community 63"
-Cohesion: 0.40
-Nodes (5): 11. OpenCode Model Fallback (Runtime Failover), Architecture, Configuration (env-driven), Constraints, Requirement
-
-### Community 64 - "Community 64"
-Cohesion: 0.40
-Nodes (5): 7. Configuration Reference, Also Found During Fork Sync (Issue #46), Build Arguments, Environment Variables, Per-Model Provider Routing (Issue #46)
-
-### Community 65 - "Community 65"
-Cohesion: 0.50
-Nodes (4): 6. Startup Sequence, First Boot, Key Behaviors, Subsequent Boots
-
-### Community 66 - "Community 66"
-Cohesion: 0.67
-Nodes (3): 12. Documentation & Test Hygiene, Gaps (from intended-vs-implemented audit), Non-gaps (verified, no action)
-
-### Community 67 - "Community 67"
-Cohesion: 0.67
-Nodes (3): 2. Architecture, Agent Installation Architecture, Component Roles
-
 ## Knowledge Gaps
-- **463 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)`, `3. Code Quality Rules`, `4. Docker/Build Constraints` (+458 more)
+- **426 isolated node(s):** `Goal (from /goal)`, `Live state (confirmed in running container)`, `Why GPU shows utilization`, `The gap (documented in doc 20, line 150)`, `Assumptions (surfaced)` (+421 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -332,16 +282,16 @@ Nodes (3): 2. Architecture, Agent Installation Architecture, Component Roles
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `OpenCode Serve (Headless HTTP Server)` connect `Testing & Verification` to `Dual Installation Architecture`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `PRD: Hermes x OpenCode Docker Stack` connect `PRD & Product Overview` to `Community 64`, `Community 65`, `Community 66`, `Community 67`, `Community 58`, `Community 59`, `Community 60`, `Community 61`, `Community 63`?**
-  _High betweenness centrality (0.004) - this node is a cross-community bridge._
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Why does `Sequential Startup with Health Gates` connect `Dual Installation Architecture` to `Testing & Verification`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
-- **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)` to the rest of the system?**
-  _514 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Are the 2 inferred relationships involving `docker-compose.yml — Service Definition` (e.g. with `hermeswebui User Isolation (UID 1000)` and `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`) actually correct?**
+  _`docker-compose.yml — Service Definition` has 2 INFERRED edges - model-reasoned connections that need verification._
+- **What connects `Goal (from /goal)`, `Live state (confirmed in running container)`, `Why GPU shows utilization` to the rest of the system?**
+  _477 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Build Pipeline & Acceptance Criteria` be split into smaller, more focused modules?**
   _Cohesion score 0.08709273182957393 - nodes in this community are weakly interconnected._
 - **Should `Quick Start & README` be split into smaller, more focused modules?**
   _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
-- **Should `Dual Installation Architecture` be split into smaller, more focused modules?**
-  _Cohesion score 0.07936507936507936 - nodes in this community are weakly interconnected._
+- **Should `PRD & Product Overview` be split into smaller, more focused modules?**
+  _Cohesion score 0.047619047619047616 - nodes in this community are weakly interconnected._

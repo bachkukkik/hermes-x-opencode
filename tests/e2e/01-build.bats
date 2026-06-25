@@ -19,6 +19,14 @@ setup() {
     [ "$opencode_count" -gt 0 ]
 }
 
+@test "AC25a: stub skills baked into Docker image staging dir" {
+    local image="hermes_x_opencode-hermes-opencode:latest"
+    run docker run --rm --entrypoint test "$image" -f /opt/hermes-skills-staging/software-development/security-best-practices/SKILL.md
+    [ "$status" -eq 0 ]
+    run docker run --rm --entrypoint test "$image" -f /opt/hermes-skills-staging/software-development/webapp-testing/SKILL.md
+    [ "$status" -eq 0 ]
+}
+
 @test "AC10: no secrets in tracked files" {
     run bash -c 'cd "$PROJECT_DIR" && git ls-files -z | xargs -0 grep -rl "sk-[a-zA-Z0-9]\{48,\}" 2>/dev/null || true'
     [ -z "$output" ]

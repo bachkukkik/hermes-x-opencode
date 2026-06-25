@@ -25,19 +25,19 @@
     "semantic_hash": ""
   },
   "AGENTS.md": {
-    "mtime": 1782371847.5195637,
-    "ast_hash": "6316e36e86cdbd009118f9004a0a3a32",
+    "mtime": 1781357122.0777671,
+    "ast_hash": "e1473be149ca88dc79e11e7228ea8d90",
     "semantic_hash": ""
   },
   "PRD.md": {
-    "mtime": 1782408694.2257743,
-    "ast_hash": "e9ab3c0f11965df8bec5f5b96f35b81f",
+    "mtime": 1781961029.403651,
+    "ast_hash": "12eca350023ffb48f028767feb168f80",
     "semantic_hash": ""
   },
   "docs/04-build-pipeline.md": {
-    "mtime": 1782410159.6749423,
-    "ast_hash": "f45df4ddd9a6f14e2e1817737b8ed734",
-    "semantic_hash": ""
+    "mtime": 1781272897.9928508,
+    "ast_hash": "e89a94ceeca2f54ac3a36f38fe861ad6",
+    "semantic_hash": "e89a94ceeca2f54ac3a36f38fe861ad6"
   },
   "docs/11-skill-installation.md": {
     "mtime": 1781272897.9928508,
@@ -65,17 +65,17 @@
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
   "docs/10-model-discovery.md": {
-    "mtime": 1782056137.8883727,
+    "mtime": 1782053990.6214023,
     "ast_hash": "48f5be244a67d2e46d48beccd0ce2a10",
     "semantic_hash": ""
   },
   "docs/09-testing-and-verification.md": {
-    "mtime": 1782056137.8883727,
+    "mtime": 1782055423.0891707,
     "ast_hash": "4072fea04c7ad64bdc7178fdf5d5f4fd",
     "semantic_hash": ""
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1782056137.8883727,
+    "mtime": 1782053990.6254022,
     "ast_hash": "5287ddae164a41e62b6fc3aa5d1d8e4e",
     "semantic_hash": ""
   },
@@ -115,8 +115,8 @@
     "semantic_hash": "ef2a59e4397263b643ee1e1ca18b3f87"
   },
   "docs/15-browser-human-loop.md": {
-    "mtime": 1782408650.2407823,
-    "ast_hash": "011bde5d46372b61dbdbd8f4370f1efd",
+    "mtime": 1782051179.0620542,
+    "ast_hash": "9d106cb8c2d0ae7ea67b6179a46888c1",
     "semantic_hash": ""
   },
   "docs/16-agent-installation-architecture.md": {
@@ -145,12 +145,12 @@
     "semantic_hash": ""
   },
   "docs/README.md": {
-    "mtime": 1782410144.9146078,
-    "ast_hash": "f69927deb942c08fd7a64e6ed45d10db",
+    "mtime": 1781978930.1303718,
+    "ast_hash": "893ca30a69c0ded49deff75d4e2adaee",
     "semantic_hash": ""
   },
   "docs/20-opencode-runtime-fallback.md": {
-    "mtime": 1782056137.8883727,
+    "mtime": 1782055420.6811225,
     "ast_hash": "ad287458327870e6b94b822fce650d72",
     "semantic_hash": ""
   },
@@ -160,18 +160,13 @@
     "semantic_hash": ""
   },
   "docs/22-profiles.md": {
-    "mtime": 1782410160.4669602,
-    "ast_hash": "d9e648a6fc3c75c25288b5bd26a4096d",
+    "mtime": 1781978930.1303718,
+    "ast_hash": "cecc591b409c7d6f2acf7674d6476dee",
     "semantic_hash": ""
   },
-  "docs/23-browser-persistence.md": {
-    "mtime": 1782408648.0207322,
-    "ast_hash": "9ea815b00200435768c34aaecab761d7",
-    "semantic_hash": ""
-  },
-  "docs/24-webui-api.md": {
-    "mtime": 1782410144.8266058,
-    "ast_hash": "7c41cf7aea9f7045a90749bf5fba895b",
+  ".hermes/plans/model-order-priority-chain.md": {
+    "mtime": 1782053525.9977968,
+    "ast_hash": "b2e40c9bc56d95d500c0a9b8472d6d98",
     "semantic_hash": ""
   }
 }

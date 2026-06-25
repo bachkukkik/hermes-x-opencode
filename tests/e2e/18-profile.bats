@@ -48,3 +48,20 @@ setup() {
     run docker exec "$cid" test -f /home/hermeswebui/.hermes/profiles/righthand-man/config.yaml
     [ "$status" -eq 0 ]
 }
+
+@test "PROF5: righthand-man skills/ has same count as default skills/" {
+    cid=$(get_container)
+    local default_count righthand_count
+    default_count=$(docker exec "$cid" find /home/hermeswebui/.hermes/skills -name SKILL.md 2>/dev/null | wc -l)
+    righthand_count=$(docker exec "$cid" find /home/hermeswebui/.hermes/profiles/righthand-man/skills -name SKILL.md 2>/dev/null | wc -l)
+    echo "Default skills: $default_count, righthand-man skills: $righthand_count"
+    [ "$default_count" -gt 0 ]
+    [ "$default_count" -eq "$righthand_count" ]
+}
+
+@test "PROF6: righthand-man SOUL.md has Six-skill routing (updated on every boot)" {
+    cid=$(get_container)
+    run docker exec "$cid" grep -c 'Six-skill routing' /home/hermeswebui/.hermes/profiles/righthand-man/SOUL.md
+    [ "$status" -eq 0 ]
+    [ "$output" -ge 1 ]
+}

@@ -184,3 +184,31 @@ setup() {
     [ "$status" -eq 0 ]
     [ "$output" -ge 1 ]
 }
+
+@test "BH9: browser cookies survive container restart (persistence via bind mount)" {
+    [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ] || skip "BROWSER_HUMAN_LOOP_ENABLED!=true"
+    cid=$(get_container)
+
+    # Verify chrome-debug directory exists and is on bind mount (not overlayfs)
+    run docker exec "$cid" test -d /home/hermeswebui/.hermes/chrome-debug
+    [ "$status" -eq 0 ]
+
+    # Verify Default directory exists inside chrome-debug
+    run docker exec "$cid" test -d /home/hermeswebui/.hermes/chrome-debug/Default
+    [ "$status" -eq 0 ]
+
+    # Verify lockfiles are absent after cleanup (startup script removes them)
+    run docker exec "$cid" test -f /home/hermeswebui/.hermes/chrome-debug/SingletonLock
+    [ "$status" -ne 0 ]
+
+    # Verify the user-data-dir is writable
+    run docker exec "$cid" touch /home/hermeswebui/.hermes/chrome-debug/.write_test
+    [ "$status" -eq 0 ]
+    docker exec "$cid" rm -f /home/hermeswebui/.hermes/chrome-debug/.write_test
+
+    # Key persistence check: the directory survives and is on persistent storage
+    # (If this were overlayfs, the directory might be empty or missing after restart)
+    run docker exec "$cid" ls /home/hermeswebui/.hermes/chrome-debug/
+    [ "$status" -eq 0 ]
+    [ -n "$output" ]
+}

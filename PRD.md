@@ -721,3 +721,76 @@ Plugin approach via the `opencode-runtime-fallback` plugin (no new container):
 | AC30 | Doctrine doc present | `docs/19-doctrine.md` exists and mentions the permission system | `test -f docs/19-doctrine.md && grep -qi permission docs/19-doctrine.md` |
 | AC31 | Docs index present | `docs/README.md` lists every doc | `test -f docs/README.md` && row count matches doc count |
 | AC32 | graphify regenerated | `graphify-out/graph.json` mtime newer than latest commit | `test graphify-out/graph.json -nt volumes_hermes_opencode/build/scripts/lib/config-hermes.sh` |
+
+## 14. Profile Skills Parity (righthand-man ← default)
+
+### Problem
+
+AGENTS.md mandates 6 skills on every task. The righthand-man orchestrator profile's SOUL.md mandates only 4, omitting `security-best-practices`, `webapp-testing`, `coding-agents-docs-guideline`, and `yeet`. While righthand-man inherits AGENTS.md from the workspace mount, the SOUL.md persona file is the stronger behavioral signal — it reasserts the doctrine on every message and should be the single source of truth for mandatory skills.
+
+Additionally, the `--clone` operation during profile seeding copies skills/ at seed time but never syncs afterward. If new skills are added to the default profile between rebuilds, righthand-man's skills/ directory falls behind.
+
+### Root causes
+
+1. SOUL.md was authored when only the 4-skill routing (PM, karpathy, kanban, opencode-plan-build-orchestrator) was the convention — the companion skills mandate was formalized later in AGENTS.md
+2. The seed is idempotent (`SOUL.md` presence = skip) so a container rebuild with updated default skills does not propagate to an already-seeded righthand-man
+3. `security-best-practices` and `webapp-testing` are mandated by AGENTS.md but do not exist as skills on the system — they are aspirational mandates with no implementation
+
+### Success criteria
+
+| # | Criterion | Verification |
+|---|-----------|-------------|
+| SC14.1 | SOUL.md mandates all 6 AGENTS.md skills | `grep -c 'security-best-practices\|webapp-testing\|coding-agents-docs-guideline\|yeet' SOUL.md` → ≥4 |
+| SC14.2 | righthand-man skills/ count matches default skills/ count | `diff <(ls default/skills/ | wc -l) <(ls righthand-man/skills/ | wc -l)` → equal |
+| SC14.3 | Bats PROF5 verifies skill parity | `bats tests/e2e/18-profile.bats --filter PROF5` → pass |
+| SC14.4 | Post-clone SOUL.md overwrite preserves mandated skills | Seed is idempotent: second boot does not clobber an updated SOUL.md |
+| SC14.5 | `security-best-practices` and `webapp-testing` stub skills exist | `test -f ~/.hermes/skills/software-development/security-best-practices/SKILL.md` → true |
+
+### Changes
+
+1. **SOUL.md** (`build/righthand-man/SOUL.md` and embedded heredoc in `lib/profile-righthand-man.sh`): Expand section 3 from 4 to 6 skills, adding `security-best-practices`, `webapp-testing`, `coding-agents-docs-guideline`, `yeet`
+2. **Post-clone skill sync** (`lib/profile-righthand-man.sh`): After the clone + SOUL.md overwrite, rsync default's skills/ into righthand-man's skills/ to catch any skills added since the last seed. Idempotent — runs on every boot, not just first seed
+3. **Stub skills**: Create `security-best-practices/SKILL.md` and `webapp-testing/SKILL.md` as minimal placeholder skills with a note that they are aspirational mandates pending full implementation
+4. **Bats test PROF5**: Verify righthand-man skills/ is not empty and has the same count as default
+5. **Doc update** (`docs/22-profiles.md`): Update the four-skill routing table to include all 6 mandated skills
+
+### Assumptions
+
+- `hermes profile create --clone` correctly copies the skills/ directory (verified by existing PROF4 test)
+- The SOUL.md heredoc in `profile-righthand-man.sh` and the canonical `build/righthand-man/SOUL.md` must stay in sync
+- Stub skills are acceptable — they document the mandate and can be fleshed out later
+- Post-clone sync via rsync is safe because both directories are owned by hermeswebui
+
+## 15. Browser State Persistence
+
+### Problem
+
+The browser human-in-the-loop stack stores Chromium user data at `/home/hermeswebui/.hermes/chrome-debug`, which lives on the bind-mounted volume. While the mechanism for persistence exists, there is no explicit test verifying that cookies, sessions, and profiles survive `docker compose down && up -d`. Users need confidence that authenticated website sessions persist across redeployments.
+
+### Root causes
+
+1. The persistence mechanism (bind mount) is in place but untested — no bats test verifies survival across container recreate
+2. Doc 15 mentions persistence in passing ("Cookies, localStorage, and login state persist across container restarts") but provides no verification procedure
+3. Chromium lockfiles are cleaned on each start (SingletonLock, SingletonCookie, SingletonSocket) — correct behavior, but the cleanup could theoretically clobber other state if path assumptions change
+
+### Success criteria
+
+| # | Criterion | Verification |
+|---|-----------|-------------|
+| SC15.1 | Cookie survives down+up cycle | Cookie file present before down, same file present after up |
+| SC15.2 | chrome-debug directory on bind mount | `docker exec $C stat /home/hermeswebui/.hermes/chrome-debug` shows it's on the bind mount (not overlayfs) |
+| SC15.3 | Lockfile cleanup is non-destructive | After cleanup, `ls chrome-debug/Default/Cookies` still exists |
+| SC15.4 | Bats test BH9 verifies persistence | `bats tests/e2e/12-browser-human-loop.bats --filter BH9` → pass |
+| SC15.5 | Doc 23 explicitly covers persistence with verification steps | `docs/23-browser-persistence.md` exists |
+
+### Changes
+
+1. **Bats test BH9** (`tests/e2e/12-browser-human-loop.bats`): New test that (a) verifies chrome-debug/Default/Cookies exists, (b) records its size/mtime, (c) verifies it's on the bind mount (not overlayfs), (d) confirms lockfiles are absent after cleanup, (e) confirms Cookies file survives the cleanup
+2. **Doc 23** (`docs/23-browser-persistence.md`): New doc covering the persistence architecture (bind mount → host filesystem), what survives (cookies, localStorage, sessions, profiles, extensions), what doesn't (running tabs — Chromium restarts fresh), verification steps, and troubleshooting (corrupted profile recovery, clearing state)
+3. **Doc 15 update** (`docs/15-browser-human-loop.md`): Cross-reference to doc 23 in the persistence line
+
+### Assumptions
+
+- Chromium stores cookies in `Default/Cookies` (SQLite) at the user-data-dir — standard behavior, verified on Debian Chromium
+- The bind mount at `./volumes_hermes_opencode/data/hermes-home` is not wiped between redeployments (user responsibility)
+- Lockfile cleanup (SingletonLock, SingletonCookie, SingletonSocket) is sufficient — no other stale state files block Chromium startup

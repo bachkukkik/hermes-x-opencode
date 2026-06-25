@@ -70,8 +70,9 @@ COPY volumes_hermes_opencode/build/scripts/install-skills.sh /usr/local/bin/inst
 COPY volumes_hermes_opencode/build/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY volumes_hermes_opencode/build/scripts/lib/ /usr/local/bin/lib/
 COPY volumes_hermes_opencode/build/tests/healthcheck.sh /usr/local/bin/healthcheck.sh
+COPY volumes_hermes_opencode/build/scripts/create-stub-skills.sh /usr/local/bin/create-stub-skills.sh
 COPY AGENTS.md /usr/local/share/AGENTS.md
-RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh
+RUN chmod +x /usr/local/bin/install-skills.sh /usr/local/bin/entrypoint.sh /usr/local/bin/healthcheck.sh /usr/local/bin/create-stub-skills.sh
 
 RUN HERMES_SKILLS_DIR=/opt/hermes-skills-staging \
     OPENCODE_SKILLS_DIR=/home/hermeswebui/.config/opencode/skills \
@@ -90,5 +91,8 @@ RUN echo "=== Hermes x OpenCode Stack ===" \
     && test -f /opt/hermes-agent-staging/pyproject.toml \
     && grep -q '"User-Agent".*"hermes-agent' /opt/hermes-agent-staging/plugins/model-providers/custom/__init__.py \
     && echo "================================"
+
+# Create AGENTS.md-mandated stub skills in staging (pending full implementation)
+RUN create-stub-skills.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
