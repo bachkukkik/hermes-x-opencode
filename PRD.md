@@ -750,9 +750,10 @@ Additionally, the `--clone` operation during profile seeding copies skills/ at s
 
 1. **SOUL.md** (`build/righthand-man/SOUL.md` and embedded heredoc in `lib/profile-righthand-man.sh`): Expand section 3 from 4 to 6 skills, adding `security-best-practices`, `webapp-testing`, `coding-agents-docs-guideline`, `yeet`
 2. **Post-clone skill sync** (`lib/profile-righthand-man.sh`): After the clone + SOUL.md overwrite, rsync default's skills/ into righthand-man's skills/ to catch any skills added since the last seed. Idempotent — runs on every boot, not just first seed
-3. **Stub skills**: Create `security-best-practices/SKILL.md` and `webapp-testing/SKILL.md` as minimal placeholder skills with a note that they are aspirational mandates pending full implementation
-4. **Bats test PROF5**: Verify righthand-man skills/ is not empty and has the same count as default
-5. **Doc update** (`docs/22-profiles.md`): Update the four-skill routing table to include all 6 mandated skills
+3. **Config.yaml sync on every boot** (`lib/profile-righthand-man.sh`): After the SOUL.md overwrite, copy the default profile's config.yaml into the righthand-man profile so it always uses the latest model/provider config from `generate_config()`. Idempotent — runs on every boot, not just first seed
+4. **Stub skills**: Create `security-best-practices/SKILL.md` and `webapp-testing/SKILL.md` as minimal placeholder skills with a note that they are aspirational mandates pending full implementation
+5. **Bats test PROF5**: Verify righthand-man skills/ is not empty and has the same count as default
+6. **Doc update** (`docs/22-profiles.md`): Update the four-skill routing table to include all 6 mandated skills
 
 ### Assumptions
 

@@ -18,15 +18,16 @@ The **`righthand-man`** profile is a pre-seeded **orchestrator persona**. Its `S
 
 The profile is provisioned by `lib/profile-righthand-man.sh` (`seed_righthand_man()`), sourced and called early in `entrypoint.sh` — after config/agent setup, before the WebUI and gateway start, so the profile is selectable by the time services are up.
 
-The **clone** is idempotent — if the profile directory already exists with a valid `config.yaml`, the clone step skips to avoid overwriting local config customizations. However, the **SOUL.md overwrite** and **skill sync** now run on **every boot**, not just the first seed. Starting from the 2026-06-26 update, the SOUL.md is overwritten and skills are synced on every boot — not just the first seed — so doctrine updates and new skills propagate across rebuilds without manual intervention.
+The **clone** is idempotent — if the profile directory already exists with a valid `config.yaml`, the clone step skips to avoid overwriting local config customizations. However, the **SOUL.md overwrite**, **skill sync**, and **config.yaml sync** now run on **every boot**, not just the first seed. Starting from the 2026-06-26 update, the SOUL.md is overwritten and skills are synced on every boot — not just the first seed — so doctrine updates and new skills propagate across rebuilds without manual intervention. Starting from the 2026-06-27 update, config.yaml is also synced on every boot so the righthand-man profile always uses the latest model/provider config from `generate_config()`.
 
 The seeding logic:
 
-1. **Clone guard (idempotent)** — if the profile directory already exists with a valid `config.yaml`, the clone step is skipped. The SOUL.md overwrite and skill sync (steps 4–5) still execute every boot.
+1. **Clone guard (idempotent)** — if the profile directory already exists with a valid `config.yaml`, the clone step is skipped. The SOUL.md overwrite, config.yaml sync, and skill sync (steps 4–6) still execute every boot.
 2. **CLI guard** — if `/app/venv/bin/hermes` does not exist (the venv binary isn't on PATH), warn and defer to the next boot.
 3. **Clone** — `hermes profile create righthand-man --clone --no-alias` run as `hermeswebui` so ownership is correct. `--clone` copies `config.yaml`, `.env`, `SOUL.md`, and `skills/` from the active (default) profile. `--no-alias` avoids interactive wrapper-script prompts. A clone failure is non-fatal: it logs and retries on the next boot.
 4. **Overwrite `SOUL.md`** — the cloned persona is replaced with the curated orchestrator doctrine via an embedded heredoc. This is the key step: the clone only copies the *default* persona; the curated doctrine is what makes this an orchestrator profile.
 5. **`chown -R hermeswebui:hermeswebui`** — correct ownership of the entire profile directory.
+6. **Sync config.yaml from default** — copies `$HERMES_HOME/config.yaml` into the righthand-man profile on every boot so the righthand-man profile always uses the same model and provider as the default profile (consumer of `generate_config()` output). Runs every boot regardless of clone guard.
 
 The doctrine text is **embedded directly in the function** (a quoted `<<'SOULEOF'` heredoc), not read from the build tree. The build directory is not copied into the image — only the `lib/*.sh` scripts land at `/usr/local/bin/lib/`. Embedding the content makes the seed fully self-contained at runtime.
 

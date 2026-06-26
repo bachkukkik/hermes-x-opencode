@@ -64,6 +64,16 @@ SOULEOF
 
     chown -R "$OPENCODE_USER":"$OPENCODE_USER" "${target}"
 
+    # Sync config.yaml from the default profile on EVERY boot.
+    # generate_config() rewrites $HERMES_HOME/config.yaml every boot with
+    # the latest model discovery + HERMES_DEFAULT_MODEL. Without this sync,
+    # righthand-man keeps its stale first-boot clone (wrong model, old provider).
+    if [ -f "${HERMES_HOME}/config.yaml" ]; then
+        cp -f "${HERMES_HOME}/config.yaml" "${target}/config.yaml"
+        chown "$OPENCODE_USER":"$OPENCODE_USER" "${target}/config.yaml"
+        echo "== Synced default config.yaml -> righthand-man profile"
+    fi
+
     # Sync skills from default profile to righthand-man (catches skills added since last seed)
     if [ -d "${HERMES_HOME}/skills" ] && [ -d "${target}/skills" ]; then
         rsync -a --delete "${HERMES_HOME}/skills/" "${target}/skills/"
