@@ -65,3 +65,19 @@ setup() {
     [ "$status" -eq 0 ]
     [ "$output" -ge 1 ]
 }
+
+@test "PROF7: righthand-man config.yaml uses same model and provider as default" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run docker exec "$cid" /bin/bash -c '
+        def_model=$(sed -n "3p" /home/hermeswebui/.hermes/config.yaml | awk "{print \$2}")
+        def_prov=$(sed -n "2p" /home/hermeswebui/.hermes/config.yaml | awk "{print \$2}")
+        rh_model=$(sed -n "3p" /home/hermeswebui/.hermes/profiles/righthand-man/config.yaml | awk "{print \$2}")
+        rh_prov=$(sed -n "2p" /home/hermeswebui/.hermes/profiles/righthand-man/config.yaml | awk "{print \$2}")
+        if [ "$def_model" = "$rh_model" ] && [ "$def_prov" = "$rh_prov" ]; then echo "MATCH"; else echo "MISMATCH: def=${def_model} rh=${rh_model}"; fi
+    '
+    [ "$status" -eq 0 ]
+    [[ "$output" == *MATCH* ]]
+}
