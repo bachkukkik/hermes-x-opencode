@@ -849,6 +849,120 @@ The agent cannot set an arbitrary viewport because the underlying virtual displa
 
 ## 17. Documentation Gaps: doc06 Env Var Table Parity
 
+## 18. Bare-Metal Host Setup: Model Discovery & Context Length Accuracy
+
+### 18.1 Summary
+
+The bare-metal host machine runs Hermes Agent + OpenCode CLI + a LiteLLM proxy
+container that serves 281 models from 20+ providers (Anthropic, DeepSeek, ZAI,
+OpenRouter, Vertex AI, Gemini, free Zen tier, local llama.cpp, etc.). A host
+config generator (`~/.hermes/host-config-gen/generate.sh`) discovers models and
+produces merged config overlays for both Hermes and OpenCode.
+
+### 18.2 Problem
+
+The host config generator hardcodes `context_length: 200000` for every
+discovered model regardless of its actual context window. This causes:
+
+- **Inaccurate context display** — `/usage` and the status bar show wrong values
+- **Premature or delayed compression** — context compression triggers at the
+  wrong threshold (50% of 200K = 100K, even for models with 128K or 1M windows)
+- **Silent failures** — models with smaller real windows (e.g. 8K) may overflow
+  without warning because Hermes thinks there is 200K of headroom
+
+Root cause: `model-discovery.sh` queries LiteLLM `/v1/models` and extracts only
+model IDs, discarding the `max_input_tokens` / `context_length` metadata that
+LiteLLM returns for concrete (non-wildcard) models. Then `config-hermes.sh`
+assigns every entry `{"context_length": 200000}`.
+
+Additionally, the current active model (`zai/glm-5.2`) is entirely absent from
+the Hermes `custom_providers[].models` map because the generator was last run
+when a different model set was live. Models present in the map but no longer in
+LiteLLM (285 stale entries) are dead weight.
+
+### 18.3 Objective
+
+Ensure every model served by LiteLLM has an accurate `context_length` in both
+Hermes `config.yaml` and the `host-config-gen` staging pipeline, so that context
+compression, usage display, and overflow detection all work correctly.
+
+Key Results:
+- KR1: All 281 LiteLLM models present in Hermes `custom_providers[].models` map
+- KR2: `zai/glm-5.2` (current active model) has accurate context_length set
+- KR3: `generate.sh --dry-run` extracts real context_length from LiteLLM
+       `max_input_tokens`, falling back to `context_length`, then 200000 only
+       when neither is available (wildcard-expanded models)
+- KR4: righthand-man profile config synced with the same accurate model map
+- KR5: No stale entries (models not in LiteLLM) remain in the config
+
+### 18.4 Constraints
+
+- **Must not modify upstream Hermes agent source** — the fix is in the
+  host-config-gen layer (`~/.hermes/host-config-gen/lib/`), not in
+  `agent/model_metadata.py`
+- **Must not break the Docker stack** — this is host-only; the Docker
+  entrypoint has its own parallel pipeline that is unaffected
+- **Config generation is merge-mode** — preserve all existing config sections
+  (agent, tools, platforms, permissions, plugins) and only replace the
+  `custom_providers[].models` map for the litellm provider entry
+- **Secret safety** — API keys are read in-process via python3, never passed
+  through shell variables (Hermes secret-redaction pitfall)
+
+### 18.5 Solution
+
+**18.5.1 Model discovery enhancement** (`lib/model-discovery.sh`)
+
+The discovery Python script currently writes newline-separated model IDs to
+`$STAGING_MODELS`. Enhance it to also capture context metadata and write a
+second file `$STAGING_MODELS_JSON` containing model id -> context_length pairs
+extracted from LiteLLM's response:
+
+- Primary source: `max_input_tokens` (LiteLLM's preferred field)
+- Fallback: `context_length` (older OpenAI-compatible servers)
+- Final fallback: `200000` (only when neither is present — wildcard-expanded
+  models like `zai/*` that LiteLLM reports without metadata)
+
+**18.5.2 Hermes overlay fix** (`lib/config-hermes.sh`)
+
+Replace the hardcoded `{"context_length": 200000}` with the actual value read
+from `$STAGING_MODELS_JSON`. The models map is built from the JSON metadata
+file, ensuring each model gets its real context window.
+
+**18.5.3 Config application**
+
+After regeneration, apply the staging overlay to:
+- `~/.hermes/config.yaml` (default profile)
+- `~/.hermes/profiles/righthand-man/config.yaml` (synced copy)
+- `~/.config/opencode/opencode.jsonc` (litellm model list refreshed)
+
+### 18.6 Success Criteria & Verification
+
+| # | Criterion | Verification Command |
+|---|-----------|---------------------|
+| SC1 | `zai/glm-5.2` has context_length in config | `python3 -c "import yaml; d=yaml.safe_load(open('$HOME/.hermes/config.yaml')); print(d['custom_providers'][0]['models'].get('zai/glm-5.2'))"` returns a dict with context_length |
+| SC2 | All LiteLLM models present | count of models in config map == count of LiteLLM non-wildcard models |
+| SC3 | No stale entries | every model in config map exists in LiteLLM `/v1/models` |
+| SC4 | generate.sh dry-run passes | `bash ~/.hermes/host-config-gen/generate.sh --dry-run` exits 0 |
+| SC5 | Staging has accurate context | staging models map has non-200000 values for known models (e.g. anthropic models = 1000000) |
+| SC6 | righthand-man synced | righthand-man config custom_providers models map matches default |
+| SC7 | OpenCode config refreshed | opencode.jsonc litellm provider has current model list |
+
+### 18.7 Context Length Resolution Chain (reference)
+
+Hermes `get_model_context_length()` (agent/model_metadata.py:1613) resolution
+order for `custom:litellm` provider:
+
+0. `model.context_length` in config.yaml (top-level override) — not set
+0b. `custom_providers[].models[model].context_length` — **this is what we fix**
+1. Persistent cache (`context_length_cache.yaml`) — empty
+2. Endpoint `/v1/models` live probe — LiteLLM returns `max_input_tokens`, but
+   Hermes checks `context_length`/`context_window` first; wildcard models return
+   nothing
+3-8. Various provider-specific lookups (not applicable to LiteLLM proxy)
+9. Default fallback: 256K
+
+By populating step 0b correctly, we short-circuit the entire probe chain.
+
 ### Problem
 
 A mechanical gap analysis (function inventory → cross-reference against `docs/` and `tests/`) compared the `docker-compose.yml` `environment:` block, `.env.example`, and `docs/06-config-and-env.md`. The central env-var reference (doc 06's "Environment variables" user-facing table) is missing 7 user-configurable variables that ARE present in both `docker-compose.yml` and `.env.example`. Users consulting doc 06 as the canonical env reference cannot discover these variables there — they must find them in feature-specific docs (15/21/03) instead.
