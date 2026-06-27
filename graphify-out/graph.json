@@ -869,7 +869,7 @@
       "label": "Problem",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L727",
+      "source_location": "L729",
       "id": "prd_problem",
       "community": 59,
       "norm_label": "problem"
@@ -878,7 +878,7 @@
       "label": "Root causes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L733",
+      "source_location": "L735",
       "id": "prd_root_causes",
       "community": 59,
       "norm_label": "root causes"
@@ -887,7 +887,7 @@
       "label": "Success criteria",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L739",
+      "source_location": "L741",
       "id": "prd_success_criteria",
       "community": 59,
       "norm_label": "success criteria"
@@ -896,7 +896,7 @@
       "label": "Changes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L749",
+      "source_location": "L751",
       "id": "prd_changes",
       "community": 59,
       "norm_label": "changes"
@@ -905,7 +905,7 @@
       "label": "Assumptions",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L758",
+      "source_location": "L760",
       "id": "prd_assumptions",
       "community": 59,
       "norm_label": "assumptions"
@@ -914,7 +914,7 @@
       "label": "15. Browser State Persistence",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L765",
+      "source_location": "L767",
       "id": "prd_15_browser_state_persistence",
       "community": 60,
       "norm_label": "15. browser state persistence"
@@ -923,8 +923,8 @@
       "label": "Problem",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L767",
-      "id": "prd_problem_767",
+      "source_location": "L769",
+      "id": "prd_problem_769",
       "community": 60,
       "norm_label": "problem"
     },
@@ -932,8 +932,8 @@
       "label": "Root causes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L771",
-      "id": "prd_root_causes_771",
+      "source_location": "L773",
+      "id": "prd_root_causes_773",
       "community": 60,
       "norm_label": "root causes"
     },
@@ -941,8 +941,8 @@
       "label": "Success criteria",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L777",
-      "id": "prd_success_criteria_777",
+      "source_location": "L779",
+      "id": "prd_success_criteria_779",
       "community": 60,
       "norm_label": "success criteria"
     },
@@ -950,8 +950,8 @@
       "label": "Changes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L787",
-      "id": "prd_changes_787",
+      "source_location": "L789",
+      "id": "prd_changes_789",
       "community": 60,
       "norm_label": "changes"
     },
@@ -959,8 +959,8 @@
       "label": "Assumptions",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L793",
-      "id": "prd_assumptions_793",
+      "source_location": "L795",
+      "id": "prd_assumptions_795",
       "community": 60,
       "norm_label": "assumptions"
     },
@@ -968,7 +968,7 @@
       "label": "16. Configurable Browser Viewport (Xvfb Display Size)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L799",
+      "source_location": "L801",
       "id": "prd_16_configurable_browser_viewport_xvfb_display_size",
       "community": 70,
       "norm_label": "16. configurable browser viewport (xvfb display size)"
@@ -977,8 +977,8 @@
       "label": "Problem",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L801",
-      "id": "prd_problem_801",
+      "source_location": "L803",
+      "id": "prd_problem_803",
       "community": 70,
       "norm_label": "problem"
     },
@@ -986,8 +986,8 @@
       "label": "Root causes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L809",
-      "id": "prd_root_causes_809",
+      "source_location": "L811",
+      "id": "prd_root_causes_811",
       "community": 70,
       "norm_label": "root causes"
     },
@@ -995,8 +995,8 @@
       "label": "Success criteria",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L815",
-      "id": "prd_success_criteria_815",
+      "source_location": "L817",
+      "id": "prd_success_criteria_817",
       "community": 70,
       "norm_label": "success criteria"
     },
@@ -1004,8 +1004,8 @@
       "label": "Changes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L826",
-      "id": "prd_changes_826",
+      "source_location": "L828",
+      "id": "prd_changes_828",
       "community": 70,
       "norm_label": "changes"
     },
@@ -1013,8 +1013,8 @@
       "label": "Assumptions",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L835",
-      "id": "prd_assumptions_835",
+      "source_location": "L837",
+      "id": "prd_assumptions_837",
       "community": 70,
       "norm_label": "assumptions"
     },
@@ -1022,7 +1022,7 @@
       "label": "Non-goals (out of scope)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L842",
+      "source_location": "L844",
       "id": "prd_non_goals_out_of_scope",
       "community": 70,
       "norm_label": "non-goals (out of scope)"
@@ -1031,7 +1031,7 @@
       "label": "17. Documentation Gaps: doc06 Env Var Table Parity",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L848",
+      "source_location": "L850",
       "id": "prd_17_documentation_gaps_doc06_env_var_table_parity",
       "community": 69,
       "norm_label": "17. documentation gaps: doc06 env var table parity"
@@ -1040,8 +1040,8 @@
       "label": "Problem",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L850",
-      "id": "prd_problem_850",
+      "source_location": "L852",
+      "id": "prd_problem_852",
       "community": 69,
       "norm_label": "problem"
     },
@@ -1049,8 +1049,8 @@
       "label": "Root causes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L854",
-      "id": "prd_root_causes_854",
+      "source_location": "L856",
+      "id": "prd_root_causes_856",
       "community": 69,
       "norm_label": "root causes"
     },
@@ -1058,7 +1058,7 @@
       "label": "Gap matrix (intended-vs-implemented)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L859",
+      "source_location": "L861",
       "id": "prd_gap_matrix_intended_vs_implemented",
       "community": 69,
       "norm_label": "gap matrix (intended-vs-implemented)"
@@ -1067,8 +1067,8 @@
       "label": "Non-gaps (verified, no action)",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L871",
-      "id": "prd_non_gaps_verified_no_action_871",
+      "source_location": "L873",
+      "id": "prd_non_gaps_verified_no_action_873",
       "community": 69,
       "norm_label": "non-gaps (verified, no action)"
     },
@@ -1076,8 +1076,8 @@
       "label": "Success criteria",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L881",
-      "id": "prd_success_criteria_881",
+      "source_location": "L883",
+      "id": "prd_success_criteria_883",
       "community": 69,
       "norm_label": "success criteria"
     },
@@ -1085,8 +1085,8 @@
       "label": "Changes",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L891",
-      "id": "prd_changes_891",
+      "source_location": "L893",
+      "id": "prd_changes_893",
       "community": 69,
       "norm_label": "changes"
     },
@@ -1094,8 +1094,8 @@
       "label": "Assumptions",
       "file_type": "document",
       "source_file": "PRD.md",
-      "source_location": "L897",
-      "id": "prd_assumptions_897",
+      "source_location": "L899",
+      "id": "prd_assumptions_899",
       "community": 69,
       "norm_label": "assumptions"
     },
@@ -4619,19 +4619,37 @@
       "norm_label": "webui"
     },
     {
-      "label": "The six-skill routing table",
+      "label": "Routing doctrine",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
       "source_location": "L66",
-      "id": "docs_22_profiles_the_six_skill_routing_table",
+      "id": "docs_22_profiles_routing_doctrine",
       "community": 54,
-      "norm_label": "the six-skill routing table"
+      "norm_label": "routing doctrine"
+    },
+    {
+      "label": "Skills",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L70",
+      "id": "docs_22_profiles_skills",
+      "community": 54,
+      "norm_label": "skills"
+    },
+    {
+      "label": "Built-in Hermes tools",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L83",
+      "id": "docs_22_profiles_built_in_hermes_tools",
+      "community": 54,
+      "norm_label": "built-in hermes tools"
     },
     {
       "label": "The `/goal` format",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L83",
+      "source_location": "L92",
       "id": "docs_22_profiles_the_goal_format",
       "community": 54,
       "norm_label": "the `/goal` format"
@@ -4640,7 +4658,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L96",
+      "source_location": "L105",
       "id": "docs_22_profiles_verification",
       "community": 54,
       "norm_label": "verification"
@@ -4649,7 +4667,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L114",
+      "source_location": "L123",
       "id": "docs_22_profiles_what_works",
       "community": 54,
       "norm_label": "what works"
@@ -4658,7 +4676,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/22-profiles.md",
-      "source_location": "L123",
+      "source_location": "L132",
       "id": "docs_22_profiles_verdict",
       "community": 54,
       "norm_label": "verdict"
@@ -4905,6 +4923,159 @@
       "id": "docs_readme_documentation_index",
       "community": 53,
       "norm_label": "documentation index"
+    },
+    {
+      "label": "Problem",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L767",
+      "community": 60,
+      "norm_label": "problem",
+      "id": "prd_problem_767"
+    },
+    {
+      "label": "Root causes",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L771",
+      "community": 60,
+      "norm_label": "root causes",
+      "id": "prd_root_causes_771"
+    },
+    {
+      "label": "Success criteria",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L777",
+      "community": 60,
+      "norm_label": "success criteria",
+      "id": "prd_success_criteria_777"
+    },
+    {
+      "label": "Changes",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L787",
+      "community": 60,
+      "norm_label": "changes",
+      "id": "prd_changes_787"
+    },
+    {
+      "label": "Assumptions",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L793",
+      "community": 60,
+      "norm_label": "assumptions",
+      "id": "prd_assumptions_793"
+    },
+    {
+      "label": "Problem",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L801",
+      "community": 70,
+      "norm_label": "problem",
+      "id": "prd_problem_801"
+    },
+    {
+      "label": "Root causes",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L809",
+      "community": 70,
+      "norm_label": "root causes",
+      "id": "prd_root_causes_809"
+    },
+    {
+      "label": "Success criteria",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L815",
+      "community": 70,
+      "norm_label": "success criteria",
+      "id": "prd_success_criteria_815"
+    },
+    {
+      "label": "Changes",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L826",
+      "community": 70,
+      "norm_label": "changes",
+      "id": "prd_changes_826"
+    },
+    {
+      "label": "Assumptions",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L835",
+      "community": 70,
+      "norm_label": "assumptions",
+      "id": "prd_assumptions_835"
+    },
+    {
+      "label": "Problem",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L850",
+      "community": 69,
+      "norm_label": "problem",
+      "id": "prd_problem_850"
+    },
+    {
+      "label": "Root causes",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L854",
+      "community": 69,
+      "norm_label": "root causes",
+      "id": "prd_root_causes_854"
+    },
+    {
+      "label": "Non-gaps (verified, no action)",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L871",
+      "community": 69,
+      "norm_label": "non-gaps (verified, no action)",
+      "id": "prd_non_gaps_verified_no_action_871"
+    },
+    {
+      "label": "Success criteria",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L881",
+      "community": 69,
+      "norm_label": "success criteria",
+      "id": "prd_success_criteria_881"
+    },
+    {
+      "label": "Changes",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L891",
+      "community": 69,
+      "norm_label": "changes",
+      "id": "prd_changes_891"
+    },
+    {
+      "label": "Assumptions",
+      "file_type": "document",
+      "source_file": "PRD.md",
+      "source_location": "L897",
+      "community": 69,
+      "norm_label": "assumptions",
+      "id": "prd_assumptions_897"
+    },
+    {
+      "label": "The six-skill routing table",
+      "file_type": "document",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L66",
+      "community": 54,
+      "norm_label": "the six-skill routing table",
+      "id": "docs_22_profiles_the_six_skill_routing_table"
     },
     {
       "label": "Problem",
@@ -8775,9 +8946,9 @@
       "source_file": "PRD.md",
       "source_location": "L799",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_16_configurable_browser_viewport_xvfb_display_size",
-      "confidence_score": 1.0
+      "target": "prd_16_configurable_browser_viewport_xvfb_display_size"
     },
     {
       "relation": "contains",
@@ -8785,9 +8956,9 @@
       "source_file": "PRD.md",
       "source_location": "L848",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "confidence_score": 1.0
+      "target": "prd_17_documentation_gaps_doc06_env_var_table_parity"
     },
     {
       "relation": "contains",
@@ -9215,8 +9386,18 @@
       "source_file": "PRD.md",
       "source_location": "L793",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_15_browser_state_persistence",
-      "target": "prd_assumptions_793",
+      "target": "prd_assumptions_793"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L795",
+      "weight": 1.0,
+      "source": "prd_15_browser_state_persistence",
+      "target": "prd_assumptions_795",
       "confidence_score": 1.0
     },
     {
@@ -9235,8 +9416,18 @@
       "source_file": "PRD.md",
       "source_location": "L787",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_15_browser_state_persistence",
-      "target": "prd_changes_787",
+      "target": "prd_changes_787"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L789",
+      "weight": 1.0,
+      "source": "prd_15_browser_state_persistence",
+      "target": "prd_changes_789",
       "confidence_score": 1.0
     },
     {
@@ -9255,8 +9446,18 @@
       "source_file": "PRD.md",
       "source_location": "L767",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_15_browser_state_persistence",
-      "target": "prd_problem_767",
+      "target": "prd_problem_767"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L769",
+      "weight": 1.0,
+      "source": "prd_15_browser_state_persistence",
+      "target": "prd_problem_769",
       "confidence_score": 1.0
     },
     {
@@ -9275,8 +9476,18 @@
       "source_file": "PRD.md",
       "source_location": "L771",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_15_browser_state_persistence",
-      "target": "prd_root_causes_771",
+      "target": "prd_root_causes_771"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L773",
+      "weight": 1.0,
+      "source": "prd_15_browser_state_persistence",
+      "target": "prd_root_causes_773",
       "confidence_score": 1.0
     },
     {
@@ -9295,8 +9506,18 @@
       "source_file": "PRD.md",
       "source_location": "L777",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_15_browser_state_persistence",
-      "target": "prd_success_criteria_777",
+      "target": "prd_success_criteria_777"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L779",
+      "weight": 1.0,
+      "source": "prd_15_browser_state_persistence",
+      "target": "prd_success_criteria_779",
       "confidence_score": 1.0
     },
     {
@@ -9305,8 +9526,18 @@
       "source_file": "PRD.md",
       "source_location": "L835",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
-      "target": "prd_assumptions_835",
+      "target": "prd_assumptions_835"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L837",
+      "weight": 1.0,
+      "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
+      "target": "prd_assumptions_837",
       "confidence_score": 1.0
     },
     {
@@ -9315,8 +9546,18 @@
       "source_file": "PRD.md",
       "source_location": "L826",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
-      "target": "prd_changes_826",
+      "target": "prd_changes_826"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L828",
+      "weight": 1.0,
+      "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
+      "target": "prd_changes_828",
       "confidence_score": 1.0
     },
     {
@@ -9325,9 +9566,9 @@
       "source_file": "PRD.md",
       "source_location": "L842",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
-      "target": "prd_non_goals_out_of_scope",
-      "confidence_score": 1.0
+      "target": "prd_non_goals_out_of_scope"
     },
     {
       "relation": "contains",
@@ -9335,8 +9576,18 @@
       "source_file": "PRD.md",
       "source_location": "L801",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
-      "target": "prd_problem_801",
+      "target": "prd_problem_801"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L803",
+      "weight": 1.0,
+      "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
+      "target": "prd_problem_803",
       "confidence_score": 1.0
     },
     {
@@ -9345,8 +9596,18 @@
       "source_file": "PRD.md",
       "source_location": "L809",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
-      "target": "prd_root_causes_809",
+      "target": "prd_root_causes_809"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L811",
+      "weight": 1.0,
+      "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
+      "target": "prd_root_causes_811",
       "confidence_score": 1.0
     },
     {
@@ -9355,8 +9616,18 @@
       "source_file": "PRD.md",
       "source_location": "L815",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
-      "target": "prd_success_criteria_815",
+      "target": "prd_success_criteria_815"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L817",
+      "weight": 1.0,
+      "source": "prd_16_configurable_browser_viewport_xvfb_display_size",
+      "target": "prd_success_criteria_817",
       "confidence_score": 1.0
     },
     {
@@ -9365,8 +9636,18 @@
       "source_file": "PRD.md",
       "source_location": "L897",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "target": "prd_assumptions_897",
+      "target": "prd_assumptions_897"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L899",
+      "weight": 1.0,
+      "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
+      "target": "prd_assumptions_899",
       "confidence_score": 1.0
     },
     {
@@ -9375,8 +9656,18 @@
       "source_file": "PRD.md",
       "source_location": "L891",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "target": "prd_changes_891",
+      "target": "prd_changes_891"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L893",
+      "weight": 1.0,
+      "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
+      "target": "prd_changes_893",
       "confidence_score": 1.0
     },
     {
@@ -9385,9 +9676,9 @@
       "source_file": "PRD.md",
       "source_location": "L859",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "target": "prd_gap_matrix_intended_vs_implemented",
-      "confidence_score": 1.0
+      "target": "prd_gap_matrix_intended_vs_implemented"
     },
     {
       "relation": "contains",
@@ -9395,8 +9686,18 @@
       "source_file": "PRD.md",
       "source_location": "L871",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "target": "prd_non_gaps_verified_no_action_871",
+      "target": "prd_non_gaps_verified_no_action_871"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L873",
+      "weight": 1.0,
+      "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
+      "target": "prd_non_gaps_verified_no_action_873",
       "confidence_score": 1.0
     },
     {
@@ -9405,8 +9706,18 @@
       "source_file": "PRD.md",
       "source_location": "L850",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "target": "prd_problem_850",
+      "target": "prd_problem_850"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L852",
+      "weight": 1.0,
+      "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
+      "target": "prd_problem_852",
       "confidence_score": 1.0
     },
     {
@@ -9415,8 +9726,18 @@
       "source_file": "PRD.md",
       "source_location": "L854",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "target": "prd_root_causes_854",
+      "target": "prd_root_causes_854"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L856",
+      "weight": 1.0,
+      "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
+      "target": "prd_root_causes_856",
       "confidence_score": 1.0
     },
     {
@@ -9425,8 +9746,18 @@
       "source_file": "PRD.md",
       "source_location": "L881",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
-      "target": "prd_success_criteria_881",
+      "target": "prd_success_criteria_881"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "PRD.md",
+      "source_location": "L883",
+      "weight": 1.0,
+      "source": "prd_17_documentation_gaps_doc06_env_var_table_parity",
+      "target": "prd_success_criteria_883",
       "confidence_score": 1.0
     },
     {
@@ -13043,6 +13374,16 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "docs/22-profiles.md",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "docs_22_profiles_22_profiles_and_the_righthand_man_orchestrator",
+      "target": "docs_22_profiles_routing_doctrine",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
       "source_location": "L65",
       "weight": 1.0,
       "confidence_score": 1.0,
@@ -13168,6 +13509,26 @@
       "confidence_score": 1.0,
       "source": "docs_22_profiles_how_to_use_it",
       "target": "docs_22_profiles_webui"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "docs_22_profiles_routing_doctrine",
+      "target": "docs_22_profiles_built_in_hermes_tools",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/22-profiles.md",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "docs_22_profiles_routing_doctrine",
+      "target": "docs_22_profiles_skills",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -16760,5 +17121,5 @@
       "source_file": "docs/17-wiki-init.md"
     }
   ],
-  "built_at_commit": "3eb60ef9c9e6a4ad43d23de545d00fa211b47e9d"
+  "built_at_commit": "d8c190b2555ed72ee89db62e3a3bf1b1c0592544"
 }

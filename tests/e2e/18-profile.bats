@@ -59,9 +59,9 @@ setup() {
     [ "$default_count" -eq "$righthand_count" ]
 }
 
-@test "PROF6: righthand-man SOUL.md has Six-skill routing (updated on every boot)" {
+@test "PROF6: righthand-man SOUL.md has routing doctrine (updated on every boot)" {
     cid=$(get_container)
-    run docker exec "$cid" grep -c 'Six-skill routing' /home/hermeswebui/.hermes/profiles/righthand-man/SOUL.md
+    run docker exec "$cid" grep -c 'Routing — skills, built-in tools' /home/hermeswebui/.hermes/profiles/righthand-man/SOUL.md
     [ "$status" -eq 0 ]
     [ "$output" -ge 1 ]
 }
@@ -80,4 +80,48 @@ setup() {
     '
     [ "$status" -eq 0 ]
     [[ "$output" == *MATCH* ]]
+}
+
+@test "PROF8: all routed SKILLS are loadable in the container" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Skills (load via skill_view) — must exist as SKILL.md somewhere Hermes can load them:
+    # hermes skills dir, righthand-man profile skills, OpenCode skills dir, or optional-skills.
+    local missing=""
+    for skill in \
+        karpathy-guidelines \
+        opencode-plan-build-orchestrator \
+        dogfood \
+        security-best-practices \
+        webapp-testing \
+        coding-agents-docs-guideline \
+        yeet; do
+        if ! docker exec "$cid" bash -c \
+            "find /home/hermeswebui/.hermes/skills \
+                 /home/hermeswebui/.hermes/profiles/righthand-man/skills \
+                 /home/hermeswebui/.config/opencode/skills \
+                 /home/hermeswebui/.hermes/hermes-agent/optional-skills \
+                 -name SKILL.md -path '*${skill}*' 2>/dev/null | grep -q ."; then
+            missing="${missing} ${skill}"
+        fi
+    done
+
+    [ -z "$missing" ] || { echo "Missing routed skills:${missing}"; false; }
+}
+
+@test "PROF9: routed BUILT-IN TOOLS are available in the container" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Built-in Hermes tools (not skills) — kanban is a hermes subcommand,
+    # browser is a toolset backed by CDP on port 9222.
+    run docker exec "$cid" /app/venv/bin/hermes kanban --help
+    [ "$status" -eq 0 ]
+
+    run docker exec "$cid" /app/venv/bin/hermes tools list
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -q 'browser'
 }

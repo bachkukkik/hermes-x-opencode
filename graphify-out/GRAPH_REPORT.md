@@ -1,16 +1,16 @@
 # Graph Report - hermes-x-opencode  (2026-06-27)
 
 ## Corpus Check
-- 31 files · ~44,969 words
+- 31 files · ~44,976 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 793 nodes · 837 edges · 71 communities (52 shown, 19 thin omitted)
+- 812 nodes · 856 edges · 71 communities (52 shown, 19 thin omitted)
 - Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3eb60ef9`
+- Built from commit: `d8c190b2`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -92,12 +92,12 @@
 2. `PRD.md — Product Requirements Document` - 19 edges
 3. `PRD: Hermes x OpenCode Docker Stack` - 18 edges
 4. `Standing Orders (ALWAYS apply)` - 17 edges
-5. `How` - 14 edges
-6. `docker-compose.yml — Service Definition` - 12 edges
-7. `15. Browser State Persistence` - 11 edges
-8. `Hermes x OpenCode` - 11 edges
-9. `How` - 11 edges
-10. `15 — Browser Human-in-the-Loop` - 11 edges
+5. `15. Browser State Persistence` - 16 edges
+6. `17. Documentation Gaps: doc06 Env Var Table Parity` - 14 edges
+7. `How` - 14 edges
+8. `16. Configurable Browser Viewport (Xvfb Display Size)` - 12 edges
+9. `22 — Profiles and the Righthand-Man Orchestrator` - 12 edges
+10. `docker-compose.yml — Service Definition` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `tests/run.sh — E2E Test Orchestrator` --conceptually_related_to--> `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`  [INFERRED]
@@ -271,8 +271,8 @@ Cohesion: 0.17
 Nodes (11): 18 — Docker Compose Overrides, docker-compose.ci.yml (CI Port Publishing), docker-compose.override.yml (Cloudflare/Traefik), How, Resolution, Verdict, Verification, What (+3 more)
 
 ### Community 54 - "Community 54"
-Cohesion: 0.12
-Nodes (16): 22 — Profiles and the Righthand-Man Orchestrator, CLI, First-boot seeding in the container, Host-side profile, How, How to use it, The four-skill routing table, The `/goal` format (+8 more)
+Cohesion: 0.10
+Nodes (19): 22 — Profiles and the Righthand-Man Orchestrator, Built-in Hermes tools, CLI, First-boot seeding in the container, Host-side profile, How, How to use it, Routing doctrine (+11 more)
 
 ### Community 55 - "Community 55"
 Cohesion: 0.13
@@ -295,8 +295,8 @@ Cohesion: 0.33
 Nodes (6): 14. Profile Skills Parity (righthand-man ← default), Assumptions, Changes, Problem, Root causes, Success criteria
 
 ### Community 60 - "Community 60"
-Cohesion: 0.18
-Nodes (11): 15. Browser State Persistence, Assumptions, Assumptions, Changes, Changes, Problem, Problem, Root causes (+3 more)
+Cohesion: 0.12
+Nodes (16): 15. Browser State Persistence, Assumptions, Assumptions, Assumptions, Changes, Changes, Changes, Problem (+8 more)
 
 ### Community 61 - "Community 61"
 Cohesion: 0.33
@@ -331,15 +331,15 @@ Cohesion: 0.11
 Nodes (18): LLM-Wiki Capability, Dockerfile (Multi-Step Build), Build-Time Verification Step, Docker Healthcheck (healthcheck.sh), hermes-opencode Docker Compose Service, Optional Wiki Volume Mount, Library Modules (scripts/lib/), entrypoint.sh (Thin Orchestrator) (+10 more)
 
 ### Community 69 - "Community 69"
-Cohesion: 0.25
-Nodes (8): 17. Documentation Gaps: doc06 Env Var Table Parity, Assumptions, Changes, Gap matrix (intended-vs-implemented), Non-gaps (verified, no action), Problem, Root causes, Success criteria
+Cohesion: 0.14
+Nodes (14): 17. Documentation Gaps: doc06 Env Var Table Parity, Assumptions, Assumptions, Changes, Changes, Gap matrix (intended-vs-implemented), Non-gaps (verified, no action), Non-gaps (verified, no action) (+6 more)
 
 ### Community 70 - "Community 70"
-Cohesion: 0.29
-Nodes (7): 16. Configurable Browser Viewport (Xvfb Display Size), Assumptions, Changes, Non-goals (out of scope), Problem, Root causes, Success criteria
+Cohesion: 0.17
+Nodes (12): 16. Configurable Browser Viewport (Xvfb Display Size), Assumptions, Assumptions, Changes, Changes, Non-goals (out of scope), Problem, Problem (+4 more)
 
 ## Knowledge Gaps
-- **481 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)`, `3. Code Quality Rules`, `4. Docker/Build Constraints` (+476 more)
+- **499 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)`, `3. Code Quality Rules`, `4. Docker/Build Constraints` (+494 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -347,13 +347,13 @@ Nodes (7): 16. Configurable Browser Viewport (Xvfb Display Size), Assumptions, C
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PRD: Hermes x OpenCode Docker Stack` connect `PRD & Product Overview` to `Community 64`, `Community 65`, `Community 66`, `Community 67`, `Community 69`, `Community 70`, `Community 58`, `Community 59`, `Community 60`, `Community 61`, `Community 63`?**
-  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+  _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Why does `OpenCode Serve (Headless HTTP Server)` connect `Testing & Verification` to `Dual Installation Architecture`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `Sequential Startup with Health Gates` connect `Dual Installation Architecture` to `Testing & Verification`?**
+- **Why does `15. Browser State Persistence` connect `Community 60` to `PRD & Product Overview`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)` to the rest of the system?**
-  _532 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _550 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Build Pipeline & Acceptance Criteria` be split into smaller, more focused modules?**
   _Cohesion score 0.08709273182957393 - nodes in this community are weakly interconnected._
 - **Should `Quick Start & README` be split into smaller, more focused modules?**
