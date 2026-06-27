@@ -795,3 +795,106 @@ The browser human-in-the-loop stack stores Chromium user data at `/home/hermeswe
 - Chromium stores cookies in `Default/Cookies` (SQLite) at the user-data-dir — standard behavior, verified on Debian Chromium
 - The bind mount at `./volumes_hermes_opencode/data/hermes-home` is not wiped between redeployments (user responsibility)
 - Lockfile cleanup (SingletonLock, SingletonCookie, SingletonSocket) is sufficient — no other stale state files block Chromium startup
+
+## 16. Configurable Browser Viewport (Xvfb Display Size)
+
+### Problem
+
+When a user enables the browser human-in-the-loop stack (`BROWSER_HUMAN_LOOP_ENABLED=true`) and asks the Hermes Agent to access a web page at an arbitrary window size (e.g. desktop 1920x1080, or a specific mobile/tablet viewport), the agent falls back to screenshots at the default viewport. Its reasoning trace reports:
+
+> "CDP viewport override not supported on this backend. Let me take screenshots of key pages at the default viewport to verify the design visually."
+
+The agent cannot set an arbitrary viewport because the underlying virtual display is too small.
+
+### Root causes
+
+1. `scripts/lib/service-browser-vnc.sh` launches Xvfb with a **hardcoded** screen geometry: `Xvfb :99 -screen 0 1280x720x24` (line 27). CDP `Emulation.setDeviceMetricsOverride` / window-resize calls are clamped by the X server's screen dimensions, so any viewport larger than 1280x720 is silently rejected — hence the "not supported on this backend" fallback. The fix raises the default to 1920x1080 (a realistic desktop viewport) and makes it configurable.
+2. The Chromium launch line (line 68) passes **no `--window-size` flag**, so the initial window is whatever Chromium defaults to inside the 1280x720 display — not a predictable desktop size.
+3. There is **no environment variable** controlling either the Xvfb screen size or the Chromium window size; both values are baked into the script. Doc 15 documents this as "Hardcoded; non-overridable".
+
+### Success criteria
+
+| # | Criterion | Verification |
+|---|-----------|-------------|
+| SC16.1 | Xvfb screen geometry reads from `BROWSER_DISPLAY_WIDTH` / `BROWSER_DISPLAY_HEIGHT` (with 1920x1080 default) | `docker exec $C bash -lc 'echo $BROWSER_DISPLAY_WIDTH'` echoes the env value; the Xvfb process command line (via `pgrep -fa`) shows the env-derived geometry, defaulting to 1920x1080 |
+| SC16.2 | Chromium launches with `--window-size=$W,$H` matching the display | `docker exec $C pgrep -fa chromium` output contains `--window-size=<W>,<H>` equal to the configured values |
+| SC16.3 | With width/height set to 1920x1080, the CDP browser can report a viewport ≥ 1920x1080 | `browser_navigate` then a JS `window.innerWidth/innerHeight` snapshot returns ≥1920 and ≥1080 (manual/agent check; the bats test asserts the launch args are present since the test runner has no live LLM) |
+| SC16.4 | Default behavior (vars unset) is now 1920x1080 (upgrade from old 1280x720) | With vars unset, the Xvfb process command line (via `pgrep -fa`) shows `1920x1080x24`; low-RAM hosts can set `BROWSER_DISPLAY_WIDTH=1280 BROWSER_DISPLAY_HEIGHT=720` to restore the old footprint |
+| SC16.5 | New bats test BH10 verifies the env-derived geometry and `--window-size` flag | `bats tests/e2e/12-browser-human-loop.bats --filter BH10` → pass |
+| SC16.6 | Docs updated: doc 15 table row + troubleshooting note, doc 06 env table, README env section | `grep -rn 'BROWSER_DISPLAY_WIDTH' docs/ README.md` returns matches |
+
+### Changes
+
+1. **`scripts/lib/service-browser-vnc.sh`** — read `BROWSER_DISPLAY_WIDTH` (default 1280) and `BROWSER_DISPLAY_HEIGHT` (default 720) at the top of `start_browser_vnc()`; substitute them into both the `Xvfb -screen 0` geometry and a new `--window-size=$W,$H` Chromium flag. No new deps.
+2. **`docker-compose.yml`** — add `BROWSER_DISPLAY_WIDTH` and `BROWSER_DISPLAY_HEIGHT` to the `environment:` block (pass-through from `.env`, `${VAR:-}` form) so the vars are transported into the container. Follows the existing per-var convention (every browser var already has its own line).
+3. **`tests/e2e/12-browser-human-loop.bats`** — new test BH10: sets the env vars via `docker exec ... bash -lc` is not possible pre-boot; instead assert on the *running* container that (a) the Xvfb process command line contains the configured geometry and (b) the chromium command line contains `--window-size`. Skips when `BROWSER_HUMAN_LOOP_ENABLED!=true`.
+4. **`docs/15-browser-human-loop.md`** — change the "Xvfb display" table row from "Hardcoded; non-overridable" to document the two new env vars and defaults; add a short troubleshooting note.
+5. **`docs/06-config-and-env.md`** — add `BROWSER_DISPLAY_WIDTH` / `BROWSER_DISPLAY_HEIGHT` rows to the env var table with defaults.
+6. **`README.md`** — add the two vars to the browser env section (if README has one; otherwise a one-line mention near `BROWSER_HUMAN_LOOP_ENABLED`).
+
+### Assumptions
+
+- `Emulation.setDeviceMetricsOverride` succeeds for any width/height ≤ the Xvfb screen geometry — standard CDP/Chromium behavior; the prior failure was purely the 1280x720 ceiling, not a CDP protocol limitation.
+- 1280x720 remains a safe default (unchanged default behavior, satisfies SC16.4) — some low-RAM hosts may not want a larger framebuffer; the env var lets users opt in.
+- `--window-size=$W,$H` is honored by the installed Debian `chromium` package (standard Chrome flag, already documented in the hermes-browser skill).
+- Passing the two new vars through `docker-compose.yml` `environment:` (one line each) is the project's established transport pattern; no `.env` wildcard forwarding exists (per the kanban pitfall: "vars are NOT auto-forwarded from `.env`").
+
+### Non-goals (out of scope)
+
+- Mobile device emulation / DPR / user-agent spoofing — the agent can already do that via CDP once the display is large enough; this change only removes the size ceiling.
+- Making the color depth (`x24`) or display number (`:99`) configurable — neither is implicated in the viewport bug.
+- Cloud browser providers (Browserbase/Camofox) — unaffected; this is Xvfb/CDP-attach only.
+
+## 17. Documentation Gaps: doc06 Env Var Table Parity
+
+### Problem
+
+A mechanical gap analysis (function inventory → cross-reference against `docs/` and `tests/`) compared the `docker-compose.yml` `environment:` block, `.env.example`, and `docs/06-config-and-env.md`. The central env-var reference (doc 06's "Environment variables" user-facing table) is missing 7 user-configurable variables that ARE present in both `docker-compose.yml` and `.env.example`. Users consulting doc 06 as the canonical env reference cannot discover these variables there — they must find them in feature-specific docs (15/21/03) instead.
+
+### Root causes
+
+1. doc 06 was written early and grew incrementally; feature docs (15 browser, 21 dashboard, 03 opencode-serve) added their own env vars to `.env.example` and `docker-compose.yml` but never back-filled the central reference table in doc 06.
+2. No CI check enforces env-var parity between `docker-compose.yml`, `.env.example`, and doc 06.
+
+### Gap matrix (intended-vs-implemented)
+
+| Gap ID | Variable | In compose | In .env.example | In doc06 user-table | Severity | Fix |
+|--------|----------|-----------|-----------------|---------------------|----------|-----|
+| GA-01 [LOW] | `BROWSER_HUMAN_LOOP_ENABLED` | yes | yes | **NO** | Low — documented in doc 15 | Add row to doc06 table |
+| GA-02 [LOW] | `BROWSER_VNC_PASSWORD` | yes | yes | **NO** | Low — documented in doc 15 | Add row to doc06 table |
+| GA-03 [LOW] | `HERMES_DASHBOARD_ENABLED` | yes | yes | **NO** | Low — documented in doc 21 | Add row to doc06 table |
+| GA-04 [LOW] | `HERMES_DASHBOARD_HOST` | yes | yes | **NO** | Low — documented in doc 21 | Add row to doc06 table |
+| GA-05 [LOW] | `HERMES_DASHBOARD_PORT` | yes | yes | **NO** | Low — documented in doc 21 | Add row to doc06 table |
+| GA-06 [LOW] | `OPENCODE_SERVE_ENABLED` | yes | yes | **NO** | Low — documented in doc 03 | Add row to doc06 table |
+| GA-07 [LOW] | `OPENCODE_SERVE_BOOT_TIMEOUT` | yes | yes | **NO** | Low — documented in doc 03 | Add row to doc06 table |
+
+### Non-gaps (verified, no action)
+
+| Item | Verdict |
+|------|---------|
+| 14 function refs in docs (`resolve_trusted_workspace()`, `get_hermes_home()`, etc.) | NOT stale — reference hermes-agent Python internals (conceptual) or non-lib shell files (config-opencode.sh, install-skills.sh) or bats built-ins (teardown) |
+| docs/README.md index (docs 01-24) | Complete — all 24 docs indexed |
+| Major feature doc+test coverage | Complete — browser, persistence, viewport, profiles, webui-api, dashboard, wiki, fallback, doctrine, agent-install all have doc+test pairs |
+| .env.example user-facing vars | Complete — all 12 important user vars present |
+| Test helper functions | Complete — skip_if_no_secrets, get_container both defined |
+
+### Success criteria
+
+| # | Criterion | Verification |
+|---|-----------|-------------|
+| SC17.1 | doc06 "Environment variables" table contains all 7 GA-01..GA-07 vars | `for v in BROWSER_HUMAN_LOOP_ENABLED BROWSER_VNC_PASSWORD HERMES_DASHBOARD_ENABLED HERMES_DASHBOARD_HOST HERMES_DASHBOARD_PORT OPENCODE_SERVE_ENABLED OPENCODE_SERVE_BOOT_TIMEOUT; do grep -c "\\\`$v\\\`" docs/06-config-and-env.md; done` → each returns ≥1 |
+| SC17.2 | No existing doc06 content removed (only additions) | `git diff docs/06-config-and-env.md` shows only inserted rows, no deletions |
+| SC17.3 | graphify regenerated with new docs | `graphify-out/` has a fresh dated subdir or updated graph.json/manifest.json |
+| SC17.4 | llm-wiki updated with viewport feature + gap-fix insights | wiki has new/updated entity page(s) for the configurable viewport and env-var parity |
+| SC17.5 | PR documents all changes per coding-agents-docs-guideline | PR body follows the 8-section doc convention where applicable; docs/README.md index current |
+
+### Changes
+
+1. **`docs/06-config-and-env.md`** — add 7 rows to the "Environment variables" table (GA-01..GA-07), cross-referencing their feature docs.
+2. **`graphify-out/`** — regenerate the knowledge graph after all doc changes land.
+3. **llm-wiki** — ingest the configurable-viewport feature and the env-var parity gap/fix as durable wiki pages.
+
+### Assumptions
+
+- Adding these 7 rows to doc 06 as cross-references (not duplicating full descriptions) avoids doc-drift: the feature docs remain the source of truth for behavior; doc 06 becomes a complete index.
+- graphify and llm-wiki are installed skills (confirmed in AGENTS.md section 9); the wiki lives at `/home/hermeswebui/.hermes/wiki` inside the container and on this host's hermes-home.

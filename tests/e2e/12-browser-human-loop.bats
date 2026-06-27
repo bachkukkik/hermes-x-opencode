@@ -212,3 +212,27 @@ setup() {
     [ "$status" -eq 0 ]
     [ -n "$output" ]
 }
+
+@test "BH10: Xvfb geometry and chromium --window-size reflect env config" {
+    skip_if_no_secrets
+    [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ] || skip "BROWSER_HUMAN_LOOP_ENABLED!=true"
+
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Resolve the effective display dimensions (env override or 1920x1080 default)
+    local width height
+    width="${BROWSER_DISPLAY_WIDTH:-1920}"
+    height="${BROWSER_DISPLAY_HEIGHT:-1080}"
+
+    # Xvfb process command line contains the env-derived geometry
+    run docker exec "$cid" pgrep -fa "Xvfb :99"
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -q "${width}x${height}"
+
+    # Chromium process command line contains --window-size=W,H
+    run docker exec "$cid" pgrep -fa "chromium.*remote-debugging-port"
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -q -- "--window-size=${width},${height}"
+}
