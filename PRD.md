@@ -724,6 +724,8 @@ Plugin approach via the `opencode-runtime-fallback` plugin (no new container):
 
 ## 14. Profile Skills Parity (righthand-man ← default)
 
+> **RESOLVED (2026-06-27).** SOUL.md now separates **8 skills** (loaded via `skill_view`) from **2 built-in Hermes tools** (always available). The routing doctrine explicitly recognizes kanban and browser as built-in Hermes capabilities — not file-based skills — matching their actual implementation (`hermes kanban` subcommand and CDP toolset on port 9222). Dogfood was added as the 8th skill. PROF8 and PROF9 bats tests verify skill and built-in tool availability separately, rather than conflating the two categories. The parity concern (original problem below) is addressed: all capabilities in the routing table now exist on the system, and the doc accurately reflects their category (skill vs. built-in tool).
+
 ### Problem
 
 AGENTS.md mandates 6 skills on every task. The righthand-man orchestrator profile's SOUL.md mandates only 4, omitting `security-best-practices`, `webapp-testing`, `coding-agents-docs-guideline`, and `yeet`. While righthand-man inherits AGENTS.md from the workspace mount, the SOUL.md persona file is the stronger behavioral signal — it reasserts the doctrine on every message and should be the single source of truth for mandatory skills.

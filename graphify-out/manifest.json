@@ -15,12 +15,12 @@
     "semantic_hash": "2578f65282089ec0af6236c0b9baaf51"
   },
   "README.md": {
-    "mtime": 1782543831.1585176,
+    "mtime": 1782547881.9696844,
     "ast_hash": "bc271c9c7346c7921c0095d2323f843b",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1782543825.6143897,
+    "mtime": 1782547881.9696844,
     "ast_hash": "967c3a9465290ef755ecb54170c76944",
     "semantic_hash": ""
   },
@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "PRD.md": {
-    "mtime": 1782546978.2602866,
-    "ast_hash": "711b4b33b511ff6f3376bf616e7f3c24",
+    "mtime": 1782567617.3260138,
+    "ast_hash": "fd084105293fb144e6897bcc90748905",
     "semantic_hash": ""
   },
   "docs/04-build-pipeline.md": {
@@ -75,7 +75,7 @@
     "semantic_hash": ""
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1782547038.9817376,
+    "mtime": 1782547881.9696844,
     "ast_hash": "f044251e8e0f18af28edb2b4c663378e",
     "semantic_hash": ""
   },
@@ -115,7 +115,7 @@
     "semantic_hash": "ef2a59e4397263b643ee1e1ca18b3f87"
   },
   "docs/15-browser-human-loop.md": {
-    "mtime": 1782543836.1386325,
+    "mtime": 1782547881.9696844,
     "ast_hash": "f5b872b4f225842161e5ed03e90f1ff2",
     "semantic_hash": ""
   },
@@ -160,8 +160,8 @@
     "semantic_hash": ""
   },
   "docs/22-profiles.md": {
-    "mtime": 1782497969.7103384,
-    "ast_hash": "e68a464610571027b075f78977aee3ff",
+    "mtime": 1782567611.953887,
+    "ast_hash": "0a4c04ca12394ea3e89ade5688bdcea8",
     "semantic_hash": ""
   },
   "docs/23-browser-persistence.md": {
