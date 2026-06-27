@@ -44,6 +44,8 @@ All runtime configuration is managed through environment variables defined in `.
 | `SKIP_SKILL_INSTALL` | No | `0` | Set `1` to skip the runtime Hermes skills staging copy and graphify hermes registration. Does not affect build-time skill installation. |
 | `WIKI_PATH` | No | `/home/hermeswebui/.hermes/wiki` | Container-internal path for the llm-wiki knowledge base. Auto-created on first boot with `SCHEMA.md` backbone. The wiki stores personal knowledge base data: raw source articles, entity pages, concept pages, and cross-references using `[[wikilinks]]`. |
 | `HERMES_WIKI_VOLUME` | No | — | Host path for optional wiki volume mount. When set (and the commented volume line is uncommented in `docker-compose.yml`), the container's wiki directory is backed by the host path. This lets the agent share a personal wiki with the host user. Example: `HERMES_WIKI_VOLUME=/home/username/.hermes/wiki`. |
+| `BROWSER_DISPLAY_WIDTH` | No | `1920` | Width in pixels of the Xvfb virtual display that the human-in-the-loop Chromium runs on. Also drives the Chromium `--window-size` flag. The agent's CDP viewport-override calls cannot exceed this value. Lower it (e.g. `1280`) on low-RAM hosts. Only takes effect when `BROWSER_HUMAN_LOOP_ENABLED=true`. |
+| `BROWSER_DISPLAY_HEIGHT` | No | `1080` | Height in pixels of the Xvfb virtual display. See `BROWSER_DISPLAY_WIDTH`. |
 
 ### Hardcoded environment (in docker-compose.yml)
 

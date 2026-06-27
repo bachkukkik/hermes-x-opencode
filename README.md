@@ -260,6 +260,10 @@ All configuration is done through the `.env` file. See `.env.example` for the fu
 | `OPENCODE_SERVE_PORT` | No | `4096` | Host port for OpenCode serve |
 | `SKIP_SKILL_INSTALL` | No | `0` | Skip skill installation (set `1`) |
 | `HOST_UID` / `HOST_GID` | No | `1000` | File permission UID/GID |
+| `BROWSER_HUMAN_LOOP_ENABLED` | No | `false` | Enable the viewable/interactive Chromium browser stack (Xvfb + VNC + CDP). See [15 — Browser Human-in-the-Loop](docs/15-browser-human-loop.md). |
+| `BROWSER_VNC_PASSWORD` | No | `hermes` | VNC password for the browser human-in-the-loop web client (`:6901`). Set a strong password if you expose the port. |
+| `BROWSER_DISPLAY_WIDTH` | No | `1920` | Xvfb display width in px (also Chromium --window-size). Lowers the agent's max CDP viewport. |
+| `BROWSER_DISPLAY_HEIGHT` | No | `1080` | Xvfb display height in px. See `BROWSER_DISPLAY_WIDTH`. |
 
 ### Model Discovery
 

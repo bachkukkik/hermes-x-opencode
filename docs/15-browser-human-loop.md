@@ -34,7 +34,7 @@ Container: hermes-opencode
 | VNC password | `BROWSER_VNC_PASSWORD` env var | Defaults to `hermes` if empty |
 | CDP URL (internal) | `http://127.0.0.1:9222` | Written to `config.yaml` as `browser.cdp_url` |
 | Chromium user data dir | `/home/hermeswebui/.hermes/chrome-debug` | Persisted via bind mount |
-| Xvfb display | `:99` at `1280x720x24` | Hardcoded; non-overridable |
+| Xvfb display | `:99` at `${BROWSER_DISPLAY_WIDTH}x${BROWSER_DISPLAY_HEIGHT}x24` | Defaults to `1920x1080x24`. Override via `BROWSER_DISPLAY_WIDTH` / `BROWSER_DISPLAY_HEIGHT` env vars (e.g. set both to `1280`/`720` for low-RAM hosts). Drives the Chromium `--window-size` flag too, so the agent's CDP viewport-override calls are no longer clamped below the display size. |
 | Run user | `hermeswebui` (UID 1000) | All X servers, Chromium, VNC run via `su` from root entrypoint |
 | noVNC web assets | `/usr/share/novnc/` | Served by `websockify --web` |
 
@@ -209,6 +209,7 @@ If this fails (Chromium exited, crashed, or is stuck), the container is marked u
 - **Chromium crashes without `--no-sandbox`:** The container runs as non-root but without a privileged sandbox, so `--no-sandbox` is mandatory. Without it Chromium exits immediately with `Operation not permitted`.
 - **noVNC asset path varies by Debian release:** The Dockerfile installs the `novnc` Debian package which usually installs assets to `/usr/share/novnc/`. If the package layout changes, websockify will start without serving the web client. The entrypoint logs a warning (`!! noVNC assets not found at ...`) and falls back to plain WebSocket proxying.
 - **Display :99 collision:** Hardcoded. If anything else on the container is using display :99, Xvfb will fail to start.
+- **Default display raised to 1920x1080:** Previously the Xvfb screen was hardcoded at 1280x720, which silently clamped the agent's CDP viewport-override calls (the agent reported "CDP viewport override not supported on this backend" and fell back to the default viewport). The default is now 1920x1080 and is configurable via `BROWSER_DISPLAY_WIDTH` / `BROWSER_DISPLAY_HEIGHT`. Low-RAM hosts can restore the old footprint with `BROWSER_DISPLAY_WIDTH=1280 BROWSER_DISPLAY_HEIGHT=720`.
 - **`config.yaml` regeneration overwrites manual edits:** As with the rest of the config, the `browser.cdp_url` block is regenerated from the environment on every boot. Manual edits inside the container are lost on restart.
 
 ## Resolution

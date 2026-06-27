@@ -10,6 +10,9 @@ start_browser_vnc() {
 
     echo "== Starting browser human-in-the-loop stack..."
 
+    local display_width="${BROWSER_DISPLAY_WIDTH:-1920}"
+    local display_height="${BROWSER_DISPLAY_HEIGHT:-1080}"
+
     # Ensure log directory exists (owned by hermeswebui)
     mkdir -p "${HERMES_HOME}/logs"
     chown "${OPENCODE_USER}:${OPENCODE_USER}" "${HERMES_HOME}/logs"
@@ -24,7 +27,7 @@ start_browser_vnc() {
     # 1. Start Xvfb on display :99
     echo "== Starting Xvfb on :99..."
     su -s /bin/bash "$OPENCODE_USER" -c \
-        'Xvfb :99 -screen 0 1280x720x24' \
+        'Xvfb :99 -screen 0 "'"$display_width"'x'"$display_height"'x24"' \
         > "${HERMES_HOME}/logs/xvfb.log" 2>&1 &
     local xvfb_pid=$!
     echo "== Xvfb started (PID: $xvfb_pid)"
@@ -65,7 +68,7 @@ start_browser_vnc() {
     # 6. Start Chromium with remote debugging
     echo "== Starting Chromium (CDP on :9222)..."
     su -s /bin/bash "$OPENCODE_USER" -c \
-        "DISPLAY=:99 chromium --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --user-data-dir=/home/hermeswebui/.hermes/chrome-debug --no-sandbox --disable-gpu --no-first-run --disable-dev-shm-usage" \
+        "DISPLAY=:99 chromium --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --user-data-dir=/home/hermeswebui/.hermes/chrome-debug --no-sandbox --disable-gpu --no-first-run --disable-dev-shm-usage --window-size=${display_width},${display_height}" \
         > "${HERMES_HOME}/logs/chromium.log" 2>&1 &
     echo "== Chromium started (PID: $!)"
 
