@@ -46,6 +46,13 @@ All runtime configuration is managed through environment variables defined in `.
 | `HERMES_WIKI_VOLUME` | No | — | Host path for optional wiki volume mount. When set (and the commented volume line is uncommented in `docker-compose.yml`), the container's wiki directory is backed by the host path. This lets the agent share a personal wiki with the host user. Example: `HERMES_WIKI_VOLUME=/home/username/.hermes/wiki`. |
 | `BROWSER_DISPLAY_WIDTH` | No | `1920` | Width in pixels of the Xvfb virtual display that the human-in-the-loop Chromium runs on. Also drives the Chromium `--window-size` flag. The agent's CDP viewport-override calls cannot exceed this value. Lower it (e.g. `1280`) on low-RAM hosts. Only takes effect when `BROWSER_HUMAN_LOOP_ENABLED=true`. |
 | `BROWSER_DISPLAY_HEIGHT` | No | `1080` | Height in pixels of the Xvfb virtual display. See `BROWSER_DISPLAY_WIDTH`. |
+| `BROWSER_HUMAN_LOOP_ENABLED` | No | `false` | Enable the viewable/interactive Chromium browser stack (Xvfb + VNC + CDP on :9222). See [15 — Browser Human-in-the-Loop](15-browser-human-loop.md). |
+| `BROWSER_VNC_PASSWORD` | No | `hermes` | VNC password for the browser human-in-the-loop web client (:6901). See [15 — Browser Human-in-the-Loop](15-browser-human-loop.md). |
+| `OPENCODE_SERVE_ENABLED` | No | `false` | Start `opencode serve` (headless server for `opencode attach`) on :4096. Enable only with an LLM provider configured. See [03 — OpenCode Serve](03-opencode-serve.md). |
+| `OPENCODE_SERVE_BOOT_TIMEOUT` | No | `30` | Seconds to wait for opencode serve to bind :4096 at boot. Non-fatal timeout. See [03 — OpenCode Serve](03-opencode-serve.md). |
+| `HERMES_DASHBOARD_ENABLED` | No | `false` | Start the Hermes web dashboard (machine-management UI) on :9119. SECURITY: manages API keys. See [21 — Hermes Web Dashboard](21-dashboard.md). |
+| `HERMES_DASHBOARD_PORT` | No | `9119` | Port for the Hermes web dashboard. See [21 — Hermes Web Dashboard](21-dashboard.md). |
+| `HERMES_DASHBOARD_HOST` | No | `0.0.0.0` | Bind host for the Hermes web dashboard. Set to `127.0.0.1` to restrict. See [21 — Hermes Web Dashboard](21-dashboard.md). |
 
 ### Hardcoded environment (in docker-compose.yml)
 

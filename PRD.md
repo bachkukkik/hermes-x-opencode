@@ -844,3 +844,57 @@ The agent cannot set an arbitrary viewport because the underlying virtual displa
 - Mobile device emulation / DPR / user-agent spoofing — the agent can already do that via CDP once the display is large enough; this change only removes the size ceiling.
 - Making the color depth (`x24`) or display number (`:99`) configurable — neither is implicated in the viewport bug.
 - Cloud browser providers (Browserbase/Camofox) — unaffected; this is Xvfb/CDP-attach only.
+
+## 17. Documentation Gaps: doc06 Env Var Table Parity
+
+### Problem
+
+A mechanical gap analysis (function inventory → cross-reference against `docs/` and `tests/`) compared the `docker-compose.yml` `environment:` block, `.env.example`, and `docs/06-config-and-env.md`. The central env-var reference (doc 06's "Environment variables" user-facing table) is missing 7 user-configurable variables that ARE present in both `docker-compose.yml` and `.env.example`. Users consulting doc 06 as the canonical env reference cannot discover these variables there — they must find them in feature-specific docs (15/21/03) instead.
+
+### Root causes
+
+1. doc 06 was written early and grew incrementally; feature docs (15 browser, 21 dashboard, 03 opencode-serve) added their own env vars to `.env.example` and `docker-compose.yml` but never back-filled the central reference table in doc 06.
+2. No CI check enforces env-var parity between `docker-compose.yml`, `.env.example`, and doc 06.
+
+### Gap matrix (intended-vs-implemented)
+
+| Gap ID | Variable | In compose | In .env.example | In doc06 user-table | Severity | Fix |
+|--------|----------|-----------|-----------------|---------------------|----------|-----|
+| GA-01 [LOW] | `BROWSER_HUMAN_LOOP_ENABLED` | yes | yes | **NO** | Low — documented in doc 15 | Add row to doc06 table |
+| GA-02 [LOW] | `BROWSER_VNC_PASSWORD` | yes | yes | **NO** | Low — documented in doc 15 | Add row to doc06 table |
+| GA-03 [LOW] | `HERMES_DASHBOARD_ENABLED` | yes | yes | **NO** | Low — documented in doc 21 | Add row to doc06 table |
+| GA-04 [LOW] | `HERMES_DASHBOARD_HOST` | yes | yes | **NO** | Low — documented in doc 21 | Add row to doc06 table |
+| GA-05 [LOW] | `HERMES_DASHBOARD_PORT` | yes | yes | **NO** | Low — documented in doc 21 | Add row to doc06 table |
+| GA-06 [LOW] | `OPENCODE_SERVE_ENABLED` | yes | yes | **NO** | Low — documented in doc 03 | Add row to doc06 table |
+| GA-07 [LOW] | `OPENCODE_SERVE_BOOT_TIMEOUT` | yes | yes | **NO** | Low — documented in doc 03 | Add row to doc06 table |
+
+### Non-gaps (verified, no action)
+
+| Item | Verdict |
+|------|---------|
+| 14 function refs in docs (`resolve_trusted_workspace()`, `get_hermes_home()`, etc.) | NOT stale — reference hermes-agent Python internals (conceptual) or non-lib shell files (config-opencode.sh, install-skills.sh) or bats built-ins (teardown) |
+| docs/README.md index (docs 01-24) | Complete — all 24 docs indexed |
+| Major feature doc+test coverage | Complete — browser, persistence, viewport, profiles, webui-api, dashboard, wiki, fallback, doctrine, agent-install all have doc+test pairs |
+| .env.example user-facing vars | Complete — all 12 important user vars present |
+| Test helper functions | Complete — skip_if_no_secrets, get_container both defined |
+
+### Success criteria
+
+| # | Criterion | Verification |
+|---|-----------|-------------|
+| SC17.1 | doc06 "Environment variables" table contains all 7 GA-01..GA-07 vars | `for v in BROWSER_HUMAN_LOOP_ENABLED BROWSER_VNC_PASSWORD HERMES_DASHBOARD_ENABLED HERMES_DASHBOARD_HOST HERMES_DASHBOARD_PORT OPENCODE_SERVE_ENABLED OPENCODE_SERVE_BOOT_TIMEOUT; do grep -c "\\\`$v\\\`" docs/06-config-and-env.md; done` → each returns ≥1 |
+| SC17.2 | No existing doc06 content removed (only additions) | `git diff docs/06-config-and-env.md` shows only inserted rows, no deletions |
+| SC17.3 | graphify regenerated with new docs | `graphify-out/` has a fresh dated subdir or updated graph.json/manifest.json |
+| SC17.4 | llm-wiki updated with viewport feature + gap-fix insights | wiki has new/updated entity page(s) for the configurable viewport and env-var parity |
+| SC17.5 | PR documents all changes per coding-agents-docs-guideline | PR body follows the 8-section doc convention where applicable; docs/README.md index current |
+
+### Changes
+
+1. **`docs/06-config-and-env.md`** — add 7 rows to the "Environment variables" table (GA-01..GA-07), cross-referencing their feature docs.
+2. **`graphify-out/`** — regenerate the knowledge graph after all doc changes land.
+3. **llm-wiki** — ingest the configurable-viewport feature and the env-var parity gap/fix as durable wiki pages.
+
+### Assumptions
+
+- Adding these 7 rows to doc 06 as cross-references (not duplicating full descriptions) avoids doc-drift: the feature docs remain the source of truth for behavior; doc 06 becomes a complete index.
+- graphify and llm-wiki are installed skills (confirmed in AGENTS.md section 9); the wiki lives at `/home/hermeswebui/.hermes/wiki` inside the container and on this host's hermes-home.
