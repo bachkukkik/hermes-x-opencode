@@ -122,6 +122,22 @@ custom_providers:
 
 The `model.default` key is read by the outer WebUI's `models_cache.json` builder. The `model.name` key is read by the hermes-agent as a fallback. Both keys must be present. Both the WebUI and the Agent Gateway iterate the `custom_providers[0].models` dict for model routing.
 
+### Hermes context-length pin table
+
+The `resolve_ctx_len()` function in `config-hermes.sh` pins known model families to accurate context lengths via substring matching (longest/most-specific pattern first). This fires BEFORE the agent's own self-resolution (`DEFAULT_CONTEXT_LENGTHS` table / `models.dev` / endpoint probe), ensuring `config.yaml` carries correct values for well-known families. Unknown families are emitted as empty mappings (`: {}`) so the agent self-resolves at runtime.
+
+Quantized model variants (e.g. GGUF `q4_k_m`, `q4_0`) can have a DIFFERENT context window than the base family. The pin table includes specific rows for these variants placed BEFORE the family wildcard so the first-match-wins logic intercepts them:
+
+| Pin pattern | Context | Notes |
+|-------------|---------|-------|
+| `*qwen3.6-27b*q4*` | 262144 | Quantized GGUF variant (real ctx 262144, not family 1M) |
+| `*qwen3.6*` | 1048576 | Family wildcard (unquantized) |
+| `*glm-5.2*` | 1048576 | Agent catch-all misreports as 202752 |
+| `*deepseek-v4*` | 1000000 | |
+| `*gemini*` | 1048576 | |
+
+When adding a new model family with quantized variants, add a specific row for the variant BEFORE the family wildcard. See PRD.md §19.3 CA-31-A for the triage that established this pattern.
+
 ### OpenCode config format
 
 Models are written as an object dict under `provider.litellm.models`:

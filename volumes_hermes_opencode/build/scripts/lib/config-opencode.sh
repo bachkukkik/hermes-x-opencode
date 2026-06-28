@@ -375,6 +375,16 @@ JSONEOF
     # {env:VAR} in opencode.jsonc requires the env var at runtime; auth.json is
     # OpenCode's native credential store, seeded here as a fallback for both
     # the opencode (Zen) and litellm (proxy) providers.
+    #
+    # CA-30-A: The guard below intentionally uses `$_has_opencode_key || $_has_openai_creds`
+    # (NOT `$_has_opencode_key` alone). When OPENCODE_API_KEY is unset (the
+    # .env.example default) but OPENAI_API_KEY + OPENAI_BASE_URL ARE set, the
+    # litellm proxy is the available backend. The Python block writes
+    # auth['litellm'] = {'apiKey': ai_key} for the non-empty AI key, so opencode
+    # CLI resolves >=1 credential (the litellm proxy) even without a built-in
+    # opencode Zen key. This is the intended resolution for the
+    # 'OpenCode unavailable (0 credentials)' report from the righthand-man
+    # orchestrator. Do NOT narrow this guard to opencode-key-only.
     if $_has_opencode_key || $_has_openai_creds; then
         local user_auth_dir="${OPENCODE_USER_HOME}/.local/share/opencode"
         local user_auth="${user_auth_dir}/auth.json"
