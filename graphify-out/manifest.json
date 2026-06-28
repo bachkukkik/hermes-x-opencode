@@ -20,8 +20,8 @@
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1782547881.9696844,
-    "ast_hash": "967c3a9465290ef755ecb54170c76944",
+    "mtime": 1782641159.7411795,
+    "ast_hash": "7ff25a59c548d0bc31840a4be1cbd5ef",
     "semantic_hash": ""
   },
   "AGENTS.md": {
@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "PRD.md": {
-    "mtime": 1782567617.3260138,
-    "ast_hash": "fd084105293fb144e6897bcc90748905",
+    "mtime": 1782641091.9434075,
+    "ast_hash": "f8c7b6965194be9b0eeb44d2e6aba1e9",
     "semantic_hash": ""
   },
   "docs/04-build-pipeline.md": {
@@ -65,8 +65,8 @@
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
   "docs/10-model-discovery.md": {
-    "mtime": 1782056137.8883727,
-    "ast_hash": "48f5be244a67d2e46d48beccd0ce2a10",
+    "mtime": 1782642835.5138562,
+    "ast_hash": "a9f2bc41aaef5fb842d95f45b9ed46b2",
     "semantic_hash": ""
   },
   "docs/09-testing-and-verification.md": {
@@ -75,8 +75,8 @@
     "semantic_hash": ""
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1782547881.9696844,
-    "ast_hash": "f044251e8e0f18af28edb2b4c663378e",
+    "mtime": 1782642838.653926,
+    "ast_hash": "b3a3cbe26b3a6c20447a3328efb3240e",
     "semantic_hash": ""
   },
   "docs/02-hermes-gateway.md": {
@@ -160,7 +160,7 @@
     "semantic_hash": ""
   },
   "docs/22-profiles.md": {
-    "mtime": 1782567611.953887,
+    "mtime": 1782568184.7994204,
     "ast_hash": "0a4c04ca12394ea3e89ade5688bdcea8",
     "semantic_hash": ""
   },

@@ -1,16 +1,16 @@
-# Graph Report - hermes-x-opencode  (2026-06-27)
+# Graph Report - hermes-x-opencode  (2026-06-28)
 
 ## Corpus Check
-- 31 files · ~44,976 words
+- 31 files · ~47,314 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 812 nodes · 856 edges · 71 communities (52 shown, 19 thin omitted)
+- 838 nodes · 883 edges · 70 communities (51 shown, 19 thin omitted)
 - Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 49 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d8c190b2`
+- Built from commit: `01af9615`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -83,21 +83,20 @@
 - [[_COMMUNITY_Community 65|Community 65]]
 - [[_COMMUNITY_Community 66|Community 66]]
 - [[_COMMUNITY_Community 67|Community 67]]
-- [[_COMMUNITY_Community 68|Community 68]]
 - [[_COMMUNITY_Community 69|Community 69]]
 - [[_COMMUNITY_Community 70|Community 70]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `How` - 19 edges
-2. `PRD.md — Product Requirements Document` - 19 edges
-3. `PRD: Hermes x OpenCode Docker Stack` - 18 edges
+1. `PRD: Hermes x OpenCode Docker Stack` - 20 edges
+2. `How` - 19 edges
+3. `PRD.md — Product Requirements Document` - 19 edges
 4. `Standing Orders (ALWAYS apply)` - 17 edges
 5. `15. Browser State Persistence` - 16 edges
-6. `17. Documentation Gaps: doc06 Env Var Table Parity` - 14 edges
-7. `How` - 14 edges
-8. `16. Configurable Browser Viewport (Xvfb Display Size)` - 12 edges
-9. `22 — Profiles and the Righthand-Man Orchestrator` - 12 edges
-10. `docker-compose.yml — Service Definition` - 12 edges
+6. `18. Bare-Metal Host Setup: Model Discovery & Context Length Accuracy` - 15 edges
+7. `17. Documentation Gaps: doc06 Env Var Table Parity` - 14 edges
+8. `How` - 14 edges
+9. `16. Configurable Browser Viewport (Xvfb Display Size)` - 12 edges
+10. `How` - 12 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `tests/run.sh — E2E Test Orchestrator` --conceptually_related_to--> `.github/workflows/e2e.yml — GitHub Actions E2E Workflow`  [INFERRED]
@@ -128,7 +127,7 @@
 - **Dual Installation Architecture** — agent_install_a_detail, agent_install_b_detail, agent_propagation_chain, agent_why_both_exist [EXTRACTED 0.95]
 - **Wiki Initialization Pipeline** — wiki_init_function, wiki_schema_backbone, wiki_dir_structure [EXTRACTED 0.90]
 
-## Communities (71 total, 19 thin omitted)
+## Communities (70 total, 19 thin omitted)
 
 ### Community 0 - "Build Pipeline & Acceptance Criteria"
 Cohesion: 0.09
@@ -139,8 +138,8 @@ Cohesion: 0.06
 Nodes (34): 1. Clone this repo, 2. Configure environment, 3. Build and start, 4. Use it, 5. Verify OpenCode works, Agent Version, Architecture, config.yaml has expanded API key instead of literal string (+26 more)
 
 ### Community 2 - "PRD & Product Overview"
-Cohesion: 0.22
-Nodes (8): 10. Acceptance Criteria, 13. Additional Acceptance Criteria, 1. Product Overview, 3. Tech Stack, 4. File Inventory, 8. Constraints, PRD: Hermes x OpenCode Docker Stack, Related Repositories
+Cohesion: 0.17
+Nodes (11): 10. Acceptance Criteria, 13. Additional Acceptance Criteria, 1. Product Overview, 2. Architecture, 3. Tech Stack, 4. File Inventory, 8. Constraints, Agent Installation Architecture (+3 more)
 
 ### Community 3 - "Dual Installation Architecture"
 Cohesion: 0.08
@@ -155,8 +154,8 @@ Cohesion: 0.09
 Nodes (24): auth.json Seeding (opencode + litellm providers), Bats Testing Framework, Collect Docker Compose Logs on Failure, config-opencode.sh (opencode.jsonc generator), Hermes x OpenCode Docker Compose Stack, E2E Tests CI Workflow, Create .env from Secrets Step, Env Var Conditional (_HAS_OPENAI_KEY) (+16 more)
 
 ### Community 6 - "Testing & Verification"
-Cohesion: 0.10
-Nodes (22): OpenCode Provider Block (issue #46), Per-Model Provider Routing (issue #46), auth.json Credential Store Seeding, Explicit opencode Provider Block, Per-Model Provider Routing Decision Table, Free Models Require OPENCODE_API_KEY, opencode run with litellm/ BROKEN, Serve + Attach Pattern (RECOMMENDED) (+14 more)
+Cohesion: 0.05
+Nodes (40): LLM-Wiki Capability, OpenCode Provider Block (issue #46), Per-Model Provider Routing (issue #46), Dockerfile (Multi-Step Build), Build-Time Verification Step, Docker Healthcheck (healthcheck.sh), hermes-opencode Docker Compose Service, Optional Wiki Volume Mount (+32 more)
 
 ### Community 7 - "Security Rules & Patterns"
 Cohesion: 0.09
@@ -172,7 +171,7 @@ Nodes (20): 1. Inventory of All Hermes Installation Points, 2. Active Runtime Co
 
 ### Community 10 - "Security Hardening"
 Cohesion: 0.10
-Nodes (19): 10 — Model Discovery and Multi-Model Support, Case-insensitive dedup, Discovery flow, Fallback behavior, Hermes config format, How, Model counts, Model limits (+11 more)
+Nodes (20): 10 — Model Discovery and Multi-Model Support, Case-insensitive dedup, Discovery flow, Fallback behavior, Hermes config format, Hermes context-length pin table, How, Model counts (+12 more)
 
 ### Community 11 - "Docker Health & Build Verification"
 Cohesion: 0.11
@@ -323,23 +322,19 @@ Cohesion: 0.67
 Nodes (3): 12. Documentation & Test Hygiene, Gaps (from intended-vs-implemented audit), Non-gaps (verified, no action)
 
 ### Community 67 - "Community 67"
-Cohesion: 0.67
-Nodes (3): 2. Architecture, Agent Installation Architecture, Component Roles
-
-### Community 68 - "Community 68"
-Cohesion: 0.11
-Nodes (18): LLM-Wiki Capability, Dockerfile (Multi-Step Build), Build-Time Verification Step, Docker Healthcheck (healthcheck.sh), hermes-opencode Docker Compose Service, Optional Wiki Volume Mount, Library Modules (scripts/lib/), entrypoint.sh (Thin Orchestrator) (+10 more)
+Cohesion: 0.18
+Nodes (11): 19.10 Verification Policy, 19.1 Summary, 19.2 Background — why these issues live here, 19.3 Problem triage (intended-vs-implemented), 19.4 Non-gaps (verified, no action), 19.5 Objective, 19.6 Success Criteria & Verification, 19.7 Solution (+3 more)
 
 ### Community 69 - "Community 69"
-Cohesion: 0.14
-Nodes (14): 17. Documentation Gaps: doc06 Env Var Table Parity, Assumptions, Assumptions, Changes, Changes, Gap matrix (intended-vs-implemented), Non-gaps (verified, no action), Non-gaps (verified, no action) (+6 more)
+Cohesion: 0.07
+Nodes (28): 17. Documentation Gaps: doc06 Env Var Table Parity, 18.1 Summary, 18.2 Problem, 18.3 Objective, 18.4 Constraints, 18.5 Solution, 18.6 Success Criteria & Verification, 18.7 Context Length Resolution Chain (reference) (+20 more)
 
 ### Community 70 - "Community 70"
 Cohesion: 0.17
 Nodes (12): 16. Configurable Browser Viewport (Xvfb Display Size), Assumptions, Assumptions, Changes, Changes, Non-goals (out of scope), Problem, Problem (+4 more)
 
 ## Knowledge Gaps
-- **499 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)`, `3. Code Quality Rules`, `4. Docker/Build Constraints` (+494 more)
+- **522 isolated node(s):** `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)`, `3. Code Quality Rules`, `4. Docker/Build Constraints` (+517 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **19 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -347,13 +342,13 @@ Nodes (12): 16. Configurable Browser Viewport (Xvfb Display Size), Assumptions, 
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `PRD: Hermes x OpenCode Docker Stack` connect `PRD & Product Overview` to `Community 64`, `Community 65`, `Community 66`, `Community 67`, `Community 69`, `Community 70`, `Community 58`, `Community 59`, `Community 60`, `Community 61`, `Community 63`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `OpenCode Serve (Headless HTTP Server)` connect `Testing & Verification` to `Dual Installation Architecture`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
 - **Why does `15. Browser State Persistence` connect `Community 60` to `PRD & Product Overview`?**
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **Why does `OpenCode Serve (Headless HTTP Server)` connect `Testing & Verification` to `Dual Installation Architecture`?**
   _High betweenness centrality (0.004) - this node is a cross-community bridge._
 - **What connects `Architecture`, `1. MANDATED SKILLS`, `2. Kanban Delegation Rules (coding discipline)` to the rest of the system?**
-  _550 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _573 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Build Pipeline & Acceptance Criteria` be split into smaller, more focused modules?**
   _Cohesion score 0.08709273182957393 - nodes in this community are weakly interconnected._
 - **Should `Quick Start & README` be split into smaller, more focused modules?**
