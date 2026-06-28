@@ -1014,3 +1014,109 @@ A mechanical gap analysis (function inventory → cross-reference against `docs/
 
 - Adding these 7 rows to doc 06 as cross-references (not duplicating full descriptions) avoids doc-drift: the feature docs remain the source of truth for behavior; doc 06 becomes a complete index.
 - graphify and llm-wiki are installed skills (confirmed in AGENTS.md section 9); the wiki lives at `/home/hermeswebui/.hermes/wiki` inside the container and on this host's hermes-home.
+
+## 19. Issue Triage: Context-Length Pin (CA-31-A), Compression Threshold Transport (CA-31-B), OpenCode Credential Resolution (CA-30-A)
+
+### 19.1 Summary
+
+Two open issues on the downstream `vanilla-open-design` fork (#30 OpenCode
+"0 credentials" on righthand-man profile, #31 compression-threshold and
+context-length not respected) were investigated against this repo
+(`hermes-x-opencode`). All three root causes are **inherited from this repo's
+Docker-stack config-generation layer** — they are deployment-config gaps, not
+upstream Hermes agent bugs. This section documents the triage, success criteria,
+and fix scope. Fixes land here; the downstream fork will cherry-pick.
+
+### 19.2 Background — why these issues live here
+
+The Docker stack generates `config.yaml`, `opencode.jsonc`, and `auth.json` at
+every boot from shell scripts in `volumes_hermes_opencode/build/scripts/lib/`:
+
+- `config-hermes.sh` — Hermes `config.yaml` (model list + context_length pins)
+- `config-opencode.sh` — OpenCode `opencode.jsonc` + `auth.json` credential store
+- `profile-righthand-man.sh` — clones default profile → righthand-man, syncs config
+
+Downstream `vanilla-open-design` inherited these scripts. Issues #30/#31 surface
+at runtime inside the container but originate in these build-time generators.
+
+### 19.3 Problem triage (intended-vs-implemented)
+
+| Gap ID | Severity | Issue | Documented intent | Implemented reality | Impact |
+|--------|----------|-------|-------------------|---------------------|--------|
+| CA-31-A [HIGH] | #31 | `resolve_ctx_len()` pins the entire `*qwen3.6*` family to 1048576 (1M). | The pin table maps ANY model whose lowercased name contains `qwen3.6` to 1M — including the quantized llama.cpp GGUF `qwen3.6-27b-q4_k_m` whose true context window is 262144. The substring match is too coarse. | UI shows "1M context, 14% used"; actual window is 262144 (53% used). Compression threshold math is computed against the wrong denominator. |
+| CA-31-B [HIGH] | #31 | User sets `HERMES_COMPRESSION_THRESHOLD=0.76` in `.env`. | `docker-compose.yml` `environment:` block passes 35 vars into the container. `HERMES_COMPRESSION_THRESHOLD` is NOT among them. The var dies at the host; the container never sees it. Agent uses its default threshold, ignoring 0.76. | User's compression threshold is silently dead. |
+| CA-30-A [MEDIUM] | #30 | righthand-man orchestrator reports "OpenCode unavailable (0 credentials)". | When `OPENCODE_API_KEY` is unset (the `.env.example` default), `generate_opencode_config()` gates the opencode provider block on `$_has_opencode_key`. Even when `OPENAI_API_KEY` IS set (litellm proxy available), the `auth.json` fallback store is seeded only with non-empty keys. If `OPENCODE_API_KEY` is blank, no opencode credential entry is written; the litellm key is seeded but OpenCode's credential counter for the opencode CLI still reads 0 for the built-in provider. The righthand-man profile inherits this empty state. | righthand-man falls back to `delegate_task` instead of opencode CLI (the skill's documented fallback). |
+
+### 19.4 Non-gaps (verified, no action)
+
+| Item | Verdict |
+|------|---------|
+| Section 18 (bare-metal `host-config-gen`) | Separate pipeline. Section 18.5.2 explicitly states the Docker entrypoint is unaffected. No overlap with #30/#31. |
+| Upstream Hermes agent (`agent/model_metadata.py`) | Not the cause. The agent self-resolves correctly when config.yaml omits context_length; our pin fires first (documented in `config-hermes.sh:9-15`). |
+| `seed_righthand_man()` config sync | Works correctly — it copies config.yaml every boot. The issue is that the config.yaml IT copies has the wrong pin (CA-31-A), and auth.json has no opencode entry (CA-30-A). |
+
+### 19.5 Objective
+
+Ensure every model served by the LiteLLM proxy has an accurate `context_length`
+in Hermes `config.yaml` (including quantized variants), the user's
+`HERMES_COMPRESSION_THRESHOLD` reaches the container runtime, and OpenCode
+can resolve at least one credential when `OPENCODE_API_KEY` is unset but
+`OPENAI_API_KEY` is set.
+
+Key Results:
+- KR1: Quantized qwen3.6 GGUF variants resolve to their true context window, not the family wildcard's 1M.
+- KR2: `HERMES_COMPRESSION_THRESHOLD` set in `.env` is visible inside the container via `printenv`.
+- KR3: When `OPENCODE_API_KEY` is unset but `OPENAI_API_KEY` is set, OpenCode resolves the litellm provider credential (via `auth.json` seeding) so the righthand-man profile is not "0 credentials".
+
+### 19.6 Success Criteria & Verification
+
+| # | Criterion | Verification Command |
+|---|-----------|---------------------|
+| SC-31-1 | `resolve_ctx_len()` has a specific pin for the quantized GGUF variant | `grep -c 'qwen3.6-27b' volumes_hermes_opencode/build/scripts/lib/config-hermes.sh` returns >=1 |
+| SC-31-2 | `HERMES_COMPRESSION_THRESHOLD` is transported into the container | `grep -c 'HERMES_COMPRESSION_THRESHOLD' docker-compose.yml` returns >=1 |
+| SC-31-3 | Generated `config.yaml` shows 262144 for `qwen3.6-27b-q4_k_m` (not 1048576) | functional test: source resolve_ctx_len with the GGUF id, assert echo output == 262144 |
+| SC-30-1 | When `OPENCODE_API_KEY` unset + `OPENAI_API_KEY` set, `auth.json` contains a litellm entry | functional test: run auth.json seeding logic with OPENCODE_API_KEY empty, assert litellm key present |
+| SC-30-2 | righthand-man profile config.yaml is synced post-fix (existing behavior preserved) | existing profile-sync test still passes |
+
+### 19.7 Solution
+
+**CA-31-A (context_length pin):** Add a more-specific case row in
+`resolve_ctx_len()` for the quantized GGUF variant(s), placed BEFORE the
+`*qwen3.6*` family wildcard. Longest/most-specific patterns match first.
+
+**CA-31-B (compression threshold transport):** Add
+`HERMES_COMPRESSION_THRESHOLD` to the `docker-compose.yml` `environment:` block
+(pass-through with `${HERMES_COMPRESSION_THRESHOLD:-}` default) and document
+it in `.env.example`.
+
+**CA-30-A (credential resolution):** The auth.json seeding in
+`config-opencode.sh` already writes a litellm entry when `OPENAI_API_KEY` is
+set. The fix ensures OpenCode recognizes this as a usable credential. Per user
+decision (Q1 = Option 1): seed `auth.json` with the litellm provider entry so
+opencode CLI sees >=1 credential (the litellm proxy) even when the built-in
+opencode Zen key is absent.
+
+### 19.8 Assumptions (surfaced, karpathy-guidelines)
+
+- Assumption: `vanilla-open-design` is a downstream fork of this repo sharing the same config-generation scripts. Fixing here lets them cherry-pick.
+- Assumption: The "1M context" the UI shows comes from our `config.yaml` pin (1048576), not from the agent self-resolving. Verified: our pin fires before self-resolution (`config-hermes.sh:9-15` documents the ordering).
+- Assumption: Quantized GGUF variants of a model family need their own pin rows. The family wildcard (`*qwen3.6*`) is too coarse for variants with different context windows.
+- Assumption: For CA-30-A, the user left `OPENCODE_API_KEY` blank (matches `.env.example` default). The "0 credentials" symptom matches exactly.
+- Assumption: Commenting on (not closing) the downstream issues is the correct disposition per user instruction — the fix lands upstream first, then is ported downstream.
+
+### 19.9 Changes
+
+1. `volumes_hermes_opencode/build/scripts/lib/config-hermes.sh` — add quantized GGUF pin row(s) in `resolve_ctx_len()`.
+2. `docker-compose.yml` — add `HERMES_COMPRESSION_THRESHOLD` to `environment:` block.
+3. `.env.example` — document `HERMES_COMPRESSION_THRESHOLD`.
+4. `volumes_hermes_opencode/build/scripts/lib/config-opencode.sh` — ensure `auth.json` litellm seeding is recognized by opencode credential resolution when `OPENCODE_API_KEY` is unset.
+5. `tests/` — new bats test(s) for SC-31-1..3, SC-30-1..2.
+6. GitHub issue comments on `vanilla-open-design` #30 and #31 (explain fix, do NOT close).
+
+### 19.10 Verification Policy
+
+All changes verified by:
+1. `bash -n` on all modified shell scripts (syntax).
+2. Functional unit tests for `resolve_ctx_len()` (SC-31-1, SC-31-3) and auth.json seeding (SC-30-1).
+3. Full bats suite (`tests/run.sh`) — no regressions.
+4. `git diff --stat` reconciliation after each wave to catch scope creep.
