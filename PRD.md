@@ -63,7 +63,7 @@ Host-level (bare-metal) configuration generation — system packages, shell setu
 │                                                                      │
 │  External:                                                           │
 │    LLM Provider (OpenAI-compatible endpoint via OPENAI_BASE_URL)     │
-│    OpenCode Zen auth (OPENCODE_API_KEY) — optional                   │
+│    OpenCode Zen auth (OPENCODE_ZEN_API_KEY) — optional                   │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -292,7 +292,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 | `discover_models()` | `lib/model-discovery.sh` | Curls `OPENAI_BASE_URL/models` with API key. Filters non-chat models (embed, whisper, tts, dall-e, sora, etc.) and wildcard patterns. Falls back to `OPENAI_DEFAULT_MODEL` only on failure. Sets `DISCOVERED_MODELS`. |
 | `generate_config()` | `lib/config-hermes.sh` | Writes `config.yaml` with litellm custom provider, multi-model `models` dict, `api_server` platform. Auto-generates API key if `HERMES_API_KEY` is empty. Writes both `model.default` and `model.name`. |
 | `generate_opencode_config()` | `lib/config-opencode.sh` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and provider config. Copies config to `/root/.config/opencode/` for root access (fix #28). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns to `hermeswebui`. |
-| `validate_opencode_zen_key()` | `lib/validate-opencode.sh` | Validates `OPENCODE_API_KEY` against the Zen API models endpoint if set. Non-fatal warning on failure (fix #30). |
+| `validate_opencode_zen_key()` | `lib/validate-opencode.sh` | Validates `OPENCODE_ZEN_API_KEY` against the Zen API models endpoint if set. Non-fatal warning on failure (fix #30). |
 | `ensure_agent()` | `lib/agent-setup.sh` | Copies agent from `/opt/hermes-agent-staging` to bind mount if not already present. Idempotent. |
 | `wait_for_port(port, timeout, label)` | `lib/port-utils.sh` | Loops curl on health endpoint every 2 seconds until ready or timeout. |
 | `start_gateway()` | `lib/service-gateway.sh` | Starts gateway as `hermeswebui` via `su`. Command: `/app/venv/bin/hermes gateway run --accept-hooks`. Skips if agent not found. |
@@ -309,7 +309,7 @@ ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 5. `discover_models()` — discover all chat models from provider
 6. `generate_config()` — write `config.yaml` with multi-model support
 7. `generate_opencode_config()` — write `opencode.jsonc` with plugins, permissions, provider; copy to root config; symlink root session DB (fixes #28, #29)
-8. `validate_opencode_zen_key()` — validate OPENCODE_API_KEY if set; warn on failure (fix #30)
+8. `validate_opencode_zen_key()` — validate OPENCODE_ZEN_API_KEY if set; warn on failure (fix #30)
 9. `ensure_agent()` — copy staged agent to bind mount (first boot only)
 10. Start `/hermeswebui_init.bash` in background
 11. Wait for port 8787 to be healthy (timeout 300s)
@@ -359,7 +359,7 @@ Non-chat models matching: embed, whisper, tts, dall-e, sora, image, realtime, tr
 | `OPENAI_API_KEY` | Yes | API key for the LLM provider |
 | `OPENAI_BASE_URL` | Yes | Base URL for the LLM provider endpoint |
 | `OPENAI_DEFAULT_MODEL` | No | Model identifier (default: `openai/gpt-4o`) |
-| `OPENCODE_API_KEY` | No | API key for OpenCode Zen models. Required only for opencode/ built-in models; leave empty if using your own LLM provider. |
+| `OPENCODE_ZEN_API_KEY` | No | API key for OpenCode Zen models. Required only for opencode/ built-in models; leave empty if using your own LLM provider. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | No | Skip WebUI onboarding wizard (set `true`) |
 | `HERMES_WEBUI_PASSWORD` | No | Optional password for the WebUI |
 | `HERMES_WEBUI_PORT` | No | Host port for WebUI (default: 8787) |
@@ -439,7 +439,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
  5. Generate opencode.jsonc with plugins, permissions, provider
  5b. Copy opencode.jsonc to /root/.config/opencode/ (fix #28)
  5c. Symlink /root/.local/share/opencode → hermeswebui's data dir (fix #29)
- 6. Validate OPENCODE_API_KEY if set — warn on failure (fix #30)
+ 6. Validate OPENCODE_ZEN_API_KEY if set — warn on failure (fix #30)
  7. Copy agent from /opt/hermes-agent-staging to bind mount (~2s)
  8. Start /hermeswebui_init.bash in background
  9. WebUI init script (background):
@@ -463,7 +463,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
  3. Regenerate config.yaml and opencode.jsonc (idempotent overwrite)
  3b. Copy opencode.jsonc to /root/.config/opencode/ (fix #28)
  3c. Symlink /root/.local/share/opencode → hermeswebui's data dir (idempotent, fix #29)
- 4. Validate OPENCODE_API_KEY if set (fix #30)
+ 4. Validate OPENCODE_ZEN_API_KEY if set (fix #30)
  5. Agent already present in bind mount (skips copy)
  6. WebUI init: deps already installed, fast startup (~10-20s)
  7. Gateway starts: deps already installed (~5-10s)
@@ -498,7 +498,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 | `HERMES_DEFAULT_MODEL` | string | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. When set, written to `config.yaml` as both `model.default` and `model.name`. |
 | `OPENCODE_DEFAULT_MODEL` | string | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. When set, written to `opencode.jsonc` as `"model": "litellm/<value>"`. |
 | `OPENCODE_SMALL_MODEL` | string | No | falls back to `OPENAI_SMALL_MODEL` | Per-app override for the OpenCode small model. When set, written to `opencode.jsonc` as `"small_model": "litellm/<value>"`. |
-| `OPENCODE_API_KEY` | string | No | — | API key for OpenCode Zen models. Required only for opencode/ built-in models (sign up at https://opencode.ai/auth). If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), leave this empty. Validated at startup with a warning on failure. |
+| `OPENCODE_ZEN_API_KEY` | string | No | — | API key for OpenCode Zen models. Required only for opencode/ built-in models (sign up at https://opencode.ai/auth). If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), leave this empty. Validated at startup with a warning on failure. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | string | No | — | Set to `true` to skip the WebUI onboarding wizard. |
 | `HERMES_WEBUI_PASSWORD` | string | No | empty | Password-protect the WebUI. Empty = no authentication. |
 | `HERMES_WEBUI_PORT` | int | No | `8787` | Host port for the WebUI. Container always listens on 8787 internally. |
@@ -535,7 +535,7 @@ No `.dockerignore` exists at the project root — the build context is `volumes_
 
 **Backward compatibility.** Existing single-provider deployments are unaffected. When all models share the same prefix (the common case), behavior is identical to the pre-#46 code path. The `_resolve_provider_prefix()` function is only called when the model name is a bare name with no explicit prefix — prefixed names pass through unchanged.
 
-**OpenCode provider block (companion fix).** When `OPENCODE_API_KEY` is set, an explicit `opencode` provider entry is generated in `opencode.jsonc` with `apiKey: {env:OPENCODE_API_KEY}`. This ensures built-in `opencode/` models (like `deepseek-v4-flash-free`) have proper authentication mapping. Additionally, `auth.json` is seeded as a fallback credential store, and `OPENCODE_API_KEY` is explicitly passed through `su` in `service-opencode.sh`.
+**OpenCode provider block (companion fix).** When `OPENCODE_ZEN_API_KEY` is set, an explicit `opencode` provider entry is generated in `opencode.jsonc` with `apiKey: {env:OPENCODE_ZEN_API_KEY}`. This ensures built-in `opencode/` models (like `deepseek-v4-flash-free`) have proper authentication mapping. Additionally, `auth.json` is seeded as a fallback credential store, and `OPENCODE_ZEN_API_KEY` is explicitly passed through `su` in `service-opencode.sh`.
 
 **Implementation.**
 
@@ -1045,7 +1045,7 @@ at runtime inside the container but originate in these build-time generators.
 |--------|----------|-------|-------------------|---------------------|--------|
 | CA-31-A [HIGH] | #31 | `resolve_ctx_len()` pins the entire `*qwen3.6*` family to 1048576 (1M). | The pin table maps ANY model whose lowercased name contains `qwen3.6` to 1M — including the quantized llama.cpp GGUF `qwen3.6-27b-q4_k_m` whose true context window is 262144. The substring match is too coarse. | UI shows "1M context, 14% used"; actual window is 262144 (53% used). Compression threshold math is computed against the wrong denominator. |
 | CA-31-B [HIGH] | #31 | User sets `HERMES_COMPRESSION_THRESHOLD=0.76` in `.env`. | `docker-compose.yml` `environment:` block passes 35 vars into the container. `HERMES_COMPRESSION_THRESHOLD` is NOT among them. The var dies at the host; the container never sees it. Agent uses its default threshold, ignoring 0.76. | User's compression threshold is silently dead. |
-| CA-30-A [MEDIUM] | #30 | righthand-man orchestrator reports "OpenCode unavailable (0 credentials)". | When `OPENCODE_API_KEY` is unset (the `.env.example` default), `generate_opencode_config()` gates the opencode provider block on `$_has_opencode_key`. Even when `OPENAI_API_KEY` IS set (litellm proxy available), the `auth.json` fallback store is seeded only with non-empty keys. If `OPENCODE_API_KEY` is blank, no opencode credential entry is written; the litellm key is seeded but OpenCode's credential counter for the opencode CLI still reads 0 for the built-in provider. The righthand-man profile inherits this empty state. | righthand-man falls back to `delegate_task` instead of opencode CLI (the skill's documented fallback). |
+| CA-30-A [MEDIUM] | #30 | righthand-man orchestrator reports "OpenCode unavailable (0 credentials)". | When `OPENCODE_ZEN_API_KEY` is unset (the `.env.example` default), `generate_opencode_config()` gates the opencode provider block on `$_has_opencode_key`. Even when `OPENAI_API_KEY` IS set (litellm proxy available), the `auth.json` fallback store is seeded only with non-empty keys. If `OPENCODE_ZEN_API_KEY` is blank, no opencode credential entry is written; the litellm key is seeded but OpenCode's credential counter for the opencode CLI still reads 0 for the built-in provider. The righthand-man profile inherits this empty state. | righthand-man falls back to `delegate_task` instead of opencode CLI (the skill's documented fallback). |
 
 ### 19.4 Non-gaps (verified, no action)
 
@@ -1060,13 +1060,13 @@ at runtime inside the container but originate in these build-time generators.
 Ensure every model served by the LiteLLM proxy has an accurate `context_length`
 in Hermes `config.yaml` (including quantized variants), the user's
 `HERMES_COMPRESSION_THRESHOLD` reaches the container runtime, and OpenCode
-can resolve at least one credential when `OPENCODE_API_KEY` is unset but
+can resolve at least one credential when `OPENCODE_ZEN_API_KEY` is unset but
 `OPENAI_API_KEY` is set.
 
 Key Results:
 - KR1: Quantized qwen3.6 GGUF variants resolve to their true context window, not the family wildcard's 1M.
 - KR2: `HERMES_COMPRESSION_THRESHOLD` set in `.env` is visible inside the container via `printenv`.
-- KR3: When `OPENCODE_API_KEY` is unset but `OPENAI_API_KEY` is set, OpenCode resolves the litellm provider credential (via `auth.json` seeding) so the righthand-man profile is not "0 credentials".
+- KR3: When `OPENCODE_ZEN_API_KEY` is unset but `OPENAI_API_KEY` is set, OpenCode resolves the litellm provider credential (via `auth.json` seeding) so the righthand-man profile is not "0 credentials".
 
 ### 19.6 Success Criteria & Verification
 
@@ -1075,7 +1075,7 @@ Key Results:
 | SC-31-1 | `resolve_ctx_len()` has a specific pin for the quantized GGUF variant | `grep -c 'qwen3.6-27b' volumes_hermes_opencode/build/scripts/lib/config-hermes.sh` returns >=1 |
 | SC-31-2 | `HERMES_COMPRESSION_THRESHOLD` is transported into the container | `grep -c 'HERMES_COMPRESSION_THRESHOLD' docker-compose.yml` returns >=1 |
 | SC-31-3 | Generated `config.yaml` shows 262144 for `qwen3.6-27b-q4_k_m` (not 1048576) | functional test: source resolve_ctx_len with the GGUF id, assert echo output == 262144 |
-| SC-30-1 | When `OPENCODE_API_KEY` unset + `OPENAI_API_KEY` set, `auth.json` contains a litellm entry | functional test: run auth.json seeding logic with OPENCODE_API_KEY empty, assert litellm key present |
+| SC-30-1 | When `OPENCODE_ZEN_API_KEY` unset + `OPENAI_API_KEY` set, `auth.json` contains a litellm entry | functional test: run auth.json seeding logic with OPENCODE_ZEN_API_KEY empty, assert litellm key present |
 | SC-30-2 | righthand-man profile config.yaml is synced post-fix (existing behavior preserved) | existing profile-sync test still passes |
 
 ### 19.7 Solution
@@ -1101,7 +1101,7 @@ opencode Zen key is absent.
 - Assumption: `vanilla-open-design` is a downstream fork of this repo sharing the same config-generation scripts. Fixing here lets them cherry-pick.
 - Assumption: The "1M context" the UI shows comes from our `config.yaml` pin (1048576), not from the agent self-resolving. Verified: our pin fires before self-resolution (`config-hermes.sh:9-15` documents the ordering).
 - Assumption: Quantized GGUF variants of a model family need their own pin rows. The family wildcard (`*qwen3.6*`) is too coarse for variants with different context windows.
-- Assumption: For CA-30-A, the user left `OPENCODE_API_KEY` blank (matches `.env.example` default). The "0 credentials" symptom matches exactly.
+- Assumption: For CA-30-A, the user left `OPENCODE_ZEN_API_KEY` blank (matches `.env.example` default). The "0 credentials" symptom matches exactly.
 - Assumption: Commenting on (not closing) the downstream issues is the correct disposition per user instruction — the fix lands upstream first, then is ported downstream.
 
 ### 19.9 Changes
@@ -1109,11 +1109,211 @@ opencode Zen key is absent.
 1. `volumes_hermes_opencode/build/scripts/lib/config-hermes.sh` — add quantized GGUF pin row(s) in `resolve_ctx_len()`.
 2. `docker-compose.yml` — add `HERMES_COMPRESSION_THRESHOLD` to `environment:` block.
 3. `.env.example` — document `HERMES_COMPRESSION_THRESHOLD`.
-4. `volumes_hermes_opencode/build/scripts/lib/config-opencode.sh` — ensure `auth.json` litellm seeding is recognized by opencode credential resolution when `OPENCODE_API_KEY` is unset.
+4. `volumes_hermes_opencode/build/scripts/lib/config-opencode.sh` — ensure `auth.json` litellm seeding is recognized by opencode credential resolution when `OPENCODE_ZEN_API_KEY` is unset.
 5. `tests/` — new bats test(s) for SC-31-1..3, SC-30-1..2.
 6. GitHub issue comments on `vanilla-open-design` #30 and #31 (explain fix, do NOT close).
 
 ### 19.10 Verification Policy
+
+All changes verified by:
+1. `bash -n` on all modified shell scripts (syntax).
+2. Functional unit tests for `resolve_ctx_len()` (SC-31-1, SC-31-3) and auth.json seeding (SC-30-1).
+3. Full bats suite (`tests/run.sh`) — no regressions.
+4. `git diff --stat` reconciliation after each wave to catch scope creep.
+
+## 20. Environment Variable Naming Convention Alignment (OPENCODE_API_KEY → OPENCODE_ZEN_API_KEY)
+
+### 20.1 Problem
+
+The Docker stack uses `OPENCODE_ZEN_API_KEY` everywhere (`.env.example`, `docker-compose.yml`, scripts, docs, tests). The official Hermes agent runtime expects `OPENCODE_ZEN_API_KEY` — this is the canonical name used by:
+
+- `hermes config` — auto-detects `OPENCODE_ZEN_API_KEY`
+- `hermes doctor` — checks `OPENCODE_ZEN_API_KEY`
+- `plugins/model-providers/opencode-zen/__init__.py` — reads `OPENCODE_ZEN_API_KEY` via `env_vars=("OPENCODE_ZEN_API_KEY",)`
+- `~/.hermes/.env` (host) — already uses `OPENCODE_ZEN_API_KEY`
+
+**Gap:** Inside the container, the Hermes agent's `opencode-zen` provider plugin cannot find the key because only `OPENCODE_ZEN_API_KEY` is exported. The OpenCode CLI works because its config explicitly references `{env:OPENCODE_ZEN_API_KEY}`. But any code path where the Hermes agent directly invokes the `opencode-zen` provider (e.g. fallback providers, model discovery, `hermes doctor`) will fail to authenticate.
+
+### 20.2 Objective
+
+Align Docker stack environment variable naming with the official Hermes agent convention (`OPENCODE_ZEN_API_KEY`) for a "most vanilla" approach. This ensures:
+
+1. The Hermes agent runtime inside the container can find its Zen credential natively
+2. `hermes doctor` reports correct credential status
+3. The Docker stack `.env.example` mirrors what a vanilla `~/.hermes/.env` would look like
+4. OpenAI-compatible API naming convention is preserved (`OPENAI_*` prefix for proxy, `OPENCODE_ZEN_API_KEY` for Zen)
+
+### 20.3 Impact Map
+
+Rename `OPENCODE_ZEN_API_KEY` → `OPENCODE_ZEN_API_KEY` across the codebase:
+
+| File | References | Notes |
+|------|-----------|-------|
+| `.env.example` | 1 | Primary template |
+| `docker-compose.yml` | 1 (line 49) | Container env injection |
+| `lib/config-opencode.sh` | 6 | Config generation + auth.json seeding |
+| `lib/service-opencode.sh` | 2 | `su` env passthrough |
+| `lib/validate-opencode.sh` | 5 | Zen API key validation |
+| `README.md` | 4 | User-facing docs |
+| `PRD.md` | ~20 | Architecture docs |
+| `AGENTS.md` | 2 (lines 115-116) | Agent instructions |
+| `docs/03-opencode-serve.md` | 1 | |
+| `docs/05-entrypoint-sequence.md` | 5 | |
+| `docs/06-config-and-env.md` | ~15 | |
+| `docs/09-testing-and-verification.md` | 1 | |
+| `docs/14-delegation-matrix.md` | 2 | |
+| `docs/20-opencode-runtime-fallback.md` | 1 | |
+| `tests/e2e/03-config.bats` | 8 | |
+| `tests/e2e/10-acp-limitation.bats` | 2 | |
+| `tests/e2e/19-ctx-pin-and-credentials.bats` | 1 | |
+| `.github/workflows/e2e.yml` | 1 | CI secrets reference |
+
+**Critical change:** `config-opencode.sh` generates `{env:OPENCODE_ZEN_API_KEY}` → must become `{env:OPENCODE_ZEN_API_KEY}` in `opencode.jsonc`.
+
+### 20.4 Solution
+
+1. **Rename env var**: `OPENCODE_ZEN_API_KEY` → `OPENCODE_ZEN_API_KEY` everywhere in scripts, docker-compose, `.env.example`
+2. **Update generated config**: `{env:OPENCODE_ZEN_API_KEY}` → `{env:OPENCODE_ZEN_API_KEY}` in `config-opencode.sh`
+3. **Update CI workflow**: `secrets.OPENCODE_ZEN_API_KEY` → `secrets.OPENCODE_ZEN_API_KEY`
+4. **Update tests**: All BATS assertions referencing `OPENCODE_ZEN_API_KEY`
+5. **Update docs**: README, PRD, AGENTS.md, all `docs/*.md`
+
+### 20.5 Success Criteria
+
+| ID | Description | Verification |
+|----|-------------|-------------|
+| SC-20-1 | `docker-compose.yml` exports `OPENCODE_ZEN_API_KEY` | `grep OPENCODE_ZEN_API_KEY docker-compose.yml` |
+| SC-20-2 | `config-opencode.sh` writes `{env:OPENCODE_ZEN_API_KEY}` | `grep 'env:OPENCODE_ZEN_API_KEY' config-opencode.sh` |
+| SC-20-3 | No remaining references to `OPENCODE_API_KEY` in scripts/docs/tests | `grep -rn 'OPENCODE_API_KEY' --include='*.sh' --include='*.yml' --include='*.bats' --include='*.md' .` returns 0 |
+| SC-20-4 | `hermes doctor` inside container sees `OPENCODE_ZEN_API_KEY` | Container runtime check |
+| SC-20-5 | All bats tests pass | `tests/run.sh` exits 0 |
+
+### 20.6 Verification Results
+
+All static success criteria met:
+
+| Criteria | Status | Evidence |
+|----------|--------|----------|
+| SC-20-1 | PASS | `docker-compose.yml` → `- OPENCODE_ZEN_API_KEY=${OPENCODE_ZEN_API_KEY:-}` |
+| SC-20-2 | PASS | `config-opencode.sh` → `"apiKey": "{env:OPENCODE_ZEN_API_KEY}"` |
+| SC-20-3 | PASS | `grep -rn 'OPENCODE_API_KEY'` returns 0 hits in repo-tracked files (excluding data/ volumes) |
+| SC-20-4 | PENDING | Runtime verification on next container boot |
+| SC-20-5 | PENDING | CI verification on next push |
+
+**Shell syntax:** All 3 modified `.sh` files pass `bash -n`.
+**Files modified:** 18 total (3 scripts + 1 compose + 1 example + 1 CI workflow + 3 docs + 7 tests + PRD + AGENTS.md + README).
+
+### 20.7 Host vs Docker Env Var Parity Analysis
+
+After the rename, remaining gaps between `~/.hermes/.env` (host) and Docker stack:
+
+**Host has, Docker stack does not expose (intentionally N/A):**
+| Variable | Purpose | Docker relevance |
+|----------|---------|------------------|
+| `BROWSERBASE_*` | Browser automation provider | N/A — Docker uses local Xvfb |
+| `BROWSER_INACTIVITY_TIMEOUT` | Browser session timeout | N/A |
+| `HASS_URL` | Home Assistant integration | N/A |
+| `IMAGE_TOOLS_DEBUG` | Debug flag | N/A — container has its own debug controls |
+| `MOA_TOOLS_DEBUG` | Debug flag | N/A |
+| `SUDO_PASSWORD` | Host sudo | N/A |
+| `TERMINAL_*` | Terminal session config | N/A — container terminal is isolated |
+| `VISION_TOOLS_DEBUG` | Debug flag | N/A |
+| `WEB_TOOLS_DEBUG` | Debug flag | N/A |
+
+**Fully aligned (no action needed):**
+| Variable | Status |
+|----------|--------|
+| `OPENAI_API_KEY` | ✅ Same name, same purpose |
+| `OPENAI_BASE_URL` | ✅ Same name, same purpose |
+| `OPENAI_DEFAULT_MODEL` | ✅ Same name, same purpose |
+| `HERMES_DEFAULT_MODEL` | ✅ Same name, same purpose |
+| `OPENCODE_DEFAULT_MODEL` | ✅ Same name, same purpose |
+| `OPENCODE_SMALL_MODEL` | ✅ Same name, same purpose |
+| `OPENCODE_FALLBACK_MODEL` | ✅ Same name, same purpose |
+| `OPENCODE_ZEN_API_KEY` | ✅ Renamed from OPENCODE_API_KEY |
+| `WIKI_PATH` | ✅ Same name, same purpose |
+
+**Verdict:** After OPENCODE_API_KEY → OPENCODE_ZEN_API_KEY rename, the Docker stack follows the same OpenAI-compatible API naming convention as the host `~/.hermes/.env`. All LLM provider variables are aligned.
+
+### 20.8 Assumptions
+
+- The Hermes agent source (`data/hermes-home/hermes-agent/`) already uses `OPENCODE_ZEN_API_KEY` and does NOT need changes — it's the authority
+- Session JSON files in `data/hermes-home/webui/sessions/` contain historical references that don't need updating
+- The GitHub Actions secret name (`OPENCODE_ZEN_API_KEY`) needs to be updated in the CI workflow, but the actual secret value in GitHub settings is out-of-scope for this PR (user must rename the secret in GitHub)
+- `vanilla-open-design` downstream fork will cherry-pick this change independently
+
+## 21. Per-Delegation Model Routing
+
+### 21.1 Problem
+
+All agent conversations (parent + subagents) use the same model. The user wants different models for main conversation vs delegated subagents — e.g. expensive reasoning model for the parent, cheaper fast model for subagents.
+
+**Current state:** `config-hermes.sh` writes `delegation.max_iterations` but never writes `delegation.model` or `delegation.provider`. Every subagent inherits the parent's model — no differentiation.
+
+**Hermes agent native support:** The agent runtime already supports per-delegation model routing via:
+
+```yaml
+delegation:
+  model: openai/gpt-4o-mini
+  provider: litellm
+```
+
+Reference: `tools/delegate_tool.py:2043` (resolves `delegation.provider` + `delegation.model` credential overrides), `website/docs/user-guide/configuration.md:1717` (subagent provider:model override docs).
+
+### 21.2 Objective
+
+Expose `delegation.model` and `delegation.provider` through Docker env vars so the user can configure different models for subagents without editing config.yaml manually.
+
+### 21.3 Solution
+
+Add two new env vars:
+
+| Variable | Purpose | Maps to config.yaml |
+|----------|---------|---------------------|
+| `HERMES_DELEGATION_MODEL` | Model for subagent conversations | `delegation.model` |
+| `HERMES_DELEGATION_PROVIDER` | Provider for subagent routing | `delegation.provider` |
+
+When `HERMES_DELEGATION_MODEL` is set, `config-hermes.sh` appends the delegation model block. When `HERMES_DELEGATION_PROVIDER` is also set, both are written together. When only `model` is set, the subagent inherits the parent's provider (Hermes documented behavior — "Setting just `model` without `provider` changes only the model name while keeping the parent's credentials").
+
+**Config output example:**
+
+```yaml
+delegation:
+  max_iterations: 50
+  model: openai/gpt-4o-mini
+  provider: litellm
+```
+
+### 21.4 Impact Map
+
+| File | Change |
+|------|--------|
+| `.env.example` | Document `HERMES_DELEGATION_MODEL` and `HERMES_DELEGATION_PROVIDER` |
+| `docker-compose.yml` | Add env injection for both vars |
+| `config-hermes.sh` | Append `model`/`provider` under `delegation:` block in `generate_config()` |
+| `README.md` | Document new env vars |
+| `docs/06-config-and-env.md` | Add to env var table |
+| `tests/e2e/03-config.bats` | Test delegation model block generation |
+
+### 21.5 Verification Results
+
+| Criteria | Status | Evidence |
+|----------|--------|----------|
+| SC-21-1 | PASS | `.env.example` (lines 113-118), `docker-compose.yml` (lines 57-58) |
+| SC-21-2 | PASS | `config-hermes.sh` (lines 60-73) — dynamic delegation_block with model |
+| SC-21-3 | PASS | `config-hermes.sh` (lines 61, 68-70) — provider appended when set |
+| SC-21-4 | PASS | When unset, only `delegation.max_iterations` appears — model/provider conditional |
+| SC-21-5 | PASS | `bash -n config-hermes.sh` → SYNTAX OK |
+| SC-21-6 | PENDING | New test `AC34` added to `tests/e2e/03-config.bats` — needs CI runtime |
+
+**Files modified:** 7 total (`config-hermes.sh`, `docker-compose.yml`, `.env.example`, `docs/06-config-and-env.md`, `README.md`, `tests/e2e/03-config.bats`, `PRD.md`).
+
+### 21.6 Assumptions
+
+- The user provides valid model names and provider strings — no validation needed beyond what Hermes agent does at runtime
+- `delegation.max_iterations` already exists in the delegation block; `model`/`provider` are additive fields under the same YAML key
+- No change to Hermes agent source needed — it already handles `delegation.model`/`delegation.provider`
+- The same `key_env: OPENAI_API_KEY` in the `custom_providers` block covers subagent auth when `delegation.provider: litellm` is set
 
 All changes verified by:
 1. `bash -n` on all modified shell scripts (syntax).

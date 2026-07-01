@@ -46,7 +46,7 @@ Three services exposed:
 │                                                                      │
 │  External:                                                           │
 │    LLM Provider (OpenAI-compatible endpoint via OPENAI_BASE_URL)     │
-│    OpenCode Zen auth (OPENCODE_API_KEY) — optional                   │
+│    OpenCode Zen auth (OPENCODE_ZEN_API_KEY) — optional                   │
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -80,7 +80,7 @@ OPENAI_DEFAULT_MODEL=openai/gpt-4o
 # Optional: OpenCode Zen API key (sign up at https://opencode.ai/auth)
 # Required only for opencode/ built-in models (deepseek-v4-flash-free, etc.).
 # If you only use models from your own LLM provider (via OPENAI_BASE_URL), leave this empty.
-OPENCODE_API_KEY=
+OPENCODE_ZEN_API_KEY=
 ```
 
 ### 3. Build and start
@@ -251,7 +251,10 @@ All configuration is done through the `.env` file. See `.env.example` for the fu
 | `HERMES_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the Hermes default model. |
 | `OPENCODE_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. |
 | `OPENCODE_SMALL_MODEL` | No | falls back to `OPENAI_SMALL_MODEL` | Per-app override for the OpenCode small model. |
-| `OPENCODE_API_KEY` | No | — | API key for OpenCode Zen models (sign up at https://opencode.ai/auth). Required only for opencode/ built-in models. |
+| `HERMES_DELEGATION_MAX_ITERATIONS` | No | `50` | Max tool-calling turns for `delegate_task` subagents. |
+| `HERMES_DELEGATION_MODEL` | No | — (inherit parent) | Model for delegated subagent conversations. Set to route subagents to a different (typically cheaper/faster) model. |
+| `HERMES_DELEGATION_PROVIDER` | No | — (inherit parent) | Provider for delegated subagent conversations. Set alongside `HERMES_DELEGATION_MODEL` to use a different provider. |
+| `OPENCODE_ZEN_API_KEY` | No | — | API key for OpenCode Zen models (sign up at https://opencode.ai/auth). Required only for opencode/ built-in models. |
 | `HERMES_WEBUI_PASSWORD` | No | empty | Password-protect the WebUI |
 | `HERMES_WEBUI_PORT` | No | `8787` | Host port for WebUI |
 | `HERMES_API_KEY` | No | auto-generated | Bearer token for Agent API |
@@ -298,7 +301,7 @@ docker compose up -d
 
 ### OpenCode Auth
 
-Set `OPENCODE_API_KEY` in `.env` if you want to use opencode/ built-in Zen models (e.g. `opencode/deepseek-v4-flash-free`). The key is validated at startup with a helpful warning on failure. If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), you can leave this empty — the litellm provider in `opencode.jsonc` works without it. Get a key at https://opencode.ai/auth.
+Set `OPENCODE_ZEN_API_KEY` in `.env` if you want to use opencode/ built-in Zen models (e.g. `opencode/deepseek-v4-flash-free`). The key is validated at startup with a helpful warning on failure. If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), you can leave this empty — the litellm provider in `opencode.jsonc` works without it. Get a key at https://opencode.ai/auth.
 
 ### Persistent Data
 

@@ -175,7 +175,7 @@ echo "=== Done ==="
 
 **What it is:** A single-file bash script that embeds a Python `http.server.HTTPServer` using only the standard library (no pip dependencies). Listens on `0.0.0.0:${PORT:-4000}`.
 
-**How CI uses it:** The e2e workflow (`.github/workflows/e2e.yml`) conditionally starts the mock server when no real `OPENAI_API_KEY` secret is available. Fallback values are substituted for all secrets (`OPENAI_API_KEY=mock-key`, `OPENAI_BASE_URL=http://localhost:4000`, `OPENAI_DEFAULT_MODEL=mock-model`, `OPENCODE_API_KEY=mock`), so the container starts against the mock server and all model discovery / config generation proceeds normally.
+**How CI uses it:** The e2e workflow (`.github/workflows/e2e.yml`) conditionally starts the mock server when no real `OPENAI_API_KEY` secret is available. Fallback values are substituted for all secrets (`OPENAI_API_KEY=mock-key`, `OPENAI_BASE_URL=http://localhost:4000`, `OPENAI_DEFAULT_MODEL=mock-model`, `OPENCODE_ZEN_API_KEY=mock`), so the container starts against the mock server and all model discovery / config generation proceeds normally.
 
 **Endpoints:**
 

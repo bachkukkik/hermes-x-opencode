@@ -41,7 +41,7 @@ setup() {
     [ "$status" -eq 0 ]
 }
 
-# --- TT-09: Invalid OPENCODE_API_KEY validation (source-level test) ---
+# --- TT-09: Invalid OPENCODE_ZEN_API_KEY validation (source-level test) ---
 
 @test "VC6.4: Zen API key validation script exists and contains error handling" {
     local cid
@@ -75,7 +75,7 @@ setup() {
 
     # The entrypoint always calls validate_opencode_zen_key — it either validates
     # or prints a "not set" / "WARNING" message. Verify one of those appeared.
-    run bash -c "docker logs '$cid' 2>&1 | grep -c 'OPENCODE_API_KEY'"
+    run bash -c "docker logs '$cid' 2>&1 | grep -c 'OPENCODE_ZEN_API_KEY'"
     [ "$status" -eq 0 ]
     [ "$output" -ge 1 ]
 }

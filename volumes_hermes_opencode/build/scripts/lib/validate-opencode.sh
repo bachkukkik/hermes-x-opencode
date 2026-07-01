@@ -1,12 +1,12 @@
 # lib/validate-opencode.sh - OpenCode Zen API key validation - sourced by entrypoint.sh
 
 # --- Fix #30: Validate OpenCode Zen API key if set ---
-# When OPENCODE_API_KEY is set but invalid, opencode/ models return 401.
+# When OPENCODE_ZEN_API_KEY is set but invalid, opencode/ models return 401.
 # This check provides a helpful startup message instead of silent failures.
 validate_opencode_zen_key() {
-    local key="${OPENCODE_API_KEY:-}"
+    local key="${OPENCODE_ZEN_API_KEY:-}"
     if [ -z "$key" ]; then
-        echo "== OPENCODE_API_KEY not set. opencode/ free models will use public fallback (may be limited)."
+        echo "== OPENCODE_ZEN_API_KEY not set. opencode/ free models will use public fallback (may be limited)."
         return 0
     fi
 
@@ -17,7 +17,7 @@ validate_opencode_zen_key() {
         "https://opencode.ai/zen/v1/models" 2>/dev/null || echo "")
 
     if [ -z "$response" ]; then
-        echo "!! WARNING: OPENCODE_API_KEY is set but the Zen API returned an error."
+        echo "!! WARNING: OPENCODE_ZEN_API_KEY is set but the Zen API returned an error."
         echo "   opencode/ models may fail with 401 Invalid API key."
         echo "   Get a valid key at: https://opencode.ai/auth"
         return 1
@@ -33,6 +33,6 @@ except Exception:
     print(0)
 " 2>/dev/null || echo "0")
 
-    echo "== OPENCODE_API_KEY validated. Zen API returned ${model_count} models."
+    echo "== OPENCODE_ZEN_API_KEY validated. Zen API returned ${model_count} models."
     return 0
 }

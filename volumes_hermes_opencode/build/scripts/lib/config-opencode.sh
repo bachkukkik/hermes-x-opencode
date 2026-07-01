@@ -27,11 +27,11 @@ _strip_provider_prefix() {
 generate_opencode_config() {
     local _has_opencode_key=false
     local _has_openai_creds=false
-    [ -n "${OPENCODE_API_KEY:-}" ] && _has_opencode_key=true
+    [ -n "${OPENCODE_ZEN_API_KEY:-}" ] && _has_opencode_key=true
     [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ] && _has_openai_creds=true
 
     if ! $_has_opencode_key && ! $_has_openai_creds; then
-        echo "!! Skipping opencode config: missing OPENCODE_API_KEY or (OPENAI_BASE_URL + OPENAI_API_KEY)."
+        echo "!! Skipping opencode config: missing OPENCODE_ZEN_API_KEY or (OPENAI_BASE_URL + OPENAI_API_KEY)."
         return
     fi
 
@@ -287,7 +287,7 @@ PERMEOF
         _oc_entry=$(cat << 'OCEOF'
     "opencode": {
       "options": {
-        "apiKey": "{env:OPENCODE_API_KEY}"
+        "apiKey": "{env:OPENCODE_ZEN_API_KEY}"
       }
     }
 OCEOF
@@ -377,7 +377,7 @@ JSONEOF
     # the opencode (Zen) and litellm (proxy) providers.
     #
     # CA-30-A: The guard below intentionally uses `$_has_opencode_key || $_has_openai_creds`
-    # (NOT `$_has_opencode_key` alone). When OPENCODE_API_KEY is unset (the
+    # (NOT `$_has_opencode_key` alone). When OPENCODE_ZEN_API_KEY is unset (the
     # .env.example default) but OPENAI_API_KEY + OPENAI_BASE_URL ARE set, the
     # litellm proxy is the available backend. The Python block writes
     # auth['litellm'] = {'apiKey': ai_key} for the non-empty AI key, so opencode
@@ -402,7 +402,7 @@ if ai_key:
     auth['litellm'] = {'apiKey': ai_key}
 with open(sys.argv[1], 'w') as f:
     json.dump(auth, f)
-" "$user_auth" "$OPENCODE_API_KEY" "$_openai_key"
+" "$user_auth" "$OPENCODE_ZEN_API_KEY" "$_openai_key"
         chmod 600 "$user_auth"
         chown "${OPENCODE_USER}:${OPENCODE_USER}" "$user_auth"
         mkdir -p "$(dirname "$root_auth")"
