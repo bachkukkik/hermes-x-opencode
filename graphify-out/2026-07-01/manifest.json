@@ -20,7 +20,7 @@
     "semantic_hash": ""
   },
   "docker-compose.yml": {
-    "mtime": 1782643823.228634,
+    "mtime": 1782641159.7411795,
     "ast_hash": "7ff25a59c548d0bc31840a4be1cbd5ef",
     "semantic_hash": ""
   },
@@ -30,7 +30,7 @@
     "semantic_hash": ""
   },
   "PRD.md": {
-    "mtime": 1782643823.228634,
+    "mtime": 1782641091.9434075,
     "ast_hash": "f8c7b6965194be9b0eeb44d2e6aba1e9",
     "semantic_hash": ""
   },
@@ -40,9 +40,9 @@
     "semantic_hash": ""
   },
   "docs/11-skill-installation.md": {
-    "mtime": 1782872413.1382022,
-    "ast_hash": "f3873b7e12bf1b38daaa772ca4270cf4",
-    "semantic_hash": ""
+    "mtime": 1781272897.9928508,
+    "ast_hash": "8e0c263d8bed117d1e60313abc8afd2a",
+    "semantic_hash": "8e0c263d8bed117d1e60313abc8afd2a"
   },
   "docs/01-hermes-webui.md": {
     "mtime": 1781272897.9928508,
@@ -65,7 +65,7 @@
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
   "docs/10-model-discovery.md": {
-    "mtime": 1782643823.228634,
+    "mtime": 1782642835.5138562,
     "ast_hash": "a9f2bc41aaef5fb842d95f45b9ed46b2",
     "semantic_hash": ""
   },
@@ -75,7 +75,7 @@
     "semantic_hash": ""
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1782643823.228634,
+    "mtime": 1782642838.653926,
     "ast_hash": "b3a3cbe26b3a6c20447a3328efb3240e",
     "semantic_hash": ""
   },

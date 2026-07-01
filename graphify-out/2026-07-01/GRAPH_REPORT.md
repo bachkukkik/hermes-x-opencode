@@ -1,7 +1,7 @@
-# Graph Report - hermes-x-opencode  (2026-07-01)
+# Graph Report - hermes-x-opencode  (2026-06-28)
 
 ## Corpus Check
-- 31 files · ~47,369 words
+- 31 files · ~47,314 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
@@ -10,7 +10,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d876f362`
+- Built from commit: `01af9615`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
