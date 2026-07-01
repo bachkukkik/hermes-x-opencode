@@ -502,6 +502,33 @@ print('OK: {} llama_cpp models checked'.format(len(llama_models)))
     [ "$status" -eq 0 ]
 }
 
+@test "AC34: config.yaml delegation block includes model/provider when HERMES_DELEGATION_MODEL/PROVIDER set" {
+    # When HERMES_DELEGATION_MODEL is set, config.yaml must contain `delegation.model`.
+    # When HERMES_DELEGATION_PROVIDER is set, config.yaml must contain `delegation.provider`.
+    # When neither is set, only `delegation.max_iterations` should appear.
+    skip_if_no_secrets
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    # Check model
+    if [ -n "${HERMES_DELEGATION_MODEL:-}" ]; then
+        run docker exec "$cid" grep -q "model: ${HERMES_DELEGATION_MODEL}" /home/hermeswebui/.hermes/config.yaml
+        [ "$status" -eq 0 ]
+    else
+        # Model should not appear under delegation when env var is unset
+        run docker exec "$cid" grep '^delegation:' -A5 /home/hermeswebui/.hermes/config.yaml
+        [ "$status" -eq 0 ]
+        [[ "$output" != *"[  model: "* ]]
+    fi
+
+    # Check provider
+    if [ -n "${HERMES_DELEGATION_PROVIDER:-}" ]; then
+        run docker exec "$cid" grep -q "provider: ${HERMES_DELEGATION_PROVIDER}" /home/hermeswebui/.hermes/config.yaml
+        [ "$status" -eq 0 ]
+    fi
+}
+
 # --- Hybrid per-model provider routing tests ---
 
 @test "HYBRID: model and small_model each have valid provider prefix" {
@@ -675,7 +702,7 @@ print(c.get('small_model', ''))
     [ "$status" -eq 0 ]
 }
 
-@test "ZEN: opencode provider block present when OPENCODE_API_KEY set" {
+@test "ZEN: opencode provider block present when OPENCODE_ZEN_API_KEY set" {
     skip_if_no_secrets
     local cid
     cid=$(get_container)
@@ -683,8 +710,8 @@ print(c.get('small_model', ''))
 
     # Skip if opencode credentials are not configured in the container
     local api_key_env
-    api_key_env=$(docker exec "$cid" printenv OPENCODE_API_KEY 2>/dev/null)
-    [ -n "$api_key_env" ] || skip 'OPENCODE_API_KEY not set'
+    api_key_env=$(docker exec "$cid" printenv OPENCODE_ZEN_API_KEY 2>/dev/null)
+    [ -n "$api_key_env" ] || skip 'OPENCODE_ZEN_API_KEY not set'
 
     # The opencode provider block must reference the key via the {env:...} indirection
     local result
@@ -699,7 +726,7 @@ if not prov:
     print('FAIL: no opencode provider block')
     sys.exit(1)
 api_key = prov.get('options', {}).get('apiKey', '')
-if api_key != '{env:OPENCODE_API_KEY}':
+if api_key != '{env:OPENCODE_ZEN_API_KEY}':
     print('FAIL: apiKey=' + api_key)
     sys.exit(1)
 print('OK')
@@ -714,8 +741,8 @@ print('OK')
     [ -n "$cid" ]
 
     local api_key_env
-    api_key_env=$(docker exec "$cid" printenv OPENCODE_API_KEY 2>/dev/null)
-    [ -n "$api_key_env" ] || skip 'OPENCODE_API_KEY not set'
+    api_key_env=$(docker exec "$cid" printenv OPENCODE_ZEN_API_KEY 2>/dev/null)
+    [ -n "$api_key_env" ] || skip 'OPENCODE_ZEN_API_KEY not set'
 
     # auth.json must exist
     run docker exec "$cid" test -f /home/hermeswebui/.local/share/opencode/auth.json
@@ -748,10 +775,10 @@ print('OK')
 
     # Hybrid mode requires both the opencode and litellm (openai) credentials
     local opencode_key litellm_base
-    opencode_key=$(docker exec "$cid" printenv OPENCODE_API_KEY 2>/dev/null)
+    opencode_key=$(docker exec "$cid" printenv OPENCODE_ZEN_API_KEY 2>/dev/null)
     litellm_base=$(docker exec "$cid" printenv OPENAI_BASE_URL 2>/dev/null)
     if [ -z "$opencode_key" ] || [ -z "$litellm_base" ]; then
-        skip 'hybrid mode requires both OPENCODE_API_KEY and OPENAI_BASE_URL'
+        skip 'hybrid mode requires both OPENCODE_ZEN_API_KEY and OPENAI_BASE_URL'
     fi
 
     # Both providers must appear in the generated config

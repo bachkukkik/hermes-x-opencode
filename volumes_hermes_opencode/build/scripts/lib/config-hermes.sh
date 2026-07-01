@@ -57,9 +57,22 @@ approvals:
     esac
 
     local max_iter="${HERMES_DELEGATION_MAX_ITERATIONS:-50}"
+    local delegation_model="${HERMES_DELEGATION_MODEL:-}"
+    local delegation_provider="${HERMES_DELEGATION_PROVIDER:-}"
+
+    # Build delegation block dynamically
     local delegation_block="
 delegation:
-  max_iterations: ${max_iter}
+  max_iterations: ${max_iter}"
+    if [ -n "$delegation_model" ]; then
+        delegation_block="${delegation_block}
+  model: ${delegation_model}"
+    fi
+    if [ -n "$delegation_provider" ]; then
+        delegation_block="${delegation_block}
+  provider: ${delegation_provider}"
+    fi
+    delegation_block="${delegation_block}
 "
     local goal_max_turns="${HERMES_GOAL_MAX_TURNS:-50}"
     local goals_block="

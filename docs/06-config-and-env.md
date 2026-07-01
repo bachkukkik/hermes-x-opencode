@@ -26,7 +26,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `OPENCODE_DEFAULT_MODEL` | No | falls back to `OPENAI_DEFAULT_MODEL` | Per-app override for the OpenCode default model. When set, written to `opencode.jsonc` as `"model": "litellm/<value>"`. Leave unset to follow `OPENAI_DEFAULT_MODEL`. |
 | `OPENCODE_SMALL_MODEL` | No | falls back to `OPENAI_SMALL_MODEL` then `OPENCODE_DEFAULT_MODEL` (resolved) | Per-app override for the OpenCode small model. When set, written to `opencode.jsonc` as `"small_model": "litellm/<value>"`. Leave unset to follow `OPENAI_SMALL_MODEL`. |
 | `OPENCODE_FALLBACK_MODEL` | No | — (unset) | Runtime fallback model(s) for OpenCode. Accepts a single model id OR a comma-separated ORDERED list — `config-opencode.sh` seeds the full ordered `fallback_models` array tried in sequence after the primary fails (rate limits, quota, 5xx, timeouts). Each entry is independently provider-prefix-resolved (bare id → litellm if OpenAI creds present, else opencode Zen). Single value = 1-element chain (backward compatible). Leave unset for no fallback. |
-| `OPENCODE_API_KEY` | No | — | API key for OpenCode Zen models. Sign up at `https://opencode.ai/auth`, add billing details, copy your key. Even "free" models (deepseek-v4-flash-free, etc.) require a valid key. If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), leave this empty — the litellm provider in `opencode.jsonc` will work without it. |
+| `OPENCODE_ZEN_API_KEY` | No | — | API key for OpenCode Zen models. Sign up at `https://opencode.ai/auth`, add billing details, copy your key. Even "free" models (deepseek-v4-flash-free, etc.) require a valid key. If you only use models from your own LLM provider (via `OPENAI_BASE_URL`), leave this empty — the litellm provider in `opencode.jsonc` will work without it. |
 | `HERMES_WEBUI_SKIP_ONBOARDING` | No | — | Set to `true` to skip the WebUI onboarding wizard. Recommended for automated setups. |
 | `HERMES_WEBUI_PASSWORD` | No | empty | Password-protect the WebUI. Empty = no authentication. |
 | `HERMES_WEBUI_PORT` | No | `8787` | Host port for the WebUI. Container always listens on 8787. |
@@ -34,6 +34,8 @@ All runtime configuration is managed through environment variables defined in `.
 | `HERMES_API_PORT` | No | `8642` | Host port for the Agent API. Container always listens on 8642. |
 | `HERMES_YOLO_MODE` | No | `1` | Enables Hermes YOLO mode — writes `approvals.mode: off` to `config.yaml`, skipping dangerous-command approval prompts (equivalent to `hermes --yolo`). Set to `0` to restore manual approval prompts. |
 | `HERMES_DELEGATION_MAX_ITERATIONS` | No | `50` | Sets `delegation.max_iterations` in `config.yaml` — the default max tool-calling turns for `delegate_task` subagents. |
+| `HERMES_DELEGATION_MODEL` | No | — (unset = inherit parent model) | Sets `delegation.model` in `config.yaml` — the model used for delegated subagent conversations. By default, subagents inherit the parent's model. Set this to route subagents to a different (typically cheaper/faster) model. |
+| `HERMES_DELEGATION_PROVIDER` | No | — (unset = inherit parent provider) | Sets `delegation.provider` in `config.yaml` — the provider used for delegated subagent conversations. Set alongside `HERMES_DELEGATION_MODEL` to route subagents to a different provider. If only the model is set, subagents inherit the parent's provider. |
 | `HERMES_GOAL_MAX_TURNS` | No | `50` | Sets `goals.max_turns` in `config.yaml` — the cross-turn budget for the `/goal` command. Previously this was hardcapped at 20 turns inside the agent; raising this env var (e.g. to 50) lets long-running goals persist across more turns. |
 | `HERMES_COMPRESSION_THRESHOLD` | No | — (unset = agent default) | Context compression threshold (fraction of context window, 0–1). When token usage reaches this fraction, the agent compresses older messages. Example: `0.76` triggers compression at 76% context usage. Transported into the container via the `environment:` block; unset = the hermes-agent uses its built-in default. See [19 — Issue Triage](../PRD.md) §19.3 CA-31-B. |
 | `OPENCODE_SECURITY_MODE` | No | `strict` | Security profile for OpenCode: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). See `13 — Security Hardening`. |
@@ -156,7 +158,7 @@ Key constraints for the OpenCode config:
 
 | Model name pattern | Resolved prefix | Routed to |
 |--------------------|-----------------|-----------|
-| `opencode/*` | `opencode` | OpenCode Zen (requires `OPENCODE_API_KEY`) |
+| `opencode/*` | `opencode` | OpenCode Zen (requires `OPENCODE_ZEN_API_KEY`) |
 | `litellm/*` | `litellm` | Self-hosted LiteLLM proxy (requires `OPENAI_BASE_URL` + `OPENAI_API_KEY`) |
 | Any other name + `OPENAI_BASE_URL` set | `litellm` | Self-hosted LiteLLM proxy |
 | Any other name + no `OPENAI_BASE_URL` | `opencode` | OpenCode Zen public fallback |
@@ -165,19 +167,19 @@ Key constraints for the OpenCode config:
 
 | Topology | Before (single-prefix) | After (per-model) | Change? |
 |----------|------------------------|--------------------|---------|
-| Zen-only (`OPENCODE_API_KEY` set, no `OPENAI_BASE_URL`) | `opencode/X`, `opencode/Y` | Same | None |
-| LiteLLM-only (`OPENAI_BASE_URL` set, no `OPENCODE_API_KEY`) | `litellm/X`, `litellm/Y` | Same | None |
+| Zen-only (`OPENCODE_ZEN_API_KEY` set, no `OPENAI_BASE_URL`) | `opencode/X`, `opencode/Y` | Same | None |
+| LiteLLM-only (`OPENAI_BASE_URL` set, no `OPENCODE_ZEN_API_KEY`) | `litellm/X`, `litellm/Y` | Same | None |
 | Dual (both keys set) | `litellm/X`, `litellm/Y` (bug: small model routed to LiteLLM even for Zen models) | Each model gets its correct prefix | **Bug fix** — Zen models now correctly route to Zen |
 
 The only behavioral change is in dual-provider mode. Previously, both `model` and `small_model` always received the `litellm` prefix, causing 401 errors when the small model was a Zen-only model (e.g. `deepseek-v4-flash-free`). With per-model routing, each model's prefix is resolved independently based on its name.
 
-**OpenCode provider block.** When `OPENCODE_API_KEY` is set, an explicit `opencode` provider entry is generated in `opencode.jsonc` alongside the `litellm` provider (if OpenAI credentials are also present). This ensures built-in `opencode/` models (like `deepseek-v4-flash-free`) have an explicit API key mapping rather than relying on implicit resolution:
+**OpenCode provider block.** When `OPENCODE_ZEN_API_KEY` is set, an explicit `opencode` provider entry is generated in `opencode.jsonc` alongside the `litellm` provider (if OpenAI credentials are also present). This ensures built-in `opencode/` models (like `deepseek-v4-flash-free`) have an explicit API key mapping rather than relying on implicit resolution:
 
 ```jsonc
 "provider": {
   "opencode": {
     "options": {
-      "apiKey": "{env:OPENCODE_API_KEY}"
+      "apiKey": "{env:OPENCODE_ZEN_API_KEY}"
     }
   },
   "litellm": {
@@ -191,7 +193,7 @@ The only behavioral change is in dual-provider mode. Previously, both `model` an
 }
 ```
 
-As a fallback credential store, `auth.json` is seeded at `~/.local/share/opencode/auth.json` with entries for each available provider. When `OPENCODE_API_KEY` is set, an `opencode` entry is written; when `OPENAI_API_KEY` is set, a `litellm` entry is written. The seeding guard uses OR logic (`$_has_opencode_key || $_has_openai_creds`), so even when `OPENCODE_API_KEY` is unset (the `.env.example` default), the litellm proxy credential is seeded — letting OpenCode CLI resolve at least one credential (the litellm proxy) without a built-in Zen key. This covers code paths that read credentials from the auth store rather than the config provider block, and resolves the 'OpenCode unavailable (0 credentials)' report from the righthand-man orchestrator profile (PRD.md §19.3 CA-30-A). Additionally, `OPENCODE_API_KEY` is passed explicitly through `su` in `service-opencode.sh` so that the environment variable is available to the `hermeswebui` user when `opencode serve` starts.
+As a fallback credential store, `auth.json` is seeded at `~/.local/share/opencode/auth.json` with entries for each available provider. When `OPENCODE_ZEN_API_KEY` is set, an `opencode` entry is written; when `OPENAI_API_KEY` is set, a `litellm` entry is written. The seeding guard uses OR logic (`$_has_opencode_key || $_has_openai_creds`), so even when `OPENCODE_ZEN_API_KEY` is unset (the `.env.example` default), the litellm proxy credential is seeded — letting OpenCode CLI resolve at least one credential (the litellm proxy) without a built-in Zen key. This covers code paths that read credentials from the auth store rather than the config provider block, and resolves the 'OpenCode unavailable (0 credentials)' report from the righthand-man orchestrator profile (PRD.md §19.3 CA-30-A). Additionally, `OPENCODE_ZEN_API_KEY` is passed explicitly through `su` in `service-opencode.sh` so that the environment variable is available to the `hermeswebui` user when `opencode serve` starts.
 
 ### Runtime environment detection
 
@@ -207,14 +209,14 @@ The entrypoint sources `lib/runtime-env.sh`, which provides two helpers for adap
 
 ### Zen API key validation
 
-At startup, the entrypoint calls `validate_opencode_zen_key()` (sourced from `lib/validate-opencode.sh`), which makes an **outbound HTTP request** to `https://opencode.ai/zen/v1/models` using the `OPENCODE_API_KEY` to verify the key is valid. This call has a 10-second timeout. If the key is empty, the check is skipped with an informational message. If the key is set but validation fails, a warning is logged — the container always continues starting (non-fatal). This validation helps catch invalid keys early instead of discovering 401 errors during first use.
+At startup, the entrypoint calls `validate_opencode_zen_key()` (sourced from `lib/validate-opencode.sh`), which makes an **outbound HTTP request** to `https://opencode.ai/zen/v1/models` using the `OPENCODE_ZEN_API_KEY` to verify the key is valid. This call has a 10-second timeout. If the key is empty, the check is skipped with an informational message. If the key is set but validation fails, a warning is logged — the container always continues starting (non-fatal). This validation helps catch invalid keys early instead of discovering 401 errors during first use.
 
 ### Startup outbound calls
 
 | Call | URL | Trigger | Timeout | Fatal? |
 |------|-----|---------|---------|--------|
 | Model discovery | `${OPENAI_BASE_URL}/models` | `OPENAI_BASE_URL` is set | 15s | Yes (falls back to single model) |
-| Zen API key validation | `https://opencode.ai/zen/v1/models` | `OPENCODE_API_KEY` is set | 10s | No |
+| Zen API key validation | `https://opencode.ai/zen/v1/models` | `OPENCODE_ZEN_API_KEY` is set | 10s | No |
 
 ### Config path resolution
 

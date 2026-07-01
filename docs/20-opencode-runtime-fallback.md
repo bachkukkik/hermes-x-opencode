@@ -66,7 +66,7 @@ A bare id (no `opencode/` or `litellm/` prefix) routes to the `litellm` provider
 A resilience-focused deployment running a free primary on OpenCode Zen with a self-hosted fallback served by `llama.cpp` behind a LiteLLM proxy:
 
 ```dotenv
-OPENCODE_API_KEY=sk-zc-...
+OPENCODE_ZEN_API_KEY=sk-zc-...
 OPENCODE_DEFAULT_MODEL=opencode/deepseek-v4-flash-free
 OPENCODE_FALLBACK_MODEL=llama_cpp/qwen3.6-27b-q4_k_m
 OPENAI_BASE_URL=https://litellm-sw.example.com/v1

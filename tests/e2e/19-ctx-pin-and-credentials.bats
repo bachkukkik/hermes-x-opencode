@@ -54,7 +54,7 @@ setup() {
     [ "$output" = "$HERMES_COMPRESSION_THRESHOLD" ]
 }
 
-@test "CRED1: auth.json seeds litellm credential when OPENCODE_API_KEY unset but OPENAI_API_KEY set" {
+@test "CRED1: auth.json seeds litellm credential when OPENCODE_ZEN_API_KEY unset but OPENAI_API_KEY set" {
     # CA-30-A: with OPENAI_API_KEY + OPENAI_BASE_URL set, config-opencode.sh
     # seeds auth['litellm'] = {'apiKey': ai_key}, so opencode CLI resolves
     # >=1 credential even without an opencode Zen key.

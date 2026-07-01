@@ -42,7 +42,7 @@ The function performs these steps in order:
    - `${HERMES_HOME}/opencode_server_password` — persisted alongside other Hermes state files
    Both files are `chown`ed to the `OPENCODE_USER` (hermeswebui).
 4. **State directory** — Creates `${OPENCODE_USER_HOME}/.local/state` and `chown`s it, since opencode serve writes runtime state there.
-5. **API key passthrough** — Reads `OPENCODE_API_KEY`, `OPENAI_API_KEY`, and `OPENAI_BASE_URL` from the entrypoint environment and passes them explicitly into the `su` command. Without this, the `{env:VAR}` placeholders in `opencode.jsonc` resolve to empty strings inside the dropped-privilege process, causing 401 errors from the litellm provider.
+5. **API key passthrough** — Reads `OPENCODE_ZEN_API_KEY`, `OPENAI_API_KEY`, and `OPENAI_BASE_URL` from the entrypoint environment and passes them explicitly into the `su` command. Without this, the `{env:VAR}` placeholders in `opencode.jsonc` resolve to empty strings inside the dropped-privilege process, causing 401 errors from the litellm provider.
 6. **Launch** — Starts `opencode serve --port 4096 --hostname 0.0.0.0` in the background under the `OPENCODE_USER` via `su -s /bin/bash`. Prints the child PID to logs.
 
 #### Entrypoint integration
