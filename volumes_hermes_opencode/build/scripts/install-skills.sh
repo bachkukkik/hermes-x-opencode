@@ -76,10 +76,12 @@ for skill_path in "${OPENAI_SKILLS[@]}"; do
 done
 
 # Also install yeet as a Hermes skill (under github/ category)
-rm -rf "$HERMES_SKILLS_DIR/github/yeet"
-mkdir -p "$HERMES_SKILLS_DIR/github/yeet"
-cp "$OPENCODE_SKILLS_DIR/yeet/SKILL.md" "$HERMES_SKILLS_DIR/github/yeet/SKILL.md"
-eprintf "  Installed yeet -> hermes/github/"
+if [ -f "$OPENCODE_SKILLS_DIR/yeet/SKILL.md" ]; then
+  rm -rf "$HERMES_SKILLS_DIR/github/yeet"
+  mkdir -p "$HERMES_SKILLS_DIR/github/yeet"
+  cp "$OPENCODE_SKILLS_DIR/yeet/SKILL.md" "$HERMES_SKILLS_DIR/github/yeet/SKILL.md"
+  eprintf "  Installed yeet -> hermes/github/"
+fi
 
 # GitHub category description
 if [ ! -f "$HERMES_SKILLS_DIR/github/DESCRIPTION.md" ]; then
@@ -111,6 +113,14 @@ for skill_path in "${KARPATHY_SKILLS[@]}"; do
   cp -r "$KARPATHY_TMP/$skill_path" "$OPENCODE_SKILLS_DIR/$skill_name"
   rm -rf "$OPENCODE_SKILLS_DIR/$skill_name/.git"
 done
+
+# Also install karpathy-guidelines as a Hermes skill (under software-development/)
+if [ -f "$OPENCODE_SKILLS_DIR/karpathy-guidelines/SKILL.md" ]; then
+  rm -rf "$HERMES_SKILLS_DIR/software-development/karpathy-guidelines"
+  mkdir -p "$HERMES_SKILLS_DIR/software-development/karpathy-guidelines"
+  cp "$OPENCODE_SKILLS_DIR/karpathy-guidelines/SKILL.md" "$HERMES_SKILLS_DIR/software-development/karpathy-guidelines/SKILL.md"
+  eprintf "  Installed karpathy-guidelines -> hermes/software-development/"
+fi
 
 # ==============================================================================
 # --- bachkukkik/coding-agents-docs-guideline (1 skill) ---

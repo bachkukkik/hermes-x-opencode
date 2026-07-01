@@ -71,7 +71,7 @@ This copy is near-instant because the data is already in the image layer. The `g
 |---|--------|-----------------|-------|--------------|
 | 1 | `anthropics/skills` | OpenCode | 6 | Sparse (`--filter=blob:none --sparse`) |
 | 2 | `openai/skills` | OpenCode | 4 | Sparse |
-| 3 | `multica-ai/andrej-karpathy-skills` | OpenCode | 1 | Sparse |
+| 3 | `multica-ai/andrej-karpathy-skills` | OpenCode + Hermes | 1 | Sparse |
 | 4 | `bachkukkik/coding-agents-docs-guideline` | OpenCode | 1 | Shallow (`--depth 1`) |
 | 5 | `bachkukkik/opencode-plan-build-orchestrator` | OpenCode + Hermes | 1 | Shallow |
 | 6 | `phuryn/pm-skills` | Hermes | ~55 | Shallow |
@@ -114,6 +114,15 @@ Same sparse checkout and copy pattern as Source 1.
 ### Source 3: multica-ai/andrej-karpathy-skills
 
 Installs one skill (`karpathy-guidelines`) from the community-maintained Karpathy guidelines repository. Uses sparse checkout to download only the required directory.
+
+The skill is dual-installed to both platforms:
+
+| Platform | Path |
+|----------|------|
+| OpenCode | `$OPENCODE_SKILLS_DIR/karpathy-guidelines/` |
+| Hermes | `$HERMES_SKILLS_DIR/software-development/karpathy-guidelines/` |
+
+A presence guard (`if [ -f ... ]`) ensures the copy is a no-op if the source SKILL.md is missing, matching the pattern used by `yeet` and `opencode-plan-build-orchestrator`.
 
 ### Source 4: coding-agents-docs-guideline
 
@@ -234,7 +243,7 @@ Expected build output:
 ```
 === anthropics/skills (6 opencode skills) ===
 === openai/skills (4 opencode skills) ===
-=== multica-ai/andrej-karpathy-skills (1 opencode skill) ===
+=== multica-ai/andrej-karpathy-skills (1 opencode + hermes skill) ===
 === coding-agents-docs-guideline (1 opencode skill) ===
 === opencode-plan-build-orchestrator (opencode + hermes) ===
 === phuryn/pm-skills (hermes product-management skills) ===

@@ -89,6 +89,14 @@ sys.exit(0 if combined.strip() else 1)
     [ "$missing" -eq 0 ]
 }
 
+@test "D2.2b: karpathy-guidelines is dual-installed to Hermes skills dir" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" test -f "/home/hermeswebui/.hermes/skills/software-development/karpathy-guidelines/SKILL.md"
+    [ "$status" -eq 0 ]
+}
+
 @test "D2.3: AGENTS.md is present in workspace" {
     local cid
     cid=$(get_container)

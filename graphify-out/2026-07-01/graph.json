@@ -3254,7 +3254,7 @@
       "label": "Source 4: coding-agents-docs-guideline",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L127",
+      "source_location": "L118",
       "id": "docs_11_skill_installation_source_4_coding_agents_docs_guideline",
       "community": 4,
       "norm_label": "source 4: coding-agents-docs-guideline"
@@ -3263,7 +3263,7 @@
       "label": "Source 5: opencode-plan-build-orchestrator",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L131",
+      "source_location": "L122",
       "id": "docs_11_skill_installation_source_5_opencode_plan_build_orchestrator",
       "community": 4,
       "norm_label": "source 5: opencode-plan-build-orchestrator"
@@ -3272,7 +3272,7 @@
       "label": "Source 6: phuryn/pm-skills",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L142",
+      "source_location": "L133",
       "id": "docs_11_skill_installation_source_6_phuryn_pm_skills",
       "community": 4,
       "norm_label": "source 6: phuryn/pm-skills"
@@ -3281,7 +3281,7 @@
       "label": "Source 7: llm-wiki (from hermes-agent staging)",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L149",
+      "source_location": "L140",
       "id": "docs_11_skill_installation_source_7_llm_wiki_from_hermes_agent_staging",
       "community": 4,
       "norm_label": "source 7: llm-wiki (from hermes-agent staging)"
@@ -3290,7 +3290,7 @@
       "label": "Source 8: graphify",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L162",
+      "source_location": "L153",
       "id": "docs_11_skill_installation_source_8_graphify",
       "community": 4,
       "norm_label": "source 8: graphify"
@@ -3299,7 +3299,7 @@
       "label": "Sparse clone helper",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L188",
+      "source_location": "L179",
       "id": "docs_11_skill_installation_sparse_clone_helper",
       "community": 4,
       "norm_label": "sparse clone helper"
@@ -3308,7 +3308,7 @@
       "label": "Platform skill discovery",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L199",
+      "source_location": "L190",
       "id": "docs_11_skill_installation_platform_skill_discovery",
       "community": 4,
       "norm_label": "platform skill discovery"
@@ -3317,7 +3317,7 @@
       "label": "Skip mechanisms",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L206",
+      "source_location": "L197",
       "id": "docs_11_skill_installation_skip_mechanisms",
       "community": 4,
       "norm_label": "skip mechanisms"
@@ -3326,7 +3326,7 @@
       "label": "Verification section",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L212",
+      "source_location": "L203",
       "id": "docs_11_skill_installation_verification_section",
       "community": 4,
       "norm_label": "verification section"
@@ -3335,7 +3335,7 @@
       "label": "Timing impact",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L216",
+      "source_location": "L207",
       "id": "docs_11_skill_installation_timing_impact",
       "community": 4,
       "norm_label": "timing impact"
@@ -3344,7 +3344,7 @@
       "label": "Verification",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L223",
+      "source_location": "L214",
       "id": "docs_11_skill_installation_verification",
       "community": 4,
       "norm_label": "verification"
@@ -3353,7 +3353,7 @@
       "label": "What Works",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L261",
+      "source_location": "L252",
       "id": "docs_11_skill_installation_what_works",
       "community": 4,
       "norm_label": "what works"
@@ -3362,7 +3362,7 @@
       "label": "What Fails",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L276",
+      "source_location": "L267",
       "id": "docs_11_skill_installation_what_fails",
       "community": 4,
       "norm_label": "what fails"
@@ -3371,7 +3371,7 @@
       "label": "Resolution",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L285",
+      "source_location": "L276",
       "id": "docs_11_skill_installation_resolution",
       "community": 4,
       "norm_label": "resolution"
@@ -3380,7 +3380,7 @@
       "label": "Verdict",
       "file_type": "document",
       "source_file": "docs/11-skill-installation.md",
-      "source_location": "L293",
+      "source_location": "L284",
       "id": "docs_11_skill_installation_verdict",
       "community": 4,
       "norm_label": "verdict"
@@ -9200,9 +9200,9 @@
       "source_file": "PRD.md",
       "source_location": "L852",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy"
+      "target": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -9210,9 +9210,9 @@
       "source_file": "PRD.md",
       "source_location": "L1018",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_prd_hermes_x_opencode_docker_stack",
-      "target": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a"
+      "target": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10020,9 +10020,9 @@
       "source_file": "PRD.md",
       "source_location": "L854",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_18_1_summary"
+      "target": "prd_18_1_summary",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10030,9 +10030,9 @@
       "source_file": "PRD.md",
       "source_location": "L862",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_18_2_problem"
+      "target": "prd_18_2_problem",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10040,9 +10040,9 @@
       "source_file": "PRD.md",
       "source_location": "L883",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_18_3_objective"
+      "target": "prd_18_3_objective",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10050,9 +10050,9 @@
       "source_file": "PRD.md",
       "source_location": "L898",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_18_4_constraints"
+      "target": "prd_18_4_constraints",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10060,9 +10060,9 @@
       "source_file": "PRD.md",
       "source_location": "L911",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_18_5_solution"
+      "target": "prd_18_5_solution",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10070,9 +10070,9 @@
       "source_file": "PRD.md",
       "source_location": "L938",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_18_6_success_criteria_verification"
+      "target": "prd_18_6_success_criteria_verification",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10080,9 +10080,9 @@
       "source_file": "PRD.md",
       "source_location": "L950",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_18_7_context_length_resolution_chain_reference"
+      "target": "prd_18_7_context_length_resolution_chain_reference",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10090,9 +10090,9 @@
       "source_file": "PRD.md",
       "source_location": "L1013",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_assumptions_1013"
+      "target": "prd_assumptions_1013",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10100,9 +10100,9 @@
       "source_file": "PRD.md",
       "source_location": "L1007",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_changes_1007"
+      "target": "prd_changes_1007",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10110,9 +10110,9 @@
       "source_file": "PRD.md",
       "source_location": "L975",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_gap_matrix_intended_vs_implemented"
+      "target": "prd_gap_matrix_intended_vs_implemented",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10120,9 +10120,9 @@
       "source_file": "PRD.md",
       "source_location": "L987",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_non_gaps_verified_no_action_987"
+      "target": "prd_non_gaps_verified_no_action_987",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10130,9 +10130,9 @@
       "source_file": "PRD.md",
       "source_location": "L966",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_problem_966"
+      "target": "prd_problem_966",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10140,9 +10140,9 @@
       "source_file": "PRD.md",
       "source_location": "L970",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_root_causes_970"
+      "target": "prd_root_causes_970",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10150,9 +10150,9 @@
       "source_file": "PRD.md",
       "source_location": "L997",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_18_bare_metal_host_setup_model_discovery_context_length_accuracy",
-      "target": "prd_success_criteria_997"
+      "target": "prd_success_criteria_997",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10160,9 +10160,9 @@
       "source_file": "PRD.md",
       "source_location": "L1116",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_10_verification_policy"
+      "target": "prd_19_10_verification_policy",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10170,9 +10170,9 @@
       "source_file": "PRD.md",
       "source_location": "L1020",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_1_summary"
+      "target": "prd_19_1_summary",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10180,9 +10180,9 @@
       "source_file": "PRD.md",
       "source_location": "L1030",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_2_background_why_these_issues_live_here"
+      "target": "prd_19_2_background_why_these_issues_live_here",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10190,9 +10190,9 @@
       "source_file": "PRD.md",
       "source_location": "L1042",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_3_problem_triage_intended_vs_implemented"
+      "target": "prd_19_3_problem_triage_intended_vs_implemented",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10200,9 +10200,9 @@
       "source_file": "PRD.md",
       "source_location": "L1050",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_4_non_gaps_verified_no_action"
+      "target": "prd_19_4_non_gaps_verified_no_action",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10210,9 +10210,9 @@
       "source_file": "PRD.md",
       "source_location": "L1058",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_5_objective"
+      "target": "prd_19_5_objective",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10220,9 +10220,9 @@
       "source_file": "PRD.md",
       "source_location": "L1071",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_6_success_criteria_verification"
+      "target": "prd_19_6_success_criteria_verification",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10230,9 +10230,9 @@
       "source_file": "PRD.md",
       "source_location": "L1081",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_7_solution"
+      "target": "prd_19_7_solution",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10240,9 +10240,9 @@
       "source_file": "PRD.md",
       "source_location": "L1099",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_8_assumptions_surfaced_karpathy_guidelines"
+      "target": "prd_19_8_assumptions_surfaced_karpathy_guidelines",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -10250,9 +10250,9 @@
       "source_file": "PRD.md",
       "source_location": "L1107",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "prd_19_issue_triage_context_length_pin_ca_31_a_compression_threshold_transport_ca_31_b_opencode_credential_resolution_ca_30_a",
-      "target": "prd_19_9_changes"
+      "target": "prd_19_9_changes",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -12150,9 +12150,9 @@
       "source_file": "docs/10-model-discovery.md",
       "source_location": "L125",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "docs_10_model_discovery_how",
-      "target": "docs_10_model_discovery_hermes_context_length_pin_table"
+      "target": "docs_10_model_discovery_hermes_context_length_pin_table",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -17625,5 +17625,5 @@
       "source_file": "docs/17-wiki-init.md"
     }
   ],
-  "built_at_commit": "d876f3629436284c17627cbfb2ed0d088f0f6db7"
+  "built_at_commit": "01af9615d05db6603772be91c02626ea877fe0f6"
 }
