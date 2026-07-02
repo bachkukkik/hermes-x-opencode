@@ -23,7 +23,7 @@ setup() {
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; source /usr/local/bin/lib/service-webui.sh; declare -f start_webui'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"start_webui()"* ]]
+    [[ "$output" == *"start_webui ()"* ]]
 }
 
 @test "AC172: start_webui creates state, workspace, and UV cache dirs" {

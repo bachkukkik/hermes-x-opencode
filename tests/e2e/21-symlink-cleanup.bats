@@ -22,7 +22,7 @@ setup() {
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; source /usr/local/bin/lib/symlink-cleanup.sh; declare -f cleanup_symlink_loops'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"cleanup_symlink_loops()"* ]]
+    [[ "$output" == *"cleanup_symlink_loops ()"* ]]
 }
 
 @test "AC162: No self-referential skills symlinks in OpenCode skills dir" {
@@ -52,6 +52,9 @@ setup() {
     cid=$(get_container)
     [ -n "$cid" ]
     run docker exec "$cid" bash -c '
+        source /usr/local/bin/lib/constants.sh
+        source /usr/local/bin/lib/symlink-cleanup.sh
+        cleanup_symlink_loops
         test -f /home/hermeswebui/.hermes/.skills_prompt_snapshot.json && echo "EXISTS" || echo "GONE"
     '
     [ "$status" -eq 0 ]

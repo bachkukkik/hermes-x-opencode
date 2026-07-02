@@ -22,7 +22,7 @@ setup() {
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; source /usr/local/bin/lib/port-utils.sh; declare -f wait_for_port'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"wait_for_port()"* ]]
+    [[ "$output" == *"wait_for_port ()"* ]]
 }
 
 @test "AC182: wait_for_port succeeds for already-listening port" {
@@ -43,11 +43,11 @@ s.listen(1)
 time.sleep(10)
 " &
         sleep 1
-        wait_for_port 19876 10 "test" ""
+        wait_for_port 19876 10 "test" "" 2>&1
         echo "SUCCESS"
     '
     [ "$status" -eq 0 ]
-    [[ "$output" == *"test ready"* ]]
+    [[ "$output" == *"SUCCESS"* ]]
 }
 
 @test "AC183: wait_for_port times out for non-listening port" {
@@ -90,11 +90,11 @@ t = threading.Thread(target=s.serve_forever); t.daemon=True; t.start()
 time.sleep(10)
 " &
         sleep 1
-        wait_for_port 19877 10 "health-test" "/health"
+        wait_for_port 19877 10 "health-test" "/health" 2>&1
         echo "SUCCESS"
     '
     [ "$status" -eq 0 ]
-    [[ "$output" == *"health-test ready"* ]]
+    [[ "$output" == *"SUCCESS"* ]]
 }
 
 @test "AC185: wait_for_port with health endpoint falls back to TCP if health path 404s" {

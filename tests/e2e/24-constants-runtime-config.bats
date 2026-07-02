@@ -144,7 +144,7 @@ setup() {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$OPENAI_DEFAULT_MODEL"'
+    run docker exec "$cid" bash -c 'unset OPENAI_DEFAULT_MODEL; source /usr/local/bin/lib/constants.sh; echo "$OPENAI_DEFAULT_MODEL"'
     [ "$status" -eq 0 ]
     [[ "$output" == *"openai/gpt-4o"* ]]
 }
@@ -153,7 +153,7 @@ setup() {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$HERMES_DEFAULT_MODEL:$OPENCODE_DEFAULT_MODEL"'
+    run docker exec "$cid" bash -c 'unset OPENAI_DEFAULT_MODEL HERMES_DEFAULT_MODEL OPENCODE_DEFAULT_MODEL; source /usr/local/bin/lib/constants.sh; echo "$HERMES_DEFAULT_MODEL:$OPENCODE_DEFAULT_MODEL"'
     [ "$status" -eq 0 ]
     # When HERMES_DEFAULT_MODEL and OPENCODE_DEFAULT_MODEL are not set, they
     # fall back to OPENAI_DEFAULT_MODEL which defaults to openai/gpt-4o

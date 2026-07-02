@@ -22,7 +22,7 @@ setup() {
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; source /usr/local/bin/lib/seed-volumes.sh; declare -f seed_volumes'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"seed_volumes()"* ]]
+    [[ "$output" == *"seed_volumes ()"* ]]
 }
 
 @test "AC152: OpenCode skills directory exists after seeding" {
