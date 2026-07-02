@@ -2,15 +2,16 @@
 
 # Start the Hermes WebUI frontend (chat UI on :8787). Ensures state/workspace/cache
 # directories exist with correct ownership, then launches /hermeswebui_init.bash
-# under the $OPENCODE_USER account in the background.
+# in the background. Runs as PID1 (root) — the WebUI init script handles its own
+# user setup internally, so do NOT wrap in su (avoids UID mismatch in CI).
 start_webui() {
-    echo "== Starting Hermes WebUI..."
+    log "Starting Hermes WebUI..."
     mkdir -p "${HERMES_WEBUI_STATE_DIR:-${HERMES_HOME}/webui}" \
         "${HERMES_WEBUI_DEFAULT_WORKSPACE:-/workspace}" \
         "${UV_CACHE_DIR:-/uv_cache}"
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" \
         "${HERMES_WEBUI_STATE_DIR:-${HERMES_HOME}/webui}" 2>/dev/null || true
-    su -s /bin/bash "$OPENCODE_USER" -c "/hermeswebui_init.bash" &
+    /hermeswebui_init.bash &
     local pid=$!
-    echo "== Hermes WebUI started (PID: $pid)"
+    log "Hermes WebUI started (PID: $pid)"
 }
