@@ -42,7 +42,7 @@ generate_config() {
     local api_key="${HERMES_API_KEY:-}"
     if [ -z "$api_key" ]; then
         api_key="hermes-$(openssl rand -hex 16)"
-        echo "== Generated random HERMES_API_KEY: $api_key"
+        log "Generated random HERMES_API_KEY: $api_key"
     fi
 
     local yolo_mode="${HERMES_YOLO_MODE:-1}"
@@ -80,8 +80,16 @@ goals:
   max_turns: ${goal_max_turns}
 "
 
+    local compression_block=""
+    if [ -n "${HERMES_COMPRESSION_THRESHOLD:-}" ]; then
+        compression_block="
+compression:
+  threshold: ${HERMES_COMPRESSION_THRESHOLD}
+"
+    fi
+
     if [ -z "${OPENAI_BASE_URL:-}" ]; then
-        echo "!! No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
+        warn "No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
         cat > "$CONFIG" << YAMLEOF
 model:
   provider: litellm
@@ -106,7 +114,7 @@ platforms:
       cors_origins: "*"
 ${approvals_block}${delegation_block}
 YAMLEOF
-        echo "== Wrote minimal config.yaml."
+        log "Wrote minimal config.yaml."
         return
     fi
 
@@ -145,6 +153,9 @@ YAMLEOF
         browser_block="
 browser:
   cdp_url: http://127.0.0.1:9222
+  viewport:
+    width: ${BROWSER_DISPLAY_WIDTH:-1920}
+    height: ${BROWSER_DISPLAY_HEIGHT:-1080}
 "
     fi
 
@@ -180,10 +191,10 @@ platforms:
       port: 8642
       key: "${api_key}"
       cors_origins: "*"
-${browser_block}${skills_block}${approvals_block}${goals_block}${delegation_block}
+${browser_block}${skills_block}${approvals_block}${goals_block}${compression_block}${delegation_block}
 YAMLEOF
 
-    echo "== Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."
+    log "Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."
 }
 
 # Append skills.external_dirs to config.yaml — called AFTER ensure_agent()
@@ -191,7 +202,7 @@ YAMLEOF
 append_skills_external_dirs() {
     local optional_skills_dir="${HERMES_HOME}/hermes-agent/optional-skills"
     if [ ! -d "$optional_skills_dir" ]; then
-        echo "!! optional-skills dir not found at $optional_skills_dir, skipping external_dirs."
+        warn "optional-skills dir not found at $optional_skills_dir, skipping external_dirs."
         return
     fi
     # Only add if not already present
@@ -204,5 +215,5 @@ skills:
   external_dirs:
     - ${optional_skills_dir}
 YAMLEOF
-    echo "== Appended skills.external_dirs -> ${optional_skills_dir}"
+    log "Appended skills.external_dirs -> ${optional_skills_dir}"
 }

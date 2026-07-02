@@ -28,3 +28,6 @@ Architecture deep-dives for the Hermes x OpenCode Docker stack. Each doc follows
 | 22 | [22 — Profiles and the Righthand-Man Orchestrator](22-profiles.md) | Profiles |
 | 23 | [23 — Browser Persistence](23-browser-persistence.md) | Browser/VNC |
 | 24 | [24 — WebUI API](24-webui-api.md) | WebUI API |
+| 25 | [25 — Seed Volumes](25-seed-volumes.md) | Volume Seeding |
+| 26 | [26 — Symlink Cleanup](26-symlink-cleanup.md) | Symlink Cleanup |
+| 27 | [27 — Service WebUI Startup](27-service-webui.md) | WebUI Service |
