@@ -4,7 +4,7 @@ ARG HERMES_AGENT_VERSION=main
 
 RUN apt-get update -y --no-install-recommends \
     && apt-get install -y --no-install-recommends \
-       build-essential git ripgrep ffmpeg procps curl \
+       build-essential git ripgrep ffmpeg procps curl netcat-openbsd \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

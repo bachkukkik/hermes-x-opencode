@@ -1,31 +1,43 @@
-# lib/port-utils.sh - TCP port readiness polling - sourced by entrypoint.sh
+# lib/port-utils.sh - TCP port readiness polling with optional health endpoint - sourced by entrypoint.sh
 
 # Poll a TCP port until it accepts a connection or the timeout is reached.
-# Uses bash /dev/tcp (no external deps). Does NOT exit on timeout — caller decides.
+# Optionally checks an HTTP health endpoint before declaring the port ready.
+# Uses curl for health checks and nc -z as fallback (more reliable than /dev/tcp).
+# Does NOT exit on timeout — caller decides.
 #
 # Args:
-#   $1: port number (default: 4096)
-#   $2: timeout in seconds (default: 30)
-#   $3: label used in log lines (default: "service")
+#   $1: port number
+#   $2: timeout in seconds (default: 120)
+#   $3: label used in log lines (default: "port $1")
+#   $4: HTTP health path to check (default: /health) — set to empty string to skip
 #
 # Returns:
-#   0 if the port accepts a connection within the timeout
+#   0 if the port is ready within the timeout
 #   1 on timeout
 wait_for_port() {
-    local port="${1:-4096}"
-    local timeout="${2:-30}"
-    local label="${3:-service}"
+    local port=$1
+    local max_wait=${2:-120}
+    local label=${3:-"port $port"}
+    local health_path=${4:-/health}
     local elapsed=0
-    echo "== ${label}: waiting for :${port} (0/${timeout}s)"
-    while ! (exec 3<>"/dev/tcp/127.0.0.1/${port}") >/dev/null 2>&1; do
-        sleep 5
-        elapsed=$((elapsed + 5))
-        if [ "$elapsed" -ge "$timeout" ]; then
-            echo "!! ${label}: timeout waiting for :${port} after ${timeout}s"
+
+    log "Waiting for $label on :$port (timeout: ${max_wait}s)..."
+    while true; do
+        if [ -n "$health_path" ] && curl -sf "http://localhost:${port}${health_path}" >/dev/null 2>&1; then
+            break
+        fi
+        if nc -z localhost "$port" 2>/dev/null; then
+            if [ -n "$health_path" ]; then
+                log "$label port :$port is up (health endpoint $health_path not available)"
+            fi
+            break
+        fi
+        sleep 2
+        elapsed=$((elapsed + 2))
+        if [ "$elapsed" -ge "$max_wait" ]; then
+            warn "Timeout waiting for $label on :$port after ${max_wait}s"
             return 1
         fi
-        echo "== ${label}: waiting for :${port} (${elapsed}/${timeout}s)"
     done
-    echo "== ${label}: port ${port} ready (after ${elapsed}s)"
-    return 0
+    log "$label ready on :$port (${elapsed}s)"
 }

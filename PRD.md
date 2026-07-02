@@ -1320,3 +1320,35 @@ All changes verified by:
 2. Functional unit tests for `resolve_ctx_len()` (SC-31-1, SC-31-3) and auth.json seeding (SC-30-1).
 3. Full bats suite (`tests/run.sh`) — no regressions.
 4. `git diff --stat` reconciliation after each wave to catch scope creep.
+
+## 22. Feature Parity Bridge: vanilla-open-design
+
+`vanilla-open-design` is a superset fork of this repo with divergent architecture: it adds an OD daemon (`service-daemon.sh`), an auth proxy (`service-auth-proxy.sh`), code-server (`service-code-server.sh`), and Docker-in-Docker (`service-dind.sh`) on top of the shared Docker stack. These are architectural additions not part of the hermes-x-opencode scope.
+
+This section tracks what was **PORTED** from vanilla-open-design (shared improvements to config generation, lib modules, seeding) versus what was intentionally **SKIPPED** (divergent services outside this repo's scope). Wave 1 and T4/T5 already applied the code changes; this section records the decisions.
+
+### Gap Matrix
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Parameterized constants (`log`/`warn` helpers, env-driven defaults) | PORTED | `constants.sh` now uses `${HERMES_HOME}` + runtime config |
+| `seed-volumes.sh` (skill/root/volume seeding) | PORTED | Replaces inline skill-staging in entrypoint.sh |
+| `mock-llm-server.sh` (inline CI mock LLM) | PORTED | Lib module version for entrypoint; standalone `tests/mock-llm-server.sh` kept |
+| `symlink-cleanup.sh` (symlink loop removal) | PORTED | Prevents recursive symlink issues in skills dirs |
+| `service-webui.sh` (modular WebUI startup) | PORTED | Wraps `/hermeswebui_init.bash` in `start_webui()` |
+| `port-utils.sh` health endpoint checking | PORTED | `wait_for_port()` now accepts HTTP health path as $4 |
+| `config-hermes.sh` compression threshold | PORTED | `HERMES_COMPRESSION_THRESHOLD` transported to config.yaml |
+| `config-hermes.sh` browser viewport dimensions | PORTED | `BROWSER_DISPLAY_WIDTH`/`HEIGHT` in browser config block |
+| OD daemon (`service-daemon.sh`) | SKIPPED | N/A — hermes-x-opencode has no OD daemon |
+| Auth proxy (`service-auth-proxy.sh`) | SKIPPED | N/A — handled via Dokploy reverse proxy per instance |
+| code-server (`service-code-server.sh`) | SKIPPED | N/A — not part of hermes-x-opencode scope |
+| Docker-in-Docker (`service-dind.sh`) | SKIPPED | N/A — not part of hermes-x-opencode scope |
+| `docker-compose.dokploy.yml` | SKIPPED | Dokploy config set via env vars per instance, not tracked |
+| `docker-compose.dind.yml` | SKIPPED | N/A — DinD not in scope |
+| `docker-compose.dev.yml` | SKIPPED | hx uses `docker-compose.override.yml` convention |
+
+### Code Duplication Audit
+
+- No cross-module function name collisions across `lib/*.sh` (verified via `grep -h '^[a-z_]*()' lib/*.sh | sort | uniq -d`)
+- `install-skills.sh` skill list is intentionally duplicated from Dockerfile COPY block — different lifecycle (build-time vs runtime)
+- `tests/mock-llm-server.sh` standalone script coexists with `lib/mock-llm-server.sh` — standalone for manual testing, lib for entrypoint startup
