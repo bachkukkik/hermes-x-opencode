@@ -183,7 +183,9 @@ setup() {
     cid=$(get_container)
     [ -n "$cid" ]
     run docker exec "$cid" bash -c '
-        HERMES_YOLO_MODE=0 HERMES_DASHBOARD_ENABLED=true source /usr/local/bin/lib/constants.sh
+        export HERMES_YOLO_MODE=0
+        export HERMES_DASHBOARD_ENABLED=true
+        source /usr/local/bin/lib/constants.sh
         echo "$HERMES_YOLO_MODE:$HERMES_DASHBOARD_ENABLED"
     '
     [ "$status" -eq 0 ]
