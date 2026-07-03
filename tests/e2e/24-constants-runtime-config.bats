@@ -81,7 +81,7 @@ setup() {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$HERMES_DELEGATION_MAX_ITERATIONS"'
+    run docker exec "$cid" bash -c 'unset HERMES_DELEGATION_MAX_ITERATIONS; source /usr/local/bin/lib/constants.sh; echo "$HERMES_DELEGATION_MAX_ITERATIONS"'
     [ "$status" -eq 0 ]
     [[ "$output" == *"50"* ]]
 }
@@ -90,7 +90,7 @@ setup() {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$HERMES_GOAL_MAX_TURNS"'
+    run docker exec "$cid" bash -c 'unset HERMES_GOAL_MAX_TURNS; source /usr/local/bin/lib/constants.sh; echo "$HERMES_GOAL_MAX_TURNS"'
     [ "$status" -eq 0 ]
     [[ "$output" == *"50"* ]]
 }
@@ -135,7 +135,7 @@ setup() {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
-    run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$OPENCODE_SECURITY_MODE"'
+    run docker exec "$cid" bash -c 'unset OPENCODE_SECURITY_MODE; source /usr/local/bin/lib/constants.sh; echo "$OPENCODE_SECURITY_MODE"'
     [ "$status" -eq 0 ]
     [[ "$output" == *"strict"* ]]
 }

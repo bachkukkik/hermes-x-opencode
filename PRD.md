@@ -1352,3 +1352,46 @@ This section tracks what was **PORTED** from vanilla-open-design (shared improve
 - No cross-module function name collisions across `lib/*.sh` (verified via `grep -h '^[a-z_]*()' lib/*.sh | sort | uniq -d`)
 - `install-skills.sh` skill list is intentionally duplicated from Dockerfile COPY block — different lifecycle (build-time vs runtime)
 - `tests/mock-llm-server.sh` standalone script coexists with `lib/mock-llm-server.sh` — standalone for manual testing, lib for entrypoint startup
+
+## 23. OPENCODE_*_MODEL Provider-Prefix Convention
+
+### Problem
+
+`OPENCODE_*_MODEL` environment variables (`OPENCODE_DEFAULT_MODEL`, `OPENCODE_SMALL_MODEL`, `OPENCODE_FALLBACK_MODEL`) accepted bare model IDs (e.g., `z.ai/glm-5.2`, `llama_cpp/qwen3.6-27b-q4_k_m`) which are auto-resolved at config-generation time by `_resolve_provider_prefix()` in `config-opencode.sh`. Bare IDs route to `litellm` when `OPENAI_BASE_URL` + `OPENAI_API_KEY` are set, else `opencode` Zen. This implicit resolution is non-obvious from `.env.example` — users may not realize their model silently routes to a different provider than intended, especially when credentials change.
+
+### Decision
+
+**Always use explicit `<provider>/<model>` format for all `OPENCODE_*_MODEL` values.** The two recognized provider prefixes are:
+
+| Prefix | Routes to | Requires |
+|--------|-----------|----------|
+| `opencode/<model>` | OpenCode Zen | `OPENCODE_ZEN_API_KEY` |
+| `litellm/<model>` | Self-hosted LiteLLM proxy | `OPENAI_BASE_URL` + `OPENAI_API_KEY` |
+
+Bare IDs still work (backward compatible) but the `.env.example` comments and examples now explicitly show the prefixed form. This makes routing intent visible at a glance and prevents silent misrouting when credential availability changes.
+
+### Scope
+
+- `OPENCODE_*_MODEL` variables only — these flow through `_resolve_provider_prefix()` in `config-opencode.sh`
+- `OPENAI_*_MODEL` and `HERMES_*_MODEL` are NOT affected — they go through different resolution paths (Hermes `config.yaml` generation)
+- `.env.example` examples and comments updated; no code changes to `config-opencode.sh` needed
+
+### Changes
+
+| File | Change |
+|------|--------|
+| `.env.example` lines 19-25 | Add format preamble explaining recognized prefixes; update commented-out `OPENCODE_DEFAULT_MODEL` and `OPENCODE_SMALL_MODEL` examples to use `litellm/` prefix |
+| `.env.example` lines 36-49 | Update fallback model examples to use explicit `litellm/` prefix on each entry; update chain comment to match |
+| `.env.example` line 50 | Update active default fallback value to use `litellm/` prefix |
+
+### Verification
+
+```bash
+# All OPENCODE_* model values use explicit prefix
+grep 'OPENCODE_' .env.example | grep -v '^#' | grep -v 'opencode/' | grep -v 'litellm/'
+# ^ should return empty (no bare IDs in active defaults)
+
+# Commented examples also use explicit prefixes
+grep 'OPENCODE_.*MODEL=' .env.example
+# ^ all entries use either opencode/ or litellm/ prefix
+```
