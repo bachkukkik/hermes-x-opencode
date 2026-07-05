@@ -1395,3 +1395,119 @@ grep 'OPENCODE_' .env.example | grep -v '^#' | grep -v 'opencode/' | grep -v 'li
 grep 'OPENCODE_.*MODEL=' .env.example
 # ^ all entries use either opencode/ or litellm/ prefix
 ```
+
+## 24. Cross-Repo Gap Bridge: vanilla-open-design + host-machine (July 2026)
+
+### Source Repos
+
+| Repo | Role | Since |
+|------|------|-------|
+| `vanilla-open-design` | Downstream fork (superset) | Commits #42–#45 (bcb3378..f2c756d), since last bridge #69 / 07351f8 |
+| `hermes-x-opencode--host-machine` | Host-level config generator | Commits #4–#13 (eb24704..HEAD), all new since extraction |
+
+### Gap Matrix: vanilla-open-design (#42–#45)
+
+| Item | Source Commit | Classification | Rationale | Action |
+|------|--------------|----------------|-----------|--------|
+| Test path fix (AC170-AC171) | 03619eb (#42) | SKIP | Docker-specific test file (`37-service-webui.bats`) — container paths | — |
+| OAuth2-proxy multi-email docs | c5522b2 (#43) | SKIP | `AUTHENTICATED_EMAILS` / `EMAIL_DOMAINS` are vanilla-specific (oauth2-proxy not in this repo) | — |
+| `.env.example` enforcement language | bcb3378 (#44) | ALREADY-PRESENT | This repo's `.env.example` lines 19–24 already contain: "STRONGLY recommended to make routing intent visible and prevent silent misrouting" | Verify only — no code change |
+| Provider routing single source of truth | f2c756d (#45) | PORT | See detailed breakdown below | Refactor `config-opencode.sh` |
+
+### PORT Detail: Provider Routing Single Source of Truth (#45)
+
+Vanilla refactored `config-opencode.sh` to eliminate duplicate provider-prefix logic scattered across bash case statements. The refactor introduces three changes:
+
+#### 1. `PROVIDER_PREFIXES` constant + `normalize_model_id()` function
+
+**Current (this repo):** Two separate bash functions with hardcoded case statements:
+- `_resolve_provider_prefix()` — returns just the prefix name (`opencode` / `litellm`)
+- `_strip_provider_prefix()` — returns the model ID without prefix
+
+Callers then re-concatenate: `${default_prefix}/${default_model}`. Adding a new provider requires editing both functions + all call sites.
+
+**Target (vanilla PR #45):** One constant + one function:
+```bash
+export PROVIDER_PREFIXES="opencode litellm"
+normalize_model_id() {
+    local model="$1"
+    local pfx
+    for pfx in $PROVIDER_PREFIXES; do
+        case "$model" in ${pfx}/*) echo "$model"; return ;; esac
+    done
+    # Bare ID: litellm if proxy creds present, else opencode Zen
+    if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+        echo "litellm/${model}"
+    else
+        echo "opencode/${model}"
+    fi
+}
+```
+Adding a provider = adding one word to `PROVIDER_PREFIXES`. The function returns the FULL canonical form (`provider/model`) — no strip-then-re-concatenate dance.
+
+#### 2. Models JSON key prefix stripping
+
+**Current:** Python block uses full model IDs as map keys (e.g. `"litellm/z.ai/glm-5.2"`).
+
+**Target:** Python block reads `PROVIDER_PREFIXES` from environment, strips recognized prefixes from map keys, so the models map uses bare IDs as keys (consistent with OpenCode's convention). The full name stays in the `"name"` field.
+
+#### 3. Fallback chain uses `normalize_model_id()` directly
+
+**Current:** Fallback chain iterates entries, calls `_strip_provider_prefix()` + `_resolve_provider_prefix()`, then re-concatenates.
+
+**Target:** Fallback chain calls `normalize_model_id()` once per entry — single call, no re-concatenation.
+
+#### What stays unchanged
+
+- Security mode permission blocks (yolo/standard/strict) — untouched
+- Root config copy (Fix #28) — untouched
+- Auth.json seeding (CA-30-A) — untouched
+- Fallback.jsonc seeding (#55) — untouched
+- Root data dir symlink (Fix #29) — untouched
+- `get_limits()` logic — untouched (vanilla's version already identical)
+- Plugin list and `$schema` — untouched
+
+### Gap Matrix: host-machine (#4–#13)
+
+| Item | Source Commit(s) | Classification | Rationale | Action |
+|------|-----------------|----------------|-----------|--------|
+| `export-env.sh` generation | ce9083e (#10), 8125b8c (#11) | SKIP | Container environment already has all env vars set — no need for a sourceable export script | — |
+| `--apply` flag | ce9083e (#10) | SKIP | Host-only install→generate→apply workflow; container uses direct file writes | — |
+| Shell integration | 8149e0d (#12) | SKIP | Host-only `.bashrc` sourcing; container has no shell profile | — |
+| CI pipeline + mock server | b301af3 (#9), f8c2e1c (#13) | SKIP | Docker stack has its own CI (`tests/run.sh`, `tests/mock-llm-server.sh`) | — |
+| Section-based `.env` sync | 5da3d11 | SKIP | Host-only managed-marker `.env` merging; container regenerates from `.env.example` | — |
+| Portable `.env` sourcing | 46dd46b, 9f03127 | SKIP | Container uses fixed paths (`/home/hermeswebui/`) — portability not needed | — |
+| `model-discovery.sh` `key_env` fallback | 36673de | N/A | This repo reads `OPENAI_API_KEY` directly from env, not from `config.yaml` — different architecture, no gap | — |
+| `OPENCODE_ZEN_API_KEY` rename | 987b589, 65d6218 (#4) | ALREADY-PRESENT | This repo already uses `OPENCODE_ZEN_API_KEY` throughout (constants.sh, config-opencode.sh line 290), no `OPENCODE_API_KEY` → `OPENCODE_ZEN_API_KEY` rename needed | — |
+| `validate-zen.sh` module | 8149e0d (#12) | ALREADY-PRESENT | This repo has `validate-opencode.sh` with identical Zen API key validation logic (curl → Zen /v1/models, model count check, warning on failure) | — |
+| `delegation.model` + `delegation.provider` routing | 65d6218 (#4) | ALREADY-PRESENT | `config-hermes.sh` lines 60–75 already support `HERMES_DELEGATION_MODEL` and `HERMES_DELEGATION_PROVIDER` env vars | — |
+| `model.default` + `model.name` always set | 04876f3 | ALREADY-PRESENT | `config-hermes.sh` lines 176–177 directly assign both fields from `default_model` — no preservation of stale values | — |
+| `qwen3.6-27b` context pin (262144) | 65d6218 (#4) | ALREADY-PRESENT | `config-hermes.sh` `resolve_ctx_len()` line 33 already pins `*qwen3.6-27b*q4*` to 262144 | — |
+| Multi-provider model routing | 9b9d63f (#7), 21265e5 (#6) | COVERED | Covered by vanilla PR #45 provider routing PORT — `normalize_model_id()` handles all `OPENCODE_*_MODEL` routing | — |
+
+### Summary: Actionable Items
+
+| # | Action | Scope | Delegation |
+|---|--------|-------|------------|
+| 1 | Refactor `config-opencode.sh`: replace `_resolve_provider_prefix()` + `_strip_provider_prefix()` with `PROVIDER_PREFIXES` + `normalize_model_id()` | 2 bash functions → 1 constant + 1 function; update call sites | Wave 1, Subagent A |
+| 2 | Update models_json Python block: strip recognized provider prefixes from map keys | ~3 lines in Python heredoc | Wave 1 (fold into Subagent A) |
+| 3 | Update fallback chain: use `normalize_model_id()` directly | ~3 lines in bash loop | Wave 1 (fold into Subagent A) |
+| 4 | Verify `.env.example` enforcement language parity | Read-only check — already present | Parent turn (verification) |
+| 5 | Append this PRD section (done) | PRD.md | Parent turn |
+| 6 | Verify: `bash -n` all scripts, bats tests, config generation | Verification phase | Parent turn |
+
+### Assumptions
+
+1. **Assumption:** Vanilla's `normalize_model_id()` bash pattern (loop over space-separated PROVIDER_PREFIXES) is simpler and correct for this repo's container context. The repo gains single-source-of-truth maintainability without changing runtime behavior.
+2. **Assumption:** The models_json key-stripping change (full ID → bare ID as map key) is backward-compatible — OpenCode reads the `"name"` field for routing, not the map key.
+3. **Assumption:** No host-machine code patterns are portable to this Docker stack — all are either host-specific workflows or already present.
+4. **Assumption:** The `.env.example` enforcement language is already identical in intent — the minor textual differences (─── separator, "no prefix" vs "Bare model IDs") are cosmetic and do not change user behavior.
+
+### Success Criteria
+
+- [ ] `bash -n volumes_hermes_opencode/build/scripts/lib/config-opencode.sh` passes
+- [ ] `grep -c '_resolve_provider_prefix\|_strip_provider_prefix' config-opencode.sh` returns 0 (old functions removed)
+- [ ] `grep -c 'PROVIDER_PREFIXES\|normalize_model_id' config-opencode.sh` ≥ 2 (new constant + function present)
+- [ ] All existing bats tests pass (docker-exec based, skip curl-based)
+- [ ] Config generation produces valid `opencode.jsonc` (JSON parse) and `config.yaml` (YAML parse)
+- [ ] PR opened on branch `feat/bridge-downstream-jul2026`
