@@ -21,7 +21,7 @@ The Dockerfile is located at `volumes_hermes_opencode/build/Dockerfile`. The bui
 |------|-------------|---------|
 | 1 | `FROM ghcr.io/nesquena/hermes-webui:latest` | Base image with Python 3.12, WebUI server, hermes CLI |
 | 2 | `ARG HERMES_AGENT_VERSION=main` | Build arg for agent version |
-| 3 | `RUN apt-get install build-essential git ripgrep ffmpeg procps curl` | System packages for agent build deps and OpenCode |
+| 3 | `RUN apt-get install build-essential git ripgrep ffmpeg procps curl bats` | System packages for agent build deps and OpenCode |
 | 4 | `RUN curl -fsSL https://opencode.ai/install \|\| bash` | Install OpenCode CLI, copy to `/usr/local/bin` |
 | 5 | `RUN curl -LsSf https://astral.sh/uv/install.sh \|\| sh` | Install uv tool manager for graphify and other Python tool installs |
 | 6 | `RUN git clone --depth 1 --branch ${HERMES_AGENT_VERSION} ... /opt/hermes-agent-staging` | Clone agent to staging path (not the runtime path) |

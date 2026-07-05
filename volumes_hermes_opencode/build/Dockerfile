@@ -4,7 +4,7 @@ ARG HERMES_AGENT_VERSION=main
 
 RUN apt-get update -y --no-install-recommends \
     && apt-get install -y --no-install-recommends \
-       build-essential git ripgrep ffmpeg procps curl netcat-openbsd \
+       build-essential git ripgrep ffmpeg procps curl netcat-openbsd bats \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -88,6 +88,7 @@ RUN rm -rf /opt/hermes-agent-staging/skills \
 RUN echo "=== Hermes x OpenCode Stack ===" \
     && python3 -c "import sys; print(f'Python: {sys.version}')" \
     && opencode --version \
+    && bats --version \
     && test -f /opt/hermes-agent-staging/pyproject.toml \
     && grep -q '"User-Agent".*"hermes-agent' /opt/hermes-agent-staging/plugins/model-providers/custom/__init__.py \
     && echo "================================"

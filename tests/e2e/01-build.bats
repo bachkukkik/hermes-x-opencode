@@ -27,6 +27,13 @@ setup() {
     [ "$status" -eq 0 ]
 }
 
+@test "AC209: bats-core installed in image" {
+    local image="hermes_x_opencode-hermes-opencode:latest"
+    run docker run --rm --entrypoint bats "$image" --version
+    [ "$status" -eq 0 ]
+    [ -n "$output" ]
+}
+
 @test "AC10: no secrets in tracked files" {
     run bash -c 'cd "$PROJECT_DIR" && git ls-files -z | xargs -0 grep -rl "sk-[a-zA-Z0-9]\{48,\}" 2>/dev/null || true'
     [ -z "$output" ]
