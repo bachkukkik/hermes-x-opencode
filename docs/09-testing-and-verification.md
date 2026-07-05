@@ -228,6 +228,7 @@ kill %1                              # stop it
 | AC28 | graphify Hermes skill registered | `docker exec $C test -f /home/hermeswebui/.hermes/skills/graphify/SKILL.md` |
 | AC29 | graphify OpenCode skill registered | `docker exec $C test -f /home/hermeswebui/.config/opencode/skills/graphify/SKILL.md` |
 | AC30 | Agent clone trimmed | `docker exec $C test ! -d /opt/hermes-agent-staging/skills` (no skills/, docs/, tests/ after Dockerfile trim) |
+| AC209 | bats-core installed in image | `docker run --rm --entrypoint bats $IMAGE --version` succeeds with non-empty output (Bats 1.11.1+) |
 
 ### Wiki initialization tests (14-wiki-init.bats)
 
@@ -255,7 +256,7 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## What Works
 
-- All acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, ~152 tests across 19 files). AC16 and AC23 require `OPENCODE_SERVE_ENABLED=true`. AC0.3 and AC23 use port-based checks (`/dev/tcp`) because curl is blocked by serve auth. Wiki initialization verified by 14-wiki-init.bats (WI1-WI5, 17 tests). Agent installation architecture verified by 15-agent-installation-architecture.bats (5 tests). OpenCode runtime model fallback verified by 16-model-fallback.bats (AC26–AC32, 7 tests): single-value plugin present/absent and provider-prefixed id (AC26–AC28), plus ordered multi-model chain coverage — comma-separated list, whitespace/trailing-comma tolerance, hybrid cross-provider resolution, single-value backward compatibility (AC29–AC32).
+- All acceptance criteria pass on a fresh build on ARM64 via the bats test suite (`tests/run.sh`, ~212 tests across 25 files). AC16 and AC23 require `OPENCODE_SERVE_ENABLED=true`. AC0.3 and AC23 use port-based checks (`/dev/tcp`) because curl is blocked by serve auth. Wiki initialization verified by 14-wiki-init.bats (WI1-WI5, 17 tests). Agent installation architecture verified by 15-agent-installation-architecture.bats (5 tests). OpenCode runtime model fallback verified by 16-model-fallback.bats (AC26–AC32, 7 tests): single-value plugin present/absent and provider-prefixed id (AC26–AC28), plus ordered multi-model chain coverage — comma-separated list, whitespace/trailing-comma tolerance, hybrid cross-provider resolution, single-value backward compatibility (AC29–AC32).
 - Health endpoints respond within 50ms for WebUI and Gateway
 - Gateway chat returns valid OpenAI-format responses with correct `usage` stats
 - Session creation, chat, streaming, and cleanup work through the WebUI API
@@ -264,6 +265,7 @@ Run the full smoke test script above. All steps must complete without error.
 - Both Hermes and OpenCode configs contain the same model list
 - Onboarding is skipped and reported as completed
 - Skills are verified at build time (AC25: staging dir populated) and runtime (AC21: OpenCode skills, AC24: Hermes skills)
+- Bats-core testing framework baked into the Docker image (AC209: `bats --version` succeeds in container, enabling agents to write and run bats tests inside)
 - Graphify integration verified (AC26: uv present, AC27: graphify CLI, AC28: Hermes skill, AC29: OpenCode skill)
 
 ## What Fails
@@ -282,4 +284,4 @@ Run the full smoke test script above. All steps must complete without error.
 
 ## Verdict
 
-The testing coverage is comprehensive. All acceptance criteria are automated in the bats test suite (`tests/run.sh`, ~152 tests across 19 files), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), agent installation architecture (AC26–AC30 in 15-agent-installation-architecture.bats), wiki initialization (WI1–WI5 in 14-wiki-init.bats), OpenCode runtime model fallback (AC26–AC32 in 16-model-fallback.bats), OpenCode serve health (AC23, requires `OPENCODE_SERVE_ENABLED=true`), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). A negative test verifies port 4096 is NOT listening when serve is disabled. The main gap is AC23 testing only port reachability rather than a full LLM call through OpenCode serve (curl is blocked by serve auth).
+The testing coverage is comprehensive. All acceptance criteria are automated in the bats test suite (`tests/run.sh`, ~212 tests across 25 files), including build-time skill verification (AC25), runtime skill presence (AC21, AC24), graphify integration (AC26–AC29), agent installation architecture (AC26–AC30 in 15-agent-installation-architecture.bats), wiki initialization (WI1–WI5 in 14-wiki-init.bats), OpenCode runtime model fallback (AC26–AC32 in 16-model-fallback.bats), OpenCode serve health (AC23, requires `OPENCODE_SERVE_ENABLED=true`), deeper config validation (model limits, small_model, plugin presence, Node.js 22), and security hardening checks (filter completeness, mode matrix, gateway auth rejection). A negative test verifies port 4096 is NOT listening when serve is disabled. The main gap is AC23 testing only port reachability rather than a full LLM call through OpenCode serve (curl is blocked by serve auth).
