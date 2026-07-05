@@ -1511,3 +1511,27 @@ Adding a provider = adding one word to `PROVIDER_PREFIXES`. The function returns
 - [ ] All existing bats tests pass (docker-exec based, skip curl-based)
 - [ ] Config generation produces valid `opencode.jsonc` (JSON parse) and `config.yaml` (YAML parse)
 - [ ] PR opened on branch `feat/bridge-downstream-jul2026`
+
+## 25. Bats-Core Baked Into Image Build (Issue #71)
+
+### Problem
+
+Agents running inside the container cannot write or run bats tests — bats-core is not installed in the Docker image. Currently bats is only available on the CI runner (installed via `sudo apt-get install -y bats` in `.github/workflows/e2e.yml`) and expected on the developer host (`tests/run.sh`). Baking it into the image gives agents a testing framework knowledge base, as requested in issue #71.
+
+### Changes
+
+1. **Dockerfile** — add `bats` to the first `apt-get install` block (build tools group: build-essential, git, ripgrep, etc.) and add `bats --version` to the final build-time verification assertion chain.
+2. **tests/e2e/01-build.bats** — new test AC209 verifies `docker run --rm <image> bats --version` succeeds with non-empty output.
+
+### Assumptions
+
+1. **Assumption:** `apt-get install bats` on Debian provides bats-core — already proven by `.github/workflows/e2e.yml` which uses the same package name successfully.
+2. **Assumption:** bats belongs in the build-tools apt-get block (conceptually grouped with build-essential), not the browser/media block.
+3. **Assumption:** No entrypoint or PATH changes needed — apt installs bats to `/usr/bin/bats`, available on the default PATH.
+
+### Success Criteria
+
+- [ ] SC-25-1: `docker run --rm <image> bats --version` succeeds (non-empty output, exit 0)
+- [ ] SC-25-2: New bats test AC209 passes: `bats tests/e2e/01-build.bats --filter AC209`
+- [ ] SC-25-3: Existing bats suite passes (no regression)
+- [ ] SC-25-4: `docker compose build` succeeds with the new package
