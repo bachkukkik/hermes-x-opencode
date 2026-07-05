@@ -1,27 +1,25 @@
 # lib/config-opencode.sh - OpenCode config generation - sourced by entrypoint.sh
 
-_resolve_provider_prefix() {
-    local model="$1"
-    case "$model" in
-        opencode/*) echo "opencode" ;;
-        litellm/*)  echo "litellm" ;;
-        *)
-            if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
-                echo "litellm"
-            else
-                echo "opencode"
-            fi
-            ;;
-    esac
-}
+# normalize_model_id — canonical provider/model form. Single source of truth.
+# Recognized prefixes: opencode/ (Zen), litellm/ (proxy).
+# Explicit prefixes pass through unchanged. Bare ids get litellm/ when
+# OPENAI_BASE_URL + OPENAI_API_KEY are set, else opencode/ (Zen).
+# Adding a new provider: add its prefix to PROVIDER_PREFIXES.
+export PROVIDER_PREFIXES="opencode litellm"
 
-_strip_provider_prefix() {
+normalize_model_id() {
     local model="$1"
-    case "$model" in
-        opencode/*) echo "${model#opencode/}" ;;
-        litellm/*) echo "${model#litellm/}" ;;
-        *) echo "$model" ;;
-    esac
+    local pfx
+    for pfx in $PROVIDER_PREFIXES; do
+        case "$model" in
+            ${pfx}/*) echo "$model"; return ;;
+        esac
+    done
+    if [ -n "${OPENAI_BASE_URL:-}" ] && [ -n "${OPENAI_API_KEY:-}" ]; then
+        echo "litellm/${model}"
+    else
+        echo "opencode/${model}"
+    fi
 }
 
 generate_opencode_config() {
@@ -41,14 +39,9 @@ generate_opencode_config() {
     local _raw_small_model="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-$_raw_default_model}}"
 
     local default_model
-    default_model="$(_strip_provider_prefix "$_raw_default_model")"
+    default_model="$(normalize_model_id "$_raw_default_model")"
     local small_model
-    small_model="$(_strip_provider_prefix "$_raw_small_model")"
-
-    local default_prefix
-    default_prefix=$(_resolve_provider_prefix "$_raw_default_model")
-    local small_prefix
-    small_prefix=$(_resolve_provider_prefix "$_raw_small_model")
+    small_model="$(normalize_model_id "$_raw_small_model")"
 
     local _raw_fallback_model="${OPENCODE_FALLBACK_MODEL:-}"
     # OPENCODE_FALLBACK_MODEL accepts a comma-separated ORDERED list. Each entry
@@ -60,18 +53,17 @@ generate_opencode_config() {
     local _fallback_chain=""   # newline-joined resolved "prefix/model" ids
     local _fallback_count=0
     if [ -n "$_raw_fallback_model" ]; then
-        local _fb_entry _fb_stripped _fb_prefix
+        local _fb_entry _fb_normalized
         while IFS= read -r _fb_entry; do
             # trim leading/trailing whitespace
             _fb_entry="${_fb_entry#"${_fb_entry%%[![:space:]]*}"}"
             _fb_entry="${_fb_entry%"${_fb_entry##*[![:space:]]}"}"
             [ -z "$_fb_entry" ] && continue
-            _fb_stripped="$(_strip_provider_prefix "$_fb_entry")"
-            _fb_prefix="$(_resolve_provider_prefix "$_fb_entry")"
+            _fb_normalized="$(normalize_model_id "$_fb_entry")"
             if [ -n "$_fallback_chain" ]; then
-                _fallback_chain="${_fallback_chain}"$'\n'"${_fb_prefix}/${_fb_stripped}"
+                _fallback_chain="${_fallback_chain}"$'\n'"${_fb_normalized}"
             else
-                _fallback_chain="${_fb_prefix}/${_fb_stripped}"
+                _fallback_chain="${_fb_normalized}"
             fi
             _fallback_count=$((_fallback_count + 1))
         done < <(printf '%s\n' "$_raw_fallback_model" | tr ',' '\n')
@@ -82,7 +74,7 @@ generate_opencode_config() {
     local models_json=""
     if $_has_openai_creds; then
         models_json=$(echo "$DISCOVERED_MODELS" | python3 -c "
-import sys, re, json
+import sys, re, json, os
 
 def get_limits(model_id):
     name = model_id.lower()
@@ -121,13 +113,22 @@ def get_limits(model_id):
         return 1048576, 65536
     return 128000, 8192
 
+_prefixes = os.environ.get('PROVIDER_PREFIXES', 'opencode litellm').split()
 entries = []
 for line in sys.stdin:
     mid = line.strip()
     if not mid:
         continue
     ctx, out = get_limits(mid)
-    entries.append(f'        \"{mid}\": {{\"limit\": {{\"context\": {ctx}, \"output\": {out}}}}}')
+    # Strip recognized provider prefixes from the map key so OpenCode
+    # resolves models by bare ID. The full prefixed name is preserved
+    # in the 'name' field for provider routing.
+    key = mid
+    for pfx in _prefixes:
+        if mid.startswith(pfx + '/'):
+            key = mid[len(pfx)+1:]
+            break
+    entries.append(f'        \"{key}\": {{\"name\": \"{mid}\", \"limit\": {{\"context\": {ctx}, \"output\": {out}}}}}')
 
 print(','.join(entries))
 " 2>/dev/null)
@@ -344,8 +345,8 @@ ${_plugins}
   ],
 ${permission_block}
 ${provider_block}
-  "model": "${default_prefix}/${default_model}",
-  "small_model": "${small_prefix}/${small_model}"
+  "model": "${default_model}",
+  "small_model": "${small_model}"
 }
 JSONEOF
 
@@ -357,7 +358,7 @@ JSONEOF
     if [ "$_fallback_count" -gt 0 ]; then
         _fallback_status=$(printf '%s' "$_fallback_chain" | tr '\n' ',' | sed 's/,$//')
     fi
-    echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_prefix}/${default_model}, small: ${small_prefix}/${small_model}, fallback: ${_fallback_status} (security: ${security_mode}, opencode_zen: ${_zen_status})."
+    echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_model}, small: ${small_model}, fallback: ${_fallback_status} (security: ${security_mode}, opencode_zen: ${_zen_status})."
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
 
