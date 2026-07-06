@@ -101,14 +101,26 @@ def get_limits(model_id):
         if re.search(r'claude-3\.7|claude-[45]', name):
             return 200000, 16384
         return 200000, 4096
+    if 'llama_cpp' in model_id:
+        return 200000, 32768
+    if 'deepseek-v4' in name:
+        return 1000000, 8192
+    if 'kimi' in name:
+        return 262144, 8192
+    if 'minimax-m3' in name:
+        return 1000000, 8192
+    if 'mimo-v2.5' in name:
+        return 1048576, 8192
+    if 'nemotron' in name:
+        return 131072, 8192
+    if 'qwen3.6' in name:
+        return 1048576, 8192
     if 'deepseek' in name:
         return 128000, 8192
     if 'glm-5.2' in name:
         return 1048576, 131072
     if 'glm' in name:
         return 128000, 8192
-    if 'llama_cpp' in model_id:
-        return 200000, 32768
     if 'gemini' in name:
         return 1048576, 65536
     return 128000, 8192
