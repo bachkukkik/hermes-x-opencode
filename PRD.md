@@ -1535,3 +1535,88 @@ Agents running inside the container cannot write or run bats tests — bats-core
 - [ ] SC-25-2: New bats test AC209 passes: `bats tests/e2e/01-build.bats --filter AC209`
 - [ ] SC-25-3: Existing bats suite passes (no regression)
 - [ ] SC-25-4: `docker compose build` succeeds with the new package
+
+## 26. opencode-go / opencode Model Context Length Pin Table Update
+
+### Problem
+
+The user upserted 11 new models into the LiteLLM proxy config, split across two
+opencode Zen API bases:
+
+- `opencode/*` (Zen free tier): deepseek-v4-flash-free, mimo-v2.5-free,
+  nemotron-3-ultra-free, north-mini-code-free, qwen3.6-plus-free
+- `opencode-go/*` (Zen go tier): deepseek-v4-pro, deepseek-v4-flash, glm-5.2,
+  kimi-k2.6, kimi-k2.7-code, minimax-m3
+
+LiteLLM's `/v1/models` endpoint returns no context-window metadata for these
+models (only id/object/created/owned_by), so the build scripts' pin tables are
+the only source of context length for generated configs.
+
+Two pin tables exist in the build directory:
+
+1. `config-hermes.sh` `resolve_ctx_len()` (bash case) — handles hermes
+   `config.yaml`. Already correct for all 11 models: `*glm-5.2*`, `*deepseek-v4*`,
+   `*minimax-m3*`, `*qwen3.6*` are pinned; unknown families (kimi, mimo,
+   nemotron, north) are omitted so the hermes-agent self-resolves at runtime via
+   its own `DEFAULT_CONTEXT_LENGTHS` table.
+2. `config-opencode.sh` `get_limits()` (Python in heredoc) — handles
+   `opencode.jsonc`. **8 of 11 models are misresolved** because the function
+   lacks specific family entries and its `deepseek` catch-all returns 128000
+   (wrong for v4 which is 1M).
+
+### Root Cause
+
+`get_limits()` in `config-opencode.sh` (lines 79-114) was written before the
+opencode-go/* and opencode/* free-tier models were added. The `deepseek`
+catch-all on line 104 returns 128000 — the correct value for legacy deepseek
+models, but deepseek-v4 has a 1M context window. Similarly, kimi, minimax-m3,
+mimo-v2.5, nemotron, and qwen3.6 families fall through to the default
+`return 128000, 8192` because no specific entries exist for them.
+
+### Solution
+
+Add specific family entries to `get_limits()`, placed BEFORE the existing
+`deepseek` catch-all (longest-match-first ordering, mirroring the agent's own
+`DEFAULT_CONTEXT_LENGTHS` table and `resolve_ctx_len()`). Values sourced from
+the agent's authoritative table at `agent/model_metadata.py`:
+
+| Family | Substring | Context | Output | Notes |
+|--------|-----------|---------|--------|-------|
+| deepseek-v4 | `deepseek-v4` | 1000000 | 8192 | Before `deepseek` catch-all |
+| kimi | `kimi` | 262144 | 8192 | Agent table: `kimi` → 262144 |
+| minimax-m3 | `minimax-m3` | 1000000 | 8192 | Before any minimax catch-all |
+| mimo-v2.5 | `mimo-v2.5` | 1048576 | 8192 | Agent table: `mimo-v2.5` → 1M |
+| nemotron | `nemotron` | 131072 | 8192 | Agent table: `nemotron` → 131072 |
+| qwen3.6 | `qwen3.6` | 1048576 | 8192 | Agent table: `qwen3.6-plus` → 1M |
+
+`north-mini-code-free` has no entry in the agent's table and no known context
+window — left at the 128000 default.
+
+### Assumptions
+
+1. **Assumption:** Output limit of 8192 is acceptable for all new families. The
+   agent's `DEFAULT_CONTEXT_LENGTHS` table only tracks context, not output; the
+   LiteLLM upsert sets no `max_output_tokens`.
+2. **Assumption:** `north-mini-code-free` context window is unknown — keep the
+   128000 default.
+3. **Assumption:** The `opencode-go/*` and `opencode-go/anthropic/*` wildcard
+   entries from LiteLLM are filtered by `model-discovery.sh` line 67
+   (`re.search(r'/\*$', ...)`) — no action needed for wildcards.
+4. **Assumption:** No changes needed to `config-hermes.sh` `resolve_ctx_len()`
+   — it already handles all 11 models correctly (pinned or self-resolved).
+
+### Success Criteria
+
+- [ ] SC-26-1: `get_limits('opencode-go/deepseek-v4-pro')` returns `(1000000, 8192)`
+- [ ] SC-26-2: `get_limits('opencode-go/deepseek-v4-flash')` returns `(1000000, 8192)`
+- [ ] SC-26-3: `get_limits('opencode/deepseek-v4-flash-free')` returns `(1000000, 8192)`
+- [ ] SC-26-4: `get_limits('opencode-go/kimi-k2.6')` returns `(262144, 8192)`
+- [ ] SC-26-5: `get_limits('opencode-go/kimi-k2.7-code')` returns `(262144, 8192)`
+- [ ] SC-26-6: `get_limits('opencode-go/minimax-m3')` returns `(1000000, 8192)`
+- [ ] SC-26-7: `get_limits('opencode/mimo-v2.5-free')` returns `(1048576, 8192)`
+- [ ] SC-26-8: `get_limits('opencode/nemotron-3-ultra-free')` returns `(131072, 8192)`
+- [ ] SC-26-9: `get_limits('opencode/qwen3.6-plus-free')` returns `(1048576, 8192)`
+- [ ] SC-26-10: `get_limits('opencode-go/glm-5.2')` still returns `(1048576, 131072)` (no regression)
+- [ ] SC-26-11: `get_limits('llama_cpp/qwen3.6-27b-q4_k_m')` still returns `(200000, 32768)` (no regression)
+- [ ] SC-26-12: `bash -n config-opencode.sh` passes (no syntax errors)
+- [ ] SC-26-13: Existing bats tests pass: `tests/e2e/19-ctx-pin-and-credentials.bats`, `tests/e2e/03-config.bats`
