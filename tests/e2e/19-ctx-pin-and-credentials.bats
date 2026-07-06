@@ -35,6 +35,44 @@ setup() {
     [ "$output" = "1048576" ]
 }
 
+@test "CTX4: get_limits pins opencode-go and opencode free-tier model families" {
+    # Verify get_limits() from config-opencode.sh returns correct (context, output)
+    # pairs for the new model families. Extracts the Python function block from the
+    # shell script and runs unit tests against it inside the container.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run docker exec "$cid" bash -c 'python3 -c "
+import sys, re
+with open(\"/usr/local/bin/lib/config-opencode.sh\") as f:
+    content = f.read()
+start = content.index(\"import sys, re, json, os\")
+end = content.rindex(\"return 128000, 8192\", start) + len(\"return 128000, 8192\")
+exec(content[start:end])
+tests = [
+    (\"opencode-go/deepseek-v4-pro\", (1000000, 8192)),
+    (\"opencode-go/deepseek-v4-flash\", (1000000, 8192)),
+    (\"opencode/deepseek-v4-flash-free\", (1000000, 8192)),
+    (\"opencode-go/kimi-k2.6\", (262144, 8192)),
+    (\"opencode-go/kimi-k2.7-code\", (262144, 8192)),
+    (\"opencode-go/minimax-m3\", (1000000, 8192)),
+    (\"opencode/mimo-v2.5-free\", (1048576, 8192)),
+    (\"opencode/nemotron-3-ultra-free\", (131072, 8192)),
+    (\"opencode/qwen3.6-plus-free\", (1048576, 8192)),
+    (\"opencode-go/glm-5.2\", (1048576, 131072)),
+    (\"llama_cpp/qwen3.6-27b-q4_k_m\", (200000, 32768)),
+]
+for mid, expected in tests:
+    result = get_limits(mid)
+    if result != expected:
+        print(f\"FAIL: {mid} -> {result} (expected {expected})\")
+        sys.exit(1)
+print(f\"OK: {len(tests)}/11 passed\")
+"'
+    [ "$status" -eq 0 ]
+}
+
 @test "CTX3: HERMES_COMPRESSION_THRESHOLD transported into container when set" {
     # CA-31-B: docker-compose.yml passes HERMES_COMPRESSION_THRESHOLD through
     # (empty default). The test harness brings the container up once from .env,

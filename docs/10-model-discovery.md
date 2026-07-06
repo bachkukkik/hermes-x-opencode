@@ -200,10 +200,16 @@ Limit assignment follows model name pattern matching (case-insensitive, checked 
 | `/o[134]` or `-o[134]` | 200000 | 100000 | `openai/o1`, `openai/o3-mini`, `openai/o4` |
 | `claude-3.7`, `claude-4+` | 200000 | 16384 | `anthropic/claude-3.7-sonnet`, `anthropic/claude-4-opus` |
 | `claude-3` (other) | 200000 | 4096 | `anthropic/claude-3-haiku` |
-| `deepseek` | 128000 | 8192 | `deepseek/deepseek-chat` |
+| `llama_cpp` | 200000 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` (checked before qwen3.6) |
+| `deepseek-v4` | 1000000 | 8192 | `opencode-go/deepseek-v4-pro`, `opencode/deepseek-v4-flash-free` |
+| `kimi` | 262144 | 8192 | `opencode-go/kimi-k2.6`, `opencode-go/kimi-k2.7-code` |
+| `minimax-m3` | 1000000 | 8192 | `opencode-go/minimax-m3` |
+| `mimo-v2.5` | 1048576 | 8192 | `opencode/mimo-v2.5-free` |
+| `nemotron` | 131072 | 8192 | `opencode/nemotron-3-ultra-free` |
+| `qwen3.6` | 1048576 | 8192 | `opencode/qwen3.6-plus-free` |
+| `deepseek` | 128000 | 8192 | `deepseek/deepseek-chat` (catch-all after deepseek-v4) |
+| `glm-5.2` | 1048576 | 131072 | `z.ai/glm-5.2`, `opencode-go/glm-5.2` |
 | `glm` | 128000 | 8192 | `zai/glm-5.1`, `zai/glm-4` |
-| `glm-5.2` | 1048576 | 131072 | `z.ai/glm-5.2` |
-| `llama_cpp` | 200000 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` |
 | `gemini` | 1048576 | 65536 | `google/gemini-2.5-pro` |
 | default (no match) | 128000 | 8192 | Any unmatched model ID |
 
@@ -220,7 +226,7 @@ These limits are used by the OpenCode serve's token budget calculation and are v
 
 ### Runtime fallback
 
-When `OPENCODE_FALLBACK_MODEL` is set, `config-opencode.sh` adds the `opencode-runtime-fallback` plugin to `opencode.jsonc` and seeds a global fallback chain at `~/.config/opencode/opencode-fallback.jsonc` (plus a root copy at `/root/.config/opencode/opencode-fallback.jsonc`). The fallback chain accepts a comma-separated ORDERED list; each id is independently prefix-resolved with the same `_resolve_provider_prefix`/`_strip_provider_prefix` logic as the primary model, so a cross-provider chain works — for example a primary `opencode/deepseek-v4-flash-free` with a fallback chain `litellm/z.ai/glm-5.2`, `litellm/llama_cpp/qwen3.6-27b-q4_k_m` (cloud tier first, GPU last resort). The `opencode-runtime-fallback` plugin tries the array in declared order after the primary fails. When unset, no fallback plugin is wired and failed calls surface normally. See acceptance criteria AC26–AC28 and AC29–AC32 for the verification tests.
+When `OPENCODE_FALLBACK_MODEL` is set, `config-opencode.sh` adds the `opencode-runtime-fallback` plugin to `opencode.jsonc` and seeds a global fallback chain at `~/.config/opencode/opencode-fallback.jsonc` (plus a root copy at `/root/.config/opencode/opencode-fallback.jsonc`). The fallback chain accepts a comma-separated ORDERED list; each id is independently prefix-resolved with the same `normalize_model_id` logic as the primary model, so a cross-provider chain works — for example a primary `opencode/deepseek-v4-flash-free` with a fallback chain `litellm/z.ai/glm-5.2`, `litellm/llama_cpp/qwen3.6-27b-q4_k_m` (cloud tier first, GPU last resort). The `opencode-runtime-fallback` plugin tries the array in declared order after the primary fails. When unset, no fallback plugin is wired and failed calls surface normally. See acceptance criteria AC26–AC28 and AC29–AC32 for the verification tests.
 
 ## Verification
 
