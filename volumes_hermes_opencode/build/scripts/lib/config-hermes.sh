@@ -32,6 +32,8 @@ resolve_ctx_len() {
         *minimax-m3*)        echo 1000000 ;;
         *qwen3.6-27b*q4*)    echo 262144  ;;  # quantized GGUF: 262144 real ctx, not family 1M
         *qwen3.6*)           echo 1048576 ;;
+        *agents-a1-mtp-apex*) echo 262144  ;;  # Agents A1 MTP (new) — 262K native ctx
+        *agents-a1-q4*)      echo 262144  ;;  # Agents A1 q4_k_m (new) — same architecture
         *)                   echo ""      ;;  # unknown -> omit, agent self-resolves
     esac
 }
