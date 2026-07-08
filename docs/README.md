@@ -31,3 +31,15 @@ Architecture deep-dives for the Hermes x OpenCode Docker stack. Each doc follows
 | 25 | [25 — Seed Volumes](25-seed-volumes.md) | Volume Seeding |
 | 26 | [26 — Symlink Cleanup](26-symlink-cleanup.md) | Symlink Cleanup |
 | 27 | [27 — Service WebUI Startup](27-service-webui.md) | WebUI Service |
+| 28 | [28 — Agent Setup](28-agent-setup.md) | Agent Setup |
+| 29 | [29 — Config Hermes](29-config-hermes.md) | Config Hermes |
+| 30 | [30 — Config OpenCode](30-config-opencode.md) | Config OpenCode |
+| 31 | [31 — Port Utils](31-port-utils.md) | Port Utils |
+| 32 | [32 — Runtime Environment Detection](32-runtime-env.md) | Runtime Env |
+| 33 | [33 — Gateway Service](33-service-gateway.md) | Gateway Service |
+| 34 | [34 — OpenCode Serve Service](34-service-opencode.md) | OpenCode Service |
+| 35 | [35 — Constants and Runtime Config](35-constants.md) | Constants |
+| 37 | [37 — Validate OpenCode Zen Key](37-validate-opencode.md) | Key Validation |
+| 38 | [38 — Browser/VNC Human-in-the-Loop](38-service-browser-vnc.md) | Browser/VNC |
+| 39 | [39 — Dashboard Service](39-service-dashboard.md) | Dashboard |
+| 40 | [40 — Mock LLM Server (CI)](40-mock-llm-server.md) | Mock LLM |
