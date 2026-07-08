@@ -2,7 +2,7 @@
 
 ## What
 
-`lib/config-hermes.sh` generates the Hermes `config.yaml` file from environment variables and the discovered model list. It is the largest lib module (219 lines) and handles model context-length pinning, browser configuration, delegation settings, approvals mode, optional-skills directories, and the YAML generation itself.
+`lib/config-hermes.sh` generates the Hermes `config.yaml` file from environment variables and the discovered model list. It is the largest lib module (221 lines) and handles model context-length pinning, browser configuration, delegation settings, approvals mode, optional-skills directories, and the YAML generation itself.
 
 ## Why
 
@@ -37,6 +37,8 @@ Resolves a model ID to its pinned context length using substring matching. Retur
 | `minimax-m3` | 1,000,000 | — |
 | `qwen3.6-27b*q4` | 262,144 | Quantized GGUF: real 262K, not family 1M |
 | `qwen3.6` | 1,048,576 | — |
+| `agents-a1-mtp-apex` | 262,144 | Agents A1 MTP — 262K native ctx |
+| `agents-a1-q4` | 262,144 | Agents A1 q4_k_m — same architecture |
 
 #### `generate_config()`
 

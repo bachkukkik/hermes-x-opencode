@@ -25,12 +25,18 @@ setup() {
         echo "gpt-4o: $(resolve_ctx_len gpt-4o)"
         echo "gemini: $(resolve_ctx_len gemini)"
         echo "glm-5.2: $(resolve_ctx_len glm-5.2)"
+        echo "agents-a1-mtp-apex: $(resolve_ctx_len llama_cpp/agents-a1-mtp-apex-i-balanced)"
+        echo "agents-a1-q4: $(resolve_ctx_len llama_cpp/agents-a1-q4_k_m)"
     '
     [ "$status" -eq 0 ]
     [[ "$output" == *"deepseek-v4: 1000000"* ]]
     [[ "$output" == *"gpt-4o: 128000"* ]]
     [[ "$output" == *"gemini: 1048576"* ]]
     [[ "$output" == *"glm-5.2: 1048576"* ]]
+    # agents-a1 llama.cpp families (bridged from host-machine PR #20) — canonical
+    # per-module assertion so this file is self-sufficient (mirrors 19-CTX5).
+    [[ "$output" == *"agents-a1-mtp-apex: 262144"* ]]
+    [[ "$output" == *"agents-a1-q4: 262144"* ]]
 }
 
 @test "AC215: resolve_ctx_len returns empty for unknown models" {
@@ -58,4 +64,29 @@ setup() {
     '
     [ "$status" -eq 0 ]
     [[ "$output" == *"OK"* ]]
+}
+
+@test "AC243: append_skills_external_dirs appends the block once and is idempotent" {
+    # T5: exercise the append + "already present" grep-guard (config-hermes.sh:210-213).
+    # Hermetic: temp HERMES_HOME with a fake optional-skills dir + temp CONFIG, so the
+    # test does not depend on container env or mutate the live config.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c '
+        source /usr/local/bin/lib/config-hermes.sh
+        log() { :; }; warn() { :; }
+        export HERMES_HOME=$(mktemp -d)
+        mkdir -p "$HERMES_HOME/hermes-agent/optional-skills"
+        export CONFIG=$(mktemp)
+        printf "model:\n  default: x\n" > "$CONFIG"
+        append_skills_external_dirs
+        first=$(grep -c "external_dirs" "$CONFIG")
+        append_skills_external_dirs
+        second=$(grep -c "external_dirs" "$CONFIG")
+        echo "first=$first second=$second"
+        rm -rf "$HERMES_HOME" "$CONFIG"
+    '
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"first=1 second=1"* ]]
 }

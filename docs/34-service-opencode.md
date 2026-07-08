@@ -2,7 +2,7 @@
 
 ## What
 
-`lib/service-opencode.sh` provides a single function `start_opencode_serve()` that launches the OpenCode serve process (`opencode serve --port 4096`) as a background process.
+`lib/service-opencode.sh` provides a single function `start_opencode_serve()` that launches the OpenCode serve process (`opencode serve --hostname 0.0.0.0 --port 4096`) as a background process. The explicit `--hostname 0.0.0.0` binds serve to all container interfaces so remote `opencode attach` works across the container network.
 
 ## Why
 
