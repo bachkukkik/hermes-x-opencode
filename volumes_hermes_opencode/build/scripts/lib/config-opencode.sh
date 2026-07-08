@@ -102,6 +102,11 @@ def get_limits(model_id):
             return 200000, 16384
         return 200000, 4096
     if 'llama_cpp' in model_id:
+        # Agents A1 models have 256K native context (qwen35moe arch)
+        if 'agents-a1-mtp-apex' in name:
+            return 262144, 32768
+        if 'agents-a1-q4' in name:
+            return 262144, 32768
         return 200000, 32768
     if 'deepseek-v4' in name:
         return 1000000, 8192

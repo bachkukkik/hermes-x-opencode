@@ -132,6 +132,8 @@ Quantized model variants (e.g. GGUF `q4_k_m`, `q4_0`) can have a DIFFERENT conte
 |-------------|---------|-------|
 | `*qwen3.6-27b*q4*` | 262144 | Quantized GGUF variant (real ctx 262144, not family 1M) |
 | `*qwen3.6*` | 1048576 | Family wildcard (unquantized) |
+| `*agents-a1-mtp-apex*` | 262144 | Agents A1 MTP — 262K native ctx |
+| `*agents-a1-q4*` | 262144 | Agents A1 q4_k_m — same architecture |
 | `*glm-5.2*` | 1048576 | Agent catch-all misreports as 202752 |
 | `*deepseek-v4*` | 1000000 | |
 | `*gemini*` | 1048576 | |
@@ -200,7 +202,9 @@ Limit assignment follows model name pattern matching (case-insensitive, checked 
 | `/o[134]` or `-o[134]` | 200000 | 100000 | `openai/o1`, `openai/o3-mini`, `openai/o4` |
 | `claude-3.7`, `claude-4+` | 200000 | 16384 | `anthropic/claude-3.7-sonnet`, `anthropic/claude-4-opus` |
 | `claude-3` (other) | 200000 | 4096 | `anthropic/claude-3-haiku` |
-| `llama_cpp` | 200000 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` (checked before qwen3.6) |
+| `llama_cpp/agents-a1-mtp-apex` | 262144 | 32768 | Agents A1 MTP (checked before the `llama_cpp` catch-all) |
+| `llama_cpp/agents-a1-q4` | 262144 | 32768 | Agents A1 q4_k_m (checked before the `llama_cpp` catch-all) |
+| `llama_cpp` (other) | 200000 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` (checked before qwen3.6) |
 | `deepseek-v4` | 1000000 | 8192 | `opencode-go/deepseek-v4-pro`, `opencode/deepseek-v4-flash-free` |
 | `kimi` | 262144 | 8192 | `opencode-go/kimi-k2.6`, `opencode-go/kimi-k2.7-code` |
 | `minimax-m3` | 1000000 | 8192 | `opencode-go/minimax-m3` |

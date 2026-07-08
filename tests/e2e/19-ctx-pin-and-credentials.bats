@@ -62,15 +62,35 @@ tests = [
     (\"opencode/qwen3.6-plus-free\", (1048576, 8192)),
     (\"opencode-go/glm-5.2\", (1048576, 131072)),
     (\"llama_cpp/qwen3.6-27b-q4_k_m\", (200000, 32768)),
+    (\"llama_cpp/agents-a1-mtp-apex-i-balanced\", (262144, 32768)),
+    (\"llama_cpp/agents-a1-q4_k_m\", (262144, 32768)),
 ]
 for mid, expected in tests:
     result = get_limits(mid)
     if result != expected:
         print(f\"FAIL: {mid} -> {result} (expected {expected})\")
         sys.exit(1)
-print(f\"OK: {len(tests)}/11 passed\")
+print(f\"OK: {len(tests)}/{len(tests)} passed\")
 "'
     [ "$status" -eq 0 ]
+}
+
+@test "CTX5: resolve_ctx_len pins Agents A1 llama.cpp models to 262144" {
+    # Bridged from host-machine PR #20: the new agents-a1-mtp-apex and
+    # agents-a1-q4 llama.cpp families have 262K native ctx; both pin rows sit
+    # BEFORE the catch-all so a discovered Agents A1 model gets its real window
+    # instead of falling through to the agent's default.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+
+    run docker exec "$cid" bash -c 'source /usr/local/bin/lib/config-hermes.sh; resolve_ctx_len "llama_cpp/agents-a1-mtp-apex-i-balanced"'
+    [ "$status" -eq 0 ]
+    [ "$output" = "262144" ]
+
+    run docker exec "$cid" bash -c 'source /usr/local/bin/lib/config-hermes.sh; resolve_ctx_len "llama_cpp/agents-a1-q4_k_m"'
+    [ "$status" -eq 0 ]
+    [ "$output" = "262144" ]
 }
 
 @test "CTX3: HERMES_COMPRESSION_THRESHOLD transported into container when set" {
