@@ -66,6 +66,12 @@ start_webui
 
 wait_for_port 8787 120 "Hermes WebUI"
 
+# Fix /app/venv ownership so `hermes update` works from inside the container.
+# /hermeswebui_init.bash creates the venv as root; the hermeswebui user needs
+# write access to upgrade packages in-place.
+chown -R "${OPENCODE_USER}:${OPENCODE_USER}" /app/venv/ 2>/dev/null || true
+chown -R "${OPENCODE_USER}:${OPENCODE_USER}" /uv_cache/ 2>/dev/null || true
+
 # --- Seed the righthand-man orchestrator profile (idempotent, needs the venv from WebUI init) ---
 seed_righthand_man
 
