@@ -1620,3 +1620,94 @@ window — left at the 128000 default.
 - [ ] SC-26-11: `get_limits('llama_cpp/qwen3.6-27b-q4_k_m')` still returns `(200000, 32768)` (no regression)
 - [ ] SC-26-12: `bash -n config-opencode.sh` passes (no syntax errors)
 - [ ] SC-26-13: Existing bats tests pass: `tests/e2e/19-ctx-pin-and-credentials.bats`, `tests/e2e/03-config.bats`
+
+## 27. Docs & Tests Re-Audit (Jul 2026): agents-a1 Documentation & Coverage Gaps
+
+**Status: RESOLVED** — merged via PR #77 (per-module docs/tests baseline) and
+PR #78 (agents-a1 ctx-pin bridge + this re-audit's doc/test closure). All
+success criteria below are met; the full e2e suite is green in GitHub CI.
+
+### Problem
+
+The prior gap analysis (which drove PR #77) was satisfied — all 18 lib modules
+gained per-module docs (`docs/25-40`) and tests (`tests/e2e/20-34`). This
+re-audit covered the gaps that opened **after** that work: chiefly the new
+`agents-a1` context-length pins (bridged in PR #78) being undocumented, plus
+residual test blind spots surfaced by a fresh codebase cross-check.
+
+Severity-ordered, evidence-backed against the code at audit time.
+
+**Docs**
+
+| # | Sev | Gap | Evidence |
+|---|-----|-----|----------|
+| D1 | P0 | `agents-a1-mtp-apex` / `agents-a1-q4` (262144) missing from `resolve_ctx_len` pin table | docs/29 table ended at `qwen3.6`; config-hermes.sh:35-36 |
+| D2 | P0 | `get_limits()` entirely undocumented (no ctx table) | docs/30 documented only `normalize_model_id`/`generate_opencode_config`; config-opencode.sh:79-126 |
+| D3 | P0 | `agents-a1` missing from both tables in model-discovery doc | docs/10 resolve_ctx_len (~L132) + get_limits (~L203) |
+| D4 | P1 | Stale test count "~212 tests across 25 files" | docs/09:259,287 |
+| D5 | P2 | Doc index skips 36 with no note | docs/README.md (35→37) |
+| D6 | P3 | `service-opencode` doc omits `--hostname 0.0.0.0` | docs/34 vs service-opencode.sh:38 |
+| D7 | P3 | dashboard doc implies fixed :9119 (actually `HERMES_DASHBOARD_PORT`) | docs/39 vs service-dashboard.sh:34 |
+| D8 | P3 | Stale line counts (219→221, 466→471) | docs/29:5, docs/30:5 |
+
+**Tests**
+
+| # | Sev | Gap | Evidence |
+|---|-----|-----|----------|
+| T1 | P1 | `mock-llm-server.sh` / `start_mock_llm` had ZERO coverage | no .bats referenced it |
+| T2 | P2 | `agents-a1` pins asserted only in file 19; canonical 26/27 omitted them; 27 never called `get_limits` | 26:AC214, 27 |
+| T3 | P3 | `normalize_model_id` bare-id (credential-dependent) branch untested | 27:AC219 tested passthrough only |
+| T4 | P4 | `service-dashboard.sh` had no function-level test (unlike 29/30/33) | 17-dashboard.bats is HTTP-only |
+| T5 | P5 | `append_skills_external_dirs` existence-only; append + idempotence untested | 26:AC216 |
+
+Out of scope (deferred, low value / high side-effect): thin guard-path tests on
+backgrounded daemon starters (`start_gateway`, `start_opencode_serve`,
+`discover_models` fallback-vs-real).
+
+### Solution
+
+- **Docs:** documented the agents-a1 262144 pins in `docs/10` (both tables),
+  `docs/29` (`resolve_ctx_len`), and a new `get_limits()` family→(context,output)
+  table in `docs/30`; fixed the `docs/09` count (now **254 tests across 37
+  files**); noted the intentionally-skipped doc `36` in `docs/README.md`;
+  corrected the D6/D7 accuracy nits and D8 line counts.
+- **Tests (+7, AC243–AC249):** agents-a1 assertions added to `26` (`resolve_ctx_len`)
+  and a `get_limits` + `normalize_model_id`-branch test to `27` so the canonical
+  per-module files are self-sufficient; `append_skills_external_dirs` idempotence
+  (`26`); new `35-mock-llm-server.bats` (serve + `/v1/models` + chat, port-guarded)
+  and `36-service-dashboard.bats` (defined + disabled path).
+
+### Success Criteria
+
+- [x] SC-27-1: `grep -rl agents-a1 docs/` returns docs 10, 29, 30 (D1-D3)
+- [x] SC-27-2: docs/30 has a `get_limits()` family→(context,output) table (D2)
+- [x] SC-27-3: docs/09 test count matches `ls tests/e2e/*.bats | wc -l` (37) (D4)
+- [x] SC-27-4: docs/README.md explains the 36 gap; D5-D8 nits corrected
+- [x] SC-27-5: `start_mock_llm` exercised end-to-end — AC246/AC247 (T1)
+- [x] SC-27-6: agents-a1 asserted in 26 (`resolve_ctx_len`) and 27 (`get_limits`) — AC214/AC244 (T2)
+- [x] SC-27-7: `normalize_model_id` both bare-id branches asserted — AC245 (T3)
+- [x] SC-27-8: `start_dashboard` unit test (defined + disabled) — AC248/AC249 (T4)
+- [x] SC-27-9: `append_skills_external_dirs` append + idempotence — AC243 (T5)
+- [x] SC-27-10: Full e2e bats suite green after clean rebuild (green in CI)
+- [~] SC-27-11: graphify-out regen deferred to the CLI flow (manual chunking tripped graphify's node-count fidelity guard; graphify-out left at last-good state); llm wiki updated (`bats-e2e-testing`, index, log)
+
+### Verification Policy
+
+```bash
+# Docs
+grep -rl agents-a1 docs/                          # expect 10, 29, 30
+grep -n "get_limits" docs/30-config-opencode.md    # expect a section
+n=$(ls tests/e2e/*.bats | wc -l); grep -q "$n files" docs/09-testing-and-verification.md
+
+# Tests — clean rebuild + full suite. Note: the browser CDP :9222 check does not
+# run in the sandbox, so the health gate flaps; core services (WebUI/Gateway/
+# OpenCode) come up, so run bats directly against the running container.
+SKIP_CLEANUP=1 bash tests/run.sh   # or: rebuild, `up -d`, then `bats tests/e2e/`
+bats tests/e2e/19-*.bats tests/e2e/26-*.bats tests/e2e/27-*.bats \
+     tests/e2e/35-*.bats tests/e2e/36-*.bats   # affected + new
+```
+
+Definition of done: every success-criterion box checked and the full suite green
+in CI. The 11 local failures observed during development were entirely the
+pre-existing browser-CDP / health-gate cluster (no chromium in the sandbox),
+unrelated to this diff — confirmed green in GitHub Actions.
