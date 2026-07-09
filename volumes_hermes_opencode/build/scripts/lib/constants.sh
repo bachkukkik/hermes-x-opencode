@@ -12,6 +12,7 @@ HERMES_SKILLS_DIR="${HERMES_HOME}/skills"
 OPENCODE_USER="hermeswebui"
 OPENCODE_USER_HOME="/home/${OPENCODE_USER}"
 OPENCODE_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/opencode.jsonc"
+OPENCODE_DCP_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/dcp.jsonc"
 OPENCODE_SKILLS_DIR="${OPENCODE_USER_HOME}/.config/opencode/skills"
 
 # Wiki path (used by wiki-init.sh)
@@ -33,6 +34,15 @@ OPENCODE_SMALL_MODEL="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENAI_DEF
 HERMES_API_KEY="${HERMES_API_KEY:-}"
 HERMES_API_PORT="${HERMES_API_PORT:-8642}"
 HERMES_COMPRESSION_THRESHOLD="${HERMES_COMPRESSION_THRESHOLD:-}"
+
+# --- DCP (dynamic context pruning) compression threshold ---------------------
+# The @tarquinen/opencode-dcp plugin defaults to a hard 100_000-token
+# maxContextLimit regardless of the model's real window, so a 1M-context model
+# gets compression-nudged at ~10% fill. We generate a managed dcp.jsonc whose
+# compress.maxContextLimit is expressed as "<pct>%" of EACH model's own context
+# window (DCP resolves the percentage per active model). This mirrors Hermes'
+# HERMES_COMPRESSION_THRESHOLD. Range 0.0–1.0; default 0.76.
+OPENCODE_COMPRESSION_THRESHOLD="${OPENCODE_COMPRESSION_THRESHOLD:-0.76}"
 
 # Runtime autonomy knobs (#53): YOLO mode disables approval prompts and enables
 # the delegation subagent loop; max_iterations caps that loop.

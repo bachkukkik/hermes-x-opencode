@@ -89,27 +89,28 @@ Defined in `lib/constants.sh`:
  5. discover_models()        — curls OPENAI_BASE_URL/models, filters non-chat models and wildcards
  6. generate_config()        — writes config.yaml with multi-model dict, compression block, browser block, goals, delegation
  7. generate_opencode_config() — writes opencode.jsonc with plugins, permissions, discovered models; chowns to hermeswebui
- 8. validate_opencode_zen_key() — if OPENCODE_ZEN_API_KEY is set, validates against Zen API; non-fatal
- 9. cleanup_symlink_loops    — removes broken symlinks that could cause infinite loops
-10. ensure_agent()           — copies /opt/hermes-agent-staging → ~/.hermes/hermes-agent (first boot only)
-11. init_wiki()              — initializes wiki directory at $WIKI_DIR with SCHEMA.md backbone (idempotent)
-12. append_skills_external_dirs() — appends skills.external_dirs to config.yaml (after ensure_agent)
-13. Seed AGENTS.md to /workspace if not already present
-14. start_webui()            — wraps /hermeswebui_init.bash; creates state/workspace/cache dirs, chowns, launches as hermeswebui
-15. wait_for_port 8787 120 "Hermes WebUI" — blocks until WebUI health endpoint responds (120s timeout)
-16. seed_righthand_man()     — seeds righthand-man orchestrator profile (idempotent, needs venv from WebUI init)
-17. start_browser_vnc()      — starts Browser/VNC human-in-the-loop stack (if BROWSER_HUMAN_LOOP_ENABLED=true)
-18. wait_for_port 9222 30 "chromium CDP" "/json/version" — Chromium CDP readiness (non-fatal, only if browser enabled)
-19. chown -R $OPENCODE_USER:$OPENCODE_USER $HERMES_HOME — pre-gateway ownership fix
-20. start_gateway()          — starts Hermes gateway as hermeswebui
-21. wait_for_port 8642 90 "Hermes Gateway" — blocks until Gateway health endpoint responds (90s timeout)
-22. mkdir -p ~/.local/share ~/.local/state + chown — pre-opencode .local setup (EACCES fix)
-23. start_opencode_serve()   — starts opencode serve (if OPENCODE_SERVE_ENABLED=true)
-24. wait_for_port 4096 TIMEOUT "opencode serve" "/health" — boot readiness probe, non-fatal
-25. start_dashboard()        — starts Hermes web dashboard (if HERMES_DASHBOARD_ENABLED=true)
-26. wait_for_port DASHBOARD_PORT TIMEOUT "hermes dashboard" "/" — dashboard readiness, non-fatal
-27. wait                     — blocks until any background process exits
-28. Container shuts down
+ 8. generate_dcp_staging() — writes managed dcp.jsonc with per-model percentage-based compression thresholds
+ 9. validate_opencode_zen_key() — if OPENCODE_ZEN_API_KEY is set, validates against Zen API; non-fatal
+10. cleanup_symlink_loops    — removes broken symlinks that could cause infinite loops
+11. ensure_agent()           — copies /opt/hermes-agent-staging → ~/.hermes/hermes-agent (first boot only)
+12. init_wiki()              — initializes wiki directory at $WIKI_DIR with SCHEMA.md backbone (idempotent)
+13. append_skills_external_dirs() — appends skills.external_dirs to config.yaml (after ensure_agent)
+14. Seed AGENTS.md to /workspace if not already present
+15. start_webui()            — wraps /hermeswebui_init.bash; creates state/workspace/cache dirs, chowns, launches as hermeswebui
+16. wait_for_port 8787 120 "Hermes WebUI" — blocks until WebUI health endpoint responds (120s timeout)
+17. seed_righthand_man()     — seeds righthand-man orchestrator profile (idempotent, needs venv from WebUI init)
+18. start_browser_vnc()      — starts Browser/VNC human-in-the-loop stack (if BROWSER_HUMAN_LOOP_ENABLED=true)
+19. wait_for_port 9222 30 "chromium CDP" "/json/version" — Chromium CDP readiness (non-fatal, only if browser enabled)
+20. chown -R $OPENCODE_USER:$OPENCODE_USER $HERMES_HOME — pre-gateway ownership fix
+21. start_gateway()          — starts Hermes gateway as hermeswebui
+22. wait_for_port 8642 90 "Hermes Gateway" — blocks until Gateway health endpoint responds (90s timeout)
+23. mkdir -p ~/.local/share ~/.local/state + chown — pre-opencode .local setup (EACCES fix)
+24. start_opencode_serve()   — starts opencode serve (if OPENCODE_SERVE_ENABLED=true)
+25. wait_for_port 4096 TIMEOUT "opencode serve" "/health" — boot readiness probe, non-fatal
+26. start_dashboard()        — starts Hermes web dashboard (if HERMES_DASHBOARD_ENABLED=true)
+27. wait_for_port DASHBOARD_PORT TIMEOUT "hermes dashboard" "/" — dashboard readiness, non-fatal
+28. wait                     — blocks until any background process exits
+29. Container shuts down
 ```
 
 ### Functions
@@ -122,7 +123,8 @@ Defined in `lib/constants.sh`:
 | `seed_volumes()` | `lib/seed-volumes.sh` | Seeds skills, graphify registration, and AGENTS.md into volumes — replaces inline skill-staging code from the old entrypoint. |
 | `discover_models()` | `lib/model-discovery.sh` | Curls `$OPENAI_BASE_URL/models` with the API key. Parses response with python3, filters non-chat models (embed, whisper, tts, dall-e, sora, etc.) and wildcard patterns (`anthropic/*`, `openai/*`). Falls back to `OPENAI_DEFAULT_MODEL` only on failure. Sets `DISCOVERED_MODELS` as newline-separated model ID list. |
 | `generate_config()` | `lib/config-hermes.sh` | Writes `config.yaml` with litellm custom provider using a `models` dict (key=model ID) with a hybrid value: known families pinned to their true context length via `resolve_ctx_len()` (e.g. glm-5.2→1048576), the default model always pinned (fallback 200000), and unknown families emitted as `{}` so the hermes-agent self-resolves at runtime. Auto-generates API key if `HERMES_API_KEY` is empty. Sets default model from `HERMES_DEFAULT_MODEL` (with `OPENAI_DEFAULT_MODEL` fallback) as both `model.default` and `model.name`. Writes `browser:` block with viewport dimensions when `BROWSER_HUMAN_LOOP_ENABLED=true`. Writes `compression:` block when `HERMES_COMPRESSION_THRESHOLD` is set. Writes `goals.max_turns` from `HERMES_GOAL_MAX_TURNS`. Writes `delegation.model` when `HERMES_DELEGATION_MODEL` is set, and `delegation.provider` when `HERMES_DELEGATION_PROVIDER` is set. Writes `skills.external_dirs` inline when the optional-skills dir exists. On fallback (no OPENAI_BASE_URL), writes a minimal config with api_server + default model only. |
-| `generate_opencode_config()` | `lib/config-opencode.sh` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. When `OPENCODE_ZEN_API_KEY` is set, also generates an explicit `opencode` provider block with `apiKey: {env:O...EY}` so built-in `opencode/` models have proper authentication mapping. Seeds `auth.json` at `~/.local/share/opencode/auth.json` with the key as a fallback credential store. Copies the config to `/root/.config/opencode/` so root sees providers (fix #28, idempotent via `readlink -f` guard). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). Resolves provider prefix per-model via `_resolve_provider_prefix()` so `model` and `small_model` can route to different providers (issue #46). |
+| `generate_opencode_config()` | `lib/config-opencode.sh` | Writes `opencode.jsonc` with plugins, permission block (based on `OPENCODE_SECURITY_MODE`), and a single `@ai-sdk/openai-compatible` provider containing all discovered models with token limits assigned per model family. When `OPENCODE_ZEN_API_KEY` is set, also generates an explicit `opencode` provider block with `apiKey: *** so built-in `opencode/` models have proper authentication mapping. Seeds `auth.json` at `~/.local/share/opencode/auth.json` with the key as a fallback credential store. Copies the config to `/root/.config/opencode/` so root sees providers (fix #28, idempotent via `readlink -f` guard). Symlinks `/root/.local/share/opencode` to hermeswebui's data dir for shared session DB (fix #29). Chowns the config directory to `hermeswebui`. Uses `case` statement with three branches: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). Resolves provider prefix per-model via `_resolve_provider_prefix()` so `model` and `small_model` can route to different providers (issue #46). |
+| `generate_dcp_staging()` | `lib/config-opencode.sh` | Writes a managed `dcp.jsonc` with `compress.maxContextLimit`/`compress.minContextLimit` as percentages of each model's context window. Uses surgical merge — loads existing file, sets only compress keys, preserves all others. Driven by `OPENCODE_COMPRESSION_THRESHOLD` (default `0.76`). Chowns the config directory to `hermeswebui`. |
 | `validate_opencode_zen_key()` | `lib/validate-opencode.sh` | Validates `OPENCODE_ZEN_API_KEY` against the Zen API models endpoint. If the key is empty, logs an informational message and returns. If set but invalid, logs a warning with instructions to get a valid key. Non-fatal — the container always continues starting (fix #30). |
 | `cleanup_symlink_loops()` | `lib/symlink-cleanup.sh` | Removes broken symlinks that could cause infinite loop errors during file traversal. |
 | `ensure_agent()` | `lib/agent-setup.sh` | Copies agent from `/opt/hermes-agent-staging` to `/home/hermeswebui/.hermes/hermes-agent` if not already present. Idempotent — skips if `pyproject.toml` exists. **Note:** The staged clone is a deps source for `/hermeswebui_init.bash` (which rsyncs it and runs `uv pip install` into `/app/venv/`), not a second runtime. See `16 — Agent Installation Architecture`. |

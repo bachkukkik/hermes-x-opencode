@@ -316,13 +316,18 @@ OCEOF
 )
     fi
 
+    # Inline the API key at generation time when OPENAI_API_KEY is present in the
+    # generator's environment, so opencode.jsonc works in any shell/dir with no
+    # runtime env dependency. When absent, fall back to the {env:OPENAI_API_KEY}
+    # placeholder (original contract) so generation still completes.
+    local _openai_key="${OPENAI_API_KEY:-{env:OPENAI_API_KEY}}"
     local _ll_entry=""
     if $_has_openai_creds; then
         _ll_entry=$(cat << PROVEOF
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
       "options": {
-        "apiKey": "{env:OPENAI_API_KEY}",
+        "apiKey": "${_openai_key}",
         "baseURL": "${base_url}"
       },
       "models": {${models_json}
@@ -472,4 +477,117 @@ with open(sys.argv[1], 'w') as f:
         echo "== Symlinked ${root_opencode_data} -> ${user_opencode_data} (shared session DB)."
     fi
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$user_opencode_data"
+}
+
+# generate_dcp_staging — write a managed dcp.jsonc pinning the DCP compress
+# thresholds to a PERCENTAGE of each model's own context window.
+#
+# WHY: @tarquinen/opencode-dcp defaults compress.maxContextLimit to a hard
+# 100_000 tokens irrespective of the active model, so a 1M-context model gets
+# compression-nudged at ~10% fill. DCP's schema accepts "X%" strings for
+# max/minContextLimit which it resolves against the ACTIVE model's real window
+# (see dcp.schema.json) — so one percentage setting adapts to every model,
+# matching Hermes' HERMES_COMPRESSION_THRESHOLD behavior.
+#
+# Merge policy (surgical, lossless): load the existing dcp.jsonc, set ONLY
+# compress.maxContextLimit / compress.minContextLimit, preserve every other key.
+generate_dcp_staging() {
+    mkdir -p "$(dirname "$OPENCODE_DCP_CONFIG")"
+    local threshold="${OPENCODE_COMPRESSION_THRESHOLD:-0.76}"
+
+    python3 - "$OPENCODE_DCP_CONFIG" "$threshold" << 'PYEOF'
+import sys, json, re
+
+live_path, threshold_raw = sys.argv[1], sys.argv[2]
+
+# --- Tolerant JSONC parser (string-aware // and /* */ stripping) -----------
+def _strip_jsonc_comments(text):
+    result = []; i = 0; in_string = False; escape = False
+    while i < len(text):
+        ch = text[i]
+        if escape:
+            result.append(ch); escape = False; i += 1; continue
+        if in_string:
+            result.append(ch)
+            if ch == '\\': escape = True
+            elif ch == '"': in_string = False
+            i += 1; continue
+        if ch == '"':
+            in_string = True; result.append(ch); i += 1; continue
+        if ch == '/' and i + 1 < len(text) and text[i + 1] == '/':
+            while i < len(text) and text[i] != '\n': i += 1
+            continue
+        if ch == '/' and i + 1 < len(text) and text[i + 1] == '*':
+            i += 2
+            while i + 1 < len(text) and not (text[i] == '*' and text[i + 1] == '/'): i += 1
+            i += 2; continue
+        result.append(ch); i += 1
+    return ''.join(result)
+
+def load_jsonc(path):
+    with open(path) as f:
+        text = f.read()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+    stripped = _strip_jsonc_comments(text)
+    stripped = re.sub(r',\s*([}\]])', r'\1', stripped)
+    return json.loads(stripped)
+
+existing = {}
+try:
+    existing = load_jsonc(live_path)
+except FileNotFoundError:
+    existing = {}
+except Exception as e:
+    sys.stderr.write("!! Could not parse live dcp.jsonc (%s); starting fresh.\n" % e)
+    existing = {}
+if not isinstance(existing, dict):
+    existing = {}
+
+# --- Clamp threshold to (0, 1] and derive percentage strings ----------------
+try:
+    t = float(threshold_raw)
+except (TypeError, ValueError):
+    t = 0.76
+if t <= 0 or t > 1:
+    t = 0.76
+max_pct = round(t * 100)
+# minContextLimit is DCP's soft lower bound for gentle reminder nudges; keep
+# DCP's native 2:1 band (default 50k:100k) anchored at the configured ceiling.
+min_pct = max(1, round(max_pct / 2))
+max_str = "%d%%" % max_pct
+min_str = "%d%%" % min_pct
+
+existing.setdefault("$schema",
+    "https://raw.githubusercontent.com/Opencode-DCP/"
+    "opencode-dynamic-context-pruning/master/dcp.schema.json")
+compress = existing.setdefault("compress", {})
+if not isinstance(compress, dict):
+    compress = {}
+    existing["compress"] = compress
+compress["maxContextLimit"] = max_str
+compress["minContextLimit"] = min_str
+
+with open(live_path, "w") as f:
+    json.dump(existing, f, indent=2)
+    f.write("\n")
+
+# Human-readable summary goes to STDERR so callers that capture the managed
+# dcp.jsonc from stdout (e.g. the e2e tests) get clean JSON, not log noise.
+print("DCP merge summary", file=sys.stderr)
+print("=" * 40, file=sys.stderr)
+print("compress.maxContextLimit -> %s (of each model's context window)" % max_str, file=sys.stderr)
+print("compress.minContextLimit -> %s" % min_str, file=sys.stderr)
+print("threshold source         -> OPENCODE_COMPRESSION_THRESHOLD=%s" % t, file=sys.stderr)
+print("other dcp.jsonc keys     -> preserved", file=sys.stderr)
+PYEOF
+
+    chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_DCP_CONFIG")"
+    # NB: max_str/min_str live inside the Python heredoc above, not in shell
+    # scope; the "DCP merge summary" it prints already reports the resolved
+    # percentages. Reference only shell-scoped vars here (entrypoint runs under
+    # `set -u`, so an unbound var would abort startup before the healthcheck).
+    printf '== Wrote managed dcp.jsonc (compression threshold: %s of each model context window).\n' "$threshold" >&2
 }

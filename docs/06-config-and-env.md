@@ -41,6 +41,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `OPENCODE_SECURITY_MODE` | No | `strict` | Security profile for OpenCode: `strict` (31 bash rules, interpreters denied), `standard` (22 rules, interpreters allowed), `yolo` (allow all). See `13 — Security Hardening`. |
 | `OPENCODE_SERVER_PASSWORD` | No | auto-generated | Password for `opencode serve` authentication. Pass via `-p` flag when attaching or running tasks. Auto-generated and printed to logs if empty. Written to `/tmp/opencode-server-password` for ephemeral `docker exec` access and to `/home/hermeswebui/.hermes/opencode_server_password` for persistent access across container restarts (bind-mounted). |
 | `OPENCODE_SERVE_PORT` | No | `4096` | Host port for OpenCode serve. Container always listens on 4096. |
+| `OPENCODE_COMPRESSION_THRESHOLD` | No | `0.76` | DCP compress point as fraction (0.0–1.0) of each model's context window; written to managed `dcp.jsonc` as `compress.maxContextLimit: "<pct>%"`. Mirrors `HERMES_COMPRESSION_THRESHOLD` behavior. |
 | `HOST_UID` | No | `1000` | Linux UID for container file processes. Match your host user UID. |
 | `HOST_GID` | No | `1000` | Linux GID for container file processes. Match your host group GID. |
 | `HERMES_WORKSPACE` | No | `./volumes_hermes_opencode/data/workspace` | Host path for the workspace volume mount. |

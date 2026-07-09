@@ -48,6 +48,7 @@ fi
 discover_models
 generate_config
 generate_opencode_config
+generate_dcp_staging
 validate_opencode_zen_key || true
 cleanup_symlink_loops
 ensure_agent

@@ -30,3 +30,4 @@
 | `HERMES_API_PORT` | `8642` | Gateway port |
 | `OPENCODE_SERVE_PORT` | `4096` | OpenCode serve port |
 | `OPENCODE_SECURITY_MODE` | `strict` | Permission level |
+| `OPENCODE_COMPRESSION_THRESHOLD` | `0.76` | DCP compress point as fraction of each model's context window |
