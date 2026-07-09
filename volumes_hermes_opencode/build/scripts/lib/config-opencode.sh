@@ -574,12 +574,14 @@ with open(live_path, "w") as f:
     json.dump(existing, f, indent=2)
     f.write("\n")
 
-print("DCP merge summary")
-print("=" * 40)
-print("compress.maxContextLimit -> %s (of each model's context window)" % max_str)
-print("compress.minContextLimit -> %s" % min_str)
-print("threshold source         -> OPENCODE_COMPRESSION_THRESHOLD=%s" % t)
-print("other dcp.jsonc keys     -> preserved")
+# Human-readable summary goes to STDERR so callers that capture the managed
+# dcp.jsonc from stdout (e.g. the e2e tests) get clean JSON, not log noise.
+print("DCP merge summary", file=sys.stderr)
+print("=" * 40, file=sys.stderr)
+print("compress.maxContextLimit -> %s (of each model's context window)" % max_str, file=sys.stderr)
+print("compress.minContextLimit -> %s" % min_str, file=sys.stderr)
+print("threshold source         -> OPENCODE_COMPRESSION_THRESHOLD=%s" % t, file=sys.stderr)
+print("other dcp.jsonc keys     -> preserved", file=sys.stderr)
 PYEOF
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_DCP_CONFIG")"
@@ -587,5 +589,5 @@ PYEOF
     # scope; the "DCP merge summary" it prints already reports the resolved
     # percentages. Reference only shell-scoped vars here (entrypoint runs under
     # `set -u`, so an unbound var would abort startup before the healthcheck).
-    printf '== Wrote managed dcp.jsonc (compression threshold: %s of each model context window).\n' "$threshold"
+    printf '== Wrote managed dcp.jsonc (compression threshold: %s of each model context window).\n' "$threshold" >&2
 }
