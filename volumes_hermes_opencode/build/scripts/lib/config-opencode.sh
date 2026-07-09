@@ -583,5 +583,9 @@ print("other dcp.jsonc keys     -> preserved")
 PYEOF
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_DCP_CONFIG")"
-    printf '== Wrote managed dcp.jsonc (compress thresholds: %s/%s).\n' "$max_str" "$min_str"
+    # NB: max_str/min_str live inside the Python heredoc above, not in shell
+    # scope; the "DCP merge summary" it prints already reports the resolved
+    # percentages. Reference only shell-scoped vars here (entrypoint runs under
+    # `set -u`, so an unbound var would abort startup before the healthcheck).
+    printf '== Wrote managed dcp.jsonc (compression threshold: %s of each model context window).\n' "$threshold"
 }
