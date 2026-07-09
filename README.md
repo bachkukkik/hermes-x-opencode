@@ -367,17 +367,16 @@ This stack has been brought into feature parity with the downstream `hermes-x-op
 - **PR #22**: Inline `OPENAI_API_KEY` resolution at generation time — prevents `Authentication Error, No api key passed in` when the key isn't exported in the current shell.
 - **PR #23**: Managed `dcp.jsonc` generation with per-model compression thresholds — DCP now compresses at a percentage of each model's real context window (default 76%) instead of a hard 100k token ceiling.
 
-See `PRD-GAP-ANALYSIS.md` for detailed problem triage, success criteria, and verification policy.
+See `PRD.md` section 28 for detailed problem triage, success criteria, and verification policy.
 
 ## Files
-
 ```
+
 .
 ├── docker-compose.yml              # Service: 3 ports, bind mounts, env, healthcheck
 ├── .env.example                    # All supported env vars
 ├── .gitignore
-├── PRD.md                          # Engineer handoff document
-├── PRD-GAP-ANALYSIS.md             # Feature parity gap analysis (this section)
+├── PRD.md                          # Engineer handoff document (includes feature parity gap analysis)
 ├── README.md                       # This file
 ├── docs/                           # Architecture documentation (01–13)
 └── volumes_hermes_opencode/
