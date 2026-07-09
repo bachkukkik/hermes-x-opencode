@@ -51,9 +51,9 @@ start = content.index(\"import sys, re, json, os\")
 end = content.rindex(\"return 128000, 8192\", start) + len(\"return 128000, 8192\")
 exec(content[start:end])
 tests = [
-    (\"opencode-go/deepseek-v4-pro\", (1000000, 8192)),
-    (\"opencode-go/deepseek-v4-flash\", (1000000, 8192)),
-    (\"opencode/deepseek-v4-flash-free\", (1000000, 8192)),
+    (\"opencode-go/deepseek-v4-pro\", (1000000, 65536)),
+    (\"opencode-go/deepseek-v4-flash\", (1000000, 65536)),
+    (\"opencode/deepseek-v4-flash-free\", (1000000, 65536)),
     (\"opencode-go/kimi-k2.6\", (262144, 8192)),
     (\"opencode-go/kimi-k2.7-code\", (262144, 8192)),
     (\"opencode-go/minimax-m3\", (1000000, 8192)),

@@ -73,7 +73,7 @@ tests = [
     (\"llama_cpp/agents-a1-mtp-apex-i-balanced\", (262144, 32768)),
     (\"llama_cpp/agents-a1-q4_k_m\", (262144, 32768)),
     (\"llama_cpp/qwen3.6-27b-q4_k_m\", (200000, 32768)),
-    (\"opencode-go/deepseek-v4-pro\", (1000000, 8192)),
+    (\"opencode-go/deepseek-v4-pro\", (1000000, 65536)),
     (\"z.ai/glm-5.2\", (1048576, 131072)),
     (\"unknown-xyz\", (128000, 8192)),
 ]

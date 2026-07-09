@@ -109,7 +109,11 @@ def get_limits(model_id):
             return 262144, 32768
         return 200000, 32768
     if 'deepseek-v4' in name:
-        return 1000000, 8192
+        # DeepSeek V4 family (v4-pro / v4-flash, incl. opencode-go/*) is 1M
+        # context — matches resolve_ctx_len() in config-hermes.sh. Without this
+        # it falls through to the generic 128K deepseek branch below and OpenCode
+        # caps the window at 128K.
+        return 1000000, 65536
     if 'kimi' in name:
         return 262144, 8192
     if 'minimax-m3' in name:
