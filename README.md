@@ -261,6 +261,7 @@ All configuration is done through the `.env` file. See `.env.example` for the fu
 | `HERMES_API_PORT` | No | `8642` | Host port for Agent API |
 | `OPENCODE_SECURITY_MODE` | No | `strict` | Security profile: strict/standard/yolo |
 | `OPENCODE_SERVE_PORT` | No | `4096` | Host port for OpenCode serve |
+| `OPENCODE_COMPRESSION_THRESHOLD` | No | `0.76` | DCP compress point as fraction (0.0–1.0) of each model's context window; written to managed `dcp.jsonc` as `compress.maxContextLimit: "<pct>%"` |
 | `SKIP_SKILL_INSTALL` | No | `0` | Skip skill installation (set `1`) |
 | `HOST_UID` / `HOST_GID` | No | `1000` | File permission UID/GID |
 | `BROWSER_HUMAN_LOOP_ENABLED` | No | `false` | Enable the viewable/interactive Chromium browser stack (Xvfb + VNC + CDP). See [15 — Browser Human-in-the-Loop](docs/15-browser-human-loop.md). |
@@ -359,6 +360,15 @@ The `key_env` field must contain the literal string `OPENAI_API_KEY`, not the ac
 docker exec $(docker compose ps -q hermes-opencode) cat /home/hermeswebui/.hermes/config.yaml
 ```
 
+## Feature Parity with Downstream `hermes-x-opencode--host-machine`
+
+This stack has been brought into feature parity with the downstream `hermes-x-opencode--host-machine` repository, specifically porting:
+
+- **PR #22**: Inline `OPENAI_API_KEY` resolution at generation time — prevents `Authentication Error, No api key passed in` when the key isn't exported in the current shell.
+- **PR #23**: Managed `dcp.jsonc` generation with per-model compression thresholds — DCP now compresses at a percentage of each model's real context window (default 76%) instead of a hard 100k token ceiling.
+
+See `PRD-GAP-ANALYSIS.md` for detailed problem triage, success criteria, and verification policy.
+
 ## Files
 
 ```
@@ -367,6 +377,7 @@ docker exec $(docker compose ps -q hermes-opencode) cat /home/hermeswebui/.herme
 ├── .env.example                    # All supported env vars
 ├── .gitignore
 ├── PRD.md                          # Engineer handoff document
+├── PRD-GAP-ANALYSIS.md             # Feature parity gap analysis (this section)
 ├── README.md                       # This file
 ├── docs/                           # Architecture documentation (01–13)
 └── volumes_hermes_opencode/

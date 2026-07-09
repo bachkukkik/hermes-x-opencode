@@ -15,8 +15,8 @@
     "semantic_hash": "2578f65282089ec0af6236c0b9baaf51"
   },
   "README.md": {
-    "mtime": 1782922332.668151,
-    "ast_hash": "4d26bdf8d469559de1a350c606a861b9",
+    "mtime": 1783574528.345761,
+    "ast_hash": "aff2671d283eacb36ae403fe92a2217e",
     "semantic_hash": ""
   },
   "docker-compose.yml": {
@@ -30,8 +30,8 @@
     "semantic_hash": ""
   },
   "PRD.md": {
-    "mtime": 1783342208.156172,
-    "ast_hash": "4eea53356cc4c521ac0f3007a69f06a0",
+    "mtime": 1783575890.021696,
+    "ast_hash": "d426ac4c72b5e804a0d4765d0f90d4ae",
     "semantic_hash": ""
   },
   "docs/04-build-pipeline.md": {
@@ -55,8 +55,8 @@
     "semantic_hash": ""
   },
   "docs/05-entrypoint-sequence.md": {
-    "mtime": 1783019207.5065563,
-    "ast_hash": "164abd592a492fdf53bfefa5b5b994c4",
+    "mtime": 1783576198.584969,
+    "ast_hash": "266991ca9d8befc79120d314fff2d553",
     "semantic_hash": ""
   },
   "docs/08-cloudflare-ua-fix.md": {
@@ -65,18 +65,18 @@
     "semantic_hash": "064d67c6e374d26ed327964df6d74bf2"
   },
   "docs/10-model-discovery.md": {
-    "mtime": 1783343523.4447377,
-    "ast_hash": "d5774eca673f2b97eb9b747963a82c3a",
+    "mtime": 1783501313.1596591,
+    "ast_hash": "32c67f1dae5ebdd8d043802f83eade37",
     "semantic_hash": ""
   },
   "docs/09-testing-and-verification.md": {
-    "mtime": 1783266888.233397,
-    "ast_hash": "3696d270e21ae473374b0efcd7d5c9fd",
+    "mtime": 1783501313.1596591,
+    "ast_hash": "8cc421651ae0be3bb2ebd4b13344ba2e",
     "semantic_hash": ""
   },
   "docs/06-config-and-env.md": {
-    "mtime": 1783019207.5065563,
-    "ast_hash": "23dfd6ca71b63d326ad2f46abbe40006",
+    "mtime": 1783576162.4601173,
+    "ast_hash": "b51f11088cc63775724b2e002349276f",
     "semantic_hash": ""
   },
   "docs/02-hermes-gateway.md": {
@@ -145,8 +145,8 @@
     "semantic_hash": ""
   },
   "docs/README.md": {
-    "mtime": 1783019207.5065563,
-    "ast_hash": "5939ff184badbe9a415016c7578642a9",
+    "mtime": 1783501313.1596591,
+    "ast_hash": "6a917097ea820d0525d15641c0215b96",
     "semantic_hash": ""
   },
   "docs/20-opencode-runtime-fallback.md": {
@@ -187,6 +187,71 @@
   "docs/27-service-webui.md": {
     "mtime": 1783019207.5065563,
     "ast_hash": "66525e9c54366f20de52b84e631c6906",
+    "semantic_hash": ""
+  },
+  "PRD-GAP-ANALYSIS.md": {
+    "mtime": 1783574775.1595063,
+    "ast_hash": "77e161feeb1fa1a68adbf7df54b08660",
+    "semantic_hash": ""
+  },
+  "docs/28-agent-setup.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "2776cd212c9d25b4e0450080b235c923",
+    "semantic_hash": ""
+  },
+  "docs/29-config-hermes.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "b9bddb06261d3a5fffef39a896cfc6f9",
+    "semantic_hash": ""
+  },
+  "docs/30-config-opencode.md": {
+    "mtime": 1783576139.0155647,
+    "ast_hash": "e02c964f0c233f6496622a1e7e4f04bd",
+    "semantic_hash": ""
+  },
+  "docs/31-port-utils.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "94b69a586ecbf7663d11a244d820e5fa",
+    "semantic_hash": ""
+  },
+  "docs/32-runtime-env.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "bffffa65cbde82964518b234e6277a60",
+    "semantic_hash": ""
+  },
+  "docs/33-service-gateway.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "5e48c65a00ab1691c656bb87e137a1e0",
+    "semantic_hash": ""
+  },
+  "docs/34-service-opencode.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "c2f6697656b1c3b30a8491334a5aba79",
+    "semantic_hash": ""
+  },
+  "docs/35-constants.md": {
+    "mtime": 1783576155.011942,
+    "ast_hash": "153ecc11cfa5b949273cc05226b4f557",
+    "semantic_hash": ""
+  },
+  "docs/37-validate-opencode.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "d8c360161679468ab350ef6925f2f7e4",
+    "semantic_hash": ""
+  },
+  "docs/38-service-browser-vnc.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "c4f5bb09bec2cef3a6c489c061b0e6b6",
+    "semantic_hash": ""
+  },
+  "docs/39-service-dashboard.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "82819edbba44bf70e5c97383d12eeae2",
+    "semantic_hash": ""
+  },
+  "docs/40-mock-llm-server.md": {
+    "mtime": 1783501313.1596591,
+    "ast_hash": "9af651a7f8c54e6d5c34155cee5b9653",
     "semantic_hash": ""
   }
 }

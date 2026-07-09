@@ -1,16 +1,16 @@
-# Graph Report - hermes-x-opencode  (2026-07-06)
+# Graph Report - hermes-x-opencode  (2026-07-09)
 
 ## Corpus Check
-- 34 files · ~53,628 words
+- 47 files · ~59,348 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2905 nodes · 25103 edges · 702 communities (226 shown, 476 thin omitted)
+- 3032 nodes · 25229 edges · 716 communities (240 shown, 476 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5eea3a95`
+- Built from commit: `dcbace28`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -717,15 +717,29 @@
 - [[_COMMUNITY_.volumes_hermes_opencodedataworkspaceAGENTS|./volumes_hermes_opencode/data/workspace/AGENTS.md]]
 - [[_COMMUNITY_.volumes_hermes_opencodedatahermes-homeskillssoftware-developmentwebapp-testingSKILL|./volumes_hermes_opencode/data/hermes-home/skills/software-development/webapp-testing/SKILL.md]]
 - [[_COMMUNITY_.volumes_hermes_opencodedataworkspaceAGENTS|./volumes_hermes_opencode/data/workspace/AGENTS.md]]
+- [[_COMMUNITY_03 — Port Utilities (port-utils.sh)|03 — Port Utilities (port-utils.sh)]]
+- [[_COMMUNITY_00 — Agent Setup (ensure_agent)|00 — Agent Setup (ensure_agent)]]
+- [[_COMMUNITY_02 — Config OpenCode (opencode.jsonc generation)|02 — Config OpenCode (opencode.jsonc generation)]]
+- [[_COMMUNITY_01 — Config Hermes (config.yaml generation)|01 — Config Hermes (config.yaml generation)]]
+- [[_COMMUNITY_04 — Runtime Environment (runtime-env.sh)|04 — Runtime Environment (runtime-env.sh)]]
+- [[_COMMUNITY_05 — Service Gateway (service-gateway.sh)|05 — Service Gateway (service-gateway.sh)]]
+- [[_COMMUNITY_06 — Service OpenCode (service-opencode.sh)|06 — Service OpenCode (service-opencode.sh)]]
+- [[_COMMUNITY_PRD Gap Analysis Docs and Tests Coverage|PRD Gap Analysis: Docs and Tests Coverage]]
+- [[_COMMUNITY_37 — Validate OpenCode Zen Key|37 — Validate OpenCode Zen Key]]
+- [[_COMMUNITY_39 — Dashboard Service|39 — Dashboard Service]]
+- [[_COMMUNITY_Verification Policy|Verification Policy]]
+- [[_COMMUNITY_27. Docs & Tests Re-Audit (Jul 2026) agents-a1 Documentation & Coverage Gaps|27. Docs & Tests Re-Audit (Jul 2026): agents-a1 Documentation & Coverage Gaps]]
+- [[_COMMUNITY_Implementation Plan|Implementation Plan]]
+- [[_COMMUNITY_Problem Triage|Problem Triage]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `PRD: Hermes x OpenCode Docker Stack` - 27 edges
+1. `PRD: Hermes x OpenCode Docker Stack` - 36 edges
 2. `How` - 19 edges
 3. `18. Bare-Metal Host Setup: Model Discovery & Context Length Accuracy` - 15 edges
 4. `How` - 14 edges
-5. `How` - 12 edges
-6. `19. Issue Triage: Context-Length Pin (CA-31-A), Compression Threshold Transport (CA-31-B), OpenCode Credential Resolution (CA-30-A)` - 11 edges
-7. `Hermes x OpenCode` - 11 edges
+5. `Hermes x OpenCode` - 12 edges
+6. `How` - 12 edges
+7. `19. Issue Triage: Context-Length Pin (CA-31-A), Compression Threshold Transport (CA-31-B), OpenCode Credential Resolution (CA-30-A)` - 11 edges
 8. `15 — Browser Human-in-the-Loop` - 11 edges
 9. `16 — Agent Installation Architecture` - 11 edges
 10. `Standing Orders (ALWAYS apply)` - 10 edges
@@ -736,7 +750,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (702 total, 476 thin omitted)
+## Communities (716 total, 476 thin omitted)
 
 ### Community 0 - "./volumes_hermes_opencode/data/hermes-home/hermes-agent/hermes_cli/__init__.py"
 Cohesion: 1.00
@@ -764,7 +778,7 @@ Nodes (39): ./volumes_hermes_opencode/data/hermes-home/hermes-agent/hermes_cli/s
 
 ### Community 6 - "Hermes x OpenCode"
 Cohesion: 0.06
-Nodes (34): 1. Clone this repo, 2. Configure environment, 3. Build and start, 4. Use it, 5. Verify OpenCode works, Agent Version, Architecture, config.yaml has expanded API key instead of literal string (+26 more)
+Nodes (35): 1. Clone this repo, 2. Configure environment, 3. Build and start, 4. Use it, 5. Verify OpenCode works, Agent Version, Architecture, config.yaml has expanded API key instead of literal string (+27 more)
 
 ### Community 7 - "./volumes_hermes_opencode/data/hermes-home/hermes-agent/gateway/platforms/ADDING_A_PLATFORM.md"
 Cohesion: 1.00
@@ -859,8 +873,8 @@ Cohesion: 0.11
 Nodes (17): 22 — Profiles and the Righthand-Man Orchestrator, Built-in Hermes tools, CLI, First-boot seeding in the container, Host-side profile, How, How to use it, Routing doctrine (+9 more)
 
 ### Community 30 - "22 — Profiles and the Righthand-Man Orchestrator"
-Cohesion: 0.11
-Nodes (18): 10. Acceptance Criteria, 12. Documentation & Test Hygiene, 13. Additional Acceptance Criteria, 17. Documentation Gaps: doc06 Env Var Table Parity, 1. Product Overview, 22. Feature Parity Bridge: vanilla-open-design, 2. Architecture, 3. Tech Stack (+10 more)
+Cohesion: 0.08
+Nodes (25): 10. Acceptance Criteria, 12. Documentation & Test Hygiene, 13. Additional Acceptance Criteria, 17. Documentation Gaps: doc06 Env Var Table Parity, 1. Product Overview, 22. Feature Parity Bridge: vanilla-open-design, 28. Feature Parity with Downstream hermes-x-opencode--host-machine (PRs #22, #23), 2. Architecture (+17 more)
 
 ### Community 31 - "05 — Entrypoint Sequence"
 Cohesion: 0.12
@@ -887,8 +901,8 @@ Cohesion: 1.00
 Nodes (16): ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-architecture-diagram.md, ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-ascii-art.md, ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-ascii-video.md, ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-baoyu-infographic.md, ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-claude-design.md, ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-comfyui.md, ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-design-md.md, ./volumes_hermes_opencode/data/hermes-home/hermes-agent/website/i18n/zh-Hans/docusaurus-plugin-content-docs/current/user-guide/skills/bundled/creative/creative-excalidraw.md (+8 more)
 
 ### Community 37 - "README.md"
-Cohesion: 0.17
-Nodes (5): 24 — WebUI API, Endpoints, `GET /health`, Related Docs, Documentation Index
+Cohesion: 0.07
+Nodes (18): 24 — WebUI API, Endpoints, `GET /health`, Related Docs, 35 — Constants and Runtime Config, Key Constants, Runtime Config Defaults, What (+10 more)
 
 ### Community 38 - "15 — Browser Human-in-the-Loop"
 Cohesion: 0.12
@@ -1642,25 +1656,81 @@ Nodes (3): ./volumes_hermes_opencode/data/hermes-home/wiki/SCHEMA.md, ./volumes_
 Cohesion: 1.00
 Nodes (3): ./volumes_hermes_opencode/data/hermes-home/wiki/entities/browser-state-persistence.md, ./volumes_hermes_opencode/data/hermes-home/wiki/entities/hermes-web-dashboard.md, ./volumes_hermes_opencode/data/hermes-home/wiki/entities/righthand-man-profile.md
 
+### Community 702 - "03 — Port Utilities (port-utils.sh)"
+Cohesion: 0.10
+Nodes (19): Appendix: Reference Diff Sources, Executive Summary, Implementation Plan, Issue 1: PR #22 - Inline OPENAI_API_KEY Resolution, Issue 2: PR #23 - Managed dcp.jsonc with Per-Model Compression Thresholds, Phase 1: Code Changes, Phase 2: Test Suite, Phase 3: Functional Verification (+11 more)
+
+### Community 703 - "00 — Agent Setup (ensure_agent)"
+Cohesion: 0.17
+Nodes (11): 30 — Config OpenCode, Environment variables, Functions, `generate_dcp_staging()`, `generate_opencode_config()`, `get_limits(model_id)`, How, `normalize_model_id(model)` (+3 more)
+
+### Community 704 - "02 — Config OpenCode (opencode.jsonc generation)"
+Cohesion: 0.22
+Nodes (8): 29 — Config Hermes, `append_skills_external_dirs()`, Functions, `generate_config()`, How, `resolve_ctx_len(model)`, What, Why
+
+### Community 705 - "01 — Config Hermes (config.yaml generation)"
+Cohesion: 0.25
+Nodes (7): 28 — Agent Setup, Environment variables, Function signature, How, Operations, What, Why
+
+### Community 706 - "04 — Runtime Environment (runtime-env.sh)"
+Cohesion: 0.29
+Nodes (6): 32 — Runtime Environment Detection, `detect_runtime_env()`, How, `normalize_base_url_for_local(url)`, What, Why
+
+### Community 707 - "05 — Service Gateway (service-gateway.sh)"
+Cohesion: 0.33
+Nodes (5): 31 — Port Utils, Function signature, How, What, Why
+
+### Community 708 - "06 — Service OpenCode (service-opencode.sh)"
+Cohesion: 0.33
+Nodes (5): 33 — Gateway Service, How, `start_gateway()`, What, Why
+
+### Community 709 - "PRD Gap Analysis: Docs and Tests Coverage"
+Cohesion: 0.33
+Nodes (5): 34 — OpenCode Serve Service, How, `start_opencode_serve()`, What, Why
+
+### Community 710 - "37 — Validate OpenCode Zen Key"
+Cohesion: 0.33
+Nodes (5): 37 — Validate OpenCode Zen Key, How, `validate_opencode_zen_key()`, What, Why
+
+### Community 711 - "39 — Dashboard Service"
+Cohesion: 0.33
+Nodes (5): 39 — Dashboard Service, How, `start_dashboard()`, What, Why
+
+### Community 712 - "Verification Policy"
+Cohesion: 0.33
+Nodes (6): Phase 1: Code Changes, Phase 2: Test Suite, Phase 3: Functional Verification, Phase 4: Regression Testing, Pre-Flight Checks, Verification Policy
+
+### Community 713 - "27. Docs & Tests Re-Audit (Jul 2026): agents-a1 Documentation & Coverage Gaps"
+Cohesion: 0.40
+Nodes (5): 27. Docs & Tests Re-Audit (Jul 2026): agents-a1 Documentation & Coverage Gaps, Problem, Solution, Success Criteria, Verification Policy
+
+### Community 714 - "Implementation Plan"
+Cohesion: 0.67
+Nodes (3): Implementation Plan, Task 1: Port PR #22 (Inline OPENAI_API_KEY), Task 2: Port PR #23 (DCP Config Generation)
+
+### Community 715 - "Problem Triage"
+Cohesion: 0.67
+Nodes (3): Issue 1: PR #22 - Inline OPENAI_API_KEY Resolution, Issue 2: PR #23 - Managed dcp.jsonc with Per-Model Compression Thresholds, Problem Triage
+
 ## Knowledge Gaps
-- **496 isolated node(s):** `common.bash script`, `mock-llm-server.sh script`, `run.sh script`, `Architecture`, `1. MANDATED SKILLS` (+491 more)
+- **577 isolated node(s):** `common.bash script`, `mock-llm-server.sh script`, `run.sh script`, `Architecture`, `1. MANDATED SKILLS` (+572 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **476 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `PRD: Hermes x OpenCode Docker Stack` connect `22 — Profiles and the Righthand-Man Orchestrator` to `16. Configurable Browser Viewport (Xvfb Display Size)`, `README.md`, `21. Per-Delegation Model Routing`, `5. File Specifications`, `./volumes_hermes_opencode/data/hermes-home/hermes-agent/cron/__init__.py`, `7. Configuration Reference`, `19. Issue Triage: Context-Length Pin (CA-31-A), Compression Threshold Transport (CA-31-B), OpenCode Credential Resolution (CA-30-A)`, `18. Bare-Metal Host Setup: Model Discovery & Context Length Accuracy`, `./volumes_hermes_opencode/build/scripts/create-stub-skills.sh`, `./volumes_hermes_opencode/data/hermes-home/hermes-agent/hermes_cli/proxy/adapters/__init__.py`, `20. Environment Variable Naming Convention Alignment (OPENCODE_API_KEY → OPENCODE_ZEN_API_KEY)`, `14. Profile Skills Parity (righthand-man ← default)`, `15. Browser State Persistence`, `23. OPENCODE_*_MODEL Provider-Prefix Convention`, `9. Usage Patterns`, `./graphify-out/2026-06-28/.graphify_labels.json`, `24. Cross-Repo Gap Bridge: vanilla-open-design + host-machine (July 2026)`?**
-  _High betweenness centrality (0.016) - this node is a cross-community bridge._
-- **Why does `Hermes x OpenCode` connect `Hermes x OpenCode` to `README.md`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Why does `PRD: Hermes x OpenCode Docker Stack` connect `22 — Profiles and the Righthand-Man Orchestrator` to `7. Configuration Reference`, `./volumes_hermes_opencode/build/scripts/create-stub-skills.sh`, `./volumes_hermes_opencode/data/hermes-home/hermes-agent/hermes_cli/proxy/adapters/__init__.py`, `README.md`, `./volumes_hermes_opencode/data/hermes-home/hermes-agent/cron/__init__.py`, `18. Bare-Metal Host Setup: Model Discovery & Context Length Accuracy`, `24. Cross-Repo Gap Bridge: vanilla-open-design + host-machine (July 2026)`, `Verification Policy`, `27. Docs & Tests Re-Audit (Jul 2026): agents-a1 Documentation & Coverage Gaps`, `Implementation Plan`, `19. Issue Triage: Context-Length Pin (CA-31-A), Compression Threshold Transport (CA-31-B), OpenCode Credential Resolution (CA-30-A)`, `Problem Triage`, `20. Environment Variable Naming Convention Alignment (OPENCODE_API_KEY → OPENCODE_ZEN_API_KEY)`, `16. Configurable Browser Viewport (Xvfb Display Size)`, `21. Per-Delegation Model Routing`, `5. File Specifications`, `14. Profile Skills Parity (righthand-man ← default)`, `15. Browser State Persistence`, `23. OPENCODE_*_MODEL Provider-Prefix Convention`, `9. Usage Patterns`, `./graphify-out/2026-06-28/.graphify_labels.json`?**
+  _High betweenness centrality (0.024) - this node is a cross-community bridge._
 - **What connects `common.bash script`, `mock-llm-server.sh script`, `run.sh script` to the rest of the system?**
-  _496 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _577 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Hermes x OpenCode` be split into smaller, more focused modules?**
-  _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05714285714285714 - nodes in this community are weakly interconnected._
 - **Should `How` be split into smaller, more focused modules?**
   _Cohesion score 0.07142857142857142 - nodes in this community are weakly interconnected._
 - **Should `How` be split into smaller, more focused modules?**
   _Cohesion score 0.08695652173913043 - nodes in this community are weakly interconnected._
 - **Should `How` be split into smaller, more focused modules?**
   _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
+- **Should `How` be split into smaller, more focused modules?**
+  _Cohesion score 0.10526315789473684 - nodes in this community are weakly interconnected._

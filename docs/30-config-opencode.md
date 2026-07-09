@@ -25,6 +25,10 @@ Single source of truth for provider/model prefix resolution. Recognized prefixes
 
 The main config generator with credential gating, model resolution, fallback chain parsing, security mode, provider entries, config write, root mirror, auth.json seeding, and session DB symlink.
 
+#### `generate_dcp_staging()`
+
+Writes a managed `dcp.jsonc` pinning DCP's compress thresholds (`maxContextLimit`/`minContextLimit`) as percentages of each model's own context window. Driven by `OPENCODE_COMPRESSION_THRESHOLD` (default `0.76`). Uses a surgical merge policy — loads existing `dcp.jsonc`, sets only the compress keys, preserves all other keys. Strips JSONC comments and trailing commas via a tolerant inline Python JSONC parser. The resulting `"X%"` strings are resolved by DCP against the active model's real context window at runtime.
+
 #### `get_limits(model_id)`
 
 Resolves a model ID to its `(context, output)` token limits for the generated
@@ -65,6 +69,7 @@ catch-all so quantized/MTP builds get their real 262K window.
 |----------|---------|---------|
 | `OPENCODE_ZEN_API_KEY` | — | API key for OpenCode Zen models |
 | `OPENCODE_DEFAULT_MODEL` | `$OPENAI_DEFAULT_MODEL` | Default model for OpenCode |
+| `OPENCODE_COMPRESSION_THRESHOLD` | `0.76` | DCP compress point as fraction (0.0–1.0) of each model's context window; written to managed `dcp.jsonc` as `compress.maxContextLimit: "<pct>%"` |
 | `OPENCODE_FALLBACK_MODEL` | — | Comma-separated ordered fallback chain |
 | `OPENCODE_SECURITY_MODE` | `strict` | Permission level |
 
