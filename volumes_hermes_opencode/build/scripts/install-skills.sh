@@ -8,6 +8,12 @@ trap 'rm -rf "$TMPDIR"' EXIT
 
 eprintf() { printf '%b\n' "$*" >&2; }
 
+# Check SKIP_SKILL_INSTALL
+if [ "${SKIP_SKILL_INSTALL:-0}" = "1" ]; then
+    eprintf "SKIP_SKILL_INSTALL=1, skipping skill installation"
+    exit 0
+fi
+
 clone_sparse() {
   local repo_url="$1" dest="$2"
   shift 2
