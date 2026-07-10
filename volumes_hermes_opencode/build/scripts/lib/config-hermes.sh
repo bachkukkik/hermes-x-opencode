@@ -90,13 +90,29 @@ compression:
 "
     fi
 
+    # model.max_tokens: OUTPUT-token cap Hermes sends per request (NOT the
+    # context window — that's context_length in the models map). Left unset,
+    # Hermes sends no max_tokens and the upstream proxy/provider applies its own
+    # small default, truncating long responses (finish_reason='length') — e.g. a
+    # delegation subagent emitting one large JSON payload gets its tool-call args
+    # cut off mid-stream. Subagents inherit the parent max_tokens (delegation has
+    # no separate output-cap knob), so baking it here raises the cap for the main
+    # agent AND its subagents. cli.py reads model.max_tokens (env HERMES_MAX_TOKENS
+    # wins at runtime). Integer only — a non-integer value is ignored. Value must
+    # stay below the model's context window; if a provider rejects it, lower it.
+    local max_tokens_line=""
+    if printf '%s' "${HERMES_MAX_TOKENS:-}" | grep -qE '^[0-9]+$'; then
+        max_tokens_line="
+  max_tokens: ${HERMES_MAX_TOKENS}"
+    fi
+
     if [ -z "${OPENAI_BASE_URL:-}" ]; then
         warn "No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
         cat > "$CONFIG" << YAMLEOF
 model:
   provider: litellm
   default: openai/gpt-4o
-  name: openai/gpt-4o
+  name: openai/gpt-4o${max_tokens_line}
 
 custom_providers:
   - name: litellm
@@ -176,7 +192,7 @@ skills:
 model:
   provider: litellm
   default: ${default_model}
-  name: ${default_model}
+  name: ${default_model}${max_tokens_line}
 
 custom_providers:
   - name: litellm

@@ -34,6 +34,12 @@ OPENCODE_SMALL_MODEL="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENAI_DEF
 HERMES_API_KEY="${HERMES_API_KEY:-}"
 HERMES_API_PORT="${HERMES_API_PORT:-8642}"
 HERMES_COMPRESSION_THRESHOLD="${HERMES_COMPRESSION_THRESHOLD:-}"
+# OUTPUT-token cap baked into config.yaml as model.max_tokens (response-length
+# ceiling, NOT the context window). Defaults to 200000 so long responses and
+# delegation subagents (which inherit the parent max_tokens) aren't truncated by
+# a small upstream proxy/provider default (finish_reason='length'). Integer;
+# must stay below the model's context window — lower it if a provider rejects it.
+HERMES_MAX_TOKENS="${HERMES_MAX_TOKENS:-200000}"
 
 # --- DCP (dynamic context pruning) compression threshold ---------------------
 # The @tarquinen/opencode-dcp plugin defaults to a hard 100_000-token

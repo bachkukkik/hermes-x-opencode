@@ -66,6 +66,47 @@ setup() {
     [[ "$output" == *"OK"* ]]
 }
 
+@test "AC244: HERMES_MAX_TOKENS bakes model.max_tokens (set int / unset / non-integer)" {
+    # Bridged from host-machine PR #24. HERMES_MAX_TOKENS is the OUTPUT-token cap
+    # Hermes sends per request; unset lets the upstream provider apply a small
+    # default that truncates long responses (finish_reason='length'), incl.
+    # delegation subagents (they inherit the parent max_tokens). Hermetic: temp
+    # CONFIG + a single DISCOVERED_MODELS entry, log/warn stubbed, so it does not
+    # touch the live config. Exercises all three branches of the integer guard.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c '
+        source /usr/local/bin/lib/config-hermes.sh
+        log() { :; }; warn() { :; }
+        export OPENAI_BASE_URL="http://127.0.0.1:9/v1"
+        export DISCOVERED_MODELS="openai/gpt-4o"
+        export HERMES_DEFAULT_MODEL="openai/gpt-4o"
+
+        export HERMES_MAX_TOKENS=32000
+        export CONFIG=$(mktemp)
+        generate_config
+        echo "SET: $(grep -c "max_tokens: 32000" "$CONFIG")"
+        rm -f "$CONFIG"
+
+        unset HERMES_MAX_TOKENS
+        export CONFIG=$(mktemp)
+        generate_config
+        echo "UNSET: $(grep -c "max_tokens" "$CONFIG")"
+        rm -f "$CONFIG"
+
+        export HERMES_MAX_TOKENS=not-a-number
+        export CONFIG=$(mktemp)
+        generate_config
+        echo "INVALID: $(grep -c "max_tokens" "$CONFIG")"
+        rm -f "$CONFIG"
+    '
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"SET: 1"* ]]
+    [[ "$output" == *"UNSET: 0"* ]]
+    [[ "$output" == *"INVALID: 0"* ]]
+}
+
 @test "AC243: append_skills_external_dirs appends the block once and is idempotent" {
     # T5: exercise the append + "already present" grep-guard (config-hermes.sh:210-213).
     # Hermetic: temp HERMES_HOME with a fake optional-skills dir + temp CONFIG, so the

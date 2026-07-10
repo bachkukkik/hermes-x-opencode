@@ -178,6 +178,15 @@ setup() {
     [[ "$output" == *"200000"* ]]
 }
 
+@test "AC209: HERMES_MAX_TOKENS defaults to 200000" {
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c 'unset HERMES_MAX_TOKENS; source /usr/local/bin/lib/constants.sh; echo "$HERMES_MAX_TOKENS"'
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"200000"* ]]
+}
+
 @test "AC208: Runtime config can be overridden via environment" {
     local cid
     cid=$(get_container)
