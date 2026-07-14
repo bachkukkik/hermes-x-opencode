@@ -30,11 +30,14 @@ start_opencode_serve() {
     # Pass all provider env vars through su — {env:VAR} in opencode.jsonc
     # resolves at runtime from the process environment. Without these,
     # the litellm provider gets an empty apiKey (401 "no key passed in").
+    # PLAYWRIGHT_BROWSERS_PATH is forwarded for the same reason so opencode-spawned
+    # playwright-cli invocations can locate the pre-installed chromium.
     su -s /bin/bash "$OPENCODE_USER" -c \
       "OPENCODE_SERVER_PASSWORD='$password' \
        OPENCODE_ZEN_API_KEY='$opencode_key' \
        OPENAI_API_KEY='$openai_key' \
        OPENAI_BASE_URL='$openai_url' \
+       PLAYWRIGHT_BROWSERS_PATH='${PLAYWRIGHT_BROWSERS_PATH}' \
        opencode serve --port 4096 --hostname 0.0.0.0" &
     echo "== OpenCode serve started (PID: $!)"
 }

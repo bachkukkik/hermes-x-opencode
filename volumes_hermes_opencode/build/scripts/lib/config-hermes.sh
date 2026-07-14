@@ -76,6 +76,17 @@ delegation:
     fi
     delegation_block="${delegation_block}
 "
+    # Main agent tool-calling loop budget: always emitted so the agent runs up to
+    # HERMES_AGENT_MAX_TURNS iterations instead of the built-in 90. The gateway
+    # bridges agent.max_turns → HERMES_MAX_ITERATIONS (config.yaml is authoritative
+    # and wins over any stale .env HERMES_MAX_ITERATIONS ghost). This is the loop
+    # that prints "Reached maximum iterations (N)" — NOT goals.max_turns or
+    # delegation.max_iterations, which cap the /goal and subagent loops respectively.
+    local agent_block="
+agent:
+  max_turns: ${HERMES_AGENT_MAX_TURNS:-200}
+"
+
     local goal_max_turns="${HERMES_GOAL_MAX_TURNS:-50}"
     local goals_block="
 goals:
@@ -130,7 +141,7 @@ platforms:
       port: 8642
       key: "${api_key}"
       cors_origins: "*"
-${approvals_block}${delegation_block}
+${agent_block}${approvals_block}${delegation_block}
 YAMLEOF
         log "Wrote minimal config.yaml."
         return
@@ -209,7 +220,7 @@ platforms:
       port: 8642
       key: "${api_key}"
       cors_origins: "*"
-${browser_block}${skills_block}${approvals_block}${goals_block}${compression_block}${delegation_block}
+${agent_block}${browser_block}${skills_block}${approvals_block}${goals_block}${compression_block}${delegation_block}
 YAMLEOF
 
     log "Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."

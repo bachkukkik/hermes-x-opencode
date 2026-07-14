@@ -131,3 +131,63 @@ setup() {
     [ "$status" -eq 0 ]
     [[ "$output" == *"first=1 second=1"* ]]
 }
+
+@test "AC252: generate_config emits agent.max_turns from HERMES_AGENT_MAX_TURNS" {
+    # Regression for the "Reached maximum iterations (90)" bug: config-hermes.sh
+    # must write a top-level `agent:` block with `max_turns` (the main agent-loop
+    # cap the gateway bridges to agent.max_iterations) — distinct from the
+    # goals/delegation blocks. Hermetic: temp CONFIG + minimal path (empty
+    # OPENAI_BASE_URL) so it is deterministic and needs no LLM secrets. A unique
+    # value (177) disambiguates it from goals.max_turns (default 50).
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c '
+        source /usr/local/bin/lib/constants.sh
+        source /usr/local/bin/lib/config-hermes.sh
+        log() { :; }; warn() { :; }
+        export HERMES_AGENT_MAX_TURNS=177
+        export OPENAI_BASE_URL=""
+        export HERMES_HOME=$(mktemp -d)
+        export CONFIG="$HERMES_HOME/config.yaml"
+        generate_config >/dev/null 2>&1
+        # Extract the agent block max_turns specifically (not goals/delegation).
+        awk "/^agent:/{f=1;next} f&&/max_turns:/{print \"agent.max_turns=\"\$2; exit}" "$CONFIG"
+        rm -rf "$HERMES_HOME"
+    '
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"agent.max_turns=177"* ]]
+}
+
+@test "AC253: agent.max_turns is emitted independently of goals/delegation budgets" {
+    # The original bug: raising only goals/delegation left the main loop pinned at
+    # the built-in 90 because agent.max_turns was never written. Assert all three
+    # land as distinct values so a future regression that drops the agent block
+    # (or aliases it to goals) is caught. Full path (non-empty OPENAI_BASE_URL +
+    # one discovered model) so the goals block is emitted alongside agent.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c '
+        source /usr/local/bin/lib/constants.sh
+        source /usr/local/bin/lib/config-hermes.sh
+        log() { :; }; warn() { :; }
+        export HERMES_YOLO_MODE=1
+        export HERMES_AGENT_MAX_TURNS=111
+        export HERMES_GOAL_MAX_TURNS=122
+        export HERMES_DELEGATION_MAX_ITERATIONS=133
+        export OPENAI_BASE_URL="http://localhost:9999"
+        export DISCOVERED_MODELS="openai/gpt-4o"
+        export HERMES_DEFAULT_MODEL="openai/gpt-4o"
+        export HERMES_HOME=$(mktemp -d)
+        export CONFIG="$HERMES_HOME/config.yaml"
+        generate_config >/dev/null 2>&1
+        a=$(awk "/^agent:/{f=1;next} f&&/max_turns:/{print \$2; exit}" "$CONFIG")
+        g=$(awk "/^goals:/{f=1;next} f&&/max_turns:/{print \$2; exit}" "$CONFIG")
+        d=$(awk "/^delegation:/{f=1;next} f&&/max_iterations:/{print \$2; exit}" "$CONFIG")
+        echo "a=$a g=$g d=$d"
+        rm -rf "$HERMES_HOME"
+    '
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"a=111 g=122 d=133"* ]]
+}

@@ -35,6 +35,7 @@ Load and use these skills on EVERY task:
 
 ### 2. Kanban Delegation Rules (coding discipline)
 
+- **Prioritize task delegation over direct execution** — for multi-step work, route through delegation (`delegate_task` / kanban workers driven by `opencode-plan-build-orchestrator`) rather than editing directly, so plan→build→verify discipline is preserved.
 - **Every kanban card that involves code changes MUST include `skills=["opencode-plan-build-orchestrator", "karpathy-guidelines"]`** in the `kanban_create` call. Without this the worker sees only KANBAN_GUIDANCE (lifecycle, no coding discipline) and edits code directly instead of routing through plan→build→verify.
 - **Every `delegate_task` call for coding work MUST include `"opencode-plan-build-orchestrator"` and `"karpathy-guidelines"`** in the subagent's goal context (e.g., "load opencode-plan-build-orchestrator and karpathy-guidelines; follow the 6-phase pipeline"). The orchestrator parent NEVER writes repo-tracked files directly — all code edits go to subagents.
 - If you forget this, the worker's first instinct will be to `patch`/`write_file` directly and the plan→build→verify pipeline is bypassed.
@@ -70,7 +71,11 @@ Load and use these skills on EVERY task:
 | `/root/.local/share/opencode/` | Symlink → hermeswebui's data dir (shared session DB, fix #29) |
 | `/home/hermeswebui/.config/opencode/skills/` | OpenCode skills (ephemeral) |
 | `/opt/hermes-agent-staging/` | Agent source staging (build-time). NOT the active runtime — provides deps for /hermeswebui_init.bash and skills for install-skills.sh. Active code is at /app/venv/. |
+| `/opt/ms-playwright/` | Playwright browser binaries (`PLAYWRIGHT_BROWSERS_PATH`), world-readable |
+| `/tmp/` | Scratch space — world-writable (`1777`), safe for temp output (pandoc, playwright profiles). The entrypoint enforces perms every boot. |
 | `/workspace/` | User project workspace (bind mount) |
+
+**Built-in CLI tools** (on PATH for the agent): `rg` (ripgrep), `tree`, `ffmpeg`, `opencode`, `uv`, `git`, `claude` (Anthropic Claude Code — auth resolved at runtime, see `lib/config-claude-code.sh`), and `playwright-cli` (the agent-oriented `@playwright/cli` — `open`/`screenshot`/`pdf` — with chromium pre-installed at `/opt/ms-playwright`).
 
 ### 6. Security Modes
 

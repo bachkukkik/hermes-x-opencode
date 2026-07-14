@@ -15,6 +15,14 @@ OPENCODE_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/opencode.jsonc"
 OPENCODE_DCP_CONFIG="${OPENCODE_USER_HOME}/.config/opencode/dcp.jsonc"
 OPENCODE_SKILLS_DIR="${OPENCODE_USER_HOME}/.config/opencode/skills"
 
+# Playwright browser install location (baked by the Dockerfile as a shared,
+# world-readable path). Exported here as the single source of truth so it can be
+# passed explicitly through the `su` boundary to hermeswebui-owned services —
+# `su -s /bin/bash` resets the parent environment (same reason OPENAI_* are
+# forwarded to opencode serve), so relying on the Dockerfile ENV alone would
+# leave the agent's `playwright-cli` unable to locate its chromium.
+export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-/opt/ms-playwright}"
+
 # Wiki path (used by wiki-init.sh)
 WIKI_DIR="${WIKI_PATH:-${HERMES_HOME}/wiki}"
 
@@ -54,6 +62,14 @@ OPENCODE_COMPRESSION_THRESHOLD="${OPENCODE_COMPRESSION_THRESHOLD:-0.76}"
 # the delegation subagent loop; max_iterations caps that loop.
 HERMES_YOLO_MODE="${HERMES_YOLO_MODE:-1}"
 HERMES_DELEGATION_MAX_ITERATIONS="${HERMES_DELEGATION_MAX_ITERATIONS:-50}"
+
+# Main agent tool-calling loop budget → config.yaml `agent.max_turns`, which the
+# gateway bridges to HERMES_MAX_ITERATIONS (the runtime `agent.max_iterations`).
+# This is the loop that emits "Reached maximum iterations (N)" — DISTINCT from
+# HERMES_GOAL_MAX_TURNS (/goal cross-turn budget) and HERMES_DELEGATION_MAX_ITERATIONS
+# (per-subagent cap). The agent's built-in default is 90; raised here so long
+# autonomous runs don't truncate mid-task. See gateway/run.py (agent.max_turns bridge).
+HERMES_AGENT_MAX_TURNS="${HERMES_AGENT_MAX_TURNS:-200}"
 
 # Goal budget (#57) + Hermes web dashboard (#57): /goal max_turns; opt-in management UI on :9119.
 HERMES_GOAL_MAX_TURNS="${HERMES_GOAL_MAX_TURNS:-50}"
