@@ -861,7 +861,7 @@ produces merged config overlays for both Hermes and OpenCode.
 
 ### 18.2 Problem
 
-The host config generator hardcodes `context_length: 200000` for every
+The host config generator hardcodes `context_length: 262144` for every
 discovered model regardless of its actual context window. This causes:
 
 - **Inaccurate context display** — `/usage` and the status bar show wrong values
@@ -873,7 +873,7 @@ discovered model regardless of its actual context window. This causes:
 Root cause: `model-discovery.sh` queries LiteLLM `/v1/models` and extracts only
 model IDs, discarding the `max_input_tokens` / `context_length` metadata that
 LiteLLM returns for concrete (non-wildcard) models. Then `config-hermes.sh`
-assigns every entry `{"context_length": 200000}`.
+assigns every entry `{"context_length": 262144}`.
 
 Additionally, the current active model (`zai/glm-5.2`) is entirely absent from
 the Hermes `custom_providers[].models` map because the generator was last run
@@ -890,7 +890,7 @@ Key Results:
 - KR1: All 281 LiteLLM models present in Hermes `custom_providers[].models` map
 - KR2: `zai/glm-5.2` (current active model) has accurate context_length set
 - KR3: `generate.sh --dry-run` extracts real context_length from LiteLLM
-       `max_input_tokens`, falling back to `context_length`, then 200000 only
+       `max_input_tokens`, falling back to `context_length`, then 262144 only
        when neither is available (wildcard-expanded models)
 - KR4: righthand-man profile config synced with the same accurate model map
 - KR5: No stale entries (models not in LiteLLM) remain in the config
@@ -919,12 +919,12 @@ extracted from LiteLLM's response:
 
 - Primary source: `max_input_tokens` (LiteLLM's preferred field)
 - Fallback: `context_length` (older OpenAI-compatible servers)
-- Final fallback: `200000` (only when neither is present — wildcard-expanded
+- Final fallback: `262144` (only when neither is present — wildcard-expanded
   models like `zai/*` that LiteLLM reports without metadata)
 
 **18.5.2 Hermes overlay fix** (`lib/config-hermes.sh`)
 
-Replace the hardcoded `{"context_length": 200000}` with the actual value read
+Replace the hardcoded `{"context_length": 262144}` with the actual value read
 from `$STAGING_MODELS_JSON`. The models map is built from the JSON metadata
 file, ensuring each model gets its real context window.
 
@@ -943,7 +943,7 @@ After regeneration, apply the staging overlay to:
 | SC2 | All LiteLLM models present | count of models in config map == count of LiteLLM non-wildcard models |
 | SC3 | No stale entries | every model in config map exists in LiteLLM `/v1/models` |
 | SC4 | generate.sh dry-run passes | `bash ~/.hermes/host-config-gen/generate.sh --dry-run` exits 0 |
-| SC5 | Staging has accurate context | staging models map has non-200000 values for known models (e.g. anthropic models = 1000000) |
+| SC5 | Staging has accurate context | staging models map has non-262144 values for known models (e.g. anthropic models = 1000000) |
 | SC6 | righthand-man synced | righthand-man config custom_providers models map matches default |
 | SC7 | OpenCode config refreshed | opencode.jsonc litellm provider has current model list |
 
@@ -1617,7 +1617,7 @@ window — left at the 128000 default.
 - [ ] SC-26-8: `get_limits('opencode/nemotron-3-ultra-free')` returns `(131072, 8192)`
 - [ ] SC-26-9: `get_limits('opencode/qwen3.6-plus-free')` returns `(1048576, 8192)`
 - [ ] SC-26-10: `get_limits('opencode-go/glm-5.2')` still returns `(1048576, 131072)` (no regression)
-- [ ] SC-26-11: `get_limits('llama_cpp/qwen3.6-27b-q4_k_m')` still returns `(200000, 32768)` (no regression)
+- [ ] SC-26-11: `get_limits('llama_cpp/qwen3.6-27b-q4_k_m')` still returns `(262144, 32768)` (no regression)
 - [ ] SC-26-12: `bash -n config-opencode.sh` passes (no syntax errors)
 - [ ] SC-26-13: Existing bats tests pass: `tests/e2e/19-ctx-pin-and-credentials.bats`, `tests/e2e/03-config.bats`
 

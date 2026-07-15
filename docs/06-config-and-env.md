@@ -60,7 +60,7 @@ All runtime configuration is managed through environment variables defined in `.
 | `CODE_SERVER_ENABLED` | No | `true` | Enable code-server (VS Code in browser) on :8443. |
 | `CODE_SERVER_PORT` | No | `8443` | Port for code-server. |
 | `CODE_SERVER_PASSWORD` | No | — (unset) | Password for code-server authentication. |
-| `OPENAI_CONTEXT_LENGTH` | No | `200000` | Default context length used as fallback for unknown model families during config generation. |
+| `OPENAI_CONTEXT_LENGTH` | No | `262144` | Default context length used as fallback for unknown model families during config generation. |
 | `OPENAI_IMAGE_MODEL` | No | `gpt-image-2` | Model ID used for image generation tasks. |
 
 ### Hardcoded environment (in docker-compose.yml)

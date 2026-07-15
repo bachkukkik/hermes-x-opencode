@@ -181,7 +181,7 @@ The `generate_opencode_config()` function in the entrypoint assigns `context` an
           "limit": { "context": 128000, "output": 16384 }
         },
         "anthropic/claude-opus-4-6": {
-          "limit": { "context": 200000, "output": 16384 }
+          "limit": { "context": 262144, "output": 16384 }
         }
       }
     }
@@ -199,12 +199,12 @@ Limit assignment follows model name pattern matching (case-insensitive, checked 
 | `gpt-4` (other) | 8192 | 4096 | `openai/gpt-4`, `gpt-4-32k` |
 | `gpt-3.5` | 16384 | 4096 | `openai/gpt-3.5-turbo` |
 | `gpt-5` | 128000 | 16384 | `openai/gpt-5` |
-| `/o[134]` or `-o[134]` | 200000 | 100000 | `openai/o1`, `openai/o3-mini`, `openai/o4` |
-| `claude-3.7`, `claude-4+` | 200000 | 16384 | `anthropic/claude-3.7-sonnet`, `anthropic/claude-4-opus` |
-| `claude-3` (other) | 200000 | 4096 | `anthropic/claude-3-haiku` |
+| `/o[134]` or `-o[134]` | 262144 | 100000 | `openai/o1`, `openai/o3-mini`, `openai/o4` |
+| `claude-3.7`, `claude-4+` | 262144 | 16384 | `anthropic/claude-3.7-sonnet`, `anthropic/claude-4-opus` |
+| `claude-3` (other) | 262144 | 4096 | `anthropic/claude-3-haiku` |
 | `llama_cpp/agents-a1-mtp-apex` | 262144 | 32768 | Agents A1 MTP (checked before the `llama_cpp` catch-all) |
 | `llama_cpp/agents-a1-q4` | 262144 | 32768 | Agents A1 q4_k_m (checked before the `llama_cpp` catch-all) |
-| `llama_cpp` (other) | 200000 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` (checked before qwen3.6) |
+| `llama_cpp` (other) | 262144 | 32768 | `llama_cpp/qwen3.6-27b-q4_k_m` (checked before qwen3.6) |
 | `deepseek-v4` | 1000000 | 8192 | `opencode-go/deepseek-v4-pro`, `opencode/deepseek-v4-flash-free` |
 | `kimi` | 262144 | 8192 | `opencode-go/kimi-k2.6`, `opencode-go/kimi-k2.7-code` |
 | `minimax-m3` | 1000000 | 8192 | `opencode-go/minimax-m3` |

@@ -192,9 +192,9 @@ for mid, val in models.items():
     lim = val.get('limit', {})
     ctx = lim.get('context', 0)
     out = lim.get('output', 0)
-    if ctx < 1000 or ctx > 2000000:
+    if ctx < 1000 or ctx > 2621440:
         bad.append('{}:context={}'.format(mid, ctx))
-    if out < 1000 or out > 200000:
+    if out < 1000 or out > 262144:
         bad.append('{}:output={}'.format(mid, out))
 if bad:
     print('FAIL: ' + ','.join(bad[:5]))
@@ -431,8 +431,8 @@ bad = []
 for mid, val in llama_models.items():
     ctx = val.get('limit', {}).get('context', 0)
     out = val.get('limit', {}).get('output', 0)
-    if ctx < 200000:
-        bad.append('{}:context={} (expected >=200000)'.format(mid, ctx))
+    if ctx < 262144:
+        bad.append('{}:context={} (expected >=262144)'.format(mid, ctx))
     if out < 32768:
         bad.append('{}:output={} (expected >=32768)'.format(mid, out))
 if bad:

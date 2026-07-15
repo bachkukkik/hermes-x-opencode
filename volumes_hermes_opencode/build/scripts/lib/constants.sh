@@ -31,7 +31,7 @@ OPENAI_BASE_URL="${OPENAI_BASE_URL:-}"
 OPENAI_API_KEY="${OPENAI_API_KEY:-}"
 OPENAI_DEFAULT_MODEL="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
 OPENAI_SMALL_MODEL="${OPENAI_SMALL_MODEL:-}"
-OPENAI_CONTEXT_LENGTH="${OPENAI_CONTEXT_LENGTH:-200000}"
+OPENAI_CONTEXT_LENGTH="${OPENAI_CONTEXT_LENGTH:-262144}"
 OPENAI_IMAGE_MODEL="${OPENAI_IMAGE_MODEL:-gpt-image-2}"
 
 # Fine-grained model overrides (fall back to OPENAI_* if unset)
@@ -43,11 +43,11 @@ HERMES_API_KEY="${HERMES_API_KEY:-}"
 HERMES_API_PORT="${HERMES_API_PORT:-8642}"
 HERMES_COMPRESSION_THRESHOLD="${HERMES_COMPRESSION_THRESHOLD:-}"
 # OUTPUT-token cap baked into config.yaml as model.max_tokens (response-length
-# ceiling, NOT the context window). Defaults to 200000 so long responses and
+# ceiling, NOT the context window). Defaults to 262144 so long responses and
 # delegation subagents (which inherit the parent max_tokens) aren't truncated by
 # a small upstream proxy/provider default (finish_reason='length'). Integer;
 # must stay below the model's context window — lower it if a provider rejects it.
-HERMES_MAX_TOKENS="${HERMES_MAX_TOKENS:-200000}"
+HERMES_MAX_TOKENS="${HERMES_MAX_TOKENS:-262144}"
 
 # --- DCP (dynamic context pruning) compression threshold ---------------------
 # The @tarquinen/opencode-dcp plugin defaults to a hard 100_000-token

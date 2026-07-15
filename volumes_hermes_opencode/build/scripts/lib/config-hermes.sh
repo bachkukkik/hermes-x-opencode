@@ -130,7 +130,7 @@ custom_providers:
     base_url: ""
     models:
       openai/gpt-4o:
-        context_length: 200000
+        context_length: 262144
     key_env: OPENAI_API_KEY
 
 platforms:
@@ -166,7 +166,7 @@ YAMLEOF
             # has >=1 entry (fallback-resilience test) and the active model has a
             # sane window even when its family is unknown.
             models_yaml="${models_yaml}      ${model_id}:
-        context_length: 200000
+        context_length: 262144
 "
         else
             # Unknown family -> emit an empty mapping so the hermes-agent
