@@ -96,18 +96,18 @@ def get_limits(model_id):
     if 'gpt-5' in name:
         return 128000, 16384
     if re.search(r'/o[134]', name) or re.search(r'-o[134]', name):
-        return 200000, 100000
+        return 262144, 100000
     if re.search(r'claude-[34]', name):
         if re.search(r'claude-3\.7|claude-[45]', name):
-            return 200000, 16384
-        return 200000, 4096
+            return 262144, 16384
+        return 262144, 4096
     if 'llama_cpp' in model_id:
         # Agents A1 models have 256K native context (qwen35moe arch)
         if 'agents-a1-mtp-apex' in name:
             return 262144, 32768
         if 'agents-a1-q4' in name:
             return 262144, 32768
-        return 200000, 32768
+        return 262144, 32768
     if 'deepseek-v4' in name:
         # DeepSeek V4 family (v4-pro / v4-flash, incl. opencode-go/*) is 1M
         # context — matches resolve_ctx_len() in config-hermes.sh. Without this

@@ -38,3 +38,26 @@ setup() {
     run bash -c 'cd "$PROJECT_DIR" && git ls-files -z | xargs -0 grep -rl "sk-[a-zA-Z0-9]\{48,\}" 2>/dev/null || true'
     [ -z "$output" ]
 }
+
+@test "AC254: tree is installed and runnable" {
+    local image="hermes_x_opencode-hermes-opencode:latest"
+    run docker run --rm --entrypoint tree "$image" --version
+    [ "$status" -eq 0 ]
+    echo "$output" | grep -qi "tree"
+}
+
+@test "AC255: playwright-cli (@playwright/cli) is installed and runnable" {
+    # The agent-oriented CLI (github.com/microsoft/playwright-cli), binary
+    # `playwright-cli` — NOT the classic `playwright` test runner.
+    local image="hermes_x_opencode-hermes-opencode:latest"
+    run docker run --rm --entrypoint playwright-cli "$image" --version
+    [ "$status" -eq 0 ]
+    [ -n "$output" ]
+}
+
+@test "AC256: claude (Claude Code CLI) is installed and runnable" {
+    local image="hermes_x_opencode-hermes-opencode:latest"
+    run docker run --rm --entrypoint claude "$image" --version
+    [ "$status" -eq 0 ]
+    [[ "$output" =~ [0-9]+\.[0-9]+\.[0-9]+ ]]
+}

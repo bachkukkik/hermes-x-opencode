@@ -169,22 +169,22 @@ setup() {
     [[ "$output" == *"gpt-image-2"* ]]
 }
 
-@test "AC207: OPENAI_CONTEXT_LENGTH defaults to 200000" {
+@test "AC207: OPENAI_CONTEXT_LENGTH defaults to 262144" {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$OPENAI_CONTEXT_LENGTH"'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"200000"* ]]
+    [[ "$output" == *"262144"* ]]
 }
 
-@test "AC209: HERMES_MAX_TOKENS defaults to 200000" {
+@test "AC209: HERMES_MAX_TOKENS defaults to 262144" {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'unset HERMES_MAX_TOKENS; source /usr/local/bin/lib/constants.sh; echo "$HERMES_MAX_TOKENS"'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"200000"* ]]
+    [[ "$output" == *"262144"* ]]
 }
 
 @test "AC208: Runtime config can be overridden via environment" {
@@ -199,4 +199,28 @@ setup() {
     '
     [ "$status" -eq 0 ]
     [[ "$output" == "0:true"* ]]
+}
+
+@test "AC250: HERMES_AGENT_MAX_TURNS defaults to 200 (main agent-loop cap)" {
+    # Distinct from HERMES_GOAL_MAX_TURNS / HERMES_DELEGATION_MAX_ITERATIONS — this
+    # is the loop that emits "Reached maximum iterations (N)". Agent built-in is 90;
+    # this deployment raises the default to 200 via constants.sh.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c 'unset HERMES_AGENT_MAX_TURNS; source /usr/local/bin/lib/constants.sh; echo "$HERMES_AGENT_MAX_TURNS"'
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"200"* ]]
+}
+
+@test "AC251: PLAYWRIGHT_BROWSERS_PATH defaults to /opt/ms-playwright and is exported" {
+    # Single source of truth for the shared browser dir; must be exported so the
+    # services can forward it across the su boundary to hermeswebui.
+    local cid
+    cid=$(get_container)
+    [ -n "$cid" ]
+    run docker exec "$cid" bash -c 'unset PLAYWRIGHT_BROWSERS_PATH; source /usr/local/bin/lib/constants.sh; echo "val=$PLAYWRIGHT_BROWSERS_PATH"; export -p | grep -q "PLAYWRIGHT_BROWSERS_PATH" && echo exported'
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"val=/opt/ms-playwright"* ]]
+    [[ "$output" == *"exported"* ]]
 }

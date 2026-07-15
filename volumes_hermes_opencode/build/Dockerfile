@@ -4,7 +4,7 @@ ARG HERMES_AGENT_VERSION=main
 
 RUN apt-get update -y --no-install-recommends \
     && apt-get install -y --no-install-recommends \
-       build-essential git ripgrep ffmpeg procps curl netcat-openbsd bats \
+       build-essential git ripgrep tree ffmpeg procps curl netcat-openbsd bats \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -32,6 +32,59 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh \
     && cp /root/.local/bin/uv /usr/local/bin/uv \
     && cp /root/.local/bin/uvx /usr/local/bin/uvx 2>/dev/null || true \
     && uv --version
+
+# ── Claude Code CLI (anthropic `claude`) ─────────────────────────────────────
+# Installed globally so `claude` is on PATH for the agent and for `docker exec`
+# terminals. Auth resolves at runtime (OAuth primary, API key fallback) — see
+# lib/config-claude-code.sh. Three auth paths are supported:
+#   1. CLAUDE_CODE_OAUTH_TOKEN env (minted once via `claude setup-token`)
+#   2. Interactive `claude /login` in a `docker exec` terminal (headless paste
+#      flow: press `c`, open the URL on your laptop, paste the code back)
+#   3. ANTHROPIC_API_KEY env (fallback)
+# CLAUDE_CONFIG_DIR points at the persistent ~/.hermes bind mount so interactive
+# logins (.credentials.json) and settings survive container restarts. Recorded
+# in /etc/environment too, so `docker exec` sessions as hermeswebui resolve the
+# same config dir.
+#
+# IS_SANDBOX=1: Claude Code refuses `--dangerously-skip-permissions` when the
+# process has root/sudo privileges UNLESS it believes it is in a sandbox. The
+# entrypoint runs as root (PID 1) and `docker exec` sessions are root by
+# default, so any caller passing that flag fails with exit 1 ("cannot be used
+# with root/sudo privileges"). This container IS an isolated sandbox, so we opt
+# in — baked as ENV (all children inherit it) and written to /etc/environment so
+# root exec shells resolve it too (mirrors CLAUDE_CONFIG_DIR).
+ENV CLAUDE_CONFIG_DIR=/home/hermeswebui/.hermes/claude
+ENV IS_SANDBOX=1
+RUN npm install -g --legacy-peer-deps @anthropic-ai/claude-code \
+    && claude --version \
+    && printf 'CLAUDE_CONFIG_DIR=%s\n' "${CLAUDE_CONFIG_DIR}" >> /etc/environment \
+    && printf 'IS_SANDBOX=%s\n' "${IS_SANDBOX}" >> /etc/environment
+
+# ── Playwright CLI + chromium (built-in browser automation) ──────────────────
+# @playwright/cli (github.com/microsoft/playwright-cli) — the token-efficient,
+# agent-oriented CLI (binary `playwright-cli`, cmds: open/screenshot/pdf), NOT
+# the classic `playwright` test runner. Installed globally so `playwright-cli` is
+# on PATH for the agent. The package pins a specific alpha `playwright`/-core, so
+# browsers are installed via ITS bundled `playwright` binary — using a separately
+# installed stable `playwright` would fetch a mismatched chromium revision.
+# Browsers land in a SHARED, world-readable path (not root's ~/.cache) so the
+# runtime user (hermeswebui) resolves them via PLAYWRIGHT_BROWSERS_PATH. The
+# base image already installs the debian `chromium` package with its full
+# shared-lib deps, which satisfy the downloaded chromium's runtime requirements,
+# so `--with-deps` (apt) is unnecessary. PLAYWRIGHT_BROWSERS_PATH is recorded in
+# /etc/environment too, so `docker exec` sessions as hermeswebui resolve the
+# browsers; the entrypoint additionally forwards it across the `su` boundary for
+# the gateway/opencode (su resets the parent env, so the ENV directive alone is
+# not enough for the agent's runtime).
+ENV PLAYWRIGHT_BROWSERS_PATH=/opt/ms-playwright
+RUN npm install -g --legacy-peer-deps @playwright/cli \
+    && mkdir -p "${PLAYWRIGHT_BROWSERS_PATH}" \
+    && PW_BIN="$(npm root -g)/.bin/playwright" \
+    && { [ -x "$PW_BIN" ] || PW_BIN="$(npm root -g)/@playwright/cli/node_modules/.bin/playwright"; } \
+    && "$PW_BIN" install chromium \
+    && chmod -R a+rX "${PLAYWRIGHT_BROWSERS_PATH}" \
+    && playwright-cli --version \
+    && printf 'PLAYWRIGHT_BROWSERS_PATH=%s\n' "${PLAYWRIGHT_BROWSERS_PATH}" >> /etc/environment
 
 # Clone hermes-agent to staging path for:
 # 1) Skills source extraction during install-skills.sh

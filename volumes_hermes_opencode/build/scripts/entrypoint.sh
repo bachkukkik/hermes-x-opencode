@@ -14,6 +14,7 @@ source "${LIB_DIR}/agent-setup.sh"
 source "${LIB_DIR}/model-discovery.sh"
 source "${LIB_DIR}/config-hermes.sh"
 source "${LIB_DIR}/config-opencode.sh"
+source "${LIB_DIR}/config-claude-code.sh"
 source "${LIB_DIR}/validate-opencode.sh"
 source "${LIB_DIR}/service-gateway.sh"
 source "${LIB_DIR}/service-opencode.sh"
@@ -28,6 +29,14 @@ source "${LIB_DIR}/wiki-init.sh"
 # Main execution sequence
 # =============================================================================
 
+# Ensure /tmp is present and world-writable with the sticky bit (1777). The
+# agent runs as hermeswebui and routinely uses /tmp for scratch work (e.g.
+# `pandoc -o /tmp/report.pdf`, playwright profiles, opencode server-password).
+# Root-started services also drop files here; the sticky bit lets every user
+# create their own files without a stale root-owned entry blocking access.
+# Idempotent and cheap — also covers volume remounts.
+mkdir -p /tmp && chmod 1777 /tmp || warn "could not set /tmp to 1777 — agent scratch writes may fail"
+
 # --- Skill installation ---
 seed_volumes
 
@@ -38,6 +47,10 @@ if [ -n "${OPENAI_BASE_URL:-}" ]; then
     OPENAI_BASE_URL="$(normalize_base_url_for_local "${OPENAI_BASE_URL}")"
     export OPENAI_BASE_URL
 fi
+
+# Resolve Claude Code auth (OAuth token primary, API key fallback) before any
+# service starts, so all children inherit the resolved environment.
+configure_claude_code_auth
 
 # --- Configuration ---
 # Start mock LLM server if OPENAI_BASE_URL points to localhost:4000 (CI fallback)
@@ -72,6 +85,26 @@ wait_for_port 8787 120 "Hermes WebUI"
 # write access to upgrade packages in-place.
 chown -R "${OPENCODE_USER}:${OPENCODE_USER}" /app/venv/ 2>/dev/null || true
 chown -R "${OPENCODE_USER}:${OPENCODE_USER}" /uv_cache/ 2>/dev/null || true
+
+# --- Stamp install method as "docker" (suppress pip-deprecation nag) ---
+# hermes-agent detects its install method from a code-scoped stamp next to the
+# running code (<site-packages>/.install_method); absent that it falls back to
+# "pip" and prints "pip installs are no longer an officially supported
+# platform ...". This is a Docker deployment — a supported method, exactly like
+# the upstream published hermes-agent image which bakes the same stamp. Here the
+# venv is created at RUNTIME by the WebUI init (not at build), so we stamp once
+# it exists, before the gateway starts. Non-fatal. See detect_install_method.
+if [ -x /app/venv/bin/python ]; then
+    SITE_PKGS="$(/app/venv/bin/python -c 'import hermes_cli, pathlib; print(pathlib.Path(hermes_cli.__file__).parent.parent.resolve())' 2>/dev/null)"
+    if [ -n "${SITE_PKGS:-}" ] && [ -d "$SITE_PKGS" ]; then
+        if printf 'docker\n' > "${SITE_PKGS}/.install_method" 2>/dev/null; then
+            chown "${OPENCODE_USER}:${OPENCODE_USER}" "${SITE_PKGS}/.install_method" 2>/dev/null || true
+            log "install method stamped: ${SITE_PKGS}/.install_method = docker"
+        else
+            warn "could not stamp install method (non-fatal)"
+        fi
+    fi
+fi
 
 # --- Seed the righthand-man orchestrator profile (idempotent, needs the venv from WebUI init) ---
 seed_righthand_man
