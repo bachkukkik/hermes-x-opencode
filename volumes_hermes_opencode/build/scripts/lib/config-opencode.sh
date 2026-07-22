@@ -89,7 +89,7 @@ def get_limits(model_id):
         return 128000, 16384
     if 'gpt-4-turbo' in name:
         return 128000, 4096
-    if re.search(r'gpt-4[\\.-]', name) or name.endswith('gpt-4'):
+    if re.search(r'gpt-4[\.-]', name) or name.endswith('gpt-4'):
         return 8192, 4096
     if 'gpt-3.5' in name:
         return 16384, 4096
@@ -394,6 +394,21 @@ JSONEOF
         _fallback_status=$(printf '%s' "$_fallback_chain" | tr '\n' ',' | sed 's/,$//')
     fi
     echo "== Wrote opencode.jsonc with ${_model_count} models, default: ${default_model}, small: ${small_model}, fallback: ${_fallback_status} (security: ${security_mode}, opencode_zen: ${_zen_status})."
+
+    # --- Validate generated JSON ---
+    if python3 -c "
+import json, re
+t = open('${OPENCODE_CONFIG}').read()
+t = re.sub(r'(?<![:a-zA-Z])//.*?\n', '\n', t)
+t = re.sub(r'/\*.*?\*/', '', t, flags=re.DOTALL)
+json.loads(t)
+print('JSON valid')
+" 2>/dev/null; then
+        echo "== opencode.jsonc validated OK"
+    else
+        echo "!! opencode.jsonc is INVALID JSON, dumping first 2500 chars for debug:"
+        head -c 2500 "${OPENCODE_CONFIG}" | cat -A
+    fi
 
     chown -R "${OPENCODE_USER}:${OPENCODE_USER}" "$(dirname "$OPENCODE_CONFIG")"
 
