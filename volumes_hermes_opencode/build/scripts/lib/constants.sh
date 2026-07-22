@@ -55,7 +55,7 @@ OPENCODE_SMALL_MODEL="${OPENCODE_SMALL_MODEL:-${OPENAI_SMALL_MODEL:-${OPENAI_DEF
 
 HERMES_API_KEY="${HERMES_API_KEY:-}"
 HERMES_API_PORT="${HERMES_API_PORT:-8642}"
-HERMES_COMPRESSION_THRESHOLD="${HERMES_COMPRESSION_THRESHOLD:-}"
+HERMES_COMPRESSION_THRESHOLD="${HERMES_COMPRESSION_THRESHOLD:-0.76}"
 # OUTPUT-token cap baked into config.yaml as model.max_tokens (response-length
 # ceiling, NOT the context window). Defaults to 262144 so long responses and
 # delegation subagents (which inherit the parent max_tokens) aren't truncated by
