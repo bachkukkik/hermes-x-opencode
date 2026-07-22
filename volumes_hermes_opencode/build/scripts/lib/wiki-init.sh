@@ -1,21 +1,21 @@
 # lib/wiki-init.sh - initialize wiki directory for llm-wiki skill - sourced by entrypoint.sh
 
 init_wiki() {
-    if [ -z "${WIKI_DIR:-}" ]; then
-        echo "!! WIKI_DIR not set, skipping wiki init."
+    if [ -z "${HERMES_WIKI_PATH:-}" ]; then
+        echo "!! HERMES_WIKI_PATH not set, skipping wiki init."
         return
     fi
 
-    if [ -f "$WIKI_DIR/SCHEMA.md" ]; then
-        echo "== Wiki already initialized at $WIKI_DIR"
-        export WIKI_PATH="$WIKI_DIR"
+    if [ -f "${HERMES_WIKI_PATH}/SCHEMA.md" ]; then
+        echo "== Wiki already initialized at ${HERMES_WIKI_PATH}"
+        export WIKI_PATH="${HERMES_WIKI_PATH}"
         return
     fi
 
-    echo "== Initializing wiki at $WIKI_DIR"
-    mkdir -p "$WIKI_DIR"/{raw/{articles,papers,transcripts,assets},entities,concepts,comparisons,queries}
+    echo "== Initializing wiki at ${HERMES_WIKI_PATH}"
+    mkdir -p "${HERMES_WIKI_PATH}"/{raw/{articles,papers,transcripts,assets},entities,concepts,comparisons,queries}
 
-    cat > "$WIKI_DIR/SCHEMA.md" << 'SCHEMAEOF'
+    cat > "${HERMES_WIKI_PATH}/SCHEMA.md" << 'SCHEMAEOF'
 # Wiki Schema
 
 ## Domain
@@ -48,7 +48,7 @@ Hermes x OpenCode Docker Stack — container architecture, configuration, testin
 - build-time, runtime
 SCHEMAEOF
 
-    cat > "$WIKI_DIR/index.md" << 'INDEXEOF'
+    cat > "${HERMES_WIKI_PATH}/index.md" << 'INDEXEOF'
 # Wiki Index
 
 > Content catalog. Every wiki page listed with a one-line summary.
@@ -63,9 +63,9 @@ SCHEMAEOF
 ## Queries
 INDEXEOF
 
-    sed -i "s/INIT_DATE/$(date +%Y-%m-%d)/" "$WIKI_DIR/index.md"
+    sed -i "s/INIT_DATE/$(date +%Y-%m-%d)/" "${HERMES_WIKI_PATH}/index.md"
 
-    cat > "$WIKI_DIR/log.md" << 'LOGEOF'
+    cat > "${HERMES_WIKI_PATH}/log.md" << 'LOGEOF'
 # Wiki Log
 
 > Chronological record of all wiki actions. Append-only.
@@ -76,9 +76,9 @@ INDEXEOF
 - Structure created with SCHEMA.md, index.md, log.md
 LOGEOF
 
-    sed -i "s/LOG_DATE/$(date +%Y-%m-%d)/" "$WIKI_DIR/log.md"
+    sed -i "s/LOG_DATE/$(date +%Y-%m-%d)/" "${HERMES_WIKI_PATH}/log.md"
 
-    chown -R hermeswebui:hermeswebui "$WIKI_DIR" 2>/dev/null || true
-    export WIKI_PATH="$WIKI_DIR"
-    echo "== Wiki initialized at $WIKI_DIR"
+    chown -R hermeswebui:hermeswebui "${HERMES_WIKI_PATH}" 2>/dev/null || true
+    export WIKI_PATH="${HERMES_WIKI_PATH}"
+    echo "== Wiki initialized at ${HERMES_WIKI_PATH}"
 }

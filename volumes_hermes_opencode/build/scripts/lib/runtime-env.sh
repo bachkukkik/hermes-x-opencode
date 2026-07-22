@@ -30,12 +30,23 @@ detect_runtime_env() {
     echo "${mode}"
 }
 
-# Replace host.docker.internal with localhost when running outside Docker.
-normalize_base_url_for_local() {
+# Normalize OPENAI_BASE_URL for downstream consumers:
+#   1. Strip trailing slashes (always). Consumers append paths
+#      (".../chat/completions"); a trailing "/" yields "//chat/completions",
+#      which LiteLLM and other proxies 404 on.
+#   2. Replace host.docker.internal with localhost when running outside Docker.
+normalize_base_url() {
     local url="$1"
+    # Strip every trailing slash ("https://host/" and "https://host//").
+    while [ "${url%/}" != "$url" ]; do
+        url="${url%/}"
+    done
     if [ "${RUNTIME_ENV_MODE}" = "local" ] && [[ "$url" == *host.docker.internal* ]]; then
         url="${url//host.docker.internal/localhost}"
-        echo "== Substituted host.docker.internal -> localhost in OPENAI_BASE_URL (local runtime mode)" >&2
+        log "Substituted host.docker.internal -> localhost in OPENAI_BASE_URL (local runtime mode)"
     fi
     echo "${url}"
 }
+
+# Backwards-compatible alias (prior name referenced only the local rewrite).
+normalize_base_url_for_local() { normalize_base_url "$@"; }

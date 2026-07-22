@@ -221,28 +221,15 @@ eprintf "  Shortened %d descriptions to <=60 chars" "$shortened"
 # ==============================================================================
 eprintf ""
 eprintf "=== llm-wiki (opencode + hermes research skill) ==="
-LLM_WIKI_SRC="/opt/hermes-agent-staging/skills/research/llm-wiki"
-LLM_WIKI_SKILL="llm-wiki"
-
-if [ -f "$LLM_WIKI_SRC/SKILL.md" ]; then
-  # OpenCode (flat namespace)
-  rm -rf "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL"
-  mkdir -p "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL"
-  cp "$LLM_WIKI_SRC/SKILL.md" "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL/SKILL.md"
-  # Copy any sibling files (references/, scripts/, assets/) if present
-  cp -r "$LLM_WIKI_SRC"/. "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL/" 2>/dev/null || true
-  rm -rf "$OPENCODE_SKILLS_DIR/$LLM_WIKI_SKILL/.git"
-
-  # Hermes (categorized under research/)
-  rm -rf "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL"
-  mkdir -p "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL"
-  cp "$LLM_WIKI_SRC/SKILL.md" "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL/SKILL.md"
-  cp -r "$LLM_WIKI_SRC"/. "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL/" 2>/dev/null || true
-  rm -rf "$HERMES_SKILLS_DIR/research/$LLM_WIKI_SKILL/.git"
-
-  eprintf "  Installed llm-wiki -> opencode + hermes/research/"
+HERMES_STAGING_DIR="${HERMES_STAGING_DIR:-/opt/hermes-agent-staging}"
+mkdir -p "${HERMES_SKILLS_DIR}/research"
+if [ -d "${HERMES_STAGING_DIR}/skills/research/llm-wiki" ]; then
+  cp -r "${HERMES_STAGING_DIR}/skills/research/llm-wiki" "${HERMES_SKILLS_DIR}/research/"
+  eprintf "  Installed llm-wiki -> hermes/research/"
+  cp -r "${HERMES_STAGING_DIR}/skills/research/llm-wiki" "${OPENCODE_SKILLS_DIR}/llm-wiki"
+  eprintf "  Installed llm-wiki -> opencode/"
 else
-  eprintf "  WARNING: llm-wiki source not found at $LLM_WIKI_SRC"
+  eprintf "  WARNING: llm-wiki not found in ${HERMES_STAGING_DIR}/skills/research/ — skipping"
 fi
 
 # Research category description (mirrors product-management pattern)

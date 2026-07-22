@@ -10,11 +10,11 @@ source "${LIB_DIR}/runtime-env.sh"
 source "${LIB_DIR}/port-utils.sh"
 source "${LIB_DIR}/mock-llm-server.sh"
 source "${LIB_DIR}/seed-volumes.sh"
-source "${LIB_DIR}/agent-setup.sh"
 source "${LIB_DIR}/model-discovery.sh"
 source "${LIB_DIR}/config-hermes.sh"
 source "${LIB_DIR}/config-opencode.sh"
 source "${LIB_DIR}/config-claude-code.sh"
+source "${LIB_DIR}/agent-setup.sh"
 source "${LIB_DIR}/validate-opencode.sh"
 source "${LIB_DIR}/service-gateway.sh"
 source "${LIB_DIR}/service-opencode.sh"
@@ -44,7 +44,7 @@ seed_volumes
 RUNTIME_ENV_MODE="$(detect_runtime_env)"
 export RUNTIME_ENV_MODE
 if [ -n "${OPENAI_BASE_URL:-}" ]; then
-    OPENAI_BASE_URL="$(normalize_base_url_for_local "${OPENAI_BASE_URL}")"
+    OPENAI_BASE_URL="$(normalize_base_url "${OPENAI_BASE_URL}")"
     export OPENAI_BASE_URL
 fi
 
@@ -59,7 +59,7 @@ if [ "${OPENAI_BASE_URL:-}" = "http://localhost:4000" ]; then
 fi
 
 discover_models
-generate_config
+generate_hermes_config
 generate_opencode_config
 generate_dcp_staging
 validate_opencode_zen_key || true
@@ -67,13 +67,10 @@ cleanup_symlink_loops
 ensure_agent
 init_wiki
 append_skills_external_dirs
+append_browser_config
 
-# --- Seed AGENTS.md into /workspace if not already present ---
-if [ -f /usr/local/share/AGENTS.md ] && [ ! -f /workspace/AGENTS.md ]; then
-    cp /usr/local/share/AGENTS.md /workspace/AGENTS.md
-    chown "${OPENCODE_USER}:${OPENCODE_USER}" /workspace/AGENTS.md
-    log "Seeded AGENTS.md to /workspace/"
-fi
+# --- Seed AGENTS.md into /workspace (always adopt baked doctrine) ---
+seed_agents_md
 
 # --- WebUI ---
 start_webui

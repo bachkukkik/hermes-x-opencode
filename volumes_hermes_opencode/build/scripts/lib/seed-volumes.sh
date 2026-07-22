@@ -39,3 +39,21 @@ seed_volumes() {
 
     log "Volume seeding complete"
 }
+
+# ── AGENTS.md doctrine seed ──────────────────────────────────────────────────
+# The doctrine (OpenCode reads /workspace/AGENTS.md) lives baked at
+# /usr/local/share/AGENTS.md in the image and is the single source of truth. The
+# baked copy is ALWAYS adopted: we overwrite /workspace/AGENTS.md unconditionally
+# on every boot so image/doctrine updates always propagate, even on a persistent
+# /workspace mount (Dokploy). Local edits to /workspace/AGENTS.md are NOT
+# preserved — edit the baked config and rebuild instead.
+#   $1 baked doctrine path   (default /usr/local/share/AGENTS.md) — override for tests
+#   $2 workspace copy path   (default /workspace/AGENTS.md)       — override for tests
+seed_agents_md() {
+    local baked="${1:-/usr/local/share/AGENTS.md}"
+    local ws="${2:-/workspace/AGENTS.md}"
+    [ -f "$baked" ] || return 0
+    cp "$baked" "$ws"
+    chown "${OPENCODE_USER}:${OPENCODE_USER}" "$ws" 2>/dev/null || true
+    log "Refreshed AGENTS.md in $(dirname "$ws")/ (always adopts baked doctrine)"
+}

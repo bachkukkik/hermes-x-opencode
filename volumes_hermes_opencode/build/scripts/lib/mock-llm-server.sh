@@ -29,7 +29,11 @@ class MockLLM(BaseHTTPRequestHandler):
             self._json(404, {"error":"not found"})
 
     def do_POST(self):
-        if self.path.rstrip("/").startswith("/v1/chat/completions"):
+        # A real LiteLLM proxy serves chat completions at BOTH /chat/completions
+        # and /v1/chat/completions. Hermes' litellm provider calls the non-/v1
+        # path, so match LiteLLM parity and accept either prefix.
+        p = self.path.rstrip("/")
+        if p.startswith("/v1/chat/completions") or p.startswith("/chat/completions"):
             self._json(200, {
                 "id":"mock-cmpl","object":"chat.completion",
                 "choices":[{"index":0,"message":{"role":"assistant","content":"mock"},"finish_reason":"stop"}],
