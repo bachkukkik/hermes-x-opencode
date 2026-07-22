@@ -12,15 +12,14 @@ start_webui() {
     # files (which go stale when HERMES_HOME is profile-scoped). Both run in the
     # same container, so the URL is localhost:HERMES_API_PORT. Also pass the API
     # key so the gateway's api_server accepts the health check requests.
-    # Forward GH_TOKEN across the su boundary (#80) so the WebUI-hosted agent's
-    # terminal tool has GitHub auth for gh/git push.
-    su -s /bin/bash "$OPENCODE_USER" -c "
-        export HERMES_WEBUI_GATEWAY_BASE_URL='http://127.0.0.1:${HERMES_API_PORT}'
-        export HERMES_WEBUI_GATEWAY_API_KEY='${HERMES_API_KEY}'
-        export GH_TOKEN='${GH_TOKEN:-}'
-        export GITHUB_TOKEN='${GH_TOKEN:-}'
-        /hermeswebui_init.bash
-    " &
+    # Export in the parent environment — /hermeswebui_init.bash runs as root and
+    # handles user switching internally (including UID correction on CI runners),
+    # so env vars set here are inherited by the child process.
+    export HERMES_WEBUI_GATEWAY_BASE_URL="http://127.0.0.1:${HERMES_API_PORT}"
+    export HERMES_WEBUI_GATEWAY_API_KEY="${HERMES_API_KEY}"
+    export GH_TOKEN="${GH_TOKEN:-}"
+    export GITHUB_TOKEN="${GH_TOKEN:-}"
+    /hermeswebui_init.bash &
     local pid=$!
     log "Hermes WebUI started (PID: $pid, gateway: http://127.0.0.1:${HERMES_API_PORT})"
 }
