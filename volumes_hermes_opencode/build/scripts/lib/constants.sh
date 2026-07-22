@@ -23,16 +23,30 @@ OPENCODE_SKILLS_DIR="${OPENCODE_USER_HOME}/.config/opencode/skills"
 # leave the agent's `playwright-cli` unable to locate its chromium.
 export PLAYWRIGHT_BROWSERS_PATH="${PLAYWRIGHT_BROWSERS_PATH:-/opt/ms-playwright}"
 
+# GitHub CLI / git auth. `gh` auto-reads GH_TOKEN; accept GITHUB_TOKEN as
+# an alias so either compose var works. Exported here so services that `su`
+# to hermeswebui still see it (the re-export inside each invocation is
+# defensive — this image's `su` preserves the parent environment already).
+GH_TOKEN="${GH_TOKEN:-${GITHUB_TOKEN:-}}"
+export GH_TOKEN
+
 # Wiki path (used by wiki-init.sh)
-WIKI_DIR="${WIKI_PATH:-${HERMES_HOME}/wiki}"
+HERMES_WIKI_PATH="${HERMES_WIKI_PATH:-${HERMES_HOME}/wiki}"
 
 # Runtime config (from env, with defaults)
 OPENAI_BASE_URL="${OPENAI_BASE_URL:-}"
 OPENAI_API_KEY="${OPENAI_API_KEY:-}"
 OPENAI_DEFAULT_MODEL="${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}"
 OPENAI_SMALL_MODEL="${OPENAI_SMALL_MODEL:-}"
-OPENAI_CONTEXT_LENGTH="${OPENAI_CONTEXT_LENGTH:-262144}"
+OPENAI_CONTEXT_LENGTH="${OPENAI_CONTEXT_LENGTH:-200000}"
 OPENAI_IMAGE_MODEL="${OPENAI_IMAGE_MODEL:-gpt-image-2}"
+
+# Web search backend (hermes `web` toolset). ddgs is keyless + search-only, so we
+# pair it with an auto/lazy extract backend (leave HERMES_WEB_EXTRACT_BACKEND
+# empty). Backends are lazy-installed on first use when allow_lazy_installs=true.
+HERMES_WEB_SEARCH_BACKEND="${HERMES_WEB_SEARCH_BACKEND:-ddgs}"
+HERMES_WEB_EXTRACT_BACKEND="${HERMES_WEB_EXTRACT_BACKEND:-}"
+HERMES_ALLOW_LAZY_INSTALLS="${HERMES_ALLOW_LAZY_INSTALLS:-true}"
 
 # Fine-grained model overrides (fall back to OPENAI_* if unset)
 HERMES_DEFAULT_MODEL="${HERMES_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL}}"
@@ -92,6 +106,8 @@ CODE_SERVER_ENABLED="${CODE_SERVER_ENABLED:-true}"
 CODE_SERVER_PORT="${CODE_SERVER_PORT:-8443}"
 CODE_SERVER_PASSWORD="${CODE_SERVER_PASSWORD:-}"
 
+SKIP_SKILL_INSTALL="${SKIP_SKILL_INSTALL:-}"
+
 # Browser viewport dimensions (Xvfb geometry + Chromium --window-size).
 BROWSER_DISPLAY_WIDTH="${BROWSER_DISPLAY_WIDTH:-1920}"
 BROWSER_DISPLAY_HEIGHT="${BROWSER_DISPLAY_HEIGHT:-1080}"
@@ -99,3 +115,21 @@ BROWSER_DISPLAY_HEIGHT="${BROWSER_DISPLAY_HEIGHT:-1080}"
 # Helpers
 log()  { printf '[entrypoint] %s\n' "$@" >&2; }
 warn() { printf '[entrypoint] WARN: %s\n' "$@" >&2; }
+
+# Ensure the Hermes logs directory and agent's log files exist and are writable
+# by the runtime user (hermeswebui). Both the gateway and the interactive `hermes`
+# CLI open ~/.hermes/logs/agent.log via setup_logging(). Create dir + files
+# up-front, make dir setgid + group-writable, and reclaim any root-owned files.
+ensure_hermes_logs() {
+    local logs="${HERMES_HOME}/logs" f
+    mkdir -p "$logs"
+    chmod 2775 "$logs" 2>/dev/null || true
+    if ! chown "${OPENCODE_USER}:${OPENCODE_USER}" "$logs" 2>&1; then
+        warn "chown of ${logs} failed — hermes may hit PermissionError on agent.log"
+    fi
+    for f in agent.log errors.log gateway.log; do
+        [ -e "${logs}/${f}" ] || touch "${logs}/${f}" 2>/dev/null || true
+    done
+    chown "${OPENCODE_USER}:${OPENCODE_USER}" "${logs}"/*.log 2>/dev/null || true
+    chmod 0664 "${logs}"/*.log 2>/dev/null || true
+}

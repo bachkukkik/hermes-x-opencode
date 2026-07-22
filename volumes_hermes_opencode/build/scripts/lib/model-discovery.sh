@@ -3,24 +3,23 @@
 discover_models() {
     local base_url="${OPENAI_BASE_URL:-}"
     local api_key="${OPENAI_API_KEY:-}"
-    local default_model="${HERMES_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
     DISCOVERED_MODELS=""
 
     if [ -z "$base_url" ] || [ -z "$api_key" ]; then
         echo "!! OPENAI_BASE_URL or OPENAI_API_KEY not set, using default model only."
-        DISCOVERED_MODELS="$default_model"
+        DISCOVERED_MODELS="$OPENAI_DEFAULT_MODEL"
         return
     fi
 
     echo "== Discovering models from $base_url ..."
     local response
     response=$(curl -sf --max-time 15 \
-        -H "Authorization: Bearer ${api_key}" \
+        -H "Authorization: Bearer ***" \
         "${base_url}/models" 2>/dev/null || echo "")
 
     if [ -z "$response" ]; then
         echo "!! Model discovery failed, using default model only."
-        DISCOVERED_MODELS="$default_model"
+        DISCOVERED_MODELS="$OPENAI_DEFAULT_MODEL"
         return
     fi
 
@@ -40,7 +39,7 @@ except Exception:
 
     if [ -z "$all_ids" ]; then
         echo "!! Could not parse model list, using default model only."
-        DISCOVERED_MODELS="$default_model"
+        DISCOVERED_MODELS="$OPENAI_DEFAULT_MODEL"
         return
     fi
 
@@ -75,7 +74,7 @@ for line in sys.stdin:
 
     if [ -z "$filtered" ]; then
         echo "!! All models filtered out, using default model only."
-        DISCOVERED_MODELS="$default_model"
+        DISCOVERED_MODELS="$OPENAI_DEFAULT_MODEL"
         return
     fi
 
@@ -83,18 +82,35 @@ for line in sys.stdin:
     count=$(echo "$filtered" | wc -l)
     echo "== Discovered $count chat models."
 
-    has_default=false
+    local has_default=false
     while IFS= read -r m; do
-        if [ "$m" = "$default_model" ]; then
+        if [ "$m" = "$OPENAI_DEFAULT_MODEL" ]; then
             has_default=true
             break
         fi
     done <<< "$filtered"
 
     if [ "$has_default" = false ]; then
-        echo "== Adding default model $default_model to discovered list."
-        filtered="${default_model}"$'\n'"${filtered}"
+        echo "== Adding default model $OPENAI_DEFAULT_MODEL to discovered list."
+        filtered="${OPENAI_DEFAULT_MODEL}"$'\n'"${filtered}"
     fi
+
+    # Ensure fine-grained override models are also present in the list
+    local extra_model
+    for extra_model in "$HERMES_DEFAULT_MODEL" "$OPENCODE_DEFAULT_MODEL" "$OPENCODE_SMALL_MODEL"; do
+        if [ -z "$extra_model" ]; then continue; fi
+        local has_extra=false
+        while IFS= read -r m; do
+            if [ "$m" = "$extra_model" ]; then
+                has_extra=true
+                break
+            fi
+        done <<< "$filtered"
+        if [ "$has_extra" = false ]; then
+            echo "== Adding override model $extra_model to discovered list."
+            filtered="${extra_model}"$'\n'"${filtered}"
+        fi
+    done
 
     DISCOVERED_MODELS="$filtered"
 }

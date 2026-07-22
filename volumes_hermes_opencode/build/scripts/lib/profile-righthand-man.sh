@@ -116,7 +116,7 @@ SOULEOF
     chown -R "$OPENCODE_USER":"$OPENCODE_USER" "${target}"
 
     # Sync config.yaml from the default profile on EVERY boot.
-    # generate_config() rewrites $HERMES_HOME/config.yaml every boot with
+    # generate_hermes_config() rewrites $HERMES_HOME/config.yaml every boot with
     # the latest model discovery + HERMES_DEFAULT_MODEL. Without this sync,
     # righthand-man keeps its stale first-boot clone (wrong model, old provider).
     if [ -f "${HERMES_HOME}/config.yaml" ]; then

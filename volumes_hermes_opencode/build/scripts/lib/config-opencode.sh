@@ -89,25 +89,28 @@ def get_limits(model_id):
         return 128000, 16384
     if 'gpt-4-turbo' in name:
         return 128000, 4096
-    if re.search(r'gpt-4[\.-]', name) or name.endswith('gpt-4'):
+    if re.search(r'gpt-4[\\.-]', name) or name.endswith('gpt-4'):
         return 8192, 4096
     if 'gpt-3.5' in name:
         return 16384, 4096
     if 'gpt-5' in name:
         return 128000, 16384
     if re.search(r'/o[134]', name) or re.search(r'-o[134]', name):
-        return 262144, 100000
+        return 200000, 100000
     if re.search(r'claude-[34]', name):
-        if re.search(r'claude-3\.7|claude-[45]', name):
-            return 262144, 16384
-        return 262144, 4096
+        if re.search(r'claude-3\\.7|claude-[45]', name):
+            return 200000, 16384
+        return 200000, 4096
     if 'llama_cpp' in model_id:
         # Agents A1 models have 256K native context (qwen35moe arch)
         if 'agents-a1-mtp-apex' in name:
             return 262144, 32768
         if 'agents-a1-q4' in name:
             return 262144, 32768
-        return 262144, 32768
+        # qwen3.6-27b (qwen35moe arch) has 256K native context
+        if 'qwen3.6' in name:
+            return 262144, 32768
+        return 200000, 32768
     if 'deepseek-v4' in name:
         # DeepSeek V4 family (v4-pro / v4-flash, incl. opencode-go/*) is 1M
         # context — matches resolve_ctx_len() in config-hermes.sh. Without this
@@ -134,22 +137,20 @@ def get_limits(model_id):
         return 1048576, 65536
     return 128000, 8192
 
-_prefixes = os.environ.get('PROVIDER_PREFIXES', 'opencode litellm').split()
 entries = []
 for line in sys.stdin:
     mid = line.strip()
     if not mid:
         continue
-    ctx, out = get_limits(mid)
-    # Strip recognized provider prefixes from the map key so OpenCode
-    # resolves models by bare ID. The full prefixed name is preserved
-    # in the 'name' field for provider routing.
+    _PREFIXES = os.environ.get('PROVIDER_PREFIXES', 'opencode litellm').split()
     key = mid
-    for pfx in _prefixes:
-        if mid.startswith(pfx + '/'):
-            key = mid[len(pfx)+1:]
+    for _pfx in _PREFIXES:
+        _pfx_slash = _pfx + '/'
+        if key.startswith(_pfx_slash):
+            key = key[len(_pfx_slash):]
             break
-    entries.append(f'        \"{key}\": {{\"name\": \"{mid}\", \"limit\": {{\"context\": {ctx}, \"output\": {out}}}}}')
+    ctx, out = get_limits(mid)
+    entries.append(f'        \\"{key}\\": {{\"limit\": {{\"context\": {ctx}, \"output\": {out}}}}}')
 
 print(','.join(entries))
 " 2>/dev/null)
@@ -316,11 +317,15 @@ OCEOF
 )
     fi
 
-    # Inline the API key at generation time when OPENAI_API_KEY is present in the
-    # generator's environment, so opencode.jsonc works in any shell/dir with no
-    # runtime env dependency. When absent, fall back to the {env:OPENAI_API_KEY}
-    # placeholder (original contract) so generation still completes.
-    local _openai_key="${OPENAI_API_KEY:-{env:OPENAI_API_KEY}}"
+    # Inline the resolved OPENAI_API_KEY so opencode.jsonc is self-contained
+    # in any shell/dir; fall back to the {env:OPENAI_API_KEY} placeholder when
+    # unset at generation time.
+    # Two-step: avoid nested-brace bash expansion bug. Bash closes ${VAR:-WORD}
+    # at the FIRST '}' inside WORD, so writing "{env:...}" directly inside the
+    # default makes a SET key expand to "<key>}" — a stray trailing brace that
+    # corrupts the inlined key and LiteLLM rejects (issue #53).
+    local _openai_key="${OPENAI_API_KEY:-}"
+    [ -z "$_openai_key" ] && _openai_key='{env:OPENAI_API_KEY}'
     local _ll_entry=""
     if $_has_openai_creds; then
         _ll_entry=$(cat << PROVEOF
@@ -347,12 +352,16 @@ ${_ll_entry}"
     fi
 
     local provider_block
-    provider_block=$(cat << PEMEOF
+    if [ -n "$_entries" ]; then
+        provider_block=$(cat << PEMEOF
   "provider": {
 ${_entries}
   },
 PEMEOF
 )
+    else
+        provider_block='  "provider": {},'
+    fi
 
     local _plugins
     _plugins='    "@tarquinen/opencode-dcp@latest",

@@ -7,7 +7,7 @@
 # via its own DEFAULT_CONTEXT_LENGTHS table / models.dev / endpoint probe.
 #
 # Why pin at all when the agent self-resolves? (1) The DEFAULT model must always
-# carry an explicit context_length (see generate_config) so config.yaml has >=1
+# carry an explicit context_length (see generate_hermes_config) so config.yaml has >=1
 # entry and the active model gets a sane window, and (2) a few families need a
 # defensive correct value — notably glm-5.2, whose true 1M window the agent's
 # "glm" catch-all misreports as 202752. Values mirror the agent's authoritative
@@ -38,44 +38,44 @@ resolve_ctx_len() {
     esac
 }
 
-generate_config() {
+generate_hermes_config() {
+    log "--- generate_hermes_config ---"
+
     mkdir -p "$(dirname "$CONFIG")"
 
-    local api_key="${HERMES_API_KEY:-}"
-    if [ -z "$api_key" ]; then
-        api_key="hermes-$(openssl rand -hex 16)"
-        log "Generated random HERMES_API_KEY: $api_key"
+    if [ -z "$HERMES_API_KEY" ]; then
+        HERMES_API_KEY="hermes-$(openssl rand -hex 16)"
+        export HERMES_API_KEY
+        log "Generated random HERMES_API_KEY: $HERMES_API_KEY"
     fi
 
-    local yolo_mode="${HERMES_YOLO_MODE:-1}"
+    # Runtime autonomy blocks (#53): approvals off + delegation subagent loop,
+    # both gated on HERMES_YOLO_MODE so supervised (non-YOLO) boots emit neither.
     local approvals_block=""
-    case "$yolo_mode" in
+    local delegation_block=""
+    case "$HERMES_YOLO_MODE" in
         1|true|yes|on)
             approvals_block="
 approvals:
   mode: off
 "
+            delegation_block="
+delegation:
+  max_iterations: ${HERMES_DELEGATION_MAX_ITERATIONS}
+"
+            if [ -n "${HERMES_DELEGATION_MODEL:-}" ]; then
+                log "Delegation model: ${HERMES_DELEGATION_MODEL}"
+                delegation_block="${delegation_block}
+  model: ${HERMES_DELEGATION_MODEL}"
+            fi
+            if [ -n "${HERMES_DELEGATION_PROVIDER:-}" ]; then
+                log "Delegation provider: ${HERMES_DELEGATION_PROVIDER}"
+                delegation_block="${delegation_block}
+  provider: ${HERMES_DELEGATION_PROVIDER}"
+            fi
             ;;
     esac
 
-    local max_iter="${HERMES_DELEGATION_MAX_ITERATIONS:-50}"
-    local delegation_model="${HERMES_DELEGATION_MODEL:-}"
-    local delegation_provider="${HERMES_DELEGATION_PROVIDER:-}"
-
-    # Build delegation block dynamically
-    local delegation_block="
-delegation:
-  max_iterations: ${max_iter}"
-    if [ -n "$delegation_model" ]; then
-        delegation_block="${delegation_block}
-  model: ${delegation_model}"
-    fi
-    if [ -n "$delegation_provider" ]; then
-        delegation_block="${delegation_block}
-  provider: ${delegation_provider}"
-    fi
-    delegation_block="${delegation_block}
-"
     # Main agent tool-calling loop budget: always emitted so the agent runs up to
     # HERMES_AGENT_MAX_TURNS iterations instead of the built-in 90. The gateway
     # bridges agent.max_turns → HERMES_MAX_ITERATIONS (config.yaml is authoritative
@@ -84,22 +84,33 @@ delegation:
     # delegation.max_iterations, which cap the /goal and subagent loops respectively.
     local agent_block="
 agent:
-  max_turns: ${HERMES_AGENT_MAX_TURNS:-200}
+  max_turns: ${HERMES_AGENT_MAX_TURNS}
 "
 
-    local goal_max_turns="${HERMES_GOAL_MAX_TURNS:-50}"
+    # /goal cross-turn budget: always emitted so /goal runs up to
+    # HERMES_GOAL_MAX_TURNS turns (default 50) instead of the built-in 20.
     local goals_block="
 goals:
-  max_turns: ${goal_max_turns}
+  max_turns: ${HERMES_GOAL_MAX_TURNS}
 "
 
-    local compression_block=""
-    if [ -n "${HERMES_COMPRESSION_THRESHOLD:-}" ]; then
-        compression_block="
-compression:
-  threshold: ${HERMES_COMPRESSION_THRESHOLD}
+    # Web search backend: ddgs (keyless, search-only) for web_search, with the
+    # extract backend left to auto/lazy so web_extract still fetches URL content.
+    # Set HERMES_WEB_EXTRACT_BACKEND to pin a specific extractor.
+    local web_block="
+web:
+  search_backend: ${HERMES_WEB_SEARCH_BACKEND}
+"
+    if [ -n "${HERMES_WEB_EXTRACT_BACKEND:-}" ]; then
+        web_block="${web_block}  extract_backend: ${HERMES_WEB_EXTRACT_BACKEND}
 "
     fi
+
+    # Lazy-install optional deps (e.g. the `ddgs` package) on first use.
+    local security_block="
+security:
+  allow_lazy_installs: ${HERMES_ALLOW_LAZY_INSTALLS}
+"
 
     # model.max_tokens: OUTPUT-token cap Hermes sends per request (NOT the
     # context window — that's context_length in the models map). Left unset,
@@ -117,20 +128,21 @@ compression:
   max_tokens: ${HERMES_MAX_TOKENS}"
     fi
 
+    # Minimal fallback config when no LLM provider is configured
     if [ -z "${OPENAI_BASE_URL:-}" ]; then
-        warn "No OPENAI_BASE_URL — writing minimal config (api_server + default model)."
+        warn "NO OPENAI_BASE_URL — writing minimal config (api_server + default model)."
         cat > "$CONFIG" << YAMLEOF
 model:
   provider: litellm
-  default: openai/gpt-4o
-  name: openai/gpt-4o${max_tokens_line}
+  default: ${HERMES_DEFAULT_MODEL}
+  name: ${HERMES_DEFAULT_MODEL}${max_tokens_line}
 
 custom_providers:
   - name: litellm
     base_url: ""
     models:
-      openai/gpt-4o:
-        context_length: 262144
+      ${HERMES_DEFAULT_MODEL}:
+        context_length: ${OPENAI_CONTEXT_LENGTH}
     key_env: OPENAI_API_KEY
 
 platforms:
@@ -138,23 +150,21 @@ platforms:
     enabled: true
     extra:
       host: "0.0.0.0"
-      port: 8642
-      key: "${api_key}"
+      port: ${HERMES_API_PORT}
+      key: "${HERMES_API_KEY}"
       cors_origins: "*"
-${agent_block}${approvals_block}${delegation_block}
+${agent_block}${approvals_block}${goals_block}${delegation_block}
 YAMLEOF
         log "Wrote minimal config.yaml."
         return
     fi
-
-    local default_model="${HERMES_DEFAULT_MODEL:-${OPENAI_DEFAULT_MODEL:-openai/gpt-4o}}"
 
     local models_yaml=""
     local model_id ctx_len is_default
     while IFS= read -r model_id; do
         [ -z "$model_id" ] && continue
         is_default=0
-        [ "$model_id" = "$default_model" ] && is_default=1
+        [ "$model_id" = "$HERMES_DEFAULT_MODEL" ] && is_default=1
         ctx_len=$(resolve_ctx_len "$model_id")
         if [ -n "$ctx_len" ]; then
             # Known family -> pin the accurate context length.
@@ -166,7 +176,7 @@ YAMLEOF
             # has >=1 entry (fallback-resilience test) and the active model has a
             # sane window even when its family is unknown.
             models_yaml="${models_yaml}      ${model_id}:
-        context_length: 262144
+        context_length: ${OPENAI_CONTEXT_LENGTH}
 "
         else
             # Unknown family -> emit an empty mapping so the hermes-agent
@@ -177,33 +187,11 @@ YAMLEOF
         fi
     done <<< "$DISCOVERED_MODELS"
 
-    local browser_block=""
-    if [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ]; then
-        browser_block="
-browser:
-  cdp_url: http://127.0.0.1:9222
-  viewport:
-    width: ${BROWSER_DISPLAY_WIDTH:-1920}
-    height: ${BROWSER_DISPLAY_HEIGHT:-1080}
-"
-    fi
-
-    # Built-in optional skills from the agent runtime copy
-    local optional_skills_dir="${HERMES_HOME}/hermes-agent/optional-skills"
-    local skills_block=""
-    if [ -d "$optional_skills_dir" ]; then
-        skills_block="
-skills:
-  external_dirs:
-    - ${optional_skills_dir}
-"
-    fi
-
     cat > "$CONFIG" << YAMLEOF
 model:
   provider: litellm
-  default: ${default_model}
-  name: ${default_model}${max_tokens_line}
+  default: ${HERMES_DEFAULT_MODEL}
+  name: ${HERMES_DEFAULT_MODEL}${max_tokens_line}
 
 custom_providers:
   - name: litellm
@@ -212,37 +200,69 @@ custom_providers:
 ${models_yaml}
     key_env: OPENAI_API_KEY
 
+compression:
+  threshold: ${HERMES_COMPRESSION_THRESHOLD}
+
+logging:
+  level: DEBUG
+  max_size_mb: 5
+  backup_count: 3
+
+image_gen:
+  provider: openai
+  model: ${OPENAI_IMAGE_MODEL}
+${web_block}${security_block}
 platforms:
   api_server:
     enabled: true
     extra:
       host: "0.0.0.0"
-      port: 8642
-      key: "${api_key}"
+      port: ${HERMES_API_PORT}
+      key: "${HERMES_API_KEY}"
       cors_origins: "*"
-${agent_block}${browser_block}${skills_block}${approvals_block}${goals_block}${compression_block}${delegation_block}
+${agent_block}${approvals_block}${goals_block}${delegation_block}
 YAMLEOF
 
     log "Wrote config.yaml with $(echo "$DISCOVERED_MODELS" | wc -l) models."
 }
 
+append_browser_config() {
+    log "--- append_browser_config ---"
+    if [ "${BROWSER_HUMAN_LOOP_ENABLED:-false}" = "true" ]; then
+        cat >> "$CONFIG" << YAMLEOF
+
+browser:
+  cdp_url: http://127.0.0.1:9222
+  viewport:
+    width: ${BROWSER_DISPLAY_WIDTH:-1920}
+    height: ${BROWSER_DISPLAY_HEIGHT:-1080}
+YAMLEOF
+        log "Appended browser.cdp_url + viewport to config.yaml"
+    fi
+}
+
+append_computer_use_config() {
+    log "--- append_computer_use_config ---"
+    # Stub — skip for now (no computer_use support in HXO yet).
+    :
+}
+
 # Append skills.external_dirs to config.yaml — called AFTER ensure_agent()
 # so that the optional-skills directory exists on disk.
 append_skills_external_dirs() {
-    local optional_skills_dir="${HERMES_HOME}/hermes-agent/optional-skills"
-    if [ ! -d "$optional_skills_dir" ]; then
-        warn "optional-skills dir not found at $optional_skills_dir, skipping external_dirs."
-        return
-    fi
-    # Only add if not already present
-    if grep -q 'external_dirs' "$CONFIG" 2>/dev/null; then
-        return
-    fi
-    cat >> "$CONFIG" << YAMLEOF
+    log "--- append_skills_external_dirs ---"
+    local optional_skills_dir="${AGENT_DIR:-${HERMES_HOME}/hermes-agent}/optional-skills"
+    if [ -d "$optional_skills_dir" ]; then
+        if ! grep -q 'external_dirs' "$CONFIG"; then
+            cat >> "$CONFIG" << YAMLEOF
 
 skills:
   external_dirs:
     - ${optional_skills_dir}
 YAMLEOF
-    log "Appended skills.external_dirs -> ${optional_skills_dir}"
+            log "Appended skills.external_dirs to config.yaml"
+        fi
+    else
+        log "optional-skills dir not found at $optional_skills_dir, skipping external_dirs"
+    fi
 }

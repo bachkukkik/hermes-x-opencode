@@ -14,6 +14,79 @@ Container: hermes-opencode
 
 See `PRD.md` for full specifications. See `docs/` for architecture deep-dives.
 
+**Scope of this file:** repo-development guidance for coding agents working ON
+this repo. Runtime / in-container reference — paths inside the container,
+security modes, deployed agent capabilities — is baked into the image at
+`/usr/local/share/AGENTS.md` (seeded to `/workspace/AGENTS.md` on first boot)
+and detailed in `docs/`.
+
+---
+
+## The `/goal` Orchestration Workflow (coding-agent entry point)
+
+Every substantive request is driven through the `/goal` pipeline. The coding
+agent MUST capture and follow this sequence. The four mandated skills
+(PM / karpathy / kanban / opencode-plan-build-orchestrator) apply at every
+step — see [Standing Orders § 1](#1-mandated-skills).
+
+**Kickoff prompt:**
+
+```
+/goal <whatever user request>
+
+use pm skill for PRD, problem triage, success criteria definition and verification policy
+use karpathy skill for codebase investigation and all resource analysis
+prioritize task delegation over direct execution
+use opencode-plan-build-orchestrator skill for all coding tasks
+```
+
+**Subsequent prompts (run in order):**
+
+```
+## sub1 — docs/tests gap sync
+check gaps in PRD.md, docs/ and tests/ against codebase. bridge gaps, update to the most current info and drop legacy ones accordingly.
+
+use pm skill for PRD, problem triage, success criteria definition and verification policy.
+use karpathy skill for codebase investigation and all resource analysis.
+prioritize task delegation over direct execution.
+use opencode-plan-build-orchestrator skill for all coding tasks.
+
+## sub2 — local CI
+run github action locally using https://github.com/nektos/act
+
+if problems surface, use pm skill for PRD, problem triage, success criteria definition and verification policy.
+use karpathy skill for codebase investigation and all resource analysis.
+prioritize task delegation over direct execution.
+use opencode-plan-build-orchestrator skill for all coding tasks.
+
+## sub3 — PR + CI monitor
+PR using yeet. thoroughly provide context in the PR using coding agent docs skill. lastly monitor CI/CD in PR.
+
+if problems surface, use pm skill for PRD, problem triage, success criteria definition and verification policy.
+use karpathy skill for codebase investigation and all resource analysis.
+prioritize task delegation over direct execution.
+use opencode-plan-build-orchestrator skill for all coding tasks.
+
+## sub4 — merge + redeploy
+squash and merge to main all test-passed PRs.
+then git checkout main and pull here.
+lastly do full redeployment cycle from pull to serve.
+
+use pm skill for PRD, problem triage, success criteria definition and verification policy.
+use karpathy skill for codebase investigation and all resource analysis.
+prioritize task delegation over direct execution.
+use opencode-plan-build-orchestrator skill for all coding tasks.
+```
+
+**Skill-to-phase mapping:**
+
+| Phase | Skill | Output |
+|-------|-------|--------|
+| PRD / triage / success criteria / verification policy | `pm` (`create-prd`, `intended-vs-implemented`) | `PRD.md` section |
+| Codebase & resource investigation | `karpathy-guidelines` | Evidence-based gap report |
+| Task delegation | `kanban` | Kanban cards (with `skills=[...]`, see § 2) |
+| All coding | `opencode-plan-build-orchestrator` | plan → build → verify via subagents |
+
 ---
 
 ## Standing Orders (ALWAYS apply)
