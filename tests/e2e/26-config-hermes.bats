@@ -52,13 +52,13 @@ setup() {
     [[ "$output" == *"result=[]"* ]]
 }
 
-@test "AC216: generate_config and append_skills_external_dirs functions are defined" {
+@test "AC216: generate_hermes_config and append_skills_external_dirs functions are defined" {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
     run docker exec "$cid" bash -c '
         source /usr/local/bin/lib/config-hermes.sh
-        declare -f generate_config
+        declare -f generate_hermes_config
         declare -f append_skills_external_dirs
         echo "OK"
     '
@@ -85,19 +85,19 @@ setup() {
 
         export HERMES_MAX_TOKENS=32000
         export CONFIG=$(mktemp)
-        generate_config
+        generate_hermes_config
         echo "SET: $(grep -c "max_tokens: 32000" "$CONFIG")"
         rm -f "$CONFIG"
 
         unset HERMES_MAX_TOKENS
         export CONFIG=$(mktemp)
-        generate_config
+        generate_hermes_config
         echo "UNSET: $(grep -c "max_tokens" "$CONFIG")"
         rm -f "$CONFIG"
 
         export HERMES_MAX_TOKENS=not-a-number
         export CONFIG=$(mktemp)
-        generate_config
+        generate_hermes_config
         echo "INVALID: $(grep -c "max_tokens" "$CONFIG")"
         rm -f "$CONFIG"
     '
@@ -132,7 +132,7 @@ setup() {
     [[ "$output" == *"first=1 second=1"* ]]
 }
 
-@test "AC252: generate_config emits agent.max_turns from HERMES_AGENT_MAX_TURNS" {
+@test "AC252: generate_hermes_config emits agent.max_turns from HERMES_AGENT_MAX_TURNS" {
     # Regression for the "Reached maximum iterations (90)" bug: config-hermes.sh
     # must write a top-level `agent:` block with `max_turns` (the main agent-loop
     # cap the gateway bridges to agent.max_iterations) — distinct from the
@@ -150,7 +150,7 @@ setup() {
         export OPENAI_BASE_URL=""
         export HERMES_HOME=$(mktemp -d)
         export CONFIG="$HERMES_HOME/config.yaml"
-        generate_config >/dev/null 2>&1
+        generate_hermes_config >/dev/null 2>&1
         # Extract the agent block max_turns specifically (not goals/delegation).
         awk "/^agent:/{f=1;next} f&&/max_turns:/{print \"agent.max_turns=\"\$2; exit}" "$CONFIG"
         rm -rf "$HERMES_HOME"
@@ -181,7 +181,7 @@ setup() {
         export HERMES_DEFAULT_MODEL="openai/gpt-4o"
         export HERMES_HOME=$(mktemp -d)
         export CONFIG="$HERMES_HOME/config.yaml"
-        generate_config >/dev/null 2>&1
+        generate_hermes_config >/dev/null 2>&1
         a=$(awk "/^agent:/{f=1;next} f&&/max_turns:/{print \$2; exit}" "$CONFIG")
         g=$(awk "/^goals:/{f=1;next} f&&/max_turns:/{print \$2; exit}" "$CONFIG")
         d=$(awk "/^delegation:/{f=1;next} f&&/max_iterations:/{print \$2; exit}" "$CONFIG")

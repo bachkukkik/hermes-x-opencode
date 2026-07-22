@@ -38,9 +38,7 @@ start_opencode_serve() {
     mkdir -p "${OPENCODE_USER_HOME}/.local/state"
     chown "${OPENCODE_USER}:${OPENCODE_USER}" "${OPENCODE_USER_HOME}/.local/state"
     log "Starting opencode serve on :${OPENCODE_SERVE_PORT} (user: ${OPENCODE_USER})..."
-    # Pass all provider env vars through su — {env:VAR} in opencode.jsonc
-    # resolves at runtime from the process environment. Without these,
-    # the litellm provider gets an empty apiKey (401 "no key passed in").
+    # Also pass OPENAI_API_KEY + OPENAI_BASE_URL so the litellm provider block
     # PLAYWRIGHT_BROWSERS_PATH is forwarded for the same reason so opencode-spawned
     # playwright-cli invocations can locate the pre-installed chromium.
     # OPENCODE_API_KEY is forwarded so the {env:OPENCODE_API_KEY} placeholder in the
