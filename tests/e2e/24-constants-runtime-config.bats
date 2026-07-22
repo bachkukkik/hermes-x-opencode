@@ -175,7 +175,7 @@ setup() {
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$OPENAI_CONTEXT_LENGTH"'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"200000"* ]]
+    [[ "$output" == *"262144"* ]]
 }
 
 @test "AC209: HERMES_MAX_TOKENS defaults to 262144" {
@@ -184,7 +184,7 @@ setup() {
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'unset HERMES_MAX_TOKENS; source /usr/local/bin/lib/constants.sh; echo "$HERMES_MAX_TOKENS"'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"200000"* ]]
+    [[ "$output" == *"262144"* ]]
 }
 
 @test "AC208: Runtime config can be overridden via environment" {
