@@ -221,6 +221,9 @@ skip_re = [re.compile(p, re.IGNORECASE) for p in skip_patterns]
 found = []
 with open('/home/hermeswebui/.hermes/config.yaml') as f:
     for line in f:
+        # Only scan indented lines (model entries), skip top-level config block keys
+        if not line.startswith('      ') and not line.startswith('        '):
+            continue
         line = line.strip()
         if line and any(p.search(line) for p in skip_re):
             found.append(line)
