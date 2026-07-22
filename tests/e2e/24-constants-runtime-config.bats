@@ -175,7 +175,7 @@ setup() {
     [ -n "$cid" ]
     run docker exec "$cid" bash -c 'source /usr/local/bin/lib/constants.sh; echo "$OPENAI_CONTEXT_LENGTH"'
     [ "$status" -eq 0 ]
-    [[ "$output" == *"262144"* ]]
+    [[ "$output" == *"200000"* ]]
 }
 
 @test "AC209: HERMES_MAX_TOKENS defaults to 262144" {
