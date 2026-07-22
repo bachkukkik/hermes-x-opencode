@@ -150,7 +150,7 @@ for line in sys.stdin:
             key = key[len(_pfx_slash):]
             break
     ctx, out = get_limits(mid)
-    entries.append(f'        \\"{key}\\": {{\"limit\": {{\"context\": {ctx}, \"output\": {out}}}}}')
+    entries.append(f'        \"{key}\": {{\"limit\": {{\"context\": {ctx}, \"output\": {out}}}}}')
 
 print(','.join(entries))
 " 2>/dev/null)
