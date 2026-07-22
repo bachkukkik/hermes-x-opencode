@@ -32,17 +32,17 @@ setup() {
     run docker exec "$cid" bash -c '
         source /usr/local/bin/lib/constants.sh
         source /usr/local/bin/lib/wiki-init.sh
-        export WIKI_DIR="/tmp/wiki-test-$$"
-        mkdir -p "$WIKI_DIR"
+        export HERMES_WIKI_PATH="/tmp/wiki-test-$$"
+        mkdir -p "$HERMES_WIKI_PATH"
         init_wiki
-        find "$WIKI_DIR" -type d | sort
+        find "$HERMES_WIKI_PATH" -type d | sort
     '
     [ "$status" -eq 0 ]
-    [[ "$output" == *"$WIKI_DIR/raw"* ]]
-    [[ "$output" == *"$WIKI_DIR/entities"* ]]
-    [[ "$output" == *"$WIKI_DIR/concepts"* ]]
-    [[ "$output" == *"$WIKI_DIR/comparisons"* ]]
-    [[ "$output" == *"$WIKI_DIR/queries"* ]]
+    [[ "$output" == *"$HERMES_WIKI_PATH/raw"* ]]
+    [[ "$output" == *"$HERMES_WIKI_PATH/entities"* ]]
+    [[ "$output" == *"$HERMES_WIKI_PATH/concepts"* ]]
+    [[ "$output" == *"$HERMES_WIKI_PATH/comparisons"* ]]
+    [[ "$output" == *"$HERMES_WIKI_PATH/queries"* ]]
 }
 
 @test "AC233: SCHEMA.md is created" {
@@ -52,10 +52,10 @@ setup() {
     run docker exec "$cid" bash -c '
         source /usr/local/bin/lib/constants.sh
         source /usr/local/bin/lib/wiki-init.sh
-        export WIKI_DIR="/tmp/wiki-test-$$"
-        mkdir -p "$WIKI_DIR"
+        export HERMES_WIKI_PATH="/tmp/wiki-test-$$"
+        mkdir -p "$HERMES_WIKI_PATH"
         init_wiki
-        cat "$WIKI_DIR/SCHEMA.md"
+        cat "$HERMES_WIKI_PATH/SCHEMA.md"
     '
     [ "$status" -eq 0 ]
     [[ "$output" == *"Wiki Schema"* ]]
@@ -69,10 +69,10 @@ setup() {
     run docker exec "$cid" bash -c '
         source /usr/local/bin/lib/constants.sh
         source /usr/local/bin/lib/wiki-init.sh
-        export WIKI_DIR="/tmp/wiki-test-$$"
-        mkdir -p "$WIKI_DIR"
+        export HERMES_WIKI_PATH="/tmp/wiki-test-$$"
+        mkdir -p "$HERMES_WIKI_PATH"
         init_wiki
-        cat "$WIKI_DIR/index.md"
+        cat "$HERMES_WIKI_PATH/index.md"
     '
     [ "$status" -eq 0 ]
     [[ "$output" == *"Wiki Index"* ]]
@@ -87,10 +87,10 @@ setup() {
     run docker exec "$cid" bash -c '
         source /usr/local/bin/lib/constants.sh
         source /usr/local/bin/lib/wiki-init.sh
-        export WIKI_DIR="/tmp/wiki-test-$$"
-        mkdir -p "$WIKI_DIR"
+        export HERMES_WIKI_PATH="/tmp/wiki-test-$$"
+        mkdir -p "$HERMES_WIKI_PATH"
         init_wiki
-        cat "$WIKI_DIR/log.md"
+        cat "$HERMES_WIKI_PATH/log.md"
     '
     [ "$status" -eq 0 ]
     [[ "$output" == *"Wiki Log"* ]]
@@ -104,8 +104,8 @@ setup() {
     run docker exec "$cid" bash -c '
         source /usr/local/bin/lib/constants.sh
         source /usr/local/bin/lib/wiki-init.sh
-        export WIKI_DIR="/tmp/wiki-test-$$"
-        mkdir -p "$WIKI_DIR"
+        export HERMES_WIKI_PATH="/tmp/wiki-test-$$"
+        mkdir -p "$HERMES_WIKI_PATH"
         init_wiki
         init_wiki  # Second call should return early
         echo "SUCCESS"
@@ -114,16 +114,16 @@ setup() {
     [[ "$output" == *"SUCCESS"* ]]
 }
 
-@test "AC237: wiki-init.sh respects WIKI_DIR not set" {
+@test "AC237: wiki-init.sh respects HERMES_WIKI_PATH not set" {
     local cid
     cid=$(get_container)
     [ -n "$cid" ]
     run docker exec "$cid" bash -c '
         source /usr/local/bin/lib/constants.sh
         source /usr/local/bin/lib/wiki-init.sh
-        unset WIKI_DIR
+        unset HERMES_WIKI_PATH
         init_wiki 2>&1
     '
     [ "$status" -eq 0 ]
-    [[ "$output" == *"WIKI_DIR not set"* ]]
+    [[ "$output" == *"HERMES_WIKI_PATH not set"* ]]
 }

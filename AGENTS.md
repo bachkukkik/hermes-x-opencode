@@ -118,6 +118,8 @@ Load and use these skills on EVERY task:
 - **No `shell=True`** in subprocess calls
 - **No hardcoded secrets** — use env vars or `key_env` references
 - **No wildcard patterns (`/*`)** in model config — filter them during discovery
+- **bash scripts must use `set -euo pipefail`** and `$()` not backticks
+- **All bash entrypoint scripts use parameterized helpers** — `log()` and `warn()` are defined in `lib/constants.sh`, use them instead of raw `echo`
 - **Both `model.default` AND `model.name`** must be written to config.yaml
 - **CustomProfile must have `User-Agent: hermes-agent/1.0`** header — verify after any agent update
 - **Agent source goes to staging path** (`/opt/hermes-agent-staging`), not runtime path
@@ -127,9 +129,12 @@ Load and use these skills on EVERY task:
 - Target platform: **Linux ARM64** (Raspberry Pi)
 - **No interactive setup** — everything must be unattended from `docker compose up -d`
 - **No secrets in tracked files** — repo is public
+- All config flows through `.env` → `docker-compose.yml` → container env
 - `config.yaml` and `opencode.jsonc` are regenerated every boot — manual edits are lost
 - OpenCode skills are ephemeral (no volume mount) — reinstalled every boot
 - Hermes skills persist in the bind mount
+- **Auto-generate secrets (API keys, tokens) when not provided**, log them at startup (e.g. `OPENCODE_SERVER_PASSWORD`)
+- **Extra services are gated**: code-server (`CODE_SERVER_ENABLED`, default `true`), browser human-loop (`BROWSER_HUMAN_LOOP_ENABLED`, default `false`). Only start when enabled — don't assume they're running.
 - **`host.docker.internal`** resolves inside the container via `extra_hosts` in `docker-compose.yml` (maps to `host-gateway`) — fixes DNS resolution on bare Linux hosts (#27, #31)
 
 ### 5. File Locations (inside container)
@@ -185,6 +190,8 @@ docker exec $(docker compose ps -q hermes-opencode) python3 -m json.tool /home/h
 ### 8. Project-Specific Patterns
 
 - **Bash heredoc JSON breaks with 300+ dynamic entries** — use `python3 -c "import json; json.dump(...)"` for config generation
+- **Parameterized constants**: `log()` and `warn()` helpers in `lib/constants.sh` provide structured logging. All entrypoint scripts use these; never `echo` raw output in lib scripts.
+- **`OPENAI_BASE_URL` normalization**: `normalize_base_url()` (`lib/runtime-env.sh`) strips trailing slashes (always) and rewrites `host.docker.internal`→`localhost` in local mode. Run once at entrypoint and exported, so config-gen and services all receive a clean URL. A trailing slash otherwise yields `//chat/completions` → 404.
 - **Docker overlayfs on ARM64 may drop new layers** — modifications to existing files survive, new files may vanish. Use inline `command:` in docker-compose as workaround
 - **Agent installation is dual but NOT parallel**: The base image venv (`/app/venv/`) provides the active runtime for both WebUI and gateway. The staged clone (`/opt/hermes-agent-staging/` → `~/.hermes/hermes-agent/`) is a deps pipeline that feeds `uv pip install` into the venv. The User-Agent sed patch propagates through: staging → ensure_agent() → rsync → uv pip install → /app/venv/.
 - **Cloudflare blocks OpenAI SDK default User-Agent** — the CustomProfile patch (`hermes-agent/1.0`) is critical for LLM calls to work
