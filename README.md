@@ -1,3 +1,5 @@
+
+
 # Hermes x OpenCode
 
 A Docker Compose stack that connects [Hermes Agent](https://github.com/nousresearch/hermes-agent) + [Hermes WebUI](https://github.com/nicholasgriffintn/hermes-webui) + [OpenCode CLI](https://opencode.ai) into a fully integrated AI coding orchestrator.
@@ -163,7 +165,7 @@ curl http://localhost:8642/v1/chat/completions \
 
 > **⚠ EXPERIMENTAL:** The `opencode serve` + `attach` pattern is not fully functional. See [Limitations](#limitations) and [issue #10](https://github.com/bachkukkik/hermes-x-opencode/issues/10).
 
-Headless OpenCode server. Attach from another machine:
+Headless OpenCode server. **Requires `OPENCODE_SERVE_ENABLED=true` in `.env`** (disabled by default). Attach from another machine:
 
 ```bash
 # From any machine on the network
